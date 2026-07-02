@@ -339,6 +339,73 @@
   .wz-crit .ct{font-size:13px;font-weight:700}
   .wz-crit .cd{font-size:11px;color:var(--ink-faint);font-weight:400;margin-left:auto}
 
+  /* ===== Busca global / menu do usuário / RBAC ===== */
+  .search{position:relative}
+  #searchDrop{position:absolute;top:calc(100% + 8px);right:0;width:330px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 24px 60px -18px rgba(0,30,60,.35);overflow:hidden;z-index:60;display:none}
+  #searchDrop.open{display:block}
+  #searchDrop .sr{display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;font-size:13px;border-bottom:1px solid var(--surface-2)}
+  #searchDrop .sr:hover{background:var(--brand-soft)}
+  #searchDrop .sr .tb{width:22px;height:22px;border-radius:7px;color:#fff;font-size:10.5px;font-weight:800;display:grid;place-items:center;flex:none}
+  #searchDrop .sr small{display:block;color:var(--ink-faint);font-size:11px}
+  #searchDrop .none{padding:14px;font-size:12.5px;color:var(--ink-faint);text-align:center}
+  .avatar{cursor:pointer;position:relative}
+  #userMenu{position:absolute;top:56px;right:26px;width:230px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 24px 60px -18px rgba(0,30,60,.35);z-index:60;overflow:hidden;display:none}
+  #userMenu.open{display:block}
+  #userMenu .uh{padding:13px 15px;border-bottom:1px solid var(--line);font-size:13px;font-weight:700}
+  #userMenu .uh small{display:block;font-weight:500;color:var(--ink-faint);font-size:11px}
+  #userMenu .mi{display:flex;align-items:center;gap:10px;padding:10px 15px;font-size:13px;cursor:pointer}
+  #userMenu .mi:hover{background:var(--brand-soft)}
+  #userMenu .mi.out{color:var(--danger);border-top:1px solid var(--line)}
+  body.role-aud .perm-w{display:none!important}
+  .role-note{display:none;background:#fdf3e3;border:1px solid #f3ddb2;color:#8a5b00;font-size:12px;font-weight:600;padding:8px 14px;border-radius:10px;margin:0 32px 0}
+  body.role-aud .role-note{display:block}
+
+  /* ===== Manual de Utilização (Ajuda) ===== */
+  #helpModal{position:fixed;inset:0;z-index:190;background:rgba(8,20,34,.55);backdrop-filter:blur(3px);display:grid;place-items:center;padding:22px}
+  #helpModal .hm{background:#fff;border-radius:18px;width:min(1020px,97vw);height:min(680px,92vh);display:grid;grid-template-columns:250px 1fr;overflow:hidden;box-shadow:0 40px 90px -30px rgba(0,0,0,.6)}
+  .hm-side{background:var(--surface-2);border-right:1px solid var(--line);display:flex;flex-direction:column;overflow:hidden}
+  .hm-side .hs-head{padding:16px 16px 10px}
+  .hm-side .hs-head h3{font-family:"Poppins";font-size:15px;font-weight:700}
+  .hm-side .hs-head p{font-size:11px;color:var(--ink-faint);margin-top:2px}
+  .hm-side input{margin:8px 14px 10px;padding:8px 11px;border:1.5px solid var(--line);border-radius:9px;font-family:inherit;font-size:12.5px;outline:none}
+  .hm-side input:focus{border-color:var(--brand)}
+  .hm-toc{flex:1;overflow-y:auto;padding:0 8px 12px}
+  .hm-toc .ht{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:9px;font-size:12.5px;font-weight:600;color:var(--ink-soft);cursor:pointer}
+  .hm-toc .ht:hover{background:#fff}
+  .hm-toc .ht.on{background:var(--brand);color:#fff}
+  .hm-toc .ht .hi{width:22px;text-align:center;flex:none}
+  .hm-main{display:flex;flex-direction:column;overflow:hidden}
+  .hm-top{display:flex;align-items:center;gap:8px;padding:13px 20px;border-bottom:1px solid var(--line)}
+  .hm-top .crumbh{font-size:11px;color:var(--ink-faint);font-weight:600;text-transform:uppercase;letter-spacing:.6px;flex:1}
+  .hm-body{flex:1;overflow-y:auto;padding:22px 28px}
+  .hm-body h2{font-family:"Poppins";font-size:19px;font-weight:700;margin-bottom:4px}
+  .hm-body .lead{font-size:13px;color:var(--ink-soft);margin-bottom:16px}
+  .hm-body h5{font-family:"Poppins";font-size:13.5px;font-weight:700;margin:18px 0 8px;color:var(--brand-deep)}
+  .hm-body p{font-size:13px;margin-bottom:10px;color:var(--ink)}
+  .hm-body b{color:var(--brand-deep)}
+  .hm-body ol,.hm-body ul{margin:0 0 12px 20px;font-size:13px;display:grid;gap:6px}
+  .hm-body .tip{background:var(--brand-soft);border-left:3px solid var(--brand);padding:10px 14px;border-radius:0 10px 10px 0;font-size:12.5px;margin:12px 0}
+  .hm-body .warn{background:#fdf3e3;border-left:3px solid var(--warn);padding:10px 14px;border-radius:0 10px 10px 0;font-size:12.5px;margin:12px 0}
+  .hm-body table{width:100%;border-collapse:collapse;font-size:12.5px;margin:10px 0 14px}
+  .hm-body th{background:var(--surface-2);text-align:left;padding:8px 10px;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--ink-soft)}
+  .hm-body td{padding:8px 10px;border-top:1px solid var(--line)}
+  .hm-nav{display:flex;justify-content:space-between;padding:12px 20px;border-top:1px solid var(--line);background:var(--surface-2)}
+  #helpPrint{display:none}
+  @media print{
+    body>*{display:none!important}
+    #helpPrint{display:block!important}
+    #helpPrint .hp-sec{page-break-inside:avoid;margin-bottom:26px}
+  }
+
+  /* ===== Convidar usuário ===== */
+  #inviteModal{position:fixed;inset:0;z-index:160;background:rgba(8,20,34,.55);backdrop-filter:blur(3px);display:grid;place-items:center;padding:24px}
+  #inviteModal .im{background:#fff;border-radius:16px;width:min(430px,95vw);overflow:hidden;box-shadow:0 40px 90px -30px rgba(0,0,0,.6)}
+  #inviteModal .im-h{padding:16px 20px;border-bottom:1px solid var(--line);font-family:"Poppins";font-weight:700;font-size:15px}
+  #inviteModal .im-b{padding:18px 20px;display:grid;gap:12px}
+  #inviteModal label{font-size:11px;font-weight:700;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.3px;display:block;margin-bottom:4px}
+  #inviteModal input,#inviteModal select{width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;font-family:inherit;font-size:13.5px;outline:none}
+  #inviteModal input:focus{border-color:var(--brand)}
+
   /* ===== Módulo Acompanhamento Operacional (EEM) ===== */
   .tk-filterbar{display:flex;align-items:center;gap:10px}
   .tk-status{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;padding:3px 10px;border-radius:99px;letter-spacing:.2px}
@@ -446,10 +513,19 @@
       <div><div class="crumb" id="crumb">Unilever · Dashboard</div><h1 id="pageTitle">Dashboard</h1></div>
       <div class="spacer"></div>
       <button class="tour-btn" onclick="startTour()" title="Conheça cada função da plataforma"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/></svg>Tour guiado</button>
-      <select class="role-sel" id="roleSel"><option>👤 Gerente de Projeto</option><option>🛡 Auditor</option><option>⚙ Admin</option></select>
-      <div class="search"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4-4"/></svg><input placeholder="Buscar..."></div>
-      <div class="avatar">AL</div>
+      <button class="tour-btn" onclick="openHelp()" title="Manual de utilização do sistema"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.8 2.1c-.8.5-1.3 1-1.3 1.9"/><circle cx="12" cy="17" r=".6" fill="currentColor"/></svg>Ajuda</button>
+      <select class="role-sel" id="roleSel" onchange="applyRole(this.value)"><option>👤 Gerente de Projeto</option><option>🛡 Auditor</option><option>⚙ Admin</option></select>
+      <div class="search"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4-4"/></svg><input id="topSearch" placeholder="Buscar projeto, OI, líder..." autocomplete="off"><div id="searchDrop"></div></div>
+      <div class="avatar" onclick="toggleUserMenu(event)">AL</div>
+      <div id="userMenu">
+        <div class="uh">Alan Silva<small>alan.silva@unilever.com · Gerente de Projeto</small></div>
+        <div class="mi" onclick="toggleUserMenu();openHelp()">📖 Manual de utilização</div>
+        <div class="mi" onclick="toggleUserMenu();startTour()">🧭 Tour guiado</div>
+        <div class="mi" onclick="toggleUserMenu();toast('Preferências salvas no perfil.')">⚙ Preferências</div>
+        <div class="mi out" onclick="logout()">⏻ Sair da plataforma</div>
+      </div>
     </div>
+    <div class="role-note" style="margin-top:14px">🛡 Modo Auditor — somente leitura: ações de criação e edição ficam ocultas. Troque o perfil no seletor acima para voltar.</div>
 
     <!-- DASHBOARD -->
     <section class="view" id="view-dashboard">
@@ -459,7 +535,7 @@
         <div class="stat card"><div class="glow" style="background:var(--ok)"></div><div class="k">Conformidade Docs</div><div class="v">87%</div><div class="d">187 de 214</div></div>
         <div class="stat card"><div class="glow" style="background:var(--warn)"></div><div class="k">Riscos Abertos</div><div class="v">7</div><div class="d">2 críticos</div></div>
       </div>
-      <div class="panel-head"><div><div class="section-title">Projetos em andamento</div><div class="muted">Classificados (A–E) · clique para abrir os steps e a documentação</div></div><button class="btn" onclick="openWizard()">+ Cadastrar Projeto</button></div>
+      <div class="panel-head"><div><div class="section-title">Projetos em andamento</div><div class="muted">Classificados (A–E) · clique para abrir os steps e a documentação</div></div><button class="btn perm-w" onclick="openWizard()">+ Cadastrar Projeto</button></div>
       <div class="proj-grid" id="projGrid"></div>
     </section>
 
@@ -469,7 +545,7 @@
         <div><div class="section-title">Acompanhamento Operacional · Portfólio EEM</div><div class="muted">Andamento e cronograma de todos os projetos — foco operacional (atrasos, avanços e marcos). Independente da visão financeira (DRA).</div></div>
         <div class="tk-filterbar">
           <select class="role-sel" id="trackLead" onchange="buildTrack()"></select>
-          <button class="btn" onclick="openWizard()">+ Novo Projeto</button>
+          <button class="btn perm-w" onclick="openWizard()">+ Novo Projeto</button>
         </div>
       </div>
       <div class="stat-grid" id="trackKpis"></div>
@@ -517,7 +593,7 @@
       <div class="gate-bar locked" id="gateBar" style="display:none"></div>
       <div class="docs-layout">
         <div class="card" style="overflow:hidden">
-          <div class="docs-head"><div><div class="st" id="stepTitle">Step 1 · Project Briefing</div><div class="muted" id="stepMeta">Documentos obrigatórios deste step</div></div><button class="btn sm" onclick="generateAll()">⚡ Gerar pendentes</button></div>
+          <div class="docs-head"><div><div class="st" id="stepTitle">Step 1 · Project Briefing</div><div class="muted" id="stepMeta">Documentos obrigatórios deste step</div></div><button class="btn sm perm-w" onclick="generateAll()">⚡ Gerar pendentes</button></div>
           <div id="docList"></div>
         </div>
         <div class="doc-side">
@@ -525,7 +601,7 @@
             <div class="evid" onclick="addEvidence()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg><div>Arraste fotos ou clique para enviar</div></div>
             <div class="thumbs" id="thumbs"><div class="thumb">📷</div><div class="thumb">📷</div><div class="thumb">📄</div></div>
           </div>
-          <div class="card"><div class="section-title" style="margin-bottom:8px">Dados financeiros (DRA)</div><div class="muted" style="font-size:12.5px">Orçamento e consumo por OI vêm da base do SAP, extraída por robô (RPA) e gravada no SharePoint. Atualização mensal.</div><button class="btn sap sm" style="margin-top:11px;width:100%;justify-content:center" onclick="syncSAP(this)">↻ Atualizar base (robô)</button></div>
+          <div class="card"><div class="section-title" style="margin-bottom:8px">Dados financeiros (DRA)</div><div class="muted" style="font-size:12.5px">Orçamento e consumo por OI vêm da base do SAP, extraída por robô (RPA) e gravada no SharePoint. Atualização mensal.</div><button class="btn sap sm perm-w" style="margin-top:11px;width:100%;justify-content:center" onclick="syncSAP(this)">↻ Atualizar base (robô)</button></div>
         </div>
       </div>
     </section>
@@ -573,7 +649,7 @@
 
     <!-- AUDIT -->
     <section class="view hidden" id="view-audit">
-      <div class="panel-head"><div><div class="section-title">Auditoria & Conformidade</div><div class="muted">Repositório centralizado de documentação · trilha completa para auditorias</div></div></div>
+      <div class="panel-head"><div><div class="section-title">Auditoria & Conformidade</div><div class="muted">Repositório centralizado de documentação · trilha completa para auditorias</div></div><button class="btn ghost" onclick="exportAudit()">⬇ Exportar CSV</button></div>
       <div class="filters" id="auditFilters"><div class="chip on" data-f="all">Todos</div><div class="chip" data-f="ger">Gerados</div><div class="chip" data-f="rev">Em revisão</div><div class="chip" data-f="pend">Pendentes</div></div>
       <div class="card" style="overflow:hidden"><table class="audit"><thead><tr><th>Tipo</th><th>Projeto</th><th>Step</th><th>Documento</th><th>Status</th><th>Atualizado</th></tr></thead><tbody id="auditBody"></tbody></table></div>
     </section>
@@ -591,7 +667,7 @@
         <div class="card chart"><h4>Saldo de Capex <span>acumulado</span></h4><div id="draDonut"></div></div>
       </div>
       <div class="card" style="overflow:hidden;margin-top:14px">
-        <div class="docs-head"><div><div class="st">Detalhamento mensal (2026)</div><div class="muted">Valores em € · fonte: base SAP no SharePoint</div></div><button class="btn sap sm" onclick="syncSAP(this)">↻ Atualizar base (robô)</button></div>
+        <div class="docs-head"><div><div class="st">Detalhamento mensal (2026)</div><div class="muted">Valores em € · fonte: base SAP no SharePoint</div></div><button class="btn sap sm perm-w" onclick="syncSAP(this)">↻ Atualizar base (robô)</button></div>
         <table class="tbl"><thead><tr><th>Mês</th><th style="text-align:right">Orçado</th><th style="text-align:right">Executado</th><th style="text-align:right">Δ Mês</th><th style="text-align:right">Saldo Capex</th></tr></thead><tbody id="draBody"></tbody></table>
       </div>
     </section>
@@ -601,7 +677,7 @@
       <div class="toolbanner">
         <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><path d="M4 6h16M4 12h16M4 18h10"/><circle cx="20" cy="18" r="2"/></svg></div>
         <div><h3>Catálogo de Documentos por Step</h3><p>Fonte única do sistema. Cada documento define em qual step entra, se tem template e a partir de qual tipo (A–E) passa a ser obrigatório. Alterações refletem no cadastro, no gate e na matriz.</p></div>
-        <button class="btn" style="margin-left:auto" onclick="openCatForm()">+ Novo documento</button>
+        <button class="btn perm-w" style="margin-left:auto" onclick="openCatForm()">+ Novo documento</button>
       </div>
       <div class="cat-stats" id="catStats"></div>
       <div class="card" style="overflow:hidden;margin-top:14px">
@@ -619,7 +695,7 @@
 
     <!-- TEAM -->
     <section class="view hidden" id="view-team">
-      <div class="panel-head"><div><div class="section-title">Equipe & Papéis</div><div class="muted">Controle de acesso baseado em papéis (RBAC)</div></div><button class="btn">+ Convidar usuário</button></div>
+      <div class="panel-head"><div><div class="section-title">Equipe & Papéis</div><div class="muted">Controle de acesso baseado em papéis (RBAC)</div></div><button class="btn perm-w" onclick="openInvite()">+ Convidar usuário</button></div>
       <div class="card" style="overflow:hidden;margin-bottom:18px"><table class="tbl"><thead><tr><th>Usuário</th><th>Papel</th><th>Projetos</th><th>Status</th></tr></thead><tbody id="teamBody"></tbody></table></div>
       <div class="panel-head"><div class="section-title">Matriz de Permissões</div></div>
       <div class="card" style="overflow:hidden"><table class="tbl"><thead><tr><th>Ação</th><th style="text-align:center">Admin</th><th style="text-align:center">Gerente</th><th style="text-align:center">Auditor</th></tr></thead><tbody id="permBody"></tbody></table></div>
@@ -693,11 +769,41 @@
   </div>
 </div>
 
+<!-- CONVIDAR USUÁRIO -->
+<div id="inviteModal" class="hidden">
+  <div class="im">
+    <div class="im-h">Convidar usuário</div>
+    <div class="im-b">
+      <div><label>Nome completo</label><input id="inv_name" placeholder="ex.: Paula Nogueira"></div>
+      <div><label>E-mail corporativo</label><input id="inv_mail" placeholder="nome.sobrenome@unilever.com"></div>
+      <div><label>Papel (RBAC)</label><select id="inv_role"><option>Gerente de Projeto</option><option>Auditor</option><option>Admin</option></select></div>
+    </div>
+    <div class="wz-foot"><button class="btn ghost sm" onclick="closeInvite()">Cancelar</button><button class="btn sm" onclick="sendInvite()">Enviar convite</button></div>
+  </div>
+</div>
+
+<!-- MANUAL DE UTILIZAÇÃO -->
+<div id="helpModal" class="hidden">
+  <div class="hm">
+    <div class="hm-side">
+      <div class="hs-head"><h3>📖 Manual de Utilização</h3><p>Plataforma de Gestão de Projetos · v1.0</p></div>
+      <input id="helpSearch" placeholder="Filtrar seções..." oninput="renderHelpToc(this.value)">
+      <div class="hm-toc" id="helpToc"></div>
+    </div>
+    <div class="hm-main">
+      <div class="hm-top"><div class="crumbh" id="helpCrumb">Manual</div><button class="btn ghost sm" onclick="printHelp()">🖨 Imprimir / PDF</button><button class="tm-x" onclick="closeHelp()">✕</button></div>
+      <div class="hm-body" id="helpBody"></div>
+      <div class="hm-nav"><button class="btn ghost sm" id="helpPrev" onclick="helpNav(-1)">‹ Seção anterior</button><button class="btn sm" id="helpNext" onclick="helpNav(1)">Próxima seção ›</button></div>
+    </div>
+  </div>
+</div>
+<div id="helpPrint"></div>
+
 <div id="toolModal" class="hidden">
   <div class="tm">
     <div class="tm-head"><span class="pill tm-type">DOCX</span><div style="flex:1"><div class="tm-title">—</div><div class="tm-meta">—</div></div><button class="tm-x" onclick="closeTool()">✕</button></div>
     <div class="tm-body"></div>
-    <div class="tm-foot"><button class="btn ghost sm" onclick="closeTool()">Fechar</button><button class="btn sm">⬇ Baixar template</button></div>
+    <div class="tm-foot"><button class="btn ghost sm" onclick="closeTool()">Fechar</button><button class="btn sm" onclick="dlTemplate()">⬇ Baixar template</button></div>
   </div>
 </div>
 
@@ -855,7 +961,7 @@ function renderGateBar(){
   host.innerHTML=`<div class="gi">${open?'🔓':'🔒'}</div>
     <div class="gp">${open?`Gate liberado — ${ins}/${req} documentos inseridos. Você pode avançar para o próximo step.`:`Gate bloqueado — ${ins}/${req} documentos obrigatórios inseridos. Insira os documentos restantes para avançar.`}
       <div class="gpb"><i style="width:${pct}%;background:${open?'var(--ok)':'var(--danger)'}"></i></div></div>
-    <button class="btn sm" ${open?'':'disabled style="opacity:.5;pointer-events:none"'} onclick="advanceStep()">Avançar step →</button>`;
+    <button class="btn sm perm-w" ${open?'':'disabled style="opacity:.5;pointer-events:none"'} onclick="advanceStep()">Avançar step →</button>`;
 }
 function advanceStep(){if(curProj.cur<7){curProj.cur++;curStep=curProj.cur-1;openProject(curProj.id);}}
 let genState={};
@@ -872,14 +978,14 @@ function renderDocs(){const s=STEPS[curStep],arr=actsOf(curProj.type,curStep);
     const row=document.createElement('div');row.className='doc-row';
     const toolChip=tool?`<span class="pill" style="background:#e4f0fa;color:var(--brand);cursor:pointer" onclick='openTool(${JSON.stringify(tool).replace(/'/g,"&#39;")})'>📎 ${tool.type}</span>`:'';
     let action;
-    if(st==="pend")action=`<button class="btn sm" data-key="${key}" onclick="genOne('${key}',this)">⚡ Gerar</button>`;
+    if(st==="pend")action=`<button class="btn sm perm-w" data-key="${key}" onclick="genOne('${key}',this)">⚡ Gerar</button>`;
     else if(tool)action=`<button class="btn ghost sm" onclick='openTool(${JSON.stringify(tool).replace(/'/g,"&#39;")})'>Abrir</button>`;
-    else action=`<button class="btn ghost sm">Abrir</button>`;
+    else action=`<button class="btn ghost sm" onclick="openDoc(this)">Abrir</button>`;
     row.innerHTML=`<div class="doc-ic">${tool?(tool.type==="XLSX"?'▦':'📄'):'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>'}</div>
       <div class="doc-name">${d}<small>${tool?tool.name+' · '+tool.meta:'Documento obrigatório · gerado pela plataforma · Tipo '+curProj.type}</small></div>
       ${toolChip}<span class="stt ${map[st][1]}">${map[st][0]}</span>${action}`;
     list.appendChild(row);});renderGateBar();}
-function genOne(key,btn){genState[key]="ger";const row=btn.closest('.doc-row');btn.outerHTML=`<button class="btn ghost sm">Abrir</button>`;
+function genOne(key,btn){genState[key]="ger";const row=btn.closest('.doc-row');btn.outerHTML=`<button class="btn ghost sm" onclick="openDoc(this)">Abrir</button>`;
   const stt=row.querySelector('.stt');stt.className='stt ger';stt.textContent='Gerado';refreshDocsBar();}
 function generateAll(){document.querySelectorAll('#docList button[data-key]').forEach(b=>genOne(b.dataset.key,b));}
 function refreshDocsBar(){let total=totalActs(curProj.type),done=0;
@@ -935,7 +1041,8 @@ const auditBody=document.getElementById('auditBody');let auditRows=[];
 const ago=["há 5 min","há 1h","ontem","há 2 dias","há 3 dias","há 1 semana"];
 PROJECTS.forEach(p=>{ACT[p.type].forEach((arr,si)=>{arr.forEach((d,di)=>{const st=docStatus(p,si,di);if(st===null)return;
   auditRows.push({type:p.type,proj:p.name,step:STEPS[si].step,sn:STEPS[si].name,doc:d,st});});});});
-function renderAudit(f="all"){auditBody.innerHTML='';const map={ger:["Gerado","ger"],rev:["Em revisão","rev"],pend:["Pendente","pend"]};
+let auditF="all";
+function renderAudit(f="all"){auditF=f;auditBody.innerHTML='';const map={ger:["Gerado","ger"],rev:["Em revisão","rev"],pend:["Pendente","pend"]};
   auditRows.filter(r=>f==="all"||r.st===f).slice(0,45).forEach((r,i)=>{
     auditBody.innerHTML+=`<tr><td><span class="tt-badge" style="background:${TYPES[r.type].color}">${r.type}</span></td>
       <td style="font-weight:600">${r.proj}</td><td class="muted">${r.step}. ${r.sn}</td><td>${r.doc}</td>
@@ -943,7 +1050,9 @@ function renderAudit(f="all"){auditBody.innerHTML='';const map={ger:["Gerado","g
 document.querySelectorAll('#auditFilters .chip').forEach(c=>c.onclick=()=>{document.querySelectorAll('#auditFilters .chip').forEach(x=>x.classList.remove('on'));c.classList.add('on');renderAudit(c.dataset.f);});
 
 /* ============ MODAL PREVIEW DE FERRAMENTA ============ */
+let curTM=null;
 function openTool(t){
+  curTM=t;
   const m=document.getElementById('toolModal');let body='';
   if(t.prev.kind==='qa'){body=`<div class="muted" style="margin-bottom:12px">${t.prev.sub}</div>`+t.prev.items.map((q,i)=>`<div class="qa-row"><div class="qn">${i+1}</div><div class="qt">${q}</div><div class="qopt"><span>Yes</span><span>No</span></div></div>`).join('');}
   else if(t.prev.kind==='checklist'){body=`<div class="muted" style="margin-bottom:10px">${t.prev.sub}</div><div class="cat-grid">`+t.prev.items.map(c=>`<div class="cat">${c}</div>`).join('')+`</div><table class="mini-tbl"><thead><tr><th>N°</th><th>Item</th><th>Yes</th><th>No</th><th>NA</th><th>Action</th></tr></thead><tbody><tr><td>1</td><td>Verificação de segurança do item</td><td>○</td><td>○</td><td>○</td><td>—</td></tr><tr><td>2</td><td>Conformidade com legislação</td><td>○</td><td>○</td><td>○</td><td>—</td></tr><tr><td>3</td><td>Registro de evidência</td><td>○</td><td>○</td><td>○</td><td>—</td></tr></tbody></table>`;}
@@ -1092,9 +1201,10 @@ const TEAM=[
   {n:"Reginaldo Lima",in:"RL",role:"Auditor",pj:"Leitura total",ok:true},
   {n:"Jean Pereira",in:"JP",role:"Gerente de Projeto",pj:"1 projeto",ok:false}
 ];
-document.getElementById('teamBody').innerHTML=TEAM.map(u=>`<tr><td><span class="uav">${u.in}</span>${u.n}</td>
+function renderTeam(){document.getElementById('teamBody').innerHTML=TEAM.map(u=>`<tr><td><span class="uav">${u.in}</span>${u.n}</td>
   <td><span class="pill" style="background:var(--brand-soft);color:var(--brand)">${u.role}</span></td><td class="muted">${u.pj}</td>
-  <td><span class="pill" style="background:${u.ok?'#e3f6ec':'#fdf2e1'};color:${u.ok?'var(--ok)':'var(--warn)'}">${u.ok?'Ativo':'Pendente'}</span></td></tr>`).join('');
+  <td><span class="pill" style="background:${u.ok?'#e3f6ec':'#fdf2e1'};color:${u.ok?'var(--ok)':'var(--warn)'}">${u.ok?'Ativo':'Pendente'}</span></td></tr>`).join('');}
+renderTeam();
 const PERMS=[["Criar / editar projeto",1,1,0],["Classificar projeto",1,1,0],["Gerar documentos",1,1,0],["Aprovar documentos",1,1,0],["Editar orçamento (SAP)",1,0,0],["Exportar auditoria",1,1,1],["Visualizar relatórios",1,1,1]];
 document.getElementById('permBody').innerHTML=PERMS.map(p=>`<tr><td style="font-weight:600">${p[0]}</td>
   <td style="text-align:center" class="${p[1]?'perm-yes':'perm-no'}">${p[1]?'✓':'—'}</td>
@@ -1338,6 +1448,208 @@ function buildTrack(){
       <div style="text-align:right"><span class="tk-status ${s.cls}"><span class="dot"></span>${s.label}</span><div class="psub" style="margin-top:6px">${dev}</div></div>
     </div>`;}).join('');
 }
+/* ============ BOTÕES FUNCIONAIS: docs, downloads, RBAC, busca, usuário ============ */
+/* Visualizador de documento genérico (botão "Abrir" de docs sem template dedicado) */
+function openDoc(btn){
+  const row=btn.closest('.doc-row');const name=row.querySelector('.doc-name').childNodes[0].textContent.trim();
+  openTool({name,type:"PDF",meta:`${curProj.name} · Step ${curStep+1} — ${STEPS[curStep].name}`,
+    prev:{kind:"doc",title:name,sub:`Documento do projeto · ${curProj.name} — OI ${curProj.oi} · Tipo ${curProj.type}`,
+      items:["1. Objetivo e escopo","2. Responsáveis e aprovações","3. Dados do projeto — OI "+curProj.oi,"4. Conteúdo técnico do documento","5. Evidências anexadas","6. Histórico de revisões","7. Assinaturas e datas"]}});
+}
+/* Download real de arquivo (template .txt / auditoria .csv) */
+function dlFile(name,content,mime){const b=new Blob(["﻿"+content],{type:mime+';charset=utf-8'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),4000);}
+function dlTemplate(){
+  if(!curTM)return;const p=curTM.prev;
+  const lines=[p.title.toUpperCase(),p.sub||'','Unilever · Plataforma de Gestão de Projetos','',''];
+  p.items.forEach((it,i)=>{lines.push((i+1)+'. '+it,'   ________________________________________','');});
+  lines.push('','Template ilustrativo gerado pelo protótipo.');
+  dlFile(p.title.replace(/[\\/:*?"<>|]+/g,'').trim().replace(/\s+/g,'_')+'.txt',lines.join('\r\n'),'text/plain');
+  toast('Template "'+p.title+'" baixado.');
+}
+function exportAudit(){
+  const map={ger:"Gerado",rev:"Em revisão",pend:"Pendente"};
+  const rows=auditRows.filter(r=>auditF==="all"||r.st===auditF);
+  const csv=['Tipo;Projeto;Step;Documento;Status'].concat(rows.map(r=>[r.type,'"'+r.proj+'"',r.step+'. '+r.sn,'"'+r.doc+'"',map[r.st]].join(';'))).join('\r\n');
+  dlFile('auditoria_unilever.csv',csv,'text/csv');
+  toast(rows.length+' registros exportados para CSV.');
+}
+/* Convite de usuário (Equipe & Papéis) */
+function openInvite(){document.getElementById('inviteModal').classList.remove('hidden');}
+function closeInvite(){document.getElementById('inviteModal').classList.add('hidden');}
+function sendInvite(){
+  const n=document.getElementById('inv_name').value.trim()||'Novo Usuário';
+  const mail=document.getElementById('inv_mail').value.trim();
+  const role=document.getElementById('inv_role').value;
+  const ins=n.split(/\s+/).map(w=>w[0]).join('').replace(/\W/g,'').slice(0,2).toUpperCase()||'NU';
+  TEAM.push({n,in:ins,role,pj:role==='Auditor'?'Leitura total':'0 projetos',ok:false});
+  renderTeam();closeInvite();
+  toast('Convite enviado'+(mail?' para '+mail:'')+' · papel: '+role);
+  document.getElementById('inv_name').value='';document.getElementById('inv_mail').value='';
+}
+/* Simulação de perfil (RBAC): Auditor = somente leitura */
+function applyRole(v){
+  const aud=v.includes('Auditor');
+  document.body.classList.toggle('role-aud',aud);
+  if(aud)toast('Perfil Auditor ativado: modo somente leitura — ações de criação/edição ocultas.');
+  else if(v.includes('Admin'))toast('Perfil Admin: acesso total, incluindo configurações do sistema.');
+  else toast('Perfil Gerente de Projeto: gestão de projetos, documentos e cronogramas.');
+}
+/* Busca global: projetos por nome, OI, líder ou site */
+const topSearch=document.getElementById('topSearch'),searchDrop=document.getElementById('searchDrop');
+function doSearch(q){
+  q=q.trim().toLowerCase();
+  if(!q){searchDrop.classList.remove('open');return;}
+  const hits=PROJECTS.filter(p=>(p.name+' '+p.lead+' '+p.oi+' '+p.loc).toLowerCase().includes(q)).slice(0,6);
+  searchDrop.innerHTML=hits.length?hits.map(p=>`<div class="sr" onclick="goProj('${p.id}')"><span class="tb" style="background:${TYPES[p.type].color}">${p.type}</span><div>${p.name}<small>OI ${p.oi} · ${p.lead} · Step ${p.cur}/7</small></div></div>`).join(''):`<div class="none">Nenhum projeto encontrado para “${q}”</div>`;
+  searchDrop.classList.add('open');
+}
+function goProj(id){searchDrop.classList.remove('open');topSearch.value='';openProject(id);switchView('project');}
+topSearch.addEventListener('input',e=>doSearch(e.target.value));
+topSearch.addEventListener('keydown',e=>{if(e.key==='Enter'){const f=searchDrop.querySelector('.sr');if(f)f.click();}if(e.key==='Escape')searchDrop.classList.remove('open');});
+document.addEventListener('click',e=>{
+  if(!e.target.closest('.search'))searchDrop.classList.remove('open');
+  if(!e.target.closest('.avatar')&&!e.target.closest('#userMenu'))document.getElementById('userMenu').classList.remove('open');
+});
+/* Menu do usuário */
+function toggleUserMenu(e){if(e)e.stopPropagation();document.getElementById('userMenu').classList.toggle('open');}
+function logout(){document.getElementById('userMenu').classList.remove('open');
+  const l=document.getElementById('login');l.style.display='grid';requestAnimationFrame(()=>{l.style.opacity='1';});}
+
+/* ============ MANUAL DE UTILIZAÇÃO ============ */
+const HELP=[
+{ic:"🏠",t:"Visão geral do sistema",d:"O que é a plataforma, para quem é e como os módulos se conectam.",b:`
+<p>A <b>Plataforma de Gestão de Projetos</b> gerencia o ciclo de vida completo dos projetos de engenharia da Unilever no modelo <b>EEM (Early Equipment Management)</b> — do cadastro à conclusão, com governança documental, acompanhamento de cronograma e controle financeiro integrados.</p>
+<h5>O fluxo em 5 fases</h5>
+<ol><li><b>Cadastro</b> — o projeto entra com identificação, líder, equipe, capex e cronograma;</li>
+<li><b>Classificação</b> — 6 critérios pontuam o projeto e definem o tipo <b>A–E</b>, que determina o rigor documental;</li>
+<li><b>Execução</b> — o projeto percorre os <b>7 steps</b> do EEM, com gate documental em cada um;</li>
+<li><b>Acompanhamento</b> — cronograma, atrasos/avanços e finanças monitorados em tempo real;</li>
+<li><b>Governança</b> — auditoria completa, catálogo de documentos e controle de acesso por papéis.</li></ol>
+<div class="tip">💡 Use o <b>Tour guiado</b> (botão no topo) para uma apresentação passo a passo de 16 telas, ou navegue por este manual pelas seções ao lado.</div>`},
+{ic:"🔐",t:"Acesso e perfis",d:"Como entrar na plataforma e o que cada perfil pode fazer.",b:`
+<h5>Login</h5>
+<ol><li>Acesse a plataforma pelo navegador;</li><li>Informe seu <b>e-mail corporativo</b> e senha;</li><li>Clique em <b>Entrar</b>.</li></ol>
+<h5>Perfis de acesso (RBAC)</h5>
+<table><tr><th>Perfil</th><th>O que pode fazer</th></tr>
+<tr><td><b>⚙ Admin</b></td><td>Acesso total: projetos, documentos, catálogo, critérios, equipe e integrações.</td></tr>
+<tr><td><b>👤 Gerente de Projeto</b></td><td>Cria e gerencia seus projetos, gera documentos, avança steps. Não edita orçamento SAP.</td></tr>
+<tr><td><b>🛡 Auditor</b></td><td>Somente leitura: consulta tudo e exporta a auditoria, sem editar nada.</td></tr></table>
+<div class="tip">💡 O seletor de perfil no topo <b>simula</b> cada papel: escolha “Auditor” e veja as ações de edição sumirem da interface.</div>
+<h5>Sair</h5><p>Clique no <b>avatar</b> (canto superior direito) → <b>Sair da plataforma</b>.</p>`},
+{ic:"📊",t:"Dashboard",d:"A tela inicial: visão executiva de todo o portfólio.",b:`
+<h5>Indicadores do topo</h5>
+<ul><li><b>Projetos Ativos</b> — total de projetos em andamento;</li><li><b>Capex em Gestão</b> — soma dos investimentos planejados e executados;</li><li><b>Conformidade Docs</b> — % de documentos obrigatórios já inseridos;</li><li><b>Riscos Abertos</b> — pendências de risco no portfólio.</li></ul>
+<h5>Cards de projeto</h5>
+<p>Cada card mostra: <b>tipo (A–E)</b> na etiqueta colorida, nome e local, capex, líder, step atual (1–7), total de documentos, a <b>trilha de steps</b> (pontos preenchidos = concluídos) e a <b>OI</b> sincronizada com o SAP.</p>
+<ol><li><b>Clique em qualquer card</b> para abrir o projeto na tela de execução;</li><li>Use <b>+ Cadastrar Projeto</b> para iniciar um novo cadastro.</li></ol>`},
+{ic:"➕",t:"Cadastrar um projeto",d:"Passo a passo completo do assistente de cadastro (4 etapas).",b:`
+<p>O cadastro é <b>único</b>: os dados informados alimentam o Dashboard, o Acompanhamento EEM, o Cronograma e o DRA Financeiro.</p>
+<h5>Etapa 1 · Identificação</h5>
+<ol><li>Informe a <b>OI</b> (Ordem Interna — identificador SAP, 6 dígitos);</li><li>Dê o <b>nome do projeto</b>;</li><li>Selecione <b>categoria</b> e <b>site/fábrica</b>;</li><li>Informe o <b>líder</b> e a <b>equipe</b> (membros separados por vírgula — viram avatares no acompanhamento).</li></ol>
+<h5>Etapa 2 · Classificação</h5>
+<p>Avalie os <b>6 critérios</b> (nível 0 a 4 em cada). A pontuação define o tipo A–E automaticamente — veja a seção “Classificação A–E”.</p>
+<h5>Etapa 3 · Financeiro & Cronograma</h5>
+<ol><li>Informe <b>capex</b> e <b>saving</b> estimados (€);</li><li>Defina as três datas do cronograma: <b>início</b>, <b>marco intermediário (meio)</b> e <b>fim</b>.</li></ol>
+<h5>Etapa 4 · Revisão</h5>
+<p>Confira todos os dados e clique em <b>✓ Criar projeto</b>. O projeto nasce no Step 1 com a lista de documentos do seu tipo pronta para inserção.</p>
+<div class="warn">⚠ OI e nome são obrigatórios na Etapa 1; todos os critérios devem ser avaliados na Etapa 2.</div>`},
+{ic:"🎯",t:"Classificação A–E",d:"Como o sistema define o tipo do projeto e por que isso importa.",b:`
+<p>Seis critérios pontuam o projeto de <b>0 a 100</b>: Valor de Investimento, Impacto no Cliente, Impacto no Mercado, Nível de Inovação, Tecnologia Utilizada e Tipo de Fornecedor.</p>
+<table><tr><th>Tipo</th><th>Faixa</th><th>Perfil</th><th>Documentos</th></tr>
+<tr><td><b>A</b></td><td>76–100</td><td>Grande & complexo</td><td>56</td></tr>
+<tr><td><b>B</b></td><td>51–75</td><td>Médio & complexo</td><td>56</td></tr>
+<tr><td><b>C</b></td><td>26–50</td><td>Pequeno, baixa complexidade</td><td>40</td></tr>
+<tr><td><b>D</b></td><td>10–25</td><td>Muito simples</td><td>33</td></tr>
+<tr><td><b>E</b></td><td>0–9</td><td>Manutenção / compra</td><td>17 (Step 3 não se aplica)</td></tr></table>
+<p><b>Por que importa:</b> o tipo define <b>quantos documentos</b> cada step exige — projetos maiores têm mais governança; projetos simples têm fluxo enxuto.</p>
+<div class="tip">💡 A tela <b>Critérios de Classificação</b> permite simular pontuações; o <b>Catálogo de Documentos</b> mostra o que cada tipo exige.</div>`},
+{ic:"📁",t:"Executar o projeto (steps e documentos)",d:"Como trabalhar dentro do projeto: gerar documentos, cumprir o gate e avançar.",b:`
+<h5>Os 7 steps do EEM</h5>
+<p>1. Project Briefing → 2. Análise de Risco → 3. Comparativo de Fornecedores → 4. Fabricação/Construção → 5. Instalação e Treinamento → 6. FAT → 7. Conclusão.</p>
+<h5>Trabalhando com documentos</h5>
+<ol><li>Abra o projeto (clique no card do Dashboard ou use a <b>busca</b>);</li>
+<li>No pipeline, clique no <b>step</b> desejado para ver seus documentos;</li>
+<li>Documentos <b>Pendentes</b>: clique em <b>⚡ Gerar</b> (ou <b>⚡ Gerar pendentes</b> para todos de uma vez);</li>
+<li>Documentos <b>Gerados</b>: clique em <b>Abrir</b> para visualizar o conteúdo;</li>
+<li>Documentos com etiqueta <b>📎</b> têm template oficial (Cardinal Rules, Comissionamento…) — clique para visualizar e use <b>⬇ Baixar template</b> para baixar o modelo.</li></ol>
+<h5>Gate documental</h5>
+<p>A barra de gate mostra <b>inseridos / exigidos</b> no step atual. O botão <b>Avançar step →</b> só habilita com <b>100% dos documentos inseridos</b> — é a governança do EEM aplicada por construção.</p>
+<div class="warn">⚠ Sem completar o gate, o avanço fica bloqueado. Não há exceção manual — essa é a regra do fluxo.</div>`},
+{ic:"📈",t:"Acompanhamento EEM (operacional)",d:"Onde ver atrasos, avanços e o cronograma macro de todos os projetos.",b:`
+<p>O menu <b>Portfólio EEM</b> responde três perguntas: <b>o projeto está no prazo?</b> <b>quem está atrasado?</b> <b>como está o portfólio inteiro?</b></p>
+<h5>Indicadores</h5>
+<ul><li><b>No Prazo / Atrasados / Adiantados</b> — o sistema compara o avanço <b>real × planejado</b> de cada projeto e classifica sozinho (diferença ≥ 6 pontos percentuais = adiantado; ≤ −6 = atrasado);</li><li><b>Avanço Médio</b> — média do portfólio ou do líder filtrado.</li></ul>
+<h5>Cronograma macro (como ler)</h5>
+<ul><li><b>Barra</b> — do início ao fim do projeto no ano;</li><li><b>Losango</b> — marco intermediário (meio);</li><li><b>Linha vermelha</b> — hoje;</li><li><b>Trecho claro na barra</b> — % já executado.</li></ul>
+<h5>Visão hierárquica</h5>
+<ol><li>Use o seletor <b>🏛 Pilar Portfolio</b> para ver o conjunto;</li><li>Selecione um <b>👤 líder</b> para ver somente os projetos dele — KPIs e cronograma se recalculam na hora.</li></ol>
+<h5>Cards de andamento</h5>
+<p>Cada card traz equipe (avatares), datas <b>início → meio → fim</b>, barra <b>Real × Plano</b> e o status com o desvio estimado em dias.</p>`},
+{ic:"🗓",t:"Cronograma (por steps)",d:"A linha do tempo do portfólio vista pela ótica dos steps.",b:`
+<p>Complementar ao cronograma macro do EEM: mostra <b>em que step</b> cada projeto está e como evolui <b>mês a mês</b>.</p>
+<ul><li>Cada linha é um projeto; as faixas coloridas indicam o step em cada mês;</li><li>Use junto com o EEM: o macro diz <b>se está no prazo</b>; este diz <b>onde está no fluxo</b>.</li></ul>`},
+{ic:"💶",t:"DRA · Financeiro (Módulo 2)",d:"Orçado × executado por OI, com dados do SAP.",b:`
+<h5>Como usar</h5>
+<ol><li>Selecione o projeto/OI no seletor;</li><li>Veja os KPIs: orçado, executado, comprometido e saldo;</li><li>Analise o gráfico <b>orçado × executado mês a mês</b>;</li><li>Use <b>↻ Atualizar base (robô)</b> para simular a sincronização com o SAP.</li></ol>
+<h5>De onde vêm os dados</h5>
+<p>O <b>robô RPA</b> extrai os lançamentos do SAP → consolida no <b>SharePoint</b> → o painel (e o Power BI) exibem. Ninguém digita valores manualmente.</p>
+<div class="tip">💡 Diferença de papéis: o <b>EEM</b> acompanha prazo e execução; o <b>DRA</b> acompanha dinheiro. Juntos dão a visão completa.</div>`},
+{ic:"📺",t:"Relatórios, KPIs e Modo TV",d:"Indicadores executivos e exibição em telões.",b:`
+<ul><li>KPIs consolidados: capex, conformidade, savings e documentos;</li><li>Gráficos por tipo, step, capex e conformidade por projeto;</li><li>Filtro de período no topo direito.</li></ul>
+<h5>Modo TV</h5>
+<ol><li>Clique em <b>⛶ Tela cheia (TV)</b>;</li><li>O painel entra em modo telão (ideal para as TVs da fábrica), com relógio ao vivo;</li><li>Para sair, clique em <b>✕ Sair</b>.</li></ol>`},
+{ic:"🛡",t:"Auditoria & Conformidade",d:"A trilha completa de documentos para auditorias internas.",b:`
+<ol><li>Filtre por status com os chips: <b>Todos · Gerados · Em revisão · Pendentes</b>;</li>
+<li>A tabela mostra tipo, projeto, step, documento, status e última atualização;</li>
+<li>Clique em <b>⬇ Exportar CSV</b> para baixar a trilha filtrada (abre no Excel).</li></ol>
+<div class="tip">💡 O perfil <b>Auditor</b> tem acesso justamente a esta visão: lê tudo, exporta tudo, não edita nada.</div>`},
+{ic:"📚",t:"Catálogo de Documentos (config)",d:"A fonte única que define a documentação exigida por step e tipo.",b:`
+<p>Cada linha do catálogo define: <b>step</b> ao qual pertence, <b>nome</b> do documento, template associado (se houver) e o <b>tipo mínimo</b> a partir do qual é obrigatório (ex.: minType C = exigido para A, B e C).</p>
+<h5>Como editar (Admin)</h5>
+<ol><li><b>+ Novo documento</b> — adiciona ao catálogo;</li><li><b>✎</b> — edita nome, step, template ou obrigatoriedade;</li><li><b>🗑</b> — remove do catálogo.</li></ol>
+<div class="warn">⚠ Mudanças aqui valem para o sistema inteiro: os gates de todos os projetos passam a exigir a nova configuração.</div>`},
+{ic:"🔌",t:"Integrações",d:"As três conexões da plataforma.",b:`
+<table><tr><th>Integração</th><th>Função</th></tr>
+<tr><td><b>🤖 Robô SAP (RPA)</b></td><td>Extrai lançamentos financeiros por OI e alimenta o DRA.</td></tr>
+<tr><td><b>📂 SharePoint</b></td><td>Backend de documentos: tudo que é gerado/inserido fica versionado lá.</td></tr>
+<tr><td><b>📊 Power BI</b></td><td>Exibe o painel DRA e os relatórios executivos.</td></tr></table>
+<p>O indicador <b>SAP sincronizado</b> (canto inferior esquerdo) mostra a saúde da conexão em tempo real.</p>`},
+{ic:"👥",t:"Equipe & Papéis",d:"Gerenciar usuários e permissões (RBAC).",b:`
+<h5>Convidar usuário</h5>
+<ol><li>Clique em <b>+ Convidar usuário</b>;</li><li>Informe nome, e-mail corporativo e papel;</li><li>Clique em <b>Enviar convite</b> — o usuário entra como “Pendente” até o primeiro acesso.</li></ol>
+<h5>Matriz de permissões</h5>
+<p>A tabela da tela mostra o que cada papel pode fazer: criar/editar projeto, classificar, gerar e aprovar documentos, editar orçamento SAP, exportar auditoria e ver relatórios.</p>
+<div class="tip">💡 Teste na prática: troque o perfil no seletor do topo e veja a interface se adaptar (Auditor = somente leitura).</div>`},
+{ic:"⚡",t:"Dicas & atalhos",d:"Recursos que aceleram o uso no dia a dia.",b:`
+<ul>
+<li><b>Busca global</b> (topo): digite nome do projeto, OI, líder ou site — Enter abre o primeiro resultado;</li>
+<li><b>Tour guiado</b>: apresentação narrada de 16 passos por todas as telas (setas ← → navegam, Esc sai);</li>
+<li><b>Manual</b>: este documento — use o filtro de seções ou <b>🖨 Imprimir / PDF</b> para gerar uma cópia;</li>
+<li><b>Simulação de perfil</b>: seletor no topo alterna Gerente / Auditor / Admin;</li>
+<li><b>Modo TV</b>: em Relatórios, para telões de fábrica;</li>
+<li><b>Templates</b>: documentos com 📎 têm modelo oficial baixável;</li>
+<li><b>Exportações</b>: auditoria em CSV; templates em arquivo de texto.</li></ul>`}
+];
+let helpIx=0;
+function openHelp(){document.getElementById('helpModal').classList.remove('hidden');showHelpSec(helpIx);}
+function closeHelp(){document.getElementById('helpModal').classList.add('hidden');}
+function renderHelpToc(q){q=(q||'').toLowerCase();
+  document.getElementById('helpToc').innerHTML=HELP.map((s,i)=>(!q||s.t.toLowerCase().includes(q)||s.d.toLowerCase().includes(q))?`<div class="ht ${i===helpIx?'on':''}" onclick="showHelpSec(${i})"><span class="hi">${s.ic}</span>${s.t}</div>`:'').join('')||'<div style="padding:12px;font-size:12px;color:var(--ink-faint)">Nenhuma seção encontrada.</div>';}
+function showHelpSec(i){helpIx=i;const s=HELP[i];
+  document.getElementById('helpBody').innerHTML=`<h2>${s.ic} ${s.t}</h2><div class="lead">${s.d}</div>${s.b}`;
+  document.getElementById('helpCrumb').textContent=`Manual de utilização · Seção ${i+1} de ${HELP.length}`;
+  document.getElementById('helpPrev').style.visibility=i===0?'hidden':'visible';
+  document.getElementById('helpNext').style.visibility=i===HELP.length-1?'hidden':'visible';
+  renderHelpToc(document.getElementById('helpSearch').value);
+  document.getElementById('helpBody').scrollTop=0;}
+function helpNav(d){showHelpSec(Math.min(HELP.length-1,Math.max(0,helpIx+d)));}
+function printHelp(){
+  document.getElementById('helpPrint').innerHTML=`<h1 style="font-family:Poppins">Manual de Utilização — Plataforma de Gestão de Projetos Unilever</h1><p>Versão 1.0 · ${HELP.length} seções · Desenvolvido por Drive Data</p><hr>`+
+    HELP.map((s,i)=>`<div class="hp-sec"><h2>${i+1}. ${s.ic} ${s.t}</h2><p><i>${s.d}</i></p>${s.b}</div>`).join('');
+  window.print();
+}
+
 /* Tour narrativo: segue o fluxo de trabalho (cadastro → execução → acompanhamento → financeiro → governança)
    e aponta para os elementos REAIS de cada tela, não para o menu. */
 const TOUR=[
@@ -1435,7 +1747,7 @@ function renderCatalog(){
       <td>${d.tool?`<span class="tg">${d.tool}</span>`:'<span class="muted" style="font-size:11px">—</span>'}</td>
       <td><span class="mt-badge" style="background:${TYPES[d.minType].color}">${d.minType}</span></td>
       ${tcells}
-      <td><div class="act"><button class="ib" title="Editar" onclick="openCatForm(${d.id})">✎</button><button class="ib del" title="Excluir" onclick="delCat(${d.id})">🗑</button></div></td>
+      <td><div class="act"><button class="ib perm-w" title="Editar" onclick="openCatForm(${d.id})">✎</button><button class="ib del perm-w" title="Excluir" onclick="delCat(${d.id})">🗑</button></div></td>
     </tr>`;}).join('');
 }
 function openCatForm(id){
