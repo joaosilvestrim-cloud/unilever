@@ -314,9 +314,10 @@
   #tourTip h4{font-family:"Poppins";font-weight:700;font-size:16px;letter-spacing:-.2px}
   #tourTip p{font-size:13px;color:var(--ink-soft);margin:7px 0 14px;line-height:1.5}
   #tourTip .t-foot{display:flex;justify-content:space-between;align-items:center;gap:8px}
-  #tourTip .t-dots{display:flex;gap:5px}
-  #tourTip .t-dots i{width:7px;height:7px;border-radius:50%;background:var(--line)}
-  #tourTip .t-dots i.on{background:var(--brand);width:18px;border-radius:4px}
+  #tourTip .t-chap{display:inline-block;background:var(--brand-soft);color:var(--brand-deep);font-size:10px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;padding:3px 10px;border-radius:99px;margin-bottom:8px}
+  #tourTip p b{color:var(--brand-deep)}
+  #tourTip .t-bar{height:4px;background:var(--line);border-radius:99px;margin:14px 0 12px;overflow:hidden}
+  #tourTip .t-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--brand),var(--brand-2));border-radius:99px;transition:width .35s}
   #tourTip .t-exit{background:none;border:0;color:var(--ink-faint);font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;padding:6px 0}
   #tourTip .t-exit:hover{color:var(--danger)}
   .tour-btn{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:7px 13px;font-family:inherit;font-size:12.5px;font-weight:700;color:var(--brand);cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:.15s}
@@ -1337,38 +1338,69 @@ function buildTrack(){
       <div style="text-align:right"><span class="tk-status ${s.cls}"><span class="dot"></span>${s.label}</span><div class="psub" style="margin-top:6px">${dev}</div></div>
     </div>`;}).join('');
 }
+/* Tour narrativo: segue o fluxo de trabalho (cadastro → execução → acompanhamento → financeiro → governança)
+   e aponta para os elementos REAIS de cada tela, não para o menu. */
 const TOUR=[
-  {view:"dashboard",sel:'[data-view="dashboard"]',t:"Dashboard",x:"Visão executiva do portfólio: projetos ativos, capex, savings e o status de cada projeto — com indicador de sincronização SAP em tempo real."},
-  {view:"reports",sel:'[data-view="reports"]',t:"Relatórios & KPIs",x:"Indicadores consolidados do portfólio, integrados ao Power BI e ao SAP. Inclui o Modo TV para exibição em telões da fábrica."},
-  {view:"track",sel:'[data-view="track"]',t:"Acompanhamento EEM",x:"Visão operacional do portfólio: andamento planejado × real, projetos atrasados/adiantados e o cronograma macro (início · meio · fim). Filtre pelo Pilar Portfolio (conjunto) ou por líder de projeto — a visão hierárquica do EEM."},
-  {view:"project",sel:'[data-view="project"]',t:"Projetos",x:"Acompanhamento do projeto por steps. Cada step exige documentos obrigatórios conforme o tipo (A–E) — o avanço só é liberado quando tudo é inserido (gate)."},
-  {view:"gantt",sel:'[data-view="gantt"]',t:"Cronograma",x:"Linha do tempo do portfólio completo: em que step cada projeto está e como evolui ao longo dos meses."},
-  {view:"audit",sel:'[data-view="audit"]',t:"Auditoria",x:"Trilha completa de eventos: quem fez o quê e quando. Tudo exportável para conformidade e auditorias internas."},
-  {view:"dra",sel:'[data-view="dra"]',t:"DRA · Financeiro (Módulo 2)",x:"Orçado × executado por Ordem Interna (OI), com dados extraídos do SAP pelo robô (RPA) e consolidados via SharePoint / Power BI."},
-  {view:"catalog",sel:'[data-view="catalog"]',t:"Catálogo de Documentos",x:"Fonte única dos documentos do sistema: define quais documentos cada step exige e a partir de qual tipo de projeto (A–E) cada um é obrigatório."},
-  {view:"classify",sel:'[data-view="classify"]',t:"Critérios de Classificação",x:"Regras que classificam automaticamente o projeto nos tipos A–E (capex, complexidade, risco…). O tipo define o rigor documental exigido."},
-  {view:"integrations",sel:'[data-view="integrations"]',t:"Integrações",x:"As três conexões da plataforma: Robô SAP (RPA) para os dados financeiros, SharePoint como backend de documentos e Power BI para o painel DRA."},
-  {view:"team",sel:'[data-view="team"]',t:"Equipe & Papéis",x:"Controle de acesso por papéis (RBAC): Admin, Gerente de Projeto e Auditor — cada um com permissões específicas na matriz."},
-  {view:null,sel:'#roleSel',t:"Simulação de perfil",x:"Use este seletor para ver a plataforma como Gerente, Auditor ou Admin — a interface se adapta às permissões de cada papel. Fim do tour!"}
+  {view:"dashboard",sel:'.stat-grid',c:"Visão geral",t:"O pulso do portfólio",
+   x:"A plataforma gerencia o <b>ciclo de vida completo</b> dos projetos de engenharia — do cadastro à conclusão. Estes 4 indicadores mostram em tempo real: <b>projetos ativos</b>, capex em gestão, conformidade documental e riscos abertos."},
+  {view:"dashboard",sel:'#projGrid',c:"Visão geral",t:"Um card por projeto",
+   x:"Cada card resume o essencial: <b>tipo (A–E)</b>, líder, capex, a trilha dos <b>7 steps</b> e a OI sincronizada com o SAP. <b>Clicar no card abre o projeto</b> com documentos e gates."},
+  {view:"dashboard",sel:'#view-dashboard .panel-head .btn',c:"1 · Cadastro",t:"Tudo começa aqui",
+   x:"Um <b>único cadastro em 4 passos</b>: identificação (OI, líder, <b>equipe</b>) → classificação automática do tipo A–E → financeiro & <b>cronograma (início · meio · fim)</b> → revisão. Esse cadastro alimenta todas as telas do sistema."},
+  {view:"project",sel:'#pipeline',c:"2 · Execução",t:"O fluxo EEM em 7 steps",
+   x:"Todo projeto percorre o mesmo caminho: <b>Briefing → Risco → Fornecedores → Construção → Instalação → FAT → Conclusão</b>. O step atual fica destacado — e só avança pelo gate documental."},
+  {view:"project",sel:'#gateBar',c:"2 · Execução",t:"Gate documental",
+   x:"Cada step exige <b>documentos obrigatórios conforme o tipo</b> (A exige mais, E exige menos). O avanço <b>só libera com 100% dos documentos inseridos</b> — governança garantida por construção, não por cobrança."},
+  {view:"track",sel:'#trackKpis',c:"3 · Acompanhamento",t:"Atrasado ou adiantado? O sistema responde",
+   x:"O módulo EEM compara o <b>avanço real × planejado</b> de cada projeto e classifica sozinho: <b>no prazo, atrasado ou adiantado</b> — sem depender de status reportado manualmente."},
+  {view:"track",sel:'#trackMacro',c:"3 · Acompanhamento",t:"Cronograma macro",
+   x:"Cada barra vai do <b>início ao fim</b> do projeto; o losango é o <b>marco intermediário (meio)</b> e a linha vermelha marca <b>hoje</b>. O trecho claro dentro da barra é o que já foi executado."},
+  {view:"track",sel:'#trackLead',c:"3 · Acompanhamento",t:"Pilar Portfolio × Líder",
+   x:"A visão hierárquica do EEM: o <b>pilar Portfolio</b> enxerga o conjunto de projetos; cada <b>líder</b> acompanha somente os seus. KPIs e cronograma se recalculam na hora ao trocar o filtro."},
+  {view:"gantt",sel:'#ganttBody',c:"3 · Acompanhamento",t:"Evolução por steps",
+   x:"Complementar ao cronograma macro: aqui você vê <b>em que step</b> cada projeto está e como evolui <b>mês a mês</b> ao longo do ano."},
+  {view:"dra",sel:'#draChart',c:"4 · Financeiro",t:"DRA — orçado × executado",
+   x:"O lado financeiro: consumo do capex por <b>Ordem Interna (OI)</b>, com dados extraídos do <b>SAP pelo robô (RPA)</b> e consolidados via SharePoint / Power BI. Cronograma e dinheiro lado a lado, sem planilhas paralelas."},
+  {view:"integrations",sel:'#view-integrations',c:"4 · Integrações",t:"Três conexões, zero digitação",
+   x:"<b>Robô SAP (RPA)</b> traz os dados financeiros, o <b>SharePoint</b> guarda os documentos e o <b>Power BI</b> exibe o painel DRA. Ninguém digita dado duas vezes."},
+  {view:"reports",sel:'#kpiGrid',c:"4 · Relatórios",t:"Visão executiva",
+   x:"KPIs consolidados do portfólio para a gestão — com <b>Modo TV</b> para os telões da fábrica e integração com Power BI."},
+  {view:"audit",sel:'#auditBody',c:"5 · Governança",t:"Auditoria completa",
+   x:"Cada ação fica registrada: <b>quem fez o quê, quando e em qual projeto</b>. Trilha exportável para conformidade e auditorias internas."},
+  {view:"catalog",sel:'#catStats',c:"5 · Governança",t:"Catálogo — fonte única",
+   x:"Define <b>quais documentos cada step exige</b> e a partir de qual tipo (A–E) são obrigatórios. Editável pelo admin: <b>mudou aqui, mudou no sistema inteiro</b>."},
+  {view:"classify",sel:'#critList',c:"5 · Governança",t:"Como nasce o tipo A–E",
+   x:"Seis critérios (investimento, impacto, inovação, tecnologia…) pontuam o projeto de <b>0 a 100</b> e definem o tipo — e, com ele, <b>o rigor documental exigido</b>. Objetivo, sem subjetividade."},
+  {view:"team",sel:'#roleSel',c:"Para terminar",t:"Perfis de acesso",
+   x:"<b>Admin, Gerente de Projeto e Auditor</b> — cada papel vê e faz coisas diferentes (matriz nesta tela). Use <b>este seletor</b> para simular cada perfil. Fim do tour — explore à vontade! 🚀"}
 ];
 let ti=-1;
 function ensureTourEls(){if(document.getElementById('tourOverlay'))return;
   const o=document.createElement('div');o.id='tourOverlay';o.innerHTML='<div id="tourHole"></div>';document.body.appendChild(o);
   const tip=document.createElement('div');tip.id='tourTip';
-  tip.innerHTML=`<div class="t-step" id="ttStep"></div><h4 id="ttTitle"></h4><p id="ttText"></p>
-    <div class="t-foot"><button class="t-exit" onclick="endTour()">✕ Sair</button><div class="t-dots" id="ttDots"></div>
-    <div style="display:flex;gap:6px"><button class="btn ghost sm" id="ttPrev" onclick="tourNav(-1)">‹</button><button class="btn sm" id="ttNext" onclick="tourNav(1)">Próximo ›</button></div></div>`;
+  tip.innerHTML=`<div class="t-chap" id="ttChap"></div><div class="t-step" id="ttStep"></div><h4 id="ttTitle"></h4><p id="ttText"></p>
+    <div class="t-bar"><i id="ttBar"></i></div>
+    <div class="t-foot"><button class="t-exit" onclick="endTour()">✕ Sair</button>
+    <div style="display:flex;gap:6px"><button class="btn ghost sm" id="ttPrev" onclick="tourNav(-1)">‹ Voltar</button><button class="btn sm" id="ttNext" onclick="tourNav(1)">Próximo ›</button></div></div>`;
   document.body.appendChild(tip);
   window.addEventListener('resize',()=>{if(ti>=0)placeTour();});
   document.addEventListener('keydown',e=>{if(ti<0)return;if(e.key==='Escape')endTour();if(e.key==='ArrowRight')tourNav(1);if(e.key==='ArrowLeft')tourNav(-1);});}
 function startTour(){ensureTourEls();ti=0;document.getElementById('tourOverlay').style.display='';document.getElementById('tourTip').style.display='';showTourStep();}
 function showTourStep(){const s=TOUR[ti];if(s.view)switchView(s.view);setTimeout(placeTour,s.view?420:60);}
 function placeTour(){const s=TOUR[ti];const el=document.querySelector(s.sel);if(!el){tourNav(1);return;}
-  const r=el.getBoundingClientRect(),h=document.getElementById('tourHole'),tip=document.getElementById('tourTip');
+  // rola até o elemento destacado (o tour aponta para conteúdo real, não só para o menu)
+  el.scrollIntoView({block:'center',behavior:'auto'});
+  let r=el.getBoundingClientRect();const vh=window.innerHeight;
+  if(r.height>vh*0.7){ // elemento mais alto que a tela: destaca só o topo visível
+    el.scrollIntoView({block:'start',behavior:'auto'});const r2=el.getBoundingClientRect();
+    r={top:Math.max(r2.top,70),left:r2.left,width:r2.width,height:Math.min(r2.height,vh*0.6),right:r2.right};r.bottom=r.top+r.height;
+  }
+  const h=document.getElementById('tourHole'),tip=document.getElementById('tourTip');
   h.style.top=(r.top-7)+'px';h.style.left=(r.left-7)+'px';h.style.width=(r.width+14)+'px';h.style.height=(r.height+14)+'px';
+  document.getElementById('ttChap').textContent=s.c||'';
   document.getElementById('ttStep').textContent=`Passo ${ti+1} de ${TOUR.length}`;
-  document.getElementById('ttTitle').textContent=s.t;document.getElementById('ttText').textContent=s.x;
-  document.getElementById('ttDots').innerHTML=TOUR.map((_,i)=>`<i class="${i===ti?'on':''}"></i>`).join('');
+  document.getElementById('ttTitle').textContent=s.t;document.getElementById('ttText').innerHTML=s.x;
+  document.getElementById('ttBar').style.width=((ti+1)/TOUR.length*100)+'%';
   document.getElementById('ttPrev').style.visibility=ti===0?'hidden':'visible';
   document.getElementById('ttNext').textContent=ti===TOUR.length-1?'Concluir ✓':'Próximo ›';
   const tw=tip.offsetWidth||340,th=tip.offsetHeight||200,W=window.innerWidth,H=window.innerHeight;let top,left;
