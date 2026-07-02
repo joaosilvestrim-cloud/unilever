@@ -337,6 +337,43 @@
   .wz-crit .cn{font-family:"IBM Plex Mono";font-weight:700;color:var(--brand);font-size:11px;background:var(--brand-soft);width:22px;height:22px;border-radius:7px;display:grid;place-items:center;flex:none}
   .wz-crit .ct{font-size:13px;font-weight:700}
   .wz-crit .cd{font-size:11px;color:var(--ink-faint);font-weight:400;margin-left:auto}
+
+  /* ===== Módulo Acompanhamento Operacional (EEM) ===== */
+  .tk-filterbar{display:flex;align-items:center;gap:10px}
+  .tk-status{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;padding:3px 10px;border-radius:99px;letter-spacing:.2px}
+  .tk-status .dot{width:7px;height:7px;border-radius:50%}
+  .tk-ontime{background:#e7f4ee;color:#137a44}.tk-ontime .dot{background:var(--ok)}
+  .tk-late{background:#fbe6ee;color:#b02258}.tk-late .dot{background:var(--danger)}
+  .tk-ahead{background:#e4f0fa;color:#0060A8}.tk-ahead .dot{background:var(--brand)}
+  .tk-macro{padding:18px 20px;margin-bottom:22px}
+  .tk-months{display:grid;grid-template-columns:repeat(12,1fr);font-size:10px;color:var(--ink-faint);font-weight:600;text-align:center;position:relative}
+  .tk-todayhead{position:absolute;top:0;bottom:-8px;width:2px;background:var(--danger)}
+  .tk-todayhead::after{content:"HOJE";position:absolute;top:-13px;left:50%;transform:translateX(-50%);font-size:8px;font-weight:800;color:var(--danger);letter-spacing:.5px;white-space:nowrap}
+  .tk-row{display:grid;grid-template-columns:210px 1fr;gap:14px;align-items:center;padding:9px 0;border-top:1px solid var(--line)}
+  .tk-row .lbl{font-size:12.5px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .tk-row .lbl small{display:block;font-size:10.5px;color:var(--ink-faint);font-weight:500}
+  .tk-track{position:relative;height:24px}
+  .tk-grid{position:absolute;inset:0;display:grid;grid-template-columns:repeat(12,1fr)}
+  .tk-grid span{border-right:1px dashed #eaf0f6}
+  .tk-bar{position:absolute;top:6px;height:13px;border-radius:7px;background:linear-gradient(90deg,var(--brand-deep),var(--brand-2));overflow:hidden}
+  .tk-bar .fill{height:100%;border-radius:7px 0 0 7px;background:rgba(255,255,255,.30)}
+  .tk-mid{position:absolute;top:7px;width:11px;height:11px;background:#fff;border:2px solid var(--brand-deep);transform:translateX(-5px) rotate(45deg);z-index:2}
+  .tk-today{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--danger);z-index:3}
+  .tk-cards{display:flex;flex-direction:column;gap:12px}
+  .tk-card{display:grid;grid-template-columns:1.6fr 1.25fr 1fr 155px;gap:18px;align-items:center;padding:16px 20px}
+  .tk-card .pname{font-family:"Poppins";font-weight:700;font-size:14.5px}
+  .tk-card .psub{font-size:11.5px;color:var(--ink-faint);margin-top:2px}
+  .tk-sched{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--ink-soft);flex-wrap:wrap}
+  .tk-sched b{font-weight:700;color:var(--ink)}
+  .tk-sched .arw{color:var(--ink-faint)}
+  .tk-prog .bars{position:relative;height:8px;background:var(--surface-2);border-radius:6px;overflow:hidden}
+  .tk-prog .plan{position:absolute;top:0;left:0;height:100%;background:repeating-linear-gradient(45deg,#c7d6e6,#c7d6e6 4px,#d8e3ef 4px,#d8e3ef 8px)}
+  .tk-prog .real{position:absolute;top:0;left:0;height:100%;border-radius:6px;background:linear-gradient(90deg,var(--brand),var(--brand-2))}
+  .tk-prog .lg{display:flex;justify-content:space-between;font-size:10.5px;margin-top:5px;color:var(--ink-soft)}
+  .tk-team{display:flex}
+  .tk-team .av{width:26px;height:26px;border-radius:50%;color:#fff;display:grid;place-items:center;font-size:10px;font-weight:700;border:2px solid #fff;margin-left:-7px}
+  .tk-team .av:first-child{margin-left:0}
+  .tk-team .more{background:var(--surface-2)!important;color:var(--ink-soft)}
   .wz-lvls{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
   .wz-lv{border:1.5px solid var(--line);border-radius:9px;padding:7px 5px;cursor:pointer;text-align:center;transition:.13s;background:var(--surface-2);min-height:56px;display:flex;flex-direction:column;gap:3px;justify-content:center}
   .wz-lv:hover{border-color:#9cc6ea;background:#fff}
@@ -386,6 +423,8 @@
     <div class="nav-label">Geral</div>
     <div class="nav-item active" data-view="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>Dashboard</div>
     <div class="nav-item" data-view="reports"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 19V5m4 14v-8m4 8V8m4 11v-5m4 5V4"/></svg>Relatórios & KPIs</div>
+    <div class="nav-label">Acompanhamento</div>
+    <div class="nav-item" data-view="track"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 3v18h18"/><path d="M7 15l3-4 3 2 5-6"/><circle cx="7" cy="15" r="1.4" fill="currentColor" stroke="none"/><circle cx="18" cy="7" r="1.4" fill="currentColor" stroke="none"/></svg>Portfólio EEM<span class="badge">Novo</span></div>
     <div class="nav-label">Projetos</div>
     <div class="nav-item" data-view="project"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 12h4l2-7 4 14 2-7h6"/></svg>Projetos</div>
     <div class="nav-item" data-view="gantt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="5" width="11" height="3" rx="1"/><rect x="7" y="10.5" width="13" height="3" rx="1"/><rect x="5" y="16" width="9" height="3" rx="1"/></svg>Cronograma</div>
@@ -414,13 +453,31 @@
     <!-- DASHBOARD -->
     <section class="view" id="view-dashboard">
       <div class="stat-grid">
-        <div class="stat card"><div class="glow" style="background:var(--brand)"></div><div class="k">Projetos Ativos</div><div class="v">6</div><div class="d">5 fábricas · BR</div></div>
-        <div class="stat card"><div class="glow" style="background:var(--brand-2)"></div><div class="k">Capex em Gestão</div><div class="v">€27,8M</div><div class="d">€18,2M executados</div></div>
+        <div class="stat card"><div class="glow" style="background:var(--brand)"></div><div class="k">Projetos Ativos</div><div class="v" id="statActive">6</div><div class="d">5 fábricas · BR</div></div>
+        <div class="stat card"><div class="glow" style="background:var(--brand-2)"></div><div class="k">Capex em Gestão</div><div class="v" id="statCapex">€27,8M</div><div class="d" id="statCapexD">€18,2M executados</div></div>
         <div class="stat card"><div class="glow" style="background:var(--ok)"></div><div class="k">Conformidade Docs</div><div class="v">87%</div><div class="d">187 de 214</div></div>
         <div class="stat card"><div class="glow" style="background:var(--warn)"></div><div class="k">Riscos Abertos</div><div class="v">7</div><div class="d">2 críticos</div></div>
       </div>
       <div class="panel-head"><div><div class="section-title">Projetos em andamento</div><div class="muted">Classificados (A–E) · clique para abrir os steps e a documentação</div></div><button class="btn" onclick="openWizard()">+ Cadastrar Projeto</button></div>
       <div class="proj-grid" id="projGrid"></div>
+    </section>
+
+    <!-- ACOMPANHAMENTO EEM -->
+    <section class="view hidden" id="view-track">
+      <div class="panel-head">
+        <div><div class="section-title">Acompanhamento Operacional · Portfólio EEM</div><div class="muted">Andamento e cronograma de todos os projetos — foco operacional (atrasos, avanços e marcos). Independente da visão financeira (DRA).</div></div>
+        <div class="tk-filterbar">
+          <select class="role-sel" id="trackLead" onchange="buildTrack()"></select>
+          <button class="btn" onclick="openWizard()">+ Novo Projeto</button>
+        </div>
+      </div>
+      <div class="stat-grid" id="trackKpis"></div>
+      <div class="card tk-macro">
+        <div class="panel-head" style="margin-bottom:14px"><div><div class="section-title" style="font-size:15px">Cronograma Macro</div><div class="muted">Barra = início → fim · losango = marco intermediário (meio) · trecho claro = executado · linha vermelha = hoje</div></div></div>
+        <div id="trackMacro"></div>
+      </div>
+      <div class="panel-head" style="margin-bottom:12px"><div><div class="section-title" style="font-size:15px">Projetos — andamento planejado × real</div><div class="muted">Compara o avanço real com o previsto e classifica cada projeto (no prazo · atrasado · adiantado)</div></div></div>
+      <div class="tk-cards" id="trackList"></div>
     </section>
 
     <!-- REPORTS -->
@@ -757,7 +814,10 @@ function projCardHTML(p){const c=TYPES[p.type].color;let track="";
   return `<div class="top"><div class="typebadge" style="background:${c}">${p.type}</div><div><h3>${p.name}</h3><div class="sub">${p.loc}</div></div></div>
     <div class="meta"><div>Capex<b>${eur(p.budP)}</b></div><div>Líder<b>${p.lead}</b></div><div>Step<b>${p.cur}/7</b></div><div>Documentos<b>${totalActs(p.type)}</b></div></div>
     <div class="steptrack">${track}</div><div class="foot"><span class="sap-chip"><span class="led"></span>OI ${p.oi}</span><span class="pill" style="background:${c}1f;color:${c}">${STEPS[p.cur-1].name}</span></div>`;}
-function rebuildDashboard(){grid.innerHTML='';PROJECTS.forEach(p=>{const el=document.createElement('div');el.className='proj card';el.innerHTML=projCardHTML(p);el.onclick=()=>{openProject(p.id);switchView('project');};grid.appendChild(el);});}
+function updateStats(){document.getElementById('statActive').textContent=PROJECTS.length;
+  document.getElementById('statCapex').textContent=eur(PROJECTS.reduce((s,p)=>s+p.budP,0));
+  document.getElementById('statCapexD').textContent=eur(PROJECTS.reduce((s,p)=>s+p.budA,0))+" executados";}
+function rebuildDashboard(){grid.innerHTML='';PROJECTS.forEach(p=>{const el=document.createElement('div');el.className='proj card';el.innerHTML=projCardHTML(p);el.onclick=()=>{openProject(p.id);switchView('project');};grid.appendChild(el);});updateStats();}
 rebuildDashboard();
 
 /* PROJECT */
@@ -1059,8 +1119,8 @@ function closeTV(){document.getElementById('tvmode').classList.add('hidden');cle
 
 /* ============ NAV ============ */
 /* ============ WIZARD CADASTRO ============ */
-let wzStep=0, wzSel={}, wzData={oi:"",name:"",cat:"Home Care",site:"Pouso Alegre",lead:"",type:null,score:0,capex:"",save:""};
-function openWizard(){wzStep=0;wzSel={};wzData={oi:"",name:"",cat:"Home Care",site:"Pouso Alegre",lead:"",type:null,score:0,capex:"",save:""};document.getElementById('wizard').classList.remove('hidden');renderWizard();}
+let wzStep=0, wzSel={}, wzData={oi:"",name:"",cat:"Home Care",site:"Pouso Alegre",lead:"",team:"",type:null,score:0,capex:"",save:"",ini:"",meio:"",fim:""};
+function openWizard(){wzStep=0;wzSel={};wzData={oi:"",name:"",cat:"Home Care",site:"Pouso Alegre",lead:"",team:"",type:null,score:0,capex:"",save:"",ini:"",meio:"",fim:""};document.getElementById('wizard').classList.remove('hidden');renderWizard();}
 function closeWizard(){document.getElementById('wizard').classList.add('hidden');}
 function renderWizard(){
   document.querySelectorAll('.wz-steps .ws').forEach((w,i)=>{w.classList.toggle('on',i===wzStep);w.classList.toggle('done',i<wzStep);});
@@ -1071,7 +1131,8 @@ function renderWizard(){
       <div class="fld2"><label>Nome do Projeto</label><input id="w_name" value="${wzData.name}" placeholder="ex.: Nova Linha de Envase"></div>
       <div class="fld2"><label>Categoria</label><select id="w_cat">${["Home Care","Personal Care","Foods","Ice Cream","Utilidades"].map(o=>`<option ${o===wzData.cat?'selected':''}>${o}</option>`).join('')}</select></div>
       <div class="fld2"><label>Site / Fábrica</label><select id="w_site">${["Pouso Alegre","Indaiatuba","Vinhedo","Aparecida","Garanhuns"].map(o=>`<option ${o===wzData.site?'selected':''}>${o}</option>`).join('')}</select></div>
-      <div class="fld2 full"><label>Líder do Projeto</label><input id="w_lead" value="${wzData.lead}" placeholder="ex.: M. Oliveira"></div>
+      <div class="fld2"><label>Líder do Projeto</label><input id="w_lead" value="${wzData.lead}" placeholder="ex.: M. Oliveira"></div>
+      <div class="fld2"><label>Equipe do Projeto</label><input id="w_team" value="${wzData.team}" placeholder="ex.: J. Silva, R. Lima, A. Costa"><span class="hint">Membros separados por vírgula</span></div>
     </div>`;}
   else if(wzStep===1){
     b.innerHTML=`<h4>Classificação por critérios (define o tipo e os documentos)</h4>
@@ -1085,11 +1146,14 @@ function renderWizard(){
       </div>`).join('');
     wzRenderResult();
   }
-  else if(wzStep===2){b.innerHTML=`<h4>Financeiro (Etapa 1 — estimativas)</h4>
-    <div class="muted" style="font-size:12.5px;margin-bottom:12px">No cadastro entram as estimativas. O consumo mês a mês virá da base SAP (robô → SharePoint) no Módulo DRA.</div>
+  else if(wzStep===2){b.innerHTML=`<h4>Financeiro & Cronograma (Etapa 1 — estimativas)</h4>
+    <div class="muted" style="font-size:12.5px;margin-bottom:12px">No cadastro entram as estimativas. O consumo mês a mês virá da base SAP (robô → SharePoint) no Módulo DRA. O cronograma alimenta o Acompanhamento EEM e o Cronograma do portfólio.</div>
     <div class="fg">
       <div class="fld2"><label>Capex estimado (€)</label><input id="w_capex" value="${wzData.capex}" placeholder="ex.: 2.000.000"></div>
       <div class="fld2"><label>Saving estimado (€)</label><input id="w_save" value="${wzData.save}" placeholder="ex.: 300.000"></div>
+      <div class="fld2"><label>Início</label><input id="w_ini" type="date" value="${wzData.ini}"></div>
+      <div class="fld2"><label>Marco intermediário (meio)</label><input id="w_meio" type="date" value="${wzData.meio}"></div>
+      <div class="fld2"><label>Fim</label><input id="w_fim" type="date" value="${wzData.fim}"></div>
     </div>`;}
   else{const t=wzData.type||'C';b.innerHTML=`<h4>Revisão & criação</h4>
     <div class="wz-rev">
@@ -1097,8 +1161,10 @@ function renderWizard(){
       <div class="rr"><span>Projeto</span><b>${wzData.name||'—'}</b></div>
       <div class="rr"><span>Categoria · Site</span><b>${wzData.cat} · ${wzData.site}</b></div>
       <div class="rr"><span>Líder</span><b>${wzData.lead||'—'}</b></div>
+      <div class="rr"><span>Equipe</span><b>${wzData.team||'—'}</b></div>
       <div class="rr"><span>Classificação</span><b>${t} · ${TYPES[t].name} — ${wzData.score} pts (${totalActs(t)} documentos)</b></div>
       <div class="rr"><span>Capex / Saving estimado</span><b>€${wzData.capex||'0'} / €${wzData.save||'0'}</b></div>
+      <div class="rr"><span>Cronograma (início · meio · fim)</span><b>${wzFmtDate(wzData.ini)} → ${wzFmtDate(wzData.meio)} → ${wzFmtDate(wzData.fim)}</b></div>
     </div>
     <div class="muted" style="font-size:12px;margin-top:12px">Ao criar, o projeto entra no portfólio no Step 1 com a documentação do Tipo ${t} pronta para inserção.</div>`;}
   document.getElementById('wzBack').style.visibility=wzStep===0?'hidden':'visible';
@@ -1121,8 +1187,8 @@ function wzRenderResult(){
     <div class="gtxt"><b>Tipo ${ty} · ${TYPES[ty].name}</b><span>${totalActs(ty)} documentos no fluxo · faixa ${TYPES[ty].range} pts</span></div>`;
 }
 function wzSave(){
-  if(wzStep===0){wzData.oi=val('w_oi');wzData.name=val('w_name');wzData.cat=val('w_cat');wzData.site=val('w_site');wzData.lead=val('w_lead');}
-  if(wzStep===2){wzData.capex=val('w_capex');wzData.save=val('w_save');}
+  if(wzStep===0){wzData.oi=val('w_oi');wzData.name=val('w_name');wzData.cat=val('w_cat');wzData.site=val('w_site');wzData.lead=val('w_lead');wzData.team=val('w_team');}
+  if(wzStep===2){wzData.capex=val('w_capex');wzData.save=val('w_save');wzData.ini=val('w_ini');wzData.meio=val('w_meio');wzData.fim=val('w_fim');}
 }
 function val(id){const e=document.getElementById(id);return e?e.value.trim():"";}
 function wzNav(dir){
@@ -1135,12 +1201,22 @@ function wzNav(dir){
   } else wzStep--;
   renderWizard();
 }
+function wzFmtDate(v){if(!v)return '—';const[y,m,d]=v.split('-');return d+' '+MESES[+m-1];}
 function createProject(){
   const t=wzData.type;const id="P"+(PROJECTS.length+1);
   const capex=parseInt((wzData.capex||"0").replace(/\D/g,''))||500000;
   const save=parseInt((wzData.save||"0").replace(/\D/g,''))||0;
-  const np={id,type:t,name:wzData.name,loc:`${wzData.site} · ${wzData.cat}`,cur:1,budP:capex,budA:0,com:0,sav:save,schP:5,lead:wzData.lead||"—",oi:wzData.oi,gs:5,gsp:6};
-  PROJECTS.push(np);
+  // cronograma informado → posição no ano (gs/gsp) usada pelo Gantt e pelo EEM
+  const mIni=wzData.ini?+wzData.ini.split('-')[1]-1:5, mFim=wzData.fim?+wzData.fim.split('-')[1]-1:mIni+5;
+  const gs=mIni, gsp=mFim<mIni?12-mIni:Math.max(1,mFim-mIni+1); /* fim no ano seguinte → barra até Dez */
+  const np={id,type:t,name:wzData.name,loc:`${wzData.site} · ${wzData.cat}`,cur:1,budP:capex,budA:0,com:0,sav:save,schP:5,lead:wzData.lead||"—",oi:wzData.oi,gs,gsp};
+  // dados operacionais (EEM): equipe informada + cronograma início/meio/fim
+  const team=(wzData.team||wzData.lead||'NA').split(',').map(s=>s.trim()).filter(Boolean).map(n=>n.split(/\s+/).map(w=>w[0]).join('').replace(/\W/g,'').slice(0,2).toUpperCase()||'NA');
+  np._eem={plan:Math.max(2,Math.min(98,Math.round((EEM_TODAY-gs)/gsp*100))),
+    ini:wzFmtDate(wzData.ini)!=='—'?wzFmtDate(wzData.ini):"01 "+MESES[gs],
+    meio:wzFmtDate(wzData.meio)!=='—'?wzFmtDate(wzData.meio):"15 "+MESES[Math.min(11,Math.round(gs+gsp/2))],
+    fim:wzFmtDate(wzData.fim)!=='—'?wzFmtDate(wzData.fim):"30 "+MESES[Math.min(11,gs+gsp-1)],team};
+  PROJECTS.push(np);updateStats();
   // card no portfólio
   const c=TYPES[t].color;let track="";for(let i=0;i<7;i++)track+=`<div class="s ${i===0?'now':''}"></div>`;
   const el=document.createElement('div');el.className='proj card';
@@ -1186,7 +1262,7 @@ function toast(msg){let t=document.getElementById('toast');if(!t){t=document.cre
 /* ============ ONBOARDING ============ */
 const OB=[
   {ic:"👋",t:"Bem-vindo à Plataforma de Projetos",x:"Um tour rápido pelo fluxo ponta a ponta: do cadastro à conclusão. Leva 30 segundos."},
-  {ic:"➕",t:"1 · Cadastre o projeto",x:"Clique em \"+ Novo Projeto\" e preencha OI, tipo (A–E), capex e saving. O tipo define quantos documentos cada step exige."},
+  {ic:"➕",t:"1 · Cadastre o projeto",x:"Clique em \"+ Novo Projeto\" e preencha OI, líder, equipe, tipo (A–E), capex e o cronograma (início · meio · fim). Um único cadastro alimenta todas as telas — inclusive o Acompanhamento EEM."},
   {ic:"📂",t:"2 · Insira os documentos por step",x:"Em cada step você gera/insere os documentos obrigatórios. Alguns têm template oficial (Cardinal Rules, Comissionamento…)."},
   {ic:"🔒",t:"3 · Gate de avanço",x:"O step só libera o avanço quando todos os documentos obrigatórios forem inseridos. Sem isso, o botão fica bloqueado."},
   {ic:"📊",t:"4 · DRA Financeiro & Relatórios",x:"No Módulo DRA acompanhe orçado × executado por OI (base SAP via robô/SharePoint), e veja tudo nos Relatórios e no Modo TV."}
@@ -1201,9 +1277,70 @@ function obNav(){if(obi<OB.length-1){obi++;renderObGuide();}else{closeOnb();star
 function closeOnb(){document.getElementById('onb').classList.add('hidden');}
 
 /* ============ TOUR GUIADO (spotlight) ============ */
+/* ===== Módulo Acompanhamento Operacional (EEM) ===== */
+/* plan = % de avanço previsto para hoje · schP (do projeto) = avanço real */
+const EEM={
+  P1:{plan:56,ini:"10 Fev",meio:"05 Jun",fim:"30 Set",team:["MO","JS","RL","AC","BN"]},
+  P2:{plan:76,ini:"03 Mar",meio:"20 Jun",fim:"12 Ago",team:["CS","TA","MO"]},
+  P3:{plan:90,ini:"15 Jan",meio:"10 Abr",fim:"18 Jul",team:["RL","JP"]},
+  P4:{plan:40,ini:"02 Abr",meio:"28 Mai",fim:"15 Ago",team:["AC","BN"]},
+  P5:{plan:12,ini:"20 Jun",meio:"05 Ago",fim:"30 Set",team:["JP","MO"]},
+  P6:{plan:52,ini:"12 Mar",meio:"01 Jul",fim:"20 Out",team:["TA","CS","RL","AC"]}
+};
+const EEM_TODAY=6.5; /* meados de Julho (index de mês) */
+/* projetos criados no wizard sem cronograma informado ganham dados EEM derivados de gs/gsp */
+function eemDerive(p){
+  const mm=m=>MESES[Math.min(11,Math.max(0,Math.round(m)))];
+  const plan=Math.max(2,Math.min(98,Math.round((EEM_TODAY-p.gs)/p.gsp*100)));
+  const team=[(p.lead&&p.lead!=='—'?p.lead:'NA').split(/\s+/).map(w=>w[0]).join('').replace(/\W/g,'').slice(0,2).toUpperCase()||'NA'];
+  return {plan,ini:"01 "+mm(p.gs),meio:"15 "+mm(p.gs+p.gsp/2),fim:"30 "+mm(p.gs+p.gsp-1),team};
+}
+const eemOf=p=>EEM[p.id]||p._eem||(p._eem=eemDerive(p));
+function eemStatus(p){const e=eemOf(p);const d=(p.schP||0)-e.plan;const days=Math.abs(Math.round(d/100*(p.gsp||6)*30));
+  if(d>=6)return{cls:'tk-ahead',label:'Adiantado',days,d};
+  if(d<=-6)return{cls:'tk-late',label:'Atrasado',days,d};
+  return{cls:'tk-ontime',label:'No prazo',days,d};}
+function avColor(s){const c=['#0060A8','#1f9d57','#e8930c','#8250df','#d6336c','#0a9396'];let h=0;for(const ch of (s||'?'))h=(h*31+ch.charCodeAt(0))%c.length;return c[h];}
+const eemAll=()=>PROJECTS;
+function buildTrack(){
+  const sel=document.getElementById('trackLead');const cur=sel.value||'ALL';
+  const leads=[...new Set(eemAll().map(p=>p.lead))];
+  sel.innerHTML='<option value="ALL">🏛 Pilar Portfolio (todos)</option>'+leads.map(l=>`<option value="${l}">👤 ${l}</option>`).join('');
+  sel.value=[...sel.options].some(o=>o.value===cur)?cur:'ALL';
+  const filter=sel.value;
+  const list=eemAll().filter(p=>filter==='ALL'||p.lead===filter);
+  let ontime=0,late=0,ahead=0,avg=0;
+  list.forEach(p=>{const s=eemStatus(p);avg+=(p.schP||0);if(s.label==='Atrasado')late++;else if(s.label==='Adiantado')ahead++;else ontime++;});
+  avg=list.length?Math.round(avg/list.length):0;
+  document.getElementById('trackKpis').innerHTML=`
+    <div class="stat card"><div class="glow" style="background:var(--ok)"></div><div class="k">No Prazo</div><div class="v">${ontime}</div><div class="d">dentro do cronograma</div></div>
+    <div class="stat card"><div class="glow" style="background:var(--danger)"></div><div class="k">Atrasados</div><div class="v">${late}</div><div class="d">requerem atenção</div></div>
+    <div class="stat card"><div class="glow" style="background:var(--brand)"></div><div class="k">Adiantados</div><div class="v">${ahead}</div><div class="d">à frente do plano</div></div>
+    <div class="stat card"><div class="glow" style="background:var(--brand-2)"></div><div class="k">Avanço Médio</div><div class="v">${avg}%</div><div class="d">${filter==='ALL'?'portfólio completo':filter}</div></div>`;
+  const today=(EEM_TODAY/12*100);
+  let macro=`<div class="tk-row" style="border-top:0;padding-bottom:2px"><div></div><div class="tk-months">${MESES.map(m=>`<span>${m}</span>`).join('')}<div class="tk-todayhead" style="left:${today}%"></div></div></div>`;
+  list.forEach(p=>{const e=eemOf(p);const left=(p.gs/12*100),width=(p.gsp/12*100),mid=((p.gs+p.gsp/2)/12*100);
+    macro+=`<div class="tk-row"><div class="lbl">${p.name}<small>${p.lead} · Capex ${p.oi}</small></div>
+      <div class="tk-track"><div class="tk-grid">${'<span></span>'.repeat(12)}</div>
+        <div class="tk-today" style="left:${today}%"></div>
+        <div class="tk-bar" style="left:${left}%;width:${width}%"><div class="fill" style="width:${p.schP||0}%"></div></div>
+        <div class="tk-mid" style="left:${mid}%" title="Marco: ${e.meio}"></div></div></div>`;});
+  document.getElementById('trackMacro').innerHTML=macro;
+  document.getElementById('trackList').innerHTML=list.map(p=>{const e=eemOf(p);const s=eemStatus(p);
+    const av=e.team.slice(0,4).map(t=>`<div class="av" style="background:${avColor(t)}">${t}</div>`).join('')+(e.team.length>4?`<div class="av more">+${e.team.length-4}</div>`:'');
+    const dev=s.d===0?'em linha com o plano':`~${s.days} dia${s.days===1?'':'s'} ${s.d<0?'atrás':'à frente'}`;
+    return `<div class="card tk-card">
+      <div><div class="pname">${p.name}</div><div class="psub">${p.loc} · Líder ${p.lead}</div><div class="tk-team" style="margin-top:9px">${av}</div></div>
+      <div class="tk-sched"><b>${e.ini}</b><span class="arw">→</span><b>${e.meio}</b><span class="arw">→</span><b>${e.fim}</b></div>
+      <div class="tk-prog"><div class="bars"><div class="plan" style="width:${e.plan}%"></div><div class="real" style="width:${p.schP||0}%"></div></div>
+        <div class="lg"><span>Real <b>${p.schP||0}%</b></span><span>Plano ${e.plan}%</span></div></div>
+      <div style="text-align:right"><span class="tk-status ${s.cls}"><span class="dot"></span>${s.label}</span><div class="psub" style="margin-top:6px">${dev}</div></div>
+    </div>`;}).join('');
+}
 const TOUR=[
   {view:"dashboard",sel:'[data-view="dashboard"]',t:"Dashboard",x:"Visão executiva do portfólio: projetos ativos, capex, savings e o status de cada projeto — com indicador de sincronização SAP em tempo real."},
   {view:"reports",sel:'[data-view="reports"]',t:"Relatórios & KPIs",x:"Indicadores consolidados do portfólio, integrados ao Power BI e ao SAP. Inclui o Modo TV para exibição em telões da fábrica."},
+  {view:"track",sel:'[data-view="track"]',t:"Acompanhamento EEM",x:"Visão operacional do portfólio: andamento planejado × real, projetos atrasados/adiantados e o cronograma macro (início · meio · fim). Filtre pelo Pilar Portfolio (conjunto) ou por líder de projeto — a visão hierárquica do EEM."},
   {view:"project",sel:'[data-view="project"]',t:"Projetos",x:"Acompanhamento do projeto por steps. Cada step exige documentos obrigatórios conforme o tipo (A–E) — o avanço só é liberado quando tudo é inserido (gate)."},
   {view:"gantt",sel:'[data-view="gantt"]',t:"Cronograma",x:"Linha do tempo do portfólio completo: em que step cada projeto está e como evolui ao longo dos meses."},
   {view:"audit",sel:'[data-view="audit"]',t:"Auditoria",x:"Trilha completa de eventos: quem fez o quê e quando. Tudo exportável para conformidade e auditorias internas."},
@@ -1297,7 +1434,7 @@ function propagateCatalog(){
   if(typeof computeScore==='function')computeScore();
 }
 
-const titles={dashboard:["Dashboard","Dashboard"],reports:["Relatórios","Relatórios & KPIs"],project:["Projetos","Acompanhamento do Projeto"],
+const titles={dashboard:["Dashboard","Dashboard"],reports:["Relatórios","Relatórios & KPIs"],track:["Acompanhamento","Acompanhamento Operacional · Portfólio EEM"],project:["Projetos","Acompanhamento do Projeto"],
   dra:["DRA Financeiro","Módulo 2 · DRA — Controle Financeiro"],
   catalog:["Catálogo","Catálogo de Documentos por Step"],
   gantt:["Cronograma","Cronograma do Portfólio"],classify:["Classificação","Classificação Automática"],
@@ -1311,6 +1448,7 @@ function switchView(v){document.querySelectorAll('.view').forEach(s=>s.classList
   if(v==='reports'&&!built.reports){buildReports();built.reports=1;}
   if(v==='gantt'&&!built.gantt){buildGantt();built.gantt=1;}
   if(v==='catalog')renderCatalog();
+  if(v==='track')buildTrack();
   if(v==='dra')buildDRA();
   window.scrollTo({top:0,behavior:'smooth'});}
 document.querySelectorAll('[data-view]').forEach(n=>n.addEventListener('click',()=>switchView(n.dataset.view)));
