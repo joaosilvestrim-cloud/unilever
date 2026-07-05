@@ -575,11 +575,12 @@
     <div class="nav-item active" data-view="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>Dashboard do Portfólio</div>
     <div class="nav-item" data-view="reports"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 19V5m4 14v-8m4 8V8m4 11v-5m4 5V4"/></svg>Relatórios & KPIs</div>
     <div class="nav-label">Módulo 1 · PSR — Projetos</div>
-    <div class="nav-item" data-view="lifecycle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v5h-5"/><circle cx="12" cy="12" r="2.4"/></svg>Ciclo de Vida<span class="badge">Novo</span></div>
     <div class="nav-item" data-view="project"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h4"/></svg>Steps & Documentos</div>
-    <div class="nav-item" data-view="track"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 3v18h18"/><path d="M7 15l3-4 3 2 5-6"/><circle cx="7" cy="15" r="1.4" fill="currentColor" stroke="none"/><circle cx="18" cy="7" r="1.4" fill="currentColor" stroke="none"/></svg>Status Report (PSR)</div>
     <div class="nav-item" data-view="gantt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="5" width="11" height="3" rx="1"/><rect x="7" y="10.5" width="13" height="3" rx="1"/><rect x="5" y="16" width="9" height="3" rx="1"/></svg>Cronograma</div>
     <div class="nav-item" data-view="audit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2 3 7v6c0 5 3.5 8 9 9 5.5-1 9-4 9-9V7z"/><path d="M9 12l2 2 4-4"/></svg>Auditoria</div>
+    <div class="nav-label">Módulo 3 · Ciclo de Vida — Novo</div>
+    <div class="nav-item" data-view="lifecycle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v5h-5"/><circle cx="12" cy="12" r="2.4"/></svg>Ciclo de Vida<span class="badge">Novo</span></div>
+    <div class="nav-item" data-view="track"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 3v18h18"/><path d="M7 15l3-4 3 2 5-6"/><circle cx="7" cy="15" r="1.4" fill="currentColor" stroke="none"/><circle cx="18" cy="7" r="1.4" fill="currentColor" stroke="none"/></svg>Portfólio EEM<span class="badge">Novo</span></div>
     <div class="nav-label">Módulo 2 · DRA — Financeiro</div>
     <div class="nav-item" data-view="dra"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 3v18h18"/><path d="M7 14l3-4 3 3 4-6"/></svg>DRA · Financeiro</div>
     <div class="nav-label">Configuração</div>
@@ -625,7 +626,7 @@
     <!-- CICLO DE VIDA DO PROJETO -->
     <section class="view hidden" id="view-lifecycle">
       <div class="panel-head">
-        <div><div class="section-title">Ciclo de Vida do Projeto</div><div class="muted">A jornada completa de cada projeto — da iniciação ao encerramento — com saúde, histórico de evolução e atalhos para cada área</div></div>
+        <div><div class="section-title">Ciclo de Vida do Projeto <span class="pill" style="background:#fdf3e3;color:#8a5b00;vertical-align:middle">Módulo 3 · novo</span></div><div class="muted">A jornada completa de cada projeto — da iniciação ao encerramento — com saúde, histórico de evolução e atalhos para cada área</div></div>
         <select class="role-sel" id="lcSel" onchange="buildLifecycle(this.value)"></select>
       </div>
       <div class="card lc-journey"><div class="pm-sec" style="margin:0 0 16px">Fases do ciclo de vida <span style="font-weight:500;color:var(--ink-faint)">· status calculado pelo sistema</span></div><div class="lc-phases" id="lcPhases"></div></div>
@@ -639,7 +640,7 @@
     <!-- ACOMPANHAMENTO EEM -->
     <section class="view hidden" id="view-track">
       <div class="panel-head">
-        <div><div class="section-title">Acompanhamento Operacional · Portfólio EEM (PSR)</div><div class="muted">Project Status Report — andamento, marcos e alertas de todos os projetos. Visão operacional, independente da financeira (DRA).</div></div>
+        <div><div class="section-title">Portfólio EEM · Acompanhamento Operacional <span class="pill" style="background:#fdf3e3;color:#8a5b00;vertical-align:middle">Módulo 3 · novo</span></div><div class="muted">Andamento, marcos e alertas de todos os projetos — a nova demanda (03/07), em cotação complementar. Independente da visão financeira (DRA).</div></div>
         <div class="tk-filterbar">
           <select class="role-sel" id="trackLead" onchange="buildTrack()"></select>
           <button class="btn perm-w" onclick="openWizard()">+ Novo Projeto</button>
@@ -872,7 +873,7 @@
   <div class="pm">
     <div class="pm-head"><div style="flex:1"><h3 id="pmTitle">—</h3><div class="sub" id="pmSub">—</div></div><span id="pmStatus"></span><button class="tm-x" onclick="closePlan()">✕</button></div>
     <div class="pm-body" id="pmBody"></div>
-    <div class="pm-foot"><button class="btn ghost sm" onclick="closePlan()">Fechar</button><button class="btn sm perm-w" onclick="toast('Nova atividade adicionada ao plano (simulação).')">+ Nova atividade</button></div>
+    <div class="pm-foot"><button class="btn ghost sm" onclick="closePlan()">Fechar</button><button class="btn sm perm-w" onclick="togglePmAdd()">+ Nova atividade</button></div>
   </div>
 </div>
 
@@ -1636,6 +1637,14 @@ function openPlan(id){
     pl.marcos.map(m=>{const st=m[2];const lbl={done:'Concluído',next:'Próximo',late:'Atrasado',pend:'Planejado'}[st];
       return `<div class="pm-marco ${st}"><div class="dot"></div><div class="mm">${MESES[m[0]]}</div><div class="mt">${m[1]}</div><div class="ms">${lbl}</div></div>`;}).join('')+`</div>`;
   h+=`<div class="pm-sec" style="margin-top:20px">Atividades por mês <span style="font-weight:500;color:var(--ink-faint)">· documentos e ações do projeto — clique para abrir o card</span></div>`;
+  h+=`<div id="pmAddForm" style="display:none;border:1.5px dashed var(--brand);border-radius:12px;padding:13px 16px;margin-bottom:12px;background:var(--brand-soft)">
+    <div class="pm-sec" style="margin:0 0 8px;font-size:12px">Nova atividade</div>
+    <div class="reprow" style="margin-top:0">
+      <select id="addm" style="padding:8px 11px;border:1.5px solid var(--line);border-radius:9px;font-family:inherit;font-size:12.5px">${MESES.map((m,k)=>`<option value="${k}" ${k===Math.floor(EEM_TODAY)?'selected':''}>${m}</option>`).join('')}</select>
+      <input type="text" id="addt" placeholder="Título da atividade (ex.: Instalação da rede industrial)">
+      <input type="text" id="addr" placeholder="Responsável" style="flex:0 1 160px;min-width:130px">
+      <button class="btn sm" onclick="addAct()">Adicionar</button>
+    </div></div>`;
   let lastM=-1;
   pl.acts.forEach((a,i)=>{
     if(a[0]!==lastM){lastM=a[0];h+=`<div class="pm-month">${MESES[a[0]]} · 2026</div>`;}
@@ -1647,9 +1656,14 @@ function openPlan(id){
       <span class="tk-status ${a[3]==='late'?'tk-late':a[3]==='done'?'tk-ontime':'tk-ahead'}">${lbl}</span></div>
      <div class="adet">
       <div style="font-size:12.5px"><b>Descrição:</b> ${a[1]} — atividade do plano operacional de ${p.name}.</div>
+      <div class="pm-sec" style="margin:10px 0 4px;font-size:12px">Checklist de premissas</div>
+      <div class="dod">${['Recursos e equipe disponíveis','Dependências de outras áreas resolvidas','Acessos e segurança liberados'].map(d=>`<label><input type="checkbox" ${a[3]!=='pend'?'checked':''} onclick="event.stopPropagation()"> ${d}</label>`).join('')}</div>
       <div class="pm-sec" style="margin:10px 0 4px;font-size:12px">Checklist de pronto (DoD)</div>
       <div class="dod">${['Escopo executado e conferido','Evidências anexadas no SharePoint','Validação do líder do projeto'].map((d,k)=>`<label><input type="checkbox" ${a[3]==='done'?'checked':(k===0&&(a[3]==='now'||a[3]==='late')?'checked':'')} onclick="event.stopPropagation()"> ${d}</label>`).join('')}</div>
-      ${a[4]?`<button class="btn ghost sm" onclick="event.stopPropagation();dlActDoc('${a[4]}','${p.name}')">⬇ Baixar documento — ${a[4]}</button>`:''}
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">
+        ${a[3]!=='done'?`<button class="btn sm perm-w" onclick="event.stopPropagation();actDone(${i})">✓ Concluir atividade</button>`:''}
+        ${a[4]?`<button class="btn ghost sm" onclick="event.stopPropagation();dlActDoc('${a[4]}','${p.name}')">⬇ Baixar documento — ${a[4]}</button>`:''}
+      </div>
       ${a[5]?`<div class="hist"><b>↦ Prazo remanejado:</b> ${a[5].de} → ${a[5].para} por <b>${a[5].por}</b><br>Justificativa: ${a[5].just}</div>`:''}
       <div class="pm-sec" style="margin:12px 0 4px;font-size:12px">Remanejar prazo desta atividade</div>
       <div class="reprow"><input type="date" id="repd${i}" onclick="event.stopPropagation()"><input type="text" id="repj${i}" placeholder="Justificativa obrigatória — vai para a auditoria" onclick="event.stopPropagation()"><button class="btn sm perm-w" onclick="event.stopPropagation();repSave(${i})">Registrar</button></div>
@@ -1670,6 +1684,30 @@ function repSave(i){
   EXTRA_ALERTS.push({ic:'🔴',t:`Atividade “${a[1]}” (${pmProj.name}) remanejada para ${para}`,d:'Justificativa: '+j+' · registrado na trilha de auditoria'});
   openPlan(pmProj.id);buildTrack();
   toast('Remanejamento registrado com justificativa na trilha de auditoria.');
+}
+/* Concluir atividade: recalcula o avanço real do projeto na hora (a demo "ao vivo") */
+function actDone(i){
+  const pl=planOf(pmProj);const a=pl.acts[i];const mes=a[0];
+  a[3]='done';
+  const done=pl.acts.filter(x=>x[3]==='done').length;
+  pmProj.schP=Math.min(100,Math.max(pmProj.schP||0,Math.round(done/pl.acts.length*100)));
+  const mesFechado=pl.acts.filter(x=>x[0]===mes).every(x=>x[3]==='done');
+  openPlan(pmProj.id);buildTrack();
+  if(typeof built!=='undefined')buildLifecycle(pmProj.id);
+  if(mesFechado)toast('🎉 '+MESES[mes]+' 100% concluído — todas as atividades do mês entregues! Avanço real: '+pmProj.schP+'%');
+  else toast('Atividade concluída ✓ Avanço real do projeto recalculado: '+pmProj.schP+'%');
+}
+function togglePmAdd(){const f=document.getElementById('pmAddForm');if(f){f.style.display=f.style.display==='none'?'block':'none';const t=document.getElementById('addt');if(f.style.display==='block'&&t)t.focus();}}
+function addAct(){
+  const m=+document.getElementById('addm').value;
+  const t=document.getElementById('addt').value.trim();
+  const r=document.getElementById('addr').value.trim()||pmProj.lead;
+  if(!t){toast('Dê um título para a atividade.');return;}
+  const pl=planOf(pmProj);
+  pl.acts.push([m,t,r,'pend',null,null]);
+  pl.acts.sort((x,y)=>x[0]-y[0]);
+  openPlan(pmProj.id);buildTrack();
+  toast('Atividade "'+t+'" adicionada em '+MESES[m]+' · responsável '+r+' · registrada na auditoria.');
 }
 
 /* ===== Ciclo de Vida do Projeto: jornada, saúde, histórico de evolução ===== */
@@ -1803,8 +1841,9 @@ const HELP=[
 <h5>Como o menu está organizado</h5>
 <table><tr><th>Grupo</th><th>O que contém</th></tr>
 <tr><td><b>Visão Geral</b></td><td>Dashboard do portfólio e Relatórios & KPIs — a foto executiva.</td></tr>
-<tr><td><b>Módulo 1 · PSR</b></td><td>O dia a dia dos projetos, na ordem do ciclo: <b>Ciclo de Vida</b> → Steps & Documentos → Status Report (PSR) → Cronograma → Auditoria.</td></tr>
-<tr><td><b>Módulo 2 · DRA</b></td><td>Financeiro por OI (Designação de Recursos e Autorização), alimentado pelo robô SAP.</td></tr>
+<tr><td><b>Módulo 1 · PSR</b></td><td>A governança documental: Steps & Documentos → Cronograma → Auditoria. <b>Coberto pela proposta vigente.</b></td></tr>
+<tr><td><b>Módulo 3 · Ciclo de Vida (novo)</b></td><td><b>Ciclo de Vida</b> e <b>Portfólio EEM</b> — a nova demanda de acompanhamento operacional (03/07), em cotação complementar.</td></tr>
+<tr><td><b>Módulo 2 · DRA</b></td><td>Financeiro por OI (Designação de Recursos e Autorização), alimentado pelo robô SAP. <b>Coberto pela proposta vigente.</b></td></tr>
 <tr><td><b>Configuração</b></td><td>Catálogo de Documentos, Classificação (A–E) e Integrações.</td></tr>
 <tr><td><b>Administração</b></td><td>Equipe & Papéis (RBAC).</td></tr></table>
 <div class="tip">💡 Use o <b>Tour guiado</b> (botão no topo) para uma apresentação passo a passo, ou navegue por este manual pelas seções ao lado.</div>`},
@@ -1873,7 +1912,7 @@ const HELP=[
 <h5>Gate documental</h5>
 <p>A barra de gate mostra <b>inseridos / exigidos</b> no step atual. O botão <b>Avançar step →</b> só habilita com <b>100% dos documentos inseridos</b> — é a governança do EEM aplicada por construção.</p>
 <div class="warn">⚠ Sem completar o gate, o avanço fica bloqueado. Não há exceção manual — essa é a regra do fluxo.</div>`},
-{ic:"📈",t:"Acompanhamento EEM · PSR",d:"Project Status Report: on/off track, alertas, marcos, atividades e remanejamentos.",b:`
+{ic:"📈",t:"Portfólio EEM (Módulo 3)",d:"Acompanhamento operacional: on/off track, alertas, marcos, atividades e remanejamentos.",b:`
 <p>O <b>PSR (Project Status Report)</b> responde: <b>o projeto está on track?</b> <b>quem está off track e por quê?</b> <b>o que mudou no cronograma?</b></p>
 <h5>Indicadores gerenciais</h5>
 <ul><li><b>On Track / Off Track / Adiantados</b> — o sistema compara o avanço <b>real × planejado</b> e classifica sozinho (≥ 6 p.p. à frente = adiantado; ≤ −6 = off track);</li><li><b>Avanço Médio</b> — média do portfólio ou do líder filtrado.</li></ul>
@@ -1884,7 +1923,9 @@ const HELP=[
 <h5>Plano do projeto (marcos + atividades)</h5>
 <ol><li><b>Clique em um projeto</b> para abrir o plano;</li>
 <li><b>Marcos</b> — a visão gerencial: só as entregas com data (sem microtarefas);</li>
-<li><b>Atividades por mês</b> — as ações do projeto (obras, software, infraestrutura…), além dos documentos. Cada atividade é um <b>card interativo</b>: descrição, checklist de pronto (DoD), responsável e documento baixável;</li>
+<li><b>Atividades por mês</b> — as ações do projeto (obras, software, infraestrutura…), além dos documentos. Cada atividade é um <b>card interativo</b>: descrição, checklist de premissas, checklist de pronto (DoD), responsável e documento baixável;</li>
+<li><b>Concluir atividade</b> — o botão “✓ Concluir” marca a entrega e <b>recalcula o avanço real do projeto na hora</b>; fechar todas as atividades do mês conclui o mês (“finalizou junho, fiz as atividades de junho”);</li>
+<li><b>+ Nova atividade</b> — adicione ações ao plano (mês, título e responsável) a qualquer momento;</li>
 <li><b>Remanejar prazo</b> — mudar a data de uma atividade <b>exige justificativa</b>, que vai para a auditoria e gera alerta no portfólio.</li></ol>
 <h5>Visão hierárquica</h5>
 <ol><li><b>🏛 Pilar Portfolio</b> vê o conjunto (overview gerencial da fábrica);</li><li><b>👤 Líder</b> vê e refina somente os seus projetos — KPIs, alertas e cronograma se recalculam na hora.</li></ol>`},
@@ -1969,7 +2010,7 @@ const TOUR=[
   {view:"project",sel:'#gateBar',c:"3 · Execução",t:"Gate documental",
    x:"Cada step exige <b>documentos obrigatórios conforme o tipo</b> (A exige mais, E exige menos). O avanço <b>só libera com 100% dos documentos inseridos</b> — governança garantida por construção, não por cobrança."},
   {view:"track",sel:'#trackKpis',c:"4 · Acompanhamento",t:"On track ou off track? O sistema responde",
-   x:"O PSR (Project Status Report) compara o <b>avanço real × planejado</b> e classifica sozinho: <b>on track, off track ou adiantado</b> — a visão gerencial que a fábrica precisa, sem status reportado manualmente."},
+   x:"O Portfólio EEM (Módulo 3 — a nova demanda) compara o <b>avanço real × planejado</b> e classifica sozinho: <b>on track, off track ou adiantado</b> — a visão gerencial que a fábrica precisa, sem status reportado manualmente."},
   {view:"track",sel:'#trackAlerts',c:"4 · Acompanhamento",t:"Alertas automáticos",
    x:"O sistema avisa sozinho: projetos off track, <b>prazos remanejados</b> (com quem mudou e a justificativa) e <b>atividades atrasadas</b>. Nada passa despercebido."},
   {view:"track",sel:'#trackMacro',c:"4 · Acompanhamento",t:"Cronograma macro — com o “vermelhinho”",
@@ -2085,7 +2126,7 @@ function propagateCatalog(){
   if(typeof computeScore==='function')computeScore();
 }
 
-const titles={dashboard:["Dashboard","Dashboard do Portfólio"],reports:["Relatórios","Relatórios & KPIs"],lifecycle:["Ciclo de Vida","Ciclo de Vida do Projeto"],track:["PSR","Status Report (PSR) · Portfólio EEM"],project:["Steps & Documentos","Steps & Documentos do Projeto"],
+const titles={dashboard:["Dashboard","Dashboard do Portfólio"],reports:["Relatórios","Relatórios & KPIs"],lifecycle:["Ciclo de Vida","Ciclo de Vida do Projeto"],track:["Portfólio EEM","Portfólio EEM · Acompanhamento Operacional (Módulo 3)"],project:["Steps & Documentos","Steps & Documentos do Projeto"],
   dra:["DRA Financeiro","Módulo 2 · DRA — Designação de Recursos e Autorização"],
   catalog:["Catálogo","Catálogo de Documentos por Step"],
   gantt:["Cronograma","Cronograma do Portfólio"],classify:["Classificação","Classificação Automática"],
