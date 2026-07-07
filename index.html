@@ -1071,7 +1071,11 @@ function renderGateBar(){
       <div class="gpb"><i style="width:${pct}%;background:${open?'var(--ok)':'var(--danger)'}"></i></div></div>
     <button class="btn sm perm-w" ${open?'':'disabled style="opacity:.5;pointer-events:none"'} onclick="advanceStep()">Avançar step →</button>`;
 }
-function advanceStep(){if(curProj.cur<7){curProj.cur++;curStep=curProj.cur-1;openProject(curProj.id);}}
+function advanceStep(){
+  if(!gateOpen(curProj,curProj.cur-1)){toast('Gate bloqueado: insira 100% dos documentos obrigatórios do step antes de avançar.');return;}
+  if(curProj.cur<7){curProj.cur++;curStep=curProj.cur-1;openProject(curProj.id);
+  built.gantt=0;built.reports=0;rebuildDashboard(); // telas dependentes refletem o avanço na hora
+  toast('Step '+(curProj.cur-1)+' concluído — projeto avançou para o Step '+curProj.cur+' · '+STEPS[curProj.cur-1].name);}}
 let genState={};
 function renderDocs(){const s=STEPS[curStep],arr=actsOf(curProj.type,curStep);
   document.getElementById('stepTitle').textContent=`Step ${s.step} · ${s.name}`;
@@ -1087,6 +1091,7 @@ function renderDocs(){const s=STEPS[curStep],arr=actsOf(curProj.type,curStep);
     const toolChip=tool?`<span class="pill" style="background:#e4f0fa;color:var(--brand);cursor:pointer" onclick='openTool(${JSON.stringify(tool).replace(/'/g,"&#39;")})'>📎 ${tool.type}</span>`:'';
     let action;
     if(st==="pend")action=`<button class="btn sm perm-w" data-key="${key}" onclick="genOne('${key}',this)">⚡ Gerar</button>`;
+    else if(st==="rev")action=`<button class="btn sm perm-w" data-key="${key}" onclick="approveDoc('${key}',this)">✓ Aprovar</button>`;
     else if(tool)action=`<button class="btn ghost sm" onclick='openTool(${JSON.stringify(tool).replace(/'/g,"&#39;")})'>Abrir</button>`;
     else action=`<button class="btn ghost sm" onclick="openDoc(this)">Abrir</button>`;
     row.innerHTML=`<div class="doc-ic">${tool?(tool.type==="XLSX"?'▦':'📄'):'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>'}</div>
@@ -1094,12 +1099,16 @@ function renderDocs(){const s=STEPS[curStep],arr=actsOf(curProj.type,curStep);
       ${toolChip}<span class="stt ${map[st][1]}">${map[st][0]}</span>${action}`;
     list.appendChild(row);});renderGateBar();}
 function genOne(key,btn){genState[key]="ger";const row=btn.closest('.doc-row');btn.outerHTML=`<button class="btn ghost sm" onclick="openDoc(this)">Abrir</button>`;
-  const stt=row.querySelector('.stt');stt.className='stt ger';stt.textContent='Gerado';refreshDocsBar();}
-function generateAll(){document.querySelectorAll('#docList button[data-key]').forEach(b=>genOne(b.dataset.key,b));}
+  const stt=row.querySelector('.stt');stt.className='stt ger';stt.textContent='Gerado';refreshDocsBar();renderGateBar();}
+function approveDoc(key,btn){genState[key]="ger";const row=btn.closest('.doc-row');btn.outerHTML=`<button class="btn ghost sm" onclick="openDoc(this)">Abrir</button>`;
+  const stt=row.querySelector('.stt');stt.className='stt ger';stt.textContent='Gerado';refreshDocsBar();renderGateBar();toast('Documento aprovado e inserido no gate.');}
+function generateAll(){document.querySelectorAll('#docList button[data-key]').forEach(b=>{if(b.textContent.includes('Gerar'))genOne(b.dataset.key,b);});
+  const rev=document.querySelectorAll('#docList button[data-key]').length;
+  toast(rev?'Pendentes gerados — restam '+rev+' documento(s) aguardando aprovação (✓ Aprovar).':'Pendentes gerados — gate completo.');}
 function refreshDocsBar(){let total=totalActs(curProj.type),done=0;
   ACT[curProj.type].forEach((arr,si)=>arr.forEach((d,di)=>{let st=docStatus(curProj,si,di);const k=`${curProj.id}-${si}-${di}`;if(genState[k])st=genState[k];if(st==="ger")done++;}));
   document.getElementById('pdDocs').textContent=done+"/"+total;document.getElementById('pdDocsBar').style.width=(done/total*100)+'%';}
-function addEvidence(){const t=document.getElementById('thumbs');const d=document.createElement('div');d.className='thumb';d.textContent='📷';t.appendChild(d);}
+/* addEvidence: definida junto do modal de upload (abre validação antes de anexar) */
 function syncSAP(b){const o=b.textContent;b.textContent='Sincronizando...';setTimeout(()=>{b.textContent='✓ Sincronizado';setTimeout(()=>b.textContent=o,1500);},900);}
 
 /* CLASSIFY */
@@ -1436,6 +1445,7 @@ function createProject(){
     meio:wzFmtDate(wzData.meio)!=='—'?wzFmtDate(wzData.meio):"15 "+MESES[Math.min(11,Math.round(gs+gsp/2))],
     fim:wzFmtDate(wzData.fim)!=='—'?wzFmtDate(wzData.fim):"30 "+MESES[Math.min(11,gs+gsp-1)],team};
   PROJECTS.push(np);updateStats();
+  built.gantt=0;built.reports=0; // cronograma e relatórios passam a incluir o projeto novo
   // card no portfólio
   const c=TYPES[t].color;let track="";for(let i=0;i<7;i++)track+=`<div class="s ${i===0?'now':''}"></div>`;
   const el=document.createElement('div');el.className='proj card';
