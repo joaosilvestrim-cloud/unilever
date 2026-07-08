@@ -120,7 +120,12 @@
   .gantt-row .lbl{width:230px;flex:none;display:flex;align-items:center;gap:9px;padding-right:12px}
   .gantt-row .lbl .nm{font-size:12.5px;font-weight:600;line-height:1.1}
   .gantt-row .lbl .nm small{display:block;color:var(--ink-faint);font-weight:400;font-size:11px}
-  .gantt-track{flex:1;position:relative;height:24px;background:repeating-linear-gradient(90deg,transparent,transparent calc(100%/12 - 1px),var(--line) calc(100%/12 - 1px),var(--line) calc(100%/12));border-radius:6px}
+  .gantt-track{flex:1;position:relative;height:24px;background:var(--surface-2);border-radius:6px}
+  .gantt-grid{position:absolute;inset:0;display:grid;grid-template-columns:repeat(12,1fr);pointer-events:none;border-radius:6px;overflow:hidden}
+  .gantt-grid span{border-right:1px solid #e7edf4}
+  .gantt-grid span:last-child{border-right:0}
+  .gantt-today{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--danger);z-index:4;pointer-events:none}
+  .gantt-head .gm-now{color:var(--danger)}
   .gantt-bar{position:absolute;top:3px;height:18px;border-radius:5px;display:flex;overflow:hidden;box-shadow:0 2px 6px -2px rgba(0,62,115,.4)}
   .gantt-seg{height:100%;border-right:1px solid rgba(255,255,255,.5)}
   .gantt-seg:last-child{border-right:0}
@@ -332,7 +337,7 @@
   #onb .dots i{width:8px;height:8px;border-radius:50%;background:var(--line)}#onb .dots i.on{background:var(--brand);width:20px;border-radius:4px}
   #onb .ob-foot{display:flex;justify-content:space-between;align-items:center;margin-top:6px}
   .skip{background:none;border:0;color:var(--ink-faint);font-family:inherit;font-size:13px;cursor:pointer}
-  /* WIZARD — classificação por critérios */
+  /* WIZARD, classificação por critérios */
   .wz-crit{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:10px}
   .wz-crit .ch{display:flex;align-items:center;gap:9px;margin-bottom:9px}
   .wz-crit .cn{font-family:"IBM Plex Mono";font-weight:700;color:var(--brand);font-size:11px;background:var(--brand-soft);width:22px;height:22px;border-radius:7px;display:grid;place-items:center;flex:none}
@@ -574,13 +579,13 @@
     <div class="nav-label">Visão Geral</div>
     <div class="nav-item active" data-view="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>Dashboard do Portfólio</div>
     <div class="nav-item" data-view="reports"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 19V5m4 14v-8m4 8V8m4 11v-5m4 5V4"/></svg>Relatórios & KPIs</div>
-    <div class="nav-label">Módulo 1 · PSR — Projetos</div>
+    <div class="nav-label">Módulo 1 · PSR, Projetos</div>
     <div class="nav-item" data-view="project"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h4"/></svg>Steps & Documentos</div>
     <div class="nav-item" data-view="gantt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="5" width="11" height="3" rx="1"/><rect x="7" y="10.5" width="13" height="3" rx="1"/><rect x="5" y="16" width="9" height="3" rx="1"/></svg>Cronograma</div>
     <div class="nav-item" data-view="audit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2 3 7v6c0 5 3.5 8 9 9 5.5-1 9-4 9-9V7z"/><path d="M9 12l2 2 4-4"/></svg>Auditoria</div>
-    <div class="nav-label">Módulo 2 · DRA — Financeiro</div>
+    <div class="nav-label">Módulo 2 · DRA, Financeiro</div>
     <div class="nav-item" data-view="dra"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 3v18h18"/><path d="M7 14l3-4 3 3 4-6"/></svg>DRA · Financeiro</div>
-    <div class="nav-label">Módulo 3 · Ciclo de Vida — Novo</div>
+    <div class="nav-label">Módulo 3 · Ciclo de Vida, Novo</div>
     <div class="nav-item" data-view="lifecycle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v5h-5"/><circle cx="12" cy="12" r="2.4"/></svg>Ciclo de Vida<span class="badge">Novo</span></div>
     <div class="nav-item" data-view="track"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 3v18h18"/><path d="M7 15l3-4 3 2 5-6"/><circle cx="7" cy="15" r="1.4" fill="currentColor" stroke="none"/><circle cx="18" cy="7" r="1.4" fill="currentColor" stroke="none"/></svg>Portfólio EEM<span class="badge">Novo</span></div>
     <div class="nav-label">Configuração</div>
@@ -598,18 +603,18 @@
       <div class="spacer"></div>
       <button class="tour-btn" onclick="startTour()" title="Conheça cada função da plataforma"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/></svg>Tour guiado</button>
       <button class="tour-btn" onclick="openHelp()" title="Manual de utilização do sistema"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.8 2.1c-.8.5-1.3 1-1.3 1.9"/><circle cx="12" cy="17" r=".6" fill="currentColor"/></svg>Ajuda</button>
-      <select class="role-sel" id="roleSel" onchange="applyRole(this.value)"><option>👤 Gerente de Projeto</option><option>🛡 Auditor</option><option>⚙ Admin</option></select>
+      <select class="role-sel" id="roleSel" onchange="applyRole(this.value)"><option>Gerente de Projeto</option><option>Auditor</option><option>Admin</option></select>
       <div class="search"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4-4"/></svg><input id="topSearch" placeholder="Buscar projeto, OI, líder..." autocomplete="off"><div id="searchDrop"></div></div>
       <div class="avatar" onclick="toggleUserMenu(event)">AL</div>
       <div id="userMenu">
         <div class="uh">Alan Silva<small>alan.silva@unilever.com · Gerente de Projeto</small></div>
-        <div class="mi" onclick="toggleUserMenu();openHelp()">📖 Manual de utilização</div>
-        <div class="mi" onclick="toggleUserMenu();startTour()">🧭 Tour guiado</div>
-        <div class="mi" onclick="toggleUserMenu();toast('Preferências salvas no perfil.')">⚙ Preferências</div>
-        <div class="mi out" onclick="logout()">⏻ Sair da plataforma</div>
+        <div class="mi" onclick="toggleUserMenu();openHelp()">Manual de utilização</div>
+        <div class="mi" onclick="toggleUserMenu();startTour()">Tour guiado</div>
+        <div class="mi" onclick="toggleUserMenu();toast('Preferências salvas no perfil.')">Preferências</div>
+        <div class="mi out" onclick="logout()">Sair da plataforma</div>
       </div>
     </div>
-    <div class="role-note" style="margin-top:14px">🛡 Modo Auditor — somente leitura: ações de criação e edição ficam ocultas. Troque o perfil no seletor acima para voltar.</div>
+    <div class="role-note" style="margin-top:14px">🛡 Modo Auditor, somente leitura: ações de criação e edição ficam ocultas. Troque o perfil no seletor acima para voltar.</div>
 
     <!-- DASHBOARD -->
     <section class="view" id="view-dashboard">
@@ -626,13 +631,13 @@
     <!-- CICLO DE VIDA DO PROJETO -->
     <section class="view hidden" id="view-lifecycle">
       <div class="panel-head">
-        <div><div class="section-title">Ciclo de Vida do Projeto <span class="pill" style="background:#fdf3e3;color:#8a5b00;vertical-align:middle">Módulo 3 · novo</span></div><div class="muted">A jornada completa de cada projeto — da iniciação ao encerramento — com saúde, histórico de evolução e atalhos para cada área</div></div>
+        <div><div class="section-title">Ciclo de Vida do Projeto <span class="pill" style="background:#fdf3e3;color:#8a5b00;vertical-align:middle">Módulo 3 · novo</span></div><div class="muted">A jornada completa de cada projeto, da iniciação ao encerramento, com saúde, histórico de evolução e atalhos para cada área</div></div>
         <select class="role-sel" id="lcSel" onchange="buildLifecycle(this.value)"></select>
       </div>
       <div class="card lc-journey"><div class="pm-sec" style="margin:0 0 16px">Fases do ciclo de vida <span style="font-weight:500;color:var(--ink-faint)">· status calculado pelo sistema</span></div><div class="lc-phases" id="lcPhases"></div></div>
       <div class="stat-grid" id="lcHealth"></div>
       <div class="lc-grid">
-        <div class="card lc-hist"><div class="pm-sec" style="margin:0 0 10px">📜 Histórico de evolução</div><div id="lcEvents"></div></div>
+        <div class="card lc-hist"><div class="pm-sec" style="margin:0 0 10px">Histórico de evolução</div><div id="lcEvents"></div></div>
         <div class="card lc-links"><div class="pm-sec" style="margin:0 0 10px">Navegar pelo projeto</div><div id="lcLinks"></div></div>
       </div>
     </section>
@@ -640,7 +645,7 @@
     <!-- ACOMPANHAMENTO EEM -->
     <section class="view hidden" id="view-track">
       <div class="panel-head">
-        <div><div class="section-title">Portfólio EEM · Acompanhamento Operacional <span class="pill" style="background:#fdf3e3;color:#8a5b00;vertical-align:middle">Módulo 3 · novo</span></div><div class="muted">Andamento, marcos e alertas de todos os projetos — a nova demanda (03/07), em cotação complementar. Independente da visão financeira (DRA).</div></div>
+        <div><div class="section-title">Portfólio EEM · Acompanhamento Operacional <span class="pill" style="background:#fdf3e3;color:#8a5b00;vertical-align:middle">Módulo 3 · novo</span></div><div class="muted">Andamento, marcos e alertas de todos os projetos, a nova demanda (03/07), em cotação complementar. Independente da visão financeira (DRA).</div></div>
         <div class="tk-filterbar">
           <select class="role-sel" id="trackLead" onchange="buildTrack()"></select>
           <button class="btn perm-w" onclick="openWizard()">+ Novo Projeto</button>
@@ -652,7 +657,7 @@
         <div class="panel-head" style="margin-bottom:14px"><div><div class="section-title" style="font-size:15px">Cronograma Macro</div><div class="muted">Barra = início → fim · losango = marco do meio · trecho claro = executado · linha vermelha = hoje · <b style="color:var(--danger)">trecho hachurado vermelho = prazo remanejado além do cronograma original</b></div></div></div>
         <div id="trackMacro"></div>
       </div>
-      <div class="panel-head" style="margin-bottom:12px"><div><div class="section-title" style="font-size:15px">Projetos — andamento planejado × real</div><div class="muted">On track / off track calculado pelo sistema (real × plano) · clique em um projeto para abrir o <b>plano com marcos e atividades</b></div></div></div>
+      <div class="panel-head" style="margin-bottom:12px"><div><div class="section-title" style="font-size:15px">Projetos, andamento planejado × real</div><div class="muted">On track / off track calculado pelo sistema (real × plano) · clique em um projeto para abrir o <b>plano com marcos e atividades</b></div></div></div>
       <div class="tk-cards" id="trackList"></div>
     </section>
 
@@ -660,7 +665,7 @@
     <section class="view hidden" id="view-reports">
       <div class="panel-head">
         <div><div class="section-title">Relatórios & KPIs</div><div class="muted">Visão executiva do portfólio · integrado ao Power BI e ao SAP</div></div>
-        <div style="display:flex;gap:8px"><select class="role-sel" id="periodSel"><option>Ano 2026</option><option>Último trimestre</option><option>Últimos 30 dias</option></select><button class="btn ghost" onclick="openTV()">⛶ Tela cheia (TV)</button></div>
+        <div style="display:flex;gap:8px"><select class="role-sel" id="periodSel"><option>Ano 2026</option><option>Último trimestre</option><option>Últimos 30 dias</option></select><button class="btn ghost" onclick="openTV()">Tela cheia (TV)</button></div>
       </div>
       <div class="kpi-grid" id="kpiGrid"></div>
       <div class="chart-grid">
@@ -677,13 +682,13 @@
       <div class="pd-head card">
         <div class="typebadge" id="pdBadge" style="background:var(--type-a)">A</div>
         <div class="info">
-          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><h2 id="pdName">—</h2><span class="sap-chip"><span class="led"></span> <span id="pdOI">OI —</span> · base SAP (SharePoint)</span></div>
-          <div class="loc" id="pdLoc">—</div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><h2 id="pdName">, </h2><span class="sap-chip"><span class="led"></span> <span id="pdOI">OI, </span> · base SAP (SharePoint)</span></div>
+          <div class="loc" id="pdLoc">, </div>
           <div class="pd-metrics">
             <div class="pdm"><div class="l">Tipo / Docs por step</div><div class="n" id="pdType">A · 7</div></div>
-            <div class="pdm"><div class="l">Orçamento</div><div class="n" id="pdBudget">—</div><div class="minibar"><i id="pdBudgetBar" style="background:var(--brand)"></i></div></div>
-            <div class="pdm"><div class="l">Cronograma</div><div class="n" id="pdSched">—</div><div class="minibar"><i id="pdSchedBar" style="background:var(--ok)"></i></div></div>
-            <div class="pdm"><div class="l">Documentação</div><div class="n" id="pdDocs">—</div><div class="minibar"><i id="pdDocsBar" style="background:var(--warn)"></i></div></div>
+            <div class="pdm"><div class="l">Orçamento</div><div class="n" id="pdBudget">, </div><div class="minibar"><i id="pdBudgetBar" style="background:var(--brand)"></i></div></div>
+            <div class="pdm"><div class="l">Cronograma</div><div class="n" id="pdSched">, </div><div class="minibar"><i id="pdSchedBar" style="background:var(--ok)"></i></div></div>
+            <div class="pdm"><div class="l">Documentação</div><div class="n" id="pdDocs">, </div><div class="minibar"><i id="pdDocsBar" style="background:var(--warn)"></i></div></div>
           </div>
         </div>
         <select class="role-sel" id="projSel"></select>
@@ -718,7 +723,7 @@
     <!-- CLASSIFY -->
     <section class="view hidden" id="view-classify">
       <div class="toolbanner"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
-        <div><h3>Classificação Automática de Projetos</h3><p>Avalie os critérios — a pontuação define o Tipo (A–E) e <b>quantos documentos por step</b> serão gerados automaticamente.</p></div>
+        <div><h3>Classificação Automática de Projetos</h3><p>Avalie os critérios, a pontuação define o Tipo (A–E) e <b>quantos documentos por step</b> serão gerados automaticamente.</p></div>
         <button class="btn" onclick="resetClass()">Limpar</button></div>
       <div class="class-layout">
         <div id="critList"></div>
@@ -726,7 +731,7 @@
           <div class="head"><div class="lbl">Pontuação total</div><div class="gauge"><div class="score" id="scoreVal">0</div><div class="of">/ 100</div></div><div class="bar"><i id="scoreBar" style="width:0%"></i></div></div>
           <div class="typeout"><div class="big"><div class="tb" id="typeBadge" style="background:#9aa6b2">–</div><div><div class="tname" id="typeName">Aguardando avaliação</div><div class="trange" id="typeRange">selecione os critérios</div></div></div>
             <p id="typeDesc">Selecione um nível em cada critério para calcular a classificação.</p>
-            <div class="docout"><div class="num" id="docNum">—</div><div class="t"><b id="docNumPer">— documentos por step</b><br><span id="docNumTot">× 7 steps</span></div></div>
+            <div class="docout"><div class="num" id="docNum">, </div><div class="t"><b id="docNumPer">, documentos por step</b><br><span id="docNumTot">× 7 steps</span></div></div>
             <div id="docBreak" style="display:none;margin-top:10px"></div></div>
           <div class="typescale" id="typeScale"></div>
         </div>
@@ -736,13 +741,13 @@
     <!-- DOCS -->
     <section class="view hidden" id="view-docs">
       <div class="toolbanner"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><path d="M13 2 3 14h7l-1 8 10-12h-7z"/></svg></div>
-        <div><h3>Automação de Documentação</h3><p>Cada documento obrigatório é gerado automaticamente conforme o tipo do projeto (A–E) e o step atual, a partir dos templates oficiais — eliminando o trabalho manual em Excel.</p></div></div>
+        <div><h3>Automação de Documentação</h3><p>Cada documento obrigatório é gerado automaticamente conforme o tipo do projeto (A–E) e o step atual, a partir dos templates oficiais, eliminando o trabalho manual em Excel.</p></div></div>
       <div class="stat-grid" style="grid-template-columns:repeat(3,1fr)">
         <div class="stat card"><div class="glow" style="background:var(--ok)"></div><div class="k">Gerados automaticamente</div><div class="v">187</div><div class="d">economia de ~94h/mês</div></div>
         <div class="stat card"><div class="glow" style="background:var(--warn)"></div><div class="k">Em revisão</div><div class="v">12</div><div class="d">aguardando aprovação</div></div>
         <div class="stat card"><div class="glow" style="background:var(--pend)"></div><div class="k">Pendentes</div><div class="v">27</div><div class="d">prontos para gerar</div></div>
       </div>
-      <div class="panel-head"><div><div class="section-title">Biblioteca de ferramentas & templates</div><div class="muted">Templates oficiais ligados aos documentos — clique para abrir o preview</div></div></div>
+      <div class="panel-head"><div><div class="section-title">Biblioteca de ferramentas & templates</div><div class="muted">Templates oficiais ligados aos documentos, clique para abrir o preview</div></div></div>
       <div class="proj-grid" style="grid-template-columns:repeat(4,1fr)" id="tmplGrid"></div>
     </section>
 
@@ -757,12 +762,12 @@
     <section class="view hidden" id="view-dra">
       <div class="toolbanner">
         <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><path d="M3 3v18h18"/><path d="M7 14l3-4 3 3 4-6"/></svg></div>
-        <div><h3>Módulo 2 · DRA — Designação de Recursos e Autorização</h3><p>Controle financeiro mês a mês por Ordem Interna (OI). Base extraída do SAP por robô (RPA) e gravada no SharePoint — sem API SAP ao vivo.</p></div>
+        <div><h3>Módulo 2 · DRA, Designação de Recursos e Autorização</h3><p>Controle financeiro mês a mês por Ordem Interna (OI). Base extraída do SAP por robô (RPA) e gravada no SharePoint, sem API SAP ao vivo.</p></div>
         <select class="role-sel" id="draSel" style="margin-left:auto"></select>
       </div>
       <div class="kpi-grid" id="draKpis" style="grid-template-columns:repeat(5,1fr)"></div>
       <div class="chart-grid" style="grid-template-columns:1.4fr 1fr">
-        <div class="card chart"><h4>Orçado × Executado por mês <span id="draOI">OI —</span></h4><div id="draChart"></div></div>
+        <div class="card chart"><h4>Orçado × Executado por mês <span id="draOI">OI, </span></h4><div id="draChart"></div></div>
         <div class="card chart"><h4>Saldo de Capex <span>acumulado</span></h4><div id="draDonut"></div></div>
       </div>
       <div class="card" style="overflow:hidden;margin-top:14px">
@@ -780,7 +785,7 @@
       </div>
       <div class="cat-stats" id="catStats"></div>
       <div class="card" style="overflow:hidden;margin-top:14px">
-        <div class="docs-head"><div><div class="st">Documentos cadastrados</div><div class="muted" id="catCount">—</div></div>
+        <div class="docs-head"><div><div class="st">Documentos cadastrados</div><div class="muted" id="catCount">, </div></div>
           <select class="role-sel" id="catFilter"><option value="all">Todos os steps</option></select></div>
         <table class="tbl cat-tbl"><thead><tr><th>Step</th><th>Documento</th><th>Template</th><th>Obrigatório a partir de</th><th style="text-align:center">A</th><th style="text-align:center">B</th><th style="text-align:center">C</th><th style="text-align:center">D</th><th style="text-align:center">E</th><th></th></tr></thead><tbody id="catBody"></tbody></table>
       </div>
@@ -829,7 +834,7 @@
 <div id="wizard" class="hidden">
   <div class="wz">
     <div class="wz-head">
-      <h3>Novo Projeto — Cadastro (Etapa 1)</h3>
+      <h3>Novo Projeto, Cadastro (Etapa 1)</h3>
       <div class="wz-steps">
         <div class="ws on" data-ws="0">1 · Identificação</div>
         <div class="ws" data-ws="1">2 · Classificação</div>
@@ -871,7 +876,7 @@
 <!-- PLANO DO PROJETO (marcos + atividades) -->
 <div id="planModal" class="hidden">
   <div class="pm">
-    <div class="pm-head"><div style="flex:1"><h3 id="pmTitle">—</h3><div class="sub" id="pmSub">—</div></div><span id="pmStatus"></span><button class="tm-x" onclick="closePlan()">✕</button></div>
+    <div class="pm-head"><div style="flex:1"><h3 id="pmTitle">, </h3><div class="sub" id="pmSub">, </div></div><span id="pmStatus"></span><button class="tm-x" onclick="closePlan()">✕</button></div>
     <div class="pm-body" id="pmBody"></div>
     <div class="pm-foot"><button class="btn ghost sm" onclick="closePlan()">Fechar</button><button class="btn sm perm-w" onclick="togglePmAdd()">+ Nova atividade</button></div>
   </div>
@@ -894,12 +899,12 @@
 <div id="helpModal" class="hidden">
   <div class="hm">
     <div class="hm-side">
-      <div class="hs-head"><h3>📖 Manual de Utilização</h3><p>Plataforma de Gestão de Projetos · v1.0</p></div>
+      <div class="hs-head"><h3>Manual de Utilização</h3><p>Plataforma de Gestão de Projetos · v1.0</p></div>
       <input id="helpSearch" placeholder="Filtrar seções..." oninput="renderHelpToc(this.value)">
       <div class="hm-toc" id="helpToc"></div>
     </div>
     <div class="hm-main">
-      <div class="hm-top"><div class="crumbh" id="helpCrumb">Manual</div><button class="btn ghost sm" onclick="printHelp()">🖨 Imprimir / PDF</button><button class="tm-x" onclick="closeHelp()">✕</button></div>
+      <div class="hm-top"><div class="crumbh" id="helpCrumb">Manual</div><button class="btn ghost sm" onclick="printHelp()">Imprimir / PDF</button><button class="tm-x" onclick="closeHelp()">✕</button></div>
       <div class="hm-body" id="helpBody"></div>
       <div class="hm-nav"><button class="btn ghost sm" id="helpPrev" onclick="helpNav(-1)">‹ Seção anterior</button><button class="btn sm" id="helpNext" onclick="helpNav(1)">Próxima seção ›</button></div>
     </div>
@@ -909,7 +914,7 @@
 
 <div id="toolModal" class="hidden">
   <div class="tm">
-    <div class="tm-head"><span class="pill tm-type">DOCX</span><div style="flex:1"><div class="tm-title">—</div><div class="tm-meta">—</div></div><button class="tm-x" onclick="closeTool()">✕</button></div>
+    <div class="tm-head"><span class="pill tm-type">DOCX</span><div style="flex:1"><div class="tm-title">, </div><div class="tm-meta">, </div></div><button class="tm-x" onclick="closeTool()">✕</button></div>
     <div class="tm-body"></div>
     <div class="tm-foot"><button class="btn ghost sm" onclick="closeTool()">Fechar</button><button class="btn sm" onclick="dlTemplate()">⬇ Baixar template</button></div>
   </div>
@@ -941,11 +946,11 @@ const STEPS=[
   {step:6,name:"FAT (Factory Acceptance Test)"},
   {step:7,name:"Conclusão"}
 ];
-/* Documentos obrigatórios por step (fonte: Escopo Unilever — Tabela 2 nomes-chave + complementos) */
+/* Documentos obrigatórios por step (fonte: Escopo Unilever, Tabela 2 nomes-chave + complementos) */
 const POOLS=[
   ["Project Briefing","Termo de Referência","Definição de Escopo","Gestão de Mudanças (Change Request)","Cronograma Macro","Plano do Projeto","Matriz de Stakeholders (RACI)"],
-  ["Análise de Risco","Matriz de Riscos","Cardinal Rules — SHE","Plano de Mitigação","HAZOP","Avaliação de Risco E2E","PFMEA","PPP — Plano de Prevenção","LCC — Life Cycle Cost","Estimativa de Custo (30%)","Calculadora de Contingência","Business Case (DCF) — Base","URS Preliminar","RFQ Preliminar","Ata de Revisão de Risco"],
-  ["Comparativo Técnico","Análise de Equipamento","Pré-Qualificação de Contratados","RFQ Final","Mapa de Cotações","Parecer Técnico","Due Diligence de Fornecedor","Estimativa de Custo (10%)","Business Case Final","CAR — Aprovação","Ata de Comparação"],
+  ["Análise de Risco","Matriz de Riscos","Cardinal Rules, SHE","Plano de Mitigação","HAZOP","Avaliação de Risco E2E","PFMEA","PPP, Plano de Prevenção","LCC, Life Cycle Cost","Estimativa de Custo (30%)","Calculadora de Contingência","Business Case (DCF), Base","URS Preliminar","RFQ Preliminar","Ata de Revisão de Risco"],
+  ["Comparativo Técnico","Análise de Equipamento","Pré-Qualificação de Contratados","RFQ Final","Mapa de Cotações","Parecer Técnico","Due Diligence de Fornecedor","Estimativa de Custo (10%)","Business Case Final","CAR, Aprovação","Ata de Comparação"],
   ["Relatório de Progresso","Fotos de Execução","Plano de Qualidade","Controle de POs","Inspeções Intermediárias","Cronograma Físico","Registro de Não-Conformidade","Validação de Design (antes do FAT)"],
   ["Comprovação de Treinamento","Plano de Operação","Checklist de Instalação","SOP / SMP","Registro de Comissionamento"],
   ["Relatório de FAT","Assinatura de Aceite","Checklist de Comissionamento (DRY/WET)","Capability Check","Punch List"],
@@ -982,9 +987,9 @@ function countFor(type,si){return CATALOG.filter(d=>d.step===si && requiredFor(d
 /* Biblioteca de ferramentas/templates reais ligadas a atividades específicas */
 const TOOLS={
   change:{name:"Change Control Procedure",type:"DOCX",meta:"Procedimento · guia",prev:{kind:"doc",title:"Change Control Procedure",sub:"Guideline · Unilever EEM",items:["1.0 Policy","2.0 Objective","3.0 Definitions","3.1 Change","4.0 Change Categories","5.0 Roles & Responsibilities","6.0 Approval Workflow","7.0 Records & Traceability"]}},
-  cardinal:{name:"Cardinal Rules — SHE Assessment",type:"DOCX",meta:"Questionário SHE · Yes/No",prev:{kind:"qa",title:"Cardinal Rules — SHE Risk Assessment",sub:"Safety, Health and Environment (SHE)",items:["Will the project interact with a hazard from the ammonia process?","Will the project interact with a hazard in the sulfonation process?","Does the project involve work at height?","Does the project involve confined space entry?","Does the project involve hot work / hot surfaces?","Does the project involve high-voltage electrical work?","Does the project involve machinery guarding changes?"]}},
+  cardinal:{name:"Cardinal Rules, SHE Assessment",type:"DOCX",meta:"Questionário SHE · Yes/No",prev:{kind:"qa",title:"Cardinal Rules, SHE Risk Assessment",sub:"Safety, Health and Environment (SHE)",items:["Will the project interact with a hazard from the ammonia process?","Will the project interact with a hazard in the sulfonation process?","Does the project involve work at height?","Does the project involve confined space entry?","Does the project involve hot work / hot surfaces?","Does the project involve high-voltage electrical work?","Does the project involve machinery guarding changes?"]}},
   contractor:{name:"Contractor Pre-Qualification Checklist",type:"DOCX",meta:"13 seções",prev:{kind:"doc",title:"Contractor Pre-Qualification Checklist",sub:"Unilever · Procurement & SHE",items:["Legal & Confidentiality","Company Details","SHE Management System","Insurance & Liability","References & Track Record","Financial Standing","Subcontracting Policy","Training & Competency Records","Equipment & Tooling","Quality Management","Environmental Compliance","Site Safety Plan","Declaration & Sign-off"]}},
-  commissioning:{name:"Commissioning Checklist (DRY / WET)",type:"XLSX",meta:"15 categorias SHE",prev:{kind:"checklist",title:"Commissioning Checklist — DRY / WET",sub:"Colunas: N° · ITEM · Yes · No · NA · Action · Responsible · Leadtime",items:["Higiene","Environment","Legislation","Health","Mechanics","Process","Safety","Electrical Safety","Machinery Safety","CPE","Ergonomics","Construction","Confined Space","Heights","Flammables"]}}
+  commissioning:{name:"Commissioning Checklist (DRY / WET)",type:"XLSX",meta:"15 categorias SHE",prev:{kind:"checklist",title:"Commissioning Checklist, DRY / WET",sub:"Colunas: N° · ITEM · Yes · No · NA · Action · Responsible · Leadtime",items:["Higiene","Environment","Legislation","Health","Mechanics","Process","Safety","Electrical Safety","Machinery Safety","CPE","Ergonomics","Construction","Confined Space","Heights","Flammables"]}}
 };
 function drTool(stepNum){return {name:"Design Review DR"+stepNum,type:"XLSX",meta:stepNum===3?"DR3 · Detailed Design":stepNum===7?"DR7 · Initial Flow":"Gate de revisão",prev:{kind:"form",title:"Design Review DR"+stepNum,sub:"Early Equipment Management (EEM)",items:["Project name","Project class","Project category","Equipment","Review date","Reviewers / Sign-off","Checklist de conformidade do gate"]}};}
 function toolFor(stepNum,name){const n=name.toLowerCase();
@@ -999,7 +1004,7 @@ const PROJECTS=[
   {id:"P3",type:"C",name:"Otimização CIP",loc:"Pouso Alegre · Foods",cur:7,budP:1400000,budA:1350000,com:30000,sav:260000,schP:98,lead:"R. Lima",oi:"810203",gs:0,gsp:6},
   {id:"P4",type:"D",name:"Troca de Sensores Linha 3",loc:"Aparecida · Ice Cream",cur:2,budP:180000,budA:42000,com:28000,sav:35000,schP:28,lead:"A. Costa",oi:"810288",gs:4,gsp:4},
   {id:"P5",type:"E",name:"Compra de Bombas Sobressalentes",loc:"Garanhuns · Utilidades",cur:1,budP:60000,budA:0,com:12000,sav:8000,schP:10,lead:"J. Pereira",oi:"810310",gs:5,gsp:2},
-  {id:"P6",type:"B",name:"Expansão Sorvetes — Túnel de Frio",loc:"Aparecida · Ice Cream",cur:3,budP:5200000,budA:1900000,com:1400000,sav:610000,schP:41,lead:"T. Almeida",oi:"810356",gs:3,gsp:7}
+  {id:"P6",type:"B",name:"Expansão Sorvetes, Túnel de Frio",loc:"Aparecida · Ice Cream",cur:3,budP:5200000,budA:1900000,com:1400000,sav:610000,schP:41,lead:"T. Almeida",oi:"810356",gs:3,gsp:7}
 ];
 const MESES=["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
 /* Série financeira mês a mês derivada do projeto (base extraída do SAP via robô → SharePoint) */
@@ -1067,7 +1072,7 @@ function renderGateBar(){
   const pct=req?Math.round(ins/req*100):0;
   host.className='gate-bar '+(open?'open':'locked');
   host.innerHTML=`<div class="gi">${open?'🔓':'🔒'}</div>
-    <div class="gp">${open?`Gate liberado — ${ins}/${req} documentos inseridos. Você pode avançar para o próximo step.`:`Gate bloqueado — ${ins}/${req} documentos obrigatórios inseridos. Insira os documentos restantes para avançar.`}
+    <div class="gp">${open?`Gate liberado, ${ins}/${req} documentos inseridos. Você pode avançar para o próximo step.`:`Gate bloqueado, ${ins}/${req} documentos obrigatórios inseridos. Insira os documentos restantes para avançar.`}
       <div class="gpb"><i style="width:${pct}%;background:${open?'var(--ok)':'var(--danger)'}"></i></div></div>
     <button class="btn sm perm-w" ${open?'':'disabled style="opacity:.5;pointer-events:none"'} onclick="advanceStep()">Avançar step →</button>`;
 }
@@ -1075,12 +1080,12 @@ function advanceStep(){
   if(!gateOpen(curProj,curProj.cur-1)){toast('Gate bloqueado: insira 100% dos documentos obrigatórios do step antes de avançar.');return;}
   if(curProj.cur<7){curProj.cur++;curStep=curProj.cur-1;openProject(curProj.id);
   built.gantt=0;built.reports=0;rebuildDashboard(); // telas dependentes refletem o avanço na hora
-  toast('Step '+(curProj.cur-1)+' concluído — projeto avançou para o Step '+curProj.cur+' · '+STEPS[curProj.cur-1].name);}}
+  toast('Step '+(curProj.cur-1)+' concluído, projeto avançou para o Step '+curProj.cur+' · '+STEPS[curProj.cur-1].name);}}
 let genState={};
 function renderDocs(){const s=STEPS[curStep],arr=actsOf(curProj.type,curStep);
   document.getElementById('stepTitle').textContent=`Step ${s.step} · ${s.name}`;
   const withTool=arr.filter((a,i)=>toolFor(s.step,a)).length;
-  document.getElementById('stepMeta').textContent=arr.length?`${arr.length} documentos obrigatórios · ${withTool} com template — Tipo ${curProj.type}`:`Não aplicável (NA) para projeto Tipo ${curProj.type}`;
+  document.getElementById('stepMeta').textContent=arr.length?`${arr.length} documentos obrigatórios · ${withTool} com template, Tipo ${curProj.type}`:`Não aplicável (NA) para projeto Tipo ${curProj.type}`;
   const list=document.getElementById('docList');list.innerHTML='';
   if(!arr.length){list.innerHTML=`<div style="padding:34px;text-align:center;color:var(--ink-faint)">Este step não possui documentos para o Tipo ${curProj.type} (NA).</div>`;return;}
   arr.forEach((d,di)=>{let st=docStatus(curProj,curStep,di);
@@ -1104,7 +1109,7 @@ function approveDoc(key,btn){genState[key]="ger";const row=btn.closest('.doc-row
   const stt=row.querySelector('.stt');stt.className='stt ger';stt.textContent='Gerado';refreshDocsBar();renderGateBar();toast('Documento aprovado e inserido no gate.');}
 function generateAll(){document.querySelectorAll('#docList button[data-key]').forEach(b=>{if(b.textContent.includes('Gerar'))genOne(b.dataset.key,b);});
   const rev=document.querySelectorAll('#docList button[data-key]').length;
-  toast(rev?'Pendentes gerados — restam '+rev+' documento(s) aguardando aprovação (✓ Aprovar).':'Pendentes gerados — gate completo.');}
+  toast(rev?'Pendentes gerados, restam '+rev+' documento(s) aguardando aprovação (✓ Aprovar).':'Pendentes gerados, gate completo.');}
 function refreshDocsBar(){let total=totalActs(curProj.type),done=0;
   ACT[curProj.type].forEach((arr,si)=>arr.forEach((d,di)=>{let st=docStatus(curProj,si,di);const k=`${curProj.id}-${si}-${di}`;if(genState[k])st=genState[k];if(st==="ger")done++;}));
   document.getElementById('pdDocs').textContent=done+"/"+total;document.getElementById('pdDocsBar').style.width=(done/total*100)+'%';}
@@ -1128,7 +1133,7 @@ function computeScore(){const keys=Object.keys(sel);let raw=0;keys.forEach(k=>ra
   if(ans===0){document.getElementById('typeBadge').textContent='–';document.getElementById('typeBadge').style.background='#9aa6b2';
     document.getElementById('typeName').textContent='Aguardando avaliação';document.getElementById('typeRange').textContent='selecione os critérios';
     document.getElementById('typeDesc').textContent='Selecione um nível em cada critério para calcular a classificação.';
-    document.getElementById('docNum').textContent='—';document.getElementById('docNumPer').textContent='— documentos por step';document.getElementById('docNumTot').textContent='× 7 steps';document.getElementById('docBreak').style.display='none';return;}
+    document.getElementById('docNum').textContent=', ';document.getElementById('docNumPer').textContent=', documentos por step';document.getElementById('docNumTot').textContent='× 7 steps';document.getElementById('docBreak').style.display='none';return;}
   const ty=scoreToType(score),info=TYPES[ty];const b=document.getElementById('typeBadge');b.textContent=ty;b.style.background=info.color;
   document.getElementById('typeName').textContent='Tipo '+ty+' · '+info.name;document.getElementById('typeRange').textContent='faixa '+info.range+' pts';
   document.getElementById('typeDesc').textContent=info.desc+(ans<CRITERIA.length?` · (${ans}/${CRITERIA.length} critérios)`:'');
@@ -1139,7 +1144,7 @@ function computeScore(){const keys=Object.keys(sel);let raw=0;keys.forEach(k=>ra
   const on=document.querySelector(`.typescale .t[data-t="${ty}"]`);on.classList.add('on');on.style.background=info.color;}
 function resetClass(){for(const k in sel)delete sel[k];document.querySelectorAll('.lvl').forEach(x=>x.classList.remove('sel'));computeScore();}
 
-/* DOCS — biblioteca real de ferramentas/templates + resumo por tipo */
+/* DOCS, biblioteca real de ferramentas/templates + resumo por tipo */
 const tg=document.getElementById('tmplGrid');
 const LIB=[
   {...TOOLS.change,step:"Step 1 · Project Briefing"},
@@ -1153,7 +1158,7 @@ tg.innerHTML=LIB.map(t=>`<div class="card" style="padding:15px 15px;cursor:point
   <div class="muted" style="font-size:11.5px;margin-top:3px">${t.meta}</div>
   <div style="margin-top:10px;font-size:12px;color:var(--brand);font-weight:600">Abrir preview →</div></div>`).join('');
 
-/* AUDIT — atividades por projeto/step/tipo */
+/* AUDIT, atividades por projeto/step/tipo */
 const auditBody=document.getElementById('auditBody');let auditRows=[];
 const ago=["há 5 min","há 1h","ontem","há 2 dias","há 3 dias","há 1 semana"];
 PROJECTS.forEach(p=>{ACT[p.type].forEach((arr,si)=>{arr.forEach((d,di)=>{const st=docStatus(p,si,di);if(st===null)return;
@@ -1172,7 +1177,7 @@ function openTool(t){
   curTM=t;
   const m=document.getElementById('toolModal');let body='';
   if(t.prev.kind==='qa'){body=`<div class="muted" style="margin-bottom:12px">${t.prev.sub}</div>`+t.prev.items.map((q,i)=>`<div class="qa-row"><div class="qn">${i+1}</div><div class="qt">${q}</div><div class="qopt"><span>Yes</span><span>No</span></div></div>`).join('');}
-  else if(t.prev.kind==='checklist'){body=`<div class="muted" style="margin-bottom:10px">${t.prev.sub}</div><div class="cat-grid">`+t.prev.items.map(c=>`<div class="cat">${c}</div>`).join('')+`</div><table class="mini-tbl"><thead><tr><th>N°</th><th>Item</th><th>Yes</th><th>No</th><th>NA</th><th>Action</th></tr></thead><tbody><tr><td>1</td><td>Verificação de segurança do item</td><td>○</td><td>○</td><td>○</td><td>—</td></tr><tr><td>2</td><td>Conformidade com legislação</td><td>○</td><td>○</td><td>○</td><td>—</td></tr><tr><td>3</td><td>Registro de evidência</td><td>○</td><td>○</td><td>○</td><td>—</td></tr></tbody></table>`;}
+  else if(t.prev.kind==='checklist'){body=`<div class="muted" style="margin-bottom:10px">${t.prev.sub}</div><div class="cat-grid">`+t.prev.items.map(c=>`<div class="cat">${c}</div>`).join('')+`</div><table class="mini-tbl"><thead><tr><th>N°</th><th>Item</th><th>Yes</th><th>No</th><th>NA</th><th>Action</th></tr></thead><tbody><tr><td>1</td><td>Verificação de segurança do item</td><td>○</td><td>○</td><td>○</td><td>, </td></tr><tr><td>2</td><td>Conformidade com legislação</td><td>○</td><td>○</td><td>○</td><td>, </td></tr><tr><td>3</td><td>Registro de evidência</td><td>○</td><td>○</td><td>○</td><td>, </td></tr></tbody></table>`;}
   else if(t.prev.kind==='form'){body=`<div class="muted" style="margin-bottom:12px">${t.prev.sub}</div><div class="form-grid">`+t.prev.items.map(f=>`<div class="ff"><label>${f}</label><div class="fin"></div></div>`).join('')+`</div>`;}
   else{body=`<div class="muted" style="margin-bottom:12px">${t.prev.sub}</div><div class="toc">`+t.prev.items.map(s=>`<div class="toc-row"><span>${s}</span><span class="muted">…</span></div>`).join('')+`</div>`;}
   m.querySelector('.tm-type').textContent=t.type;m.querySelector('.tm-type').className='pill tm-type';
@@ -1251,13 +1256,13 @@ function vbars(data){const W=620,H=170;const max=Math.max(...data.map(d=>d.value
 /* ============ GANTT ============ */
 function buildGantt(){
   const months=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
-  document.getElementById('ganttHead').innerHTML=months.map(m=>`<div>${m}</div>`).join('');
+  document.getElementById('ganttHead').innerHTML=months.map((m,i)=>`<div class="${Math.floor(EEM_TODAY)===i?'gm-now':''}">${m}</div>`).join('');
   document.getElementById('ganttBody').innerHTML=PROJECTS.map(p=>{
     const left=p.gs/12*100, width=p.gsp/12*100;
     let segs='';for(let i=0;i<7;i++){const cls=i<p.cur-1?'var(--ok)':(i===p.cur-1?'var(--brand)':'var(--type-d)');
       segs+=`<div class="gantt-seg" style="width:${100/7}%;background:${cls}" title="${STEPS[i].name}"></div>`;}
     return `<div class="gantt-row"><div class="lbl"><span class="tt-badge" style="background:${TYPES[p.type].color}">${p.type}</span><div class="nm">${p.name}<small>${p.lead} · ${p.cur}/7</small></div></div>
-      <div class="gantt-track"><div class="gantt-bar" style="left:${left}%;width:${width}%">${segs}</div></div></div>`;
+      <div class="gantt-track"><div class="gantt-grid">${'<span></span>'.repeat(12)}</div><div class="gantt-today" style="left:${EEM_TODAY/12*100}%"></div><div class="gantt-bar" style="left:${left}%;width:${width}%">${segs}</div></div></div>`;
   }).join('');
 }
 
@@ -1291,7 +1296,7 @@ function buildDRA(){
   for(let m=0;m<12;m++){
     const d=f.gas[m]; if(f.orc[m]===0 && d===0 && m<p.gs) {continue;}
     acc-=d;
-    rows+=`<tr><td style="font-weight:600">${MESES[m]}/26</td><td style="text-align:right">${f.orc[m]?eurc(f.orc[m]):'—'}</td><td style="text-align:right">${d?eurc(d):'—'}</td><td style="text-align:right;color:${d>f.orc[m]&&f.orc[m]?'var(--danger)':'var(--ink-soft)'}">${d?eurc(d-f.orc[m]):'—'}</td><td style="text-align:right;font-weight:600">${eurc(acc)}</td></tr>`;
+    rows+=`<tr><td style="font-weight:600">${MESES[m]}/26</td><td style="text-align:right">${f.orc[m]?eurc(f.orc[m]):', '}</td><td style="text-align:right">${d?eurc(d):', '}</td><td style="text-align:right;color:${d>f.orc[m]&&f.orc[m]?'var(--danger)':'var(--ink-soft)'}">${d?eurc(d-f.orc[m]):', '}</td><td style="text-align:right;font-weight:600">${eurc(acc)}</td></tr>`;
   }
   document.getElementById('draBody').innerHTML=rows;
 }
@@ -1303,7 +1308,7 @@ function draBars(orc,gas){const W=560,H=200,pad=30;const max=Math.max(...orc,...
   return `<svg width="100%" viewBox="0 0 ${W} ${H}">${b}</svg><div class="legend"><span><i style="background:#c7ddef"></i>Orçado</span><span><i style="background:#0060A8"></i>Executado</span></div>`;}
 buildDRA();
 const INTEG=[
-  {ic:"SAP",color:"#0a6cff",name:"Robô SAP (RPA)",on:true,st:"Conectado · extração mensal",p:"Robô (RPA, VBScript/Python) que extrai do SAP, por Ordem Interna (OI), os dados financeiros — orçamento, executado, compromissado e saldo — e gera a base (Excel/TXT) consumida pela plataforma. Não utiliza API SAP ao vivo."},
+  {ic:"SAP",color:"#0a6cff",name:"Robô SAP (RPA)",on:true,st:"Conectado · extração mensal",p:"Robô (RPA, VBScript/Python) que extrai do SAP, por Ordem Interna (OI), os dados financeiros, orçamento, executado, compromissado e saldo, e gera a base (Excel/TXT) consumida pela plataforma. Não utiliza API SAP ao vivo."},
   {ic:"SP",color:"#1f9d57",name:"SharePoint (Unilever)",on:true,st:"Backend principal",p:"Armazenamento dos documentos dos projetos e das bases financeiras no SharePoint da Unilever (ecossistema Microsoft)."},
   {ic:"BI",color:"#e8930c",name:"Power BI (DRA)",on:true,st:"Módulo 2",p:"Painel gerencial consumindo a base do SharePoint: orçado vs. gasto real por projeto e período."}
 ];
@@ -1324,9 +1329,9 @@ function renderTeam(){document.getElementById('teamBody').innerHTML=TEAM.map(u=>
 renderTeam();
 const PERMS=[["Criar / editar projeto",1,1,0],["Classificar projeto",1,1,0],["Configurar catálogo de documentos",1,0,0],["Gerar / inserir documentos",1,1,0],["Aprovar documentos",1,1,0],["Editar dados financeiros (SAP)",1,0,0],["Gerenciar usuários e papéis",1,0,0],["Exportar auditoria",1,1,1]];
 document.getElementById('permBody').innerHTML=PERMS.map(p=>`<tr><td style="font-weight:600">${p[0]}</td>
-  <td style="text-align:center" class="${p[1]?'perm-yes':'perm-no'}">${p[1]?'✓':'—'}</td>
-  <td style="text-align:center" class="${p[2]?'perm-yes':'perm-no'}">${p[2]?'✓':'—'}</td>
-  <td style="text-align:center" class="${p[3]?'perm-yes':'perm-no'}">${p[3]?'✓':'—'}</td></tr>`).join('');
+  <td style="text-align:center" class="${p[1]?'perm-yes':'perm-no'}">${p[1]?'✓':', '}</td>
+  <td style="text-align:center" class="${p[2]?'perm-yes':'perm-no'}">${p[2]?'✓':', '}</td>
+  <td style="text-align:center" class="${p[3]?'perm-yes':'perm-no'}">${p[3]?'✓':', '}</td></tr>`).join('');
 
 /* ============ TV ============ */
 function openTV(){
@@ -1374,7 +1379,7 @@ function renderWizard(){
       </div>`).join('');
     wzRenderResult();
   }
-  else if(wzStep===2){b.innerHTML=`<h4>Financeiro & Cronograma (Etapa 1 — estimativas)</h4>
+  else if(wzStep===2){b.innerHTML=`<h4>Financeiro & Cronograma (Etapa 1, estimativas)</h4>
     <div class="muted" style="font-size:12.5px;margin-bottom:12px">No cadastro entram as estimativas. O consumo mês a mês virá da base SAP (robô → SharePoint) no Módulo DRA. O cronograma alimenta o Acompanhamento EEM e o Cronograma do portfólio.</div>
     <div class="fg">
       <div class="fld2"><label>Capex estimado (€)</label><input id="w_capex" value="${wzData.capex}" placeholder="ex.: 2.000.000"></div>
@@ -1385,12 +1390,12 @@ function renderWizard(){
     </div>`;}
   else{const t=wzData.type||'C';b.innerHTML=`<h4>Revisão & criação</h4>
     <div class="wz-rev">
-      <div class="rr"><span>Ordem Interna (OI)</span><b>${wzData.oi||'—'}</b></div>
-      <div class="rr"><span>Projeto</span><b>${wzData.name||'—'}</b></div>
+      <div class="rr"><span>Ordem Interna (OI)</span><b>${wzData.oi||', '}</b></div>
+      <div class="rr"><span>Projeto</span><b>${wzData.name||', '}</b></div>
       <div class="rr"><span>Categoria · Site</span><b>${wzData.cat} · ${wzData.site}</b></div>
-      <div class="rr"><span>Líder</span><b>${wzData.lead||'—'}</b></div>
-      <div class="rr"><span>Equipe</span><b>${wzData.team||'—'}</b></div>
-      <div class="rr"><span>Classificação</span><b>${t} · ${TYPES[t].name} — ${wzData.score} pts (${totalActs(t)} documentos)</b></div>
+      <div class="rr"><span>Líder</span><b>${wzData.lead||', '}</b></div>
+      <div class="rr"><span>Equipe</span><b>${wzData.team||', '}</b></div>
+      <div class="rr"><span>Classificação</span><b>${t} · ${TYPES[t].name}, ${wzData.score} pts (${totalActs(t)} documentos)</b></div>
       <div class="rr"><span>Capex / Saving estimado</span><b>€${wzData.capex||'0'} / €${wzData.save||'0'}</b></div>
       <div class="rr"><span>Cronograma (início · meio · fim)</span><b>${wzFmtDate(wzData.ini)} → ${wzFmtDate(wzData.meio)} → ${wzFmtDate(wzData.fim)}</b></div>
     </div>
@@ -1429,7 +1434,7 @@ function wzNav(dir){
   } else wzStep--;
   renderWizard();
 }
-function wzFmtDate(v){if(!v)return '—';const[y,m,d]=v.split('-');return d+' '+MESES[+m-1];}
+function wzFmtDate(v){if(!v)return ', ';const[y,m,d]=v.split('-');return d+' '+MESES[+m-1];}
 function createProject(){
   const t=wzData.type;const id="P"+(PROJECTS.length+1);
   const capex=parseInt((wzData.capex||"0").replace(/\D/g,''))||500000;
@@ -1437,13 +1442,13 @@ function createProject(){
   // cronograma informado → posição no ano (gs/gsp) usada pelo Gantt e pelo EEM
   const mIni=wzData.ini?+wzData.ini.split('-')[1]-1:5, mFim=wzData.fim?+wzData.fim.split('-')[1]-1:mIni+5;
   const gs=mIni, gsp=mFim<mIni?12-mIni:Math.max(1,mFim-mIni+1); /* fim no ano seguinte → barra até Dez */
-  const np={id,type:t,name:wzData.name,loc:`${wzData.site} · ${wzData.cat}`,cur:1,budP:capex,budA:0,com:0,sav:save,schP:5,lead:wzData.lead||"—",oi:wzData.oi,gs,gsp};
+  const np={id,type:t,name:wzData.name,loc:`${wzData.site} · ${wzData.cat}`,cur:1,budP:capex,budA:0,com:0,sav:save,schP:5,lead:wzData.lead||", ",oi:wzData.oi,gs,gsp};
   // dados operacionais (EEM): equipe informada + cronograma início/meio/fim
   const team=(wzData.team||wzData.lead||'NA').split(',').map(s=>s.trim()).filter(Boolean).map(n=>n.split(/\s+/).map(w=>w[0]).join('').replace(/\W/g,'').slice(0,2).toUpperCase()||'NA');
   np._eem={plan:Math.max(2,Math.min(98,Math.round((EEM_TODAY-gs)/gsp*100))),
-    ini:wzFmtDate(wzData.ini)!=='—'?wzFmtDate(wzData.ini):"01 "+MESES[gs],
-    meio:wzFmtDate(wzData.meio)!=='—'?wzFmtDate(wzData.meio):"15 "+MESES[Math.min(11,Math.round(gs+gsp/2))],
-    fim:wzFmtDate(wzData.fim)!=='—'?wzFmtDate(wzData.fim):"30 "+MESES[Math.min(11,gs+gsp-1)],team};
+    ini:wzFmtDate(wzData.ini)!==', '?wzFmtDate(wzData.ini):"01 "+MESES[gs],
+    meio:wzFmtDate(wzData.meio)!==', '?wzFmtDate(wzData.meio):"15 "+MESES[Math.min(11,Math.round(gs+gsp/2))],
+    fim:wzFmtDate(wzData.fim)!==', '?wzFmtDate(wzData.fim):"30 "+MESES[Math.min(11,gs+gsp-1)],team};
   PROJECTS.push(np);updateStats();
   built.gantt=0;built.reports=0; // cronograma e relatórios passam a incluir o projeto novo
   // card no portfólio
@@ -1457,7 +1462,7 @@ function createProject(){
   const o1=document.createElement('option');o1.value=id;o1.textContent=`${t} · ${np.name}`;projSel.appendChild(o1);
   const o2=document.createElement('option');o2.value=id;o2.textContent=`OI ${np.oi} · ${np.name}`;draSel.appendChild(o2);
   closeWizard();openProject(id);switchView('project');
-  toast(`Projeto ${np.name} criado (OI ${np.oi}) — Tipo ${t}, ${totalActs(t)} documentos.`);
+  toast(`Projeto ${np.name} criado (OI ${np.oi}), Tipo ${t}, ${totalActs(t)} documentos.`);
 }
 
 /* ============ UPLOAD VALIDAÇÃO ============ */
@@ -1471,8 +1476,8 @@ function simulateUpload(){
   document.getElementById('upBox').innerHTML=`📄 <b>${f.n}</b>`;
   const okFmt=f.fmt, okOi=f.oi;
   document.getElementById('upResult').innerHTML=`
-    <div class="valrow">${okFmt?'<span class="vok">✓</span>':'<span class="vno">✗</span>'} Formato permitido (PDF/DOCX/XLSX)${okFmt?'':' — PNG não aceito'}</div>
-    <div class="valrow">${okOi?'<span class="vok">✓</span>':'<span class="vno">✗</span>'} Número da OI confere com o projeto (${curProj?curProj.oi:'—'})${okOi?'':' — OI divergente'}</div>
+    <div class="valrow">${okFmt?'<span class="vok">✓</span>':'<span class="vno">✗</span>'} Formato permitido (PDF/DOCX/XLSX)${okFmt?'':', PNG não aceito'}</div>
+    <div class="valrow">${okOi?'<span class="vok">✓</span>':'<span class="vno">✗</span>'} Número da OI confere com o projeto (${curProj?curProj.oi:', '})${okOi?'':', OI divergente'}</div>
     <div class="valrow"><span class="vok">✓</span> Tamanho dentro do limite</div>`;
   upState=okFmt&&okOi;
   const c=document.getElementById('upConfirm');
@@ -1491,14 +1496,14 @@ function toast(msg){let t=document.getElementById('toast');if(!t){t=document.cre
 /* ============ ONBOARDING ============ */
 const OB=[
   {ic:"👋",t:"Bem-vindo à Plataforma de Projetos",x:"Um tour rápido pelo fluxo ponta a ponta: do cadastro à conclusão. Leva 30 segundos."},
-  {ic:"➕",t:"1 · Cadastre o projeto",x:"Clique em \"+ Novo Projeto\" e preencha OI, líder, equipe, tipo (A–E), capex e o cronograma (início · meio · fim). Um único cadastro alimenta todas as telas — inclusive o Acompanhamento EEM."},
+  {ic:"➕",t:"1 · Cadastre o projeto",x:"Clique em \"+ Novo Projeto\" e preencha OI, líder, equipe, tipo (A–E), capex e o cronograma (início · meio · fim). Um único cadastro alimenta todas as telas, inclusive o Acompanhamento EEM."},
   {ic:"📂",t:"2 · Insira os documentos por step",x:"Em cada step você gera/insere os documentos obrigatórios. Alguns têm template oficial (Cardinal Rules, Comissionamento…)."},
   {ic:"🔒",t:"3 · Gate de avanço",x:"O step só libera o avanço quando todos os documentos obrigatórios forem inseridos. Sem isso, o botão fica bloqueado."},
   {ic:"📊",t:"4 · DRA Financeiro & Relatórios",x:"No Módulo DRA acompanhe orçado × executado por OI (base SAP via robô/SharePoint), e veja tudo nos Relatórios e no Modo TV."}
 ];
 let obi=0;
 function startOnb(){obi=0;document.getElementById('onb').classList.remove('hidden');renderObGuide();}
-function renderObGuide(){const o=OB[obi];document.getElementById('obIcon').textContent=o.ic;document.getElementById('obIcon').style.fontSize='28px';
+function renderObGuide(){const o=OB[obi];document.getElementById('obIcon').textContent='';document.getElementById('obIcon').style.display='none';
   document.getElementById('obTitle').textContent=o.t;document.getElementById('obText').textContent=o.x;
   document.getElementById('obDots').innerHTML=OB.map((_,i)=>`<i class="${i===obi?'on':''}"></i>`).join('');
   document.getElementById('obNext').textContent=obi===OB.length-1?'Iniciar tour pelas telas ▸':'Próximo';}
@@ -1521,7 +1526,7 @@ const EEM_TODAY=6.5; /* meados de Julho (index de mês) */
 function eemDerive(p){
   const mm=m=>MESES[Math.min(11,Math.max(0,Math.round(m)))];
   const plan=Math.max(2,Math.min(98,Math.round((EEM_TODAY-p.gs)/p.gsp*100)));
-  const team=[(p.lead&&p.lead!=='—'?p.lead:'NA').split(/\s+/).map(w=>w[0]).join('').replace(/\W/g,'').slice(0,2).toUpperCase()||'NA'];
+  const team=[(p.lead&&p.lead!==', '?p.lead:'NA').split(/\s+/).map(w=>w[0]).join('').replace(/\W/g,'').slice(0,2).toUpperCase()||'NA'];
   return {plan,ini:"01 "+mm(p.gs),meio:"15 "+mm(p.gs+p.gsp/2),fim:"30 "+mm(p.gs+p.gsp-1),team};
 }
 const eemOf=p=>EEM[p.id]||p._eem||(p._eem=eemDerive(p));
@@ -1534,7 +1539,7 @@ const eemAll=()=>PROJECTS;
 function buildTrack(){
   const sel=document.getElementById('trackLead');const cur=sel.value||'ALL';
   const leads=[...new Set(eemAll().map(p=>p.lead))];
-  sel.innerHTML='<option value="ALL">🏛 Pilar Portfolio (todos)</option>'+leads.map(l=>`<option value="${l}">👤 ${l}</option>`).join('');
+  sel.innerHTML='<option value="ALL">Pilar Portfolio (todos)</option>'+leads.map(l=>`<option value="${l}">${l}</option>`).join('');
   sel.value=[...sel.options].some(o=>o.value===cur)?cur:'ALL';
   const filter=sel.value;
   const list=eemAll().filter(p=>filter==='ALL'||p.lead===filter);
@@ -1577,11 +1582,11 @@ const PLANS={
   P1:{rep:null,
     marcos:[[1,"Kickoff & briefing","done"],[3,"Fornecedores contratados","done"],[5,"Obra civil concluída","done"],[7,"Montagem da linha","next"],[8,"FAT & aceite","pend"]],
     acts:[[5,"Fundações e utilidades da área","M. Oliveira","done","Relatório de Progresso",null],
-      [6,"Montagem mecânica — módulo 1","J. Santos","done",null,null],
+      [6,"Montagem mecânica, módulo 1","J. Santos","done",null,null],
       [6,"Specs do supervisório (software)","B. Nunes","done",null,null],
       [7,"Montagem elétrica e painéis","A. Costa","now",null,null],
       [7,"Rede industrial e infraestrutura TI","R. Lima","pend",null,null],
-      [8,"Treinamento operadores — turma 1","M. Oliveira","pend",null,null]]},
+      [8,"Treinamento operadores, turma 1","M. Oliveira","pend",null,null]]},
   P2:{rep:null,
     marcos:[[2,"Kickoff","done"],[4,"Equipamento em fábrica","done"],[6,"Instalação & treinamento","next"],[7,"FAT e go-live","pend"]],
     acts:[[5,"Desmontagem da linha antiga","C. Santos","done",null,null],
@@ -1593,9 +1598,9 @@ const PLANS={
     acts:[[5,"Validação dos ciclos CIP","R. Lima","done","Relatório de FAT",null],
       [6,"Lições aprendidas & post mortem","R. Lima","now","Lições Aprendidas",null],
       [6,"Encerramento financeiro (capex closure)","J. Pereira","pend",null,null]]},
-  P4:{rep:{de:"15 Ago",para:"29 Ago",por:"A. Costa",just:"Atraso do fornecedor de sensores — entrega reprogramada em 2 semanas",ext:0.5},
+  P4:{rep:{de:"15 Ago",para:"29 Ago",por:"A. Costa",just:"Atraso do fornecedor de sensores, entrega reprogramada em 2 semanas",ext:0.5},
     marcos:[[3,"Kickoff","done"],[4,"Compra dos sensores","late"],[6,"Instalação linha 3","next"],[7,"Aceite","pend"]],
-    acts:[[4,"PO e compra dos sensores","A. Costa","late","Controle de POs",{de:"28 Mai",para:"12 Jun",por:"A. Costa",just:"Fornecedor sem estoque — lead time revisto"}],
+    acts:[[4,"PO e compra dos sensores","A. Costa","late","Controle de POs",{de:"28 Mai",para:"12 Jun",por:"A. Costa",just:"Fornecedor sem estoque, lead time revisto"}],
       [6,"Recebimento e inspeção","B. Nunes","now",null,null],
       [6,"Instalação e calibração","A. Costa","pend",null,null],
       [7,"Testes integrados com automação","Equipe TI","pend",null,null]]},
@@ -1604,9 +1609,9 @@ const PLANS={
     acts:[[6,"Especificação técnica das bombas","J. Pereira","done",null,null],
       [6,"RFQ e mapa de cotações","J. Pereira","now","Mapa de Cotações",null],
       [8,"Recebimento e estoque","Almoxarifado","pend",null,null]]},
-  P6:{rep:{de:"20 Out",para:"18 Nov",por:"T. Almeida",just:"Parada de fábrica reprogramada — instalação do túnel movida para a janela de novembro",ext:1},
+  P6:{rep:{de:"20 Out",para:"18 Nov",por:"T. Almeida",just:"Parada de fábrica reprogramada, instalação do túnel movida para a janela de novembro",ext:1},
     marcos:[[2,"Kickoff","done"],[4,"Projeto executivo","done"],[6,"Fabricação do túnel","late"],[8,"Obra & instalação","pend"],[9,"FAT","pend"]],
-    acts:[[5,"Fabricação do túnel de frio","Fornecedor XP","late",null,{de:"01 Jul",para:"05 Ago",por:"T. Almeida",just:"Parada de fábrica reprogramada — janela de instalação movida"}],
+    acts:[[5,"Fabricação do túnel de frio","Fornecedor XP","late",null,{de:"01 Jul",para:"05 Ago",por:"T. Almeida",just:"Parada de fábrica reprogramada, janela de instalação movida"}],
       [6,"Adequação civil da área fria","T. Almeida","now","Cronograma Físico",null],
       [7,"Logística de içamento","C. Santos","pend",null,null],
       [8,"Instalação e amarração elétrica","T. Almeida","pend",null,null]]}
@@ -1616,7 +1621,7 @@ function planDerive(p){const mid=Math.min(11,Math.round(p.gs+p.gsp/2)),end=Math.
   return {rep:null,
     marcos:[[p.gs,"Kickoff","done"],[mid,"Marco intermediário",EEM_TODAY>=mid?"next":"pend"],[end,"Entrega final","pend"]],
     acts:[[p.gs,"Mobilização e planejamento",p.lead,"done",null,null],
-      [mid,"Execução — frente principal",p.lead,EEM_TODAY>=p.gs?"now":"pend",null,null],
+      [mid,"Execução, frente principal",p.lead,EEM_TODAY>=p.gs?"now":"pend",null,null],
       [end,"Encerramento e aceite",p.lead,"pend",null,null]]};}
 const planOf=p=>PLANS[p.id]||p._plan||(p._plan=planDerive(p));
 
@@ -1625,13 +1630,13 @@ let EXTRA_ALERTS=[];
 function renderAlerts(list){
   const alerts=[...EXTRA_ALERTS];
   list.forEach(p=>{const s=eemStatus(p);const pl=planOf(p);const e=eemOf(p);
-    if(pl.rep)alerts.push({ic:'🔴',t:`${p.name} — prazo final remanejado: ${pl.rep.de} → ${pl.rep.para} (${pl.rep.por})`,d:'Justificativa registrada: '+pl.rep.just});
-    if(s.label==='Off track')alerts.push({ic:'⏰',t:`${p.name} está off track — ~${s.days} dias atrás do plano`,d:`Avanço real ${p.schP||0}% vs plano ${e.plan}% · líder ${p.lead}`});
+    if(pl.rep)alerts.push({ic:'🔴',t:`${p.name}, prazo final remanejado: ${pl.rep.de} → ${pl.rep.para} (${pl.rep.por})`,d:'Justificativa registrada: '+pl.rep.just});
+    if(s.label==='Off track')alerts.push({ic:'⏰',t:`${p.name} está off track, ~${s.days} dias atrás do plano`,d:`Avanço real ${p.schP||0}% vs plano ${e.plan}% · líder ${p.lead}`});
     (pl.acts||[]).forEach(a=>{if(a[3]==='late')alerts.push({ic:'⚠️',t:`Atividade em atraso: “${a[1]}” (${p.name})`,d:`Responsável ${a[2]} · mês de ${MESES[a[0]]}`+(a[5]?` · remanejada ${a[5].de} → ${a[5].para}`:'')});});
   });
   const el=document.getElementById('trackAlerts');
-  el.innerHTML=`<div class="panel-head" style="margin-bottom:6px"><div><div class="section-title" style="font-size:15px">🔔 Alertas do portfólio</div><div class="muted">Remanejamentos, atrasos e atividades que exigem intervenção — gerados automaticamente pelo sistema</div></div><span class="pill" style="background:${alerts.length?'#fbe6ee':'#e7f4ee'};color:${alerts.length?'#b02258':'#137a44'}">${alerts.length} alerta${alerts.length===1?'':'s'}</span></div>`+
-    (alerts.length?alerts.slice(0,7).map(a=>`<div class="alert-row"><span class="ai">${a.ic}</span><div><b>${a.t}</b><small>${a.d}</small></div></div>`).join(''):'<div class="alert-row"><span class="ai">✅</span><div><b>Nenhum alerta ativo</b><small>Todos os projetos dentro do previsto</small></div></div>');
+  el.innerHTML=`<div class="panel-head" style="margin-bottom:6px"><div><div class="section-title" style="font-size:15px">Alertas do portfólio</div><div class="muted">Remanejamentos, atrasos e atividades que exigem intervenção, gerados automaticamente pelo sistema</div></div><span class="pill" style="background:${alerts.length?'#fbe6ee':'#e7f4ee'};color:${alerts.length?'#b02258':'#137a44'}">${alerts.length} alerta${alerts.length===1?'':'s'}</span></div>`+
+    (alerts.length?alerts.slice(0,7).map(a=>`<div class="alert-row"><span class="ai" style="color:${a.ic==='⚠️'?'var(--warn)':'var(--danger)'}">●</span><div><b>${a.t}</b><small>${a.d}</small></div></div>`).join(''):'<div class="alert-row"><span class="ai" style="color:var(--ok)">●</span><div><b>Nenhum alerta ativo</b><small>Todos os projetos dentro do previsto</small></div></div>');
 }
 
 /* Modal Plano do Projeto */
@@ -1642,11 +1647,11 @@ function openPlan(id){
   document.getElementById('pmSub').textContent=`${p.loc} · Líder ${p.lead} · OI ${p.oi} · ${e.ini} → ${pl.rep?pl.rep.para:e.fim}`;
   document.getElementById('pmStatus').innerHTML=`<span class="tk-status ${s.cls}"><span class="dot"></span>${s.label}</span>`;
   let h='';
-  if(pl.rep)h+=`<div class="pm-rep">🔴 <b>Prazo final remanejado:</b> ${pl.rep.de} → ${pl.rep.para} por <b>${pl.rep.por}</b><br><span style="font-size:12px;color:var(--ink-soft)">Justificativa: ${pl.rep.just} · registrado na trilha de auditoria</span></div>`;
-  h+=`<div class="pm-sec">Marcos do projeto <span style="font-weight:500;color:var(--ink-faint)">· visão gerencial — sem tarefas, só entregas</span></div><div class="pm-marcos">`+
+  if(pl.rep)h+=`<div class="pm-rep"><b>Prazo final remanejado:</b> ${pl.rep.de} → ${pl.rep.para} por <b>${pl.rep.por}</b><br><span style="font-size:12px;color:var(--ink-soft)">Justificativa: ${pl.rep.just} · registrado na trilha de auditoria</span></div>`;
+  h+=`<div class="pm-sec">Marcos do projeto <span style="font-weight:500;color:var(--ink-faint)">· visão gerencial, sem tarefas, só entregas</span></div><div class="pm-marcos">`+
     pl.marcos.map(m=>{const st=m[2];const lbl={done:'Concluído',next:'Próximo',late:'Atrasado',pend:'Planejado'}[st];
       return `<div class="pm-marco ${st}"><div class="dot"></div><div class="mm">${MESES[m[0]]}</div><div class="mt">${m[1]}</div><div class="ms">${lbl}</div></div>`;}).join('')+`</div>`;
-  h+=`<div class="pm-sec" style="margin-top:20px">Atividades por mês <span style="font-weight:500;color:var(--ink-faint)">· documentos e ações do projeto — clique para abrir o card</span></div>`;
+  h+=`<div class="pm-sec" style="margin-top:20px">Atividades por mês <span style="font-weight:500;color:var(--ink-faint)">· documentos e ações do projeto, clique para abrir o card</span></div>`;
   h+=`<div id="pmAddForm" style="display:none;border:1.5px dashed var(--brand);border-radius:12px;padding:13px 16px;margin-bottom:12px;background:var(--brand-soft)">
     <div class="pm-sec" style="margin:0 0 8px;font-size:12px">Nova atividade</div>
     <div class="reprow" style="margin-top:0">
@@ -1665,18 +1670,18 @@ function openPlan(id){
       <div class="at">${a[1]}<small>${a[2]} · ${lbl}${a[4]?' · 📄 documento anexado':''}${a[5]?' · ↦ remanejada':''}</small></div>
       <span class="tk-status ${a[3]==='late'?'tk-late':a[3]==='done'?'tk-ontime':'tk-ahead'}">${lbl}</span></div>
      <div class="adet">
-      <div style="font-size:12.5px"><b>Descrição:</b> ${a[1]} — atividade do plano operacional de ${p.name}.</div>
+      <div style="font-size:12.5px"><b>Descrição:</b> ${a[1]}, atividade do plano operacional de ${p.name}.</div>
       <div class="pm-sec" style="margin:10px 0 4px;font-size:12px">Checklist de premissas</div>
       <div class="dod">${['Recursos e equipe disponíveis','Dependências de outras áreas resolvidas','Acessos e segurança liberados'].map(d=>`<label><input type="checkbox" ${a[3]!=='pend'?'checked':''} onclick="event.stopPropagation()"> ${d}</label>`).join('')}</div>
       <div class="pm-sec" style="margin:10px 0 4px;font-size:12px">Checklist de pronto (DoD)</div>
       <div class="dod">${['Escopo executado e conferido','Evidências anexadas no SharePoint','Validação do líder do projeto'].map((d,k)=>`<label><input type="checkbox" ${a[3]==='done'?'checked':(k===0&&(a[3]==='now'||a[3]==='late')?'checked':'')} onclick="event.stopPropagation()"> ${d}</label>`).join('')}</div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">
         ${a[3]!=='done'?`<button class="btn sm perm-w" onclick="event.stopPropagation();actDone(${i})">✓ Concluir atividade</button>`:''}
-        ${a[4]?`<button class="btn ghost sm" onclick="event.stopPropagation();dlActDoc('${a[4]}','${p.name}')">⬇ Baixar documento — ${a[4]}</button>`:''}
+        ${a[4]?`<button class="btn ghost sm" onclick="event.stopPropagation();dlActDoc('${a[4]}','${p.name}')">⬇ Baixar documento, ${a[4]}</button>`:''}
       </div>
       ${a[5]?`<div class="hist"><b>↦ Prazo remanejado:</b> ${a[5].de} → ${a[5].para} por <b>${a[5].por}</b><br>Justificativa: ${a[5].just}</div>`:''}
       <div class="pm-sec" style="margin:12px 0 4px;font-size:12px">Remanejar prazo desta atividade</div>
-      <div class="reprow"><input type="date" id="repd${i}" onclick="event.stopPropagation()"><input type="text" id="repj${i}" placeholder="Justificativa obrigatória — vai para a auditoria" onclick="event.stopPropagation()"><button class="btn sm perm-w" onclick="event.stopPropagation();repSave(${i})">Registrar</button></div>
+      <div class="reprow"><input type="date" id="repd${i}" onclick="event.stopPropagation()"><input type="text" id="repj${i}" placeholder="Justificativa obrigatória, vai para a auditoria" onclick="event.stopPropagation()"><button class="btn sm perm-w" onclick="event.stopPropagation();repSave(${i})">Registrar</button></div>
      </div></div>`;
   });
   document.getElementById('pmBody').innerHTML=h;
@@ -1684,10 +1689,10 @@ function openPlan(id){
 }
 function closePlan(){document.getElementById('planModal').classList.add('hidden');}
 function togglePmAct(i){document.getElementById('pmact'+i).classList.toggle('open');}
-function dlActDoc(doc,proj){dlFile(doc.replace(/\s+/g,'_')+'.txt',doc.toUpperCase()+'\r\n'+proj+' · Unilever — Plataforma de Gestão de Projetos\r\n\r\nConteúdo ilustrativo do documento anexado à atividade.','text/plain');toast('Documento "'+doc+'" baixado.');}
+function dlActDoc(doc,proj){dlFile(doc.replace(/\s+/g,'_')+'.txt',doc.toUpperCase()+'\r\n'+proj+' · Unilever, Plataforma de Gestão de Projetos\r\n\r\nConteúdo ilustrativo do documento anexado à atividade.','text/plain');toast('Documento "'+doc+'" baixado.');}
 function repSave(i){
   const d=document.getElementById('repd'+i).value,j=document.getElementById('repj'+i).value.trim();
-  if(!j){toast('Informe a justificativa — ela é obrigatória para remanejar prazos.');return;}
+  if(!j){toast('Informe a justificativa, ela é obrigatória para remanejar prazos.');return;}
   const pl=planOf(pmProj);const a=pl.acts[i];
   const para=d?wzFmtDate(d):'nova data';
   a[5]={de:'prazo original',para,por:'Você (sessão atual)',just:j};if(a[3]!=='done')a[3]='late';
@@ -1704,7 +1709,7 @@ function actDone(i){
   const mesFechado=pl.acts.filter(x=>x[0]===mes).every(x=>x[3]==='done');
   openPlan(pmProj.id);buildTrack();
   if(typeof built!=='undefined')buildLifecycle(pmProj.id);
-  if(mesFechado)toast('🎉 '+MESES[mes]+' 100% concluído — todas as atividades do mês entregues! Avanço real: '+pmProj.schP+'%');
+  if(mesFechado)toast(MESES[mes]+' 100% concluído, todas as atividades do mês entregues! Avanço real: '+pmProj.schP+'%');
   else toast('Atividade concluída ✓ Avanço real do projeto recalculado: '+pmProj.schP+'%');
 }
 function togglePmAdd(){const f=document.getElementById('pmAddForm');if(f){f.style.display=f.style.display==='none'?'block':'none';const t=document.getElementById('addt');if(f.style.display==='block'&&t)t.focus();}}
@@ -1739,8 +1744,8 @@ function lcEvents(p){
   ev.push({m:p.gs,ic:'🚀',t:'Projeto cadastrado e classificado',d:`Tipo ${p.type} (${TYPES[p.type].name}) · líder ${p.lead} · OI ${p.oi} vinculada ao SAP`});
   ev.push({m:p.gs,ic:'🗓',t:'Cronograma e marcos definidos',d:`${e.ini} → ${e.fim} · ${pl.marcos.length} marcos · equipe de ${e.team.length} pessoa${e.team.length===1?'':'s'}`});
   for(let k=1;k<p.cur;k++){const m=Math.min(11,Math.round(p.gs+k*(p.gsp/7)));
-    ev.push({m,ic:'✅',t:`Step ${k} concluído — ${STEPS[k-1].name}`,d:'Gate documental 100% · avanço liberado'});}
-  ev.push({m:Math.min(11,Math.round(p.gs+(p.cur-.5)*(p.gsp/7))),ic:'▶️',t:`Step ${p.cur} em andamento — ${STEPS[p.cur-1].name}`,d:`${stepInserted(p,p.cur-1)}/${stepRequired(p,p.cur-1)} documentos inseridos no gate`});
+    ev.push({m,ic:'✅',t:`Step ${k} concluído, ${STEPS[k-1].name}`,d:'Gate documental 100% · avanço liberado'});}
+  ev.push({m:Math.min(11,Math.round(p.gs+(p.cur-.5)*(p.gsp/7))),ic:'▶️',t:`Step ${p.cur} em andamento, ${STEPS[p.cur-1].name}`,d:`${stepInserted(p,p.cur-1)}/${stepRequired(p,p.cur-1)} documentos inseridos no gate`});
   (pl.acts||[]).forEach(a=>{if(a[5])ev.push({m:a[0],ic:'🔴',t:`Prazo remanejado: ${a[1]}`,d:`${a[5].de} → ${a[5].para} por ${a[5].por} · “${a[5].just}”`});});
   if(pl.rep)ev.push({m:Math.min(11,p.gs+p.gsp-1),ic:'🔴',t:'Prazo final do projeto remanejado',d:`${pl.rep.de} → ${pl.rep.para} por ${pl.rep.por} · “${pl.rep.just}”`});
   return ev.sort((a,b)=>a.m-b.m);
@@ -1752,16 +1757,16 @@ function buildLifecycle(id){
   const s=eemStatus(p),e=eemOf(p),pl=planOf(p),docs=lcDocs(p);
   // fases da jornada
   const lbl={done:'Concluída',now:'Em andamento',late:'Atenção',pend:'Aguardando'};
-  document.getElementById('lcPhases').innerHTML=lcPhases(p).map(f=>`<div class="lc-ph ${f.st}"><div class="ic">${f.ic}</div><div class="pt">${f.t}</div><div class="pd">${f.d}</div><span class="ps">${lbl[f.st]} · ${f.x}</span></div>`).join('');
+  document.getElementById('lcPhases').innerHTML=lcPhases(p).map((f,i)=>`<div class="lc-ph ${f.st}"><div class="ic">${i+1}</div><div class="pt">${f.t}</div><div class="pd">${f.d}</div><span class="ps">${lbl[f.st]} · ${f.x}</span></div>`).join('');
   // saúde do projeto
   const nx=pl.marcos.find(m=>m[2]==='next'||m[2]==='late');
   document.getElementById('lcHealth').innerHTML=`
     <div class="stat card"><div class="glow" style="background:${s.cls==='tk-late'?'var(--danger)':'var(--ok)'}"></div><div class="k">Status</div><div class="v" style="font-size:23px">${s.label}</div><div class="d">real ${p.schP||0}% vs plano ${e.plan}%</div></div>
     <div class="stat card"><div class="glow" style="background:var(--brand)"></div><div class="k">Documentos</div><div class="v">${docs.done}/${docs.total}</div><div class="d">${Math.round(docs.done/Math.max(1,docs.total)*100)}% do exigido pelo Tipo ${p.type}</div></div>
     <div class="stat card"><div class="glow" style="background:var(--brand-2)"></div><div class="k">Financeiro</div><div class="v" style="font-size:23px">${eur(p.budA)}</div><div class="d">de ${eur(p.budP)} aprovados (${p.budP?Math.round(p.budA/p.budP*100):0}%)</div></div>
-    <div class="stat card"><div class="glow" style="background:var(--warn)"></div><div class="k">Próximo Marco</div><div class="v" style="font-size:19px;line-height:1.2">${nx?nx[1]:'—'}</div><div class="d">${nx?MESES[nx[0]]+' · '+(nx[2]==='late'?'⚠ atrasado':'planejado'):'todos concluídos'}</div></div>`;
+    <div class="stat card"><div class="glow" style="background:var(--warn)"></div><div class="k">Próximo Marco</div><div class="v" style="font-size:19px;line-height:1.2">${nx?nx[1]:', '}</div><div class="d">${nx?MESES[nx[0]]+' · '+(nx[2]==='late'?'⚠ atrasado':'planejado'):'todos concluídos'}</div></div>`;
   // histórico de evolução
-  document.getElementById('lcEvents').innerHTML=lcEvents(p).map(v=>`<div class="lc-ev"><span class="em">${MESES[v.m]}</span><span class="ei">${v.ic}</span><div><b>${v.t}</b><small>${v.d}</small></div></div>`).join('');
+  document.getElementById('lcEvents').innerHTML=lcEvents(p).map(v=>`<div class="lc-ev"><span class="em">${MESES[v.m]}</span><span class="ei" style="color:${v.ic==='✅'?'var(--ok)':v.ic==='▶️'?'var(--brand)':v.ic==='🔴'?'var(--danger)':'var(--ink-faint)'}">●</span><div><b>${v.t}</b><small>${v.d}</small></div></div>`).join('');
   // atalhos
   document.getElementById('lcLinks').innerHTML=`
     <div class="lc-link" onclick="openPlan('${p.id}')"><span class="li" style="background:var(--brand)">🗓</span><div>Plano do projeto<small>Marcos e atividades por mês</small></div><span class="go">▸</span></div>
@@ -1774,9 +1779,9 @@ function buildLifecycle(id){
 /* Visualizador de documento genérico (botão "Abrir" de docs sem template dedicado) */
 function openDoc(btn){
   const row=btn.closest('.doc-row');const name=row.querySelector('.doc-name').childNodes[0].textContent.trim();
-  openTool({name,type:"PDF",meta:`${curProj.name} · Step ${curStep+1} — ${STEPS[curStep].name}`,
-    prev:{kind:"doc",title:name,sub:`Documento do projeto · ${curProj.name} — OI ${curProj.oi} · Tipo ${curProj.type}`,
-      items:["1. Objetivo e escopo","2. Responsáveis e aprovações","3. Dados do projeto — OI "+curProj.oi,"4. Conteúdo técnico do documento","5. Evidências anexadas","6. Histórico de revisões","7. Assinaturas e datas"]}});
+  openTool({name,type:"PDF",meta:`${curProj.name} · Step ${curStep+1}, ${STEPS[curStep].name}`,
+    prev:{kind:"doc",title:name,sub:`Documento do projeto · ${curProj.name}, OI ${curProj.oi} · Tipo ${curProj.type}`,
+      items:["1. Objetivo e escopo","2. Responsáveis e aprovações","3. Dados do projeto, OI "+curProj.oi,"4. Conteúdo técnico do documento","5. Evidências anexadas","6. Histórico de revisões","7. Assinaturas e datas"]}});
 }
 /* Download real de arquivo (template .txt / auditoria .csv) */
 function dlFile(name,content,mime){const b=new Blob(["﻿"+content],{type:mime+';charset=utf-8'});
@@ -1813,7 +1818,7 @@ function sendInvite(){
 function applyRole(v){
   const aud=v.includes('Auditor');
   document.body.classList.toggle('role-aud',aud);
-  if(aud)toast('Perfil Auditor ativado: modo somente leitura — ações de criação/edição ocultas.');
+  if(aud)toast('Perfil Auditor ativado: modo somente leitura, ações de criação/edição ocultas.');
   else if(v.includes('Admin'))toast('Perfil Admin: acesso total, incluindo configurações do sistema.');
   else toast('Perfil Gerente de Projeto: gestão de projetos, documentos e cronogramas.');
 }
@@ -1841,18 +1846,18 @@ function logout(){document.getElementById('userMenu').classList.remove('open');
 /* ============ MANUAL DE UTILIZAÇÃO ============ */
 const HELP=[
 {ic:"🏠",t:"Visão geral do sistema",d:"O que é a plataforma, para quem é e como os módulos se conectam.",b:`
-<p>A <b>Plataforma de Gestão de Projetos</b> gerencia o ciclo de vida completo dos projetos de engenharia da Unilever no modelo <b>EEM (Early Equipment Management)</b> — do cadastro à conclusão, com governança documental, acompanhamento de cronograma e controle financeiro integrados.</p>
+<p>A <b>Plataforma de Gestão de Projetos</b> gerencia o ciclo de vida completo dos projetos de engenharia da Unilever no modelo <b>EEM (Early Equipment Management)</b>, do cadastro à conclusão, com governança documental, acompanhamento de cronograma e controle financeiro integrados.</p>
 <h5>O fluxo em 5 fases</h5>
-<ol><li><b>Cadastro</b> — o projeto entra com identificação, líder, equipe, capex e cronograma;</li>
-<li><b>Classificação</b> — 6 critérios pontuam o projeto e definem o tipo <b>A–E</b>, que determina o rigor documental;</li>
-<li><b>Execução</b> — o projeto percorre os <b>7 steps</b> do EEM, com gate documental em cada um;</li>
-<li><b>Acompanhamento</b> — cronograma, atrasos/avanços e finanças monitorados em tempo real;</li>
-<li><b>Governança</b> — auditoria completa, catálogo de documentos e controle de acesso por papéis.</li></ol>
+<ol><li><b>Cadastro</b>, o projeto entra com identificação, líder, equipe, capex e cronograma;</li>
+<li><b>Classificação</b>, 6 critérios pontuam o projeto e definem o tipo <b>A–E</b>, que determina o rigor documental;</li>
+<li><b>Execução</b>, o projeto percorre os <b>7 steps</b> do EEM, com gate documental em cada um;</li>
+<li><b>Acompanhamento</b>, cronograma, atrasos/avanços e finanças monitorados em tempo real;</li>
+<li><b>Governança</b>, auditoria completa, catálogo de documentos e controle de acesso por papéis.</li></ol>
 <h5>Como o menu está organizado</h5>
 <table><tr><th>Grupo</th><th>O que contém</th></tr>
-<tr><td><b>Visão Geral</b></td><td>Dashboard do portfólio e Relatórios & KPIs — a foto executiva.</td></tr>
+<tr><td><b>Visão Geral</b></td><td>Dashboard do portfólio e Relatórios & KPIs, a foto executiva.</td></tr>
 <tr><td><b>Módulo 1 · PSR</b></td><td>A governança documental: Steps & Documentos → Cronograma → Auditoria. <b>Coberto pela proposta vigente.</b></td></tr>
-<tr><td><b>Módulo 3 · Ciclo de Vida (novo)</b></td><td><b>Ciclo de Vida</b> e <b>Portfólio EEM</b> — a nova demanda de acompanhamento operacional (03/07), em cotação complementar.</td></tr>
+<tr><td><b>Módulo 3 · Ciclo de Vida (novo)</b></td><td><b>Ciclo de Vida</b> e <b>Portfólio EEM</b>, a nova demanda de acompanhamento operacional (03/07), em cotação complementar.</td></tr>
 <tr><td><b>Módulo 2 · DRA</b></td><td>Financeiro por OI (Designação de Recursos e Autorização), alimentado pelo robô SAP. <b>Coberto pela proposta vigente.</b></td></tr>
 <tr><td><b>Configuração</b></td><td>Catálogo de Documentos, Classificação (A–E) e Integrações.</td></tr>
 <tr><td><b>Administração</b></td><td>Equipe & Papéis (RBAC).</td></tr></table>
@@ -1863,43 +1868,43 @@ const HELP=[
 <h5>Perfis de acesso (RBAC)</h5>
 <table><tr><th>Perfil</th><th>O que pode fazer</th></tr>
 <tr><td><b>⚙ Admin</b></td><td>Acesso total: projetos, documentos, catálogo, critérios, equipe e integrações.</td></tr>
-<tr><td><b>👤 Gerente de Projeto</b></td><td>Cria e gerencia seus projetos, gera documentos, avança steps. Não edita orçamento SAP.</td></tr>
+<tr><td><b>Gerente de Projeto</b></td><td>Cria e gerencia seus projetos, gera documentos, avança steps. Não edita orçamento SAP.</td></tr>
 <tr><td><b>🛡 Auditor</b></td><td>Somente leitura: consulta tudo e exporta a auditoria, sem editar nada.</td></tr></table>
 <div class="tip">💡 O seletor de perfil no topo <b>simula</b> cada papel: escolha “Auditor” e veja as ações de edição sumirem da interface.</div>
 <h5>Sair</h5><p>Clique no <b>avatar</b> (canto superior direito) → <b>Sair da plataforma</b>.</p>`},
 {ic:"📊",t:"Dashboard",d:"A tela inicial: visão executiva de todo o portfólio.",b:`
 <h5>Indicadores do topo</h5>
-<ul><li><b>Projetos Ativos</b> — total de projetos em andamento;</li><li><b>Capex em Gestão</b> — soma dos investimentos planejados e executados;</li><li><b>Conformidade Docs</b> — % de documentos obrigatórios já inseridos;</li><li><b>Riscos Abertos</b> — pendências de risco no portfólio.</li></ul>
+<ul><li><b>Projetos Ativos</b>, total de projetos em andamento;</li><li><b>Capex em Gestão</b>, soma dos investimentos planejados e executados;</li><li><b>Conformidade Docs</b>, % de documentos obrigatórios já inseridos;</li><li><b>Riscos Abertos</b>, pendências de risco no portfólio.</li></ul>
 <h5>Cards de projeto</h5>
 <p>Cada card mostra: <b>tipo (A–E)</b> na etiqueta colorida, nome e local, capex, líder, step atual (1–7), total de documentos, a <b>trilha de steps</b> (pontos preenchidos = concluídos) e a <b>OI</b> sincronizada com o SAP.</p>
 <ol><li><b>Clique em qualquer card</b> para abrir o projeto na tela de execução;</li><li>Use <b>+ Cadastrar Projeto</b> para iniciar um novo cadastro.</li></ol>`},
 {ic:"➕",t:"Cadastrar um projeto",d:"Passo a passo completo do assistente de cadastro (4 etapas).",b:`
 <p>O cadastro é <b>único</b>: os dados informados alimentam o Dashboard, o Acompanhamento EEM, o Cronograma e o DRA Financeiro.</p>
 <h5>Etapa 1 · Identificação</h5>
-<ol><li>Informe a <b>OI</b> (Ordem Interna — identificador SAP, 6 dígitos);</li><li>Dê o <b>nome do projeto</b>;</li><li>Selecione <b>categoria</b> e <b>site/fábrica</b>;</li><li>Informe o <b>líder</b> e a <b>equipe</b> (membros separados por vírgula — viram avatares no acompanhamento).</li></ol>
+<ol><li>Informe a <b>OI</b> (Ordem Interna, identificador SAP, 6 dígitos);</li><li>Dê o <b>nome do projeto</b>;</li><li>Selecione <b>categoria</b> e <b>site/fábrica</b>;</li><li>Informe o <b>líder</b> e a <b>equipe</b> (membros separados por vírgula, viram avatares no acompanhamento).</li></ol>
 <h5>Etapa 2 · Classificação</h5>
-<p>Avalie os <b>6 critérios</b> (nível 0 a 4 em cada). A pontuação define o tipo A–E automaticamente — veja a seção “Classificação A–E”.</p>
+<p>Avalie os <b>6 critérios</b> (nível 0 a 4 em cada). A pontuação define o tipo A–E automaticamente, veja a seção “Classificação A–E”.</p>
 <h5>Etapa 3 · Financeiro & Cronograma</h5>
 <ol><li>Informe <b>capex</b> e <b>saving</b> estimados (€);</li><li>Defina as três datas do cronograma: <b>início</b>, <b>marco intermediário (meio)</b> e <b>fim</b>.</li></ol>
 <h5>Etapa 4 · Revisão</h5>
 <p>Confira todos os dados e clique em <b>✓ Criar projeto</b>. O projeto nasce no Step 1 com a lista de documentos do seu tipo pronta para inserção.</p>
 <div class="warn">⚠ OI e nome são obrigatórios na Etapa 1; todos os critérios devem ser avaliados na Etapa 2.</div>`},
-{ic:"🔄",t:"Ciclo de Vida do Projeto",d:"A jornada completa de cada projeto — da iniciação ao encerramento, em uma única tela.",b:`
+{ic:"🔄",t:"Ciclo de Vida do Projeto",d:"A jornada completa de cada projeto, da iniciação ao encerramento, em uma única tela.",b:`
 <p>Esta é a tela para <b>monitorar o ciclo de vida completo</b> de um projeto. Selecione o projeto no seletor do topo e veja toda a jornada.</p>
 <h5>As 5 fases do ciclo</h5>
-<ol><li><b>🚀 Iniciação</b> — cadastro, OI e classificação A–E;</li>
-<li><b>🗓 Planejamento</b> — cronograma (início · meio · fim), marcos e equipe;</li>
-<li><b>⚙️ Execução</b> — os 7 steps com documentos e atividades;</li>
-<li><b>📈 Monitoramento</b> — on/off track, alertas e remanejamentos;</li>
-<li><b>🏁 Encerramento</b> — capex closure, KPIs e lições aprendidas.</li></ol>
+<ol><li><b>🚀 Iniciação</b>, cadastro, OI e classificação A–E;</li>
+<li><b>🗓 Planejamento</b>, cronograma (início · meio · fim), marcos e equipe;</li>
+<li><b>⚙️ Execução</b>, os 7 steps com documentos e atividades;</li>
+<li><b>📈 Monitoramento</b>, on/off track, alertas e remanejamentos;</li>
+<li><b>🏁 Encerramento</b>, capex closure, KPIs e lições aprendidas.</li></ol>
 <p>O status de cada fase é <b>calculado pelo sistema</b> a partir do step atual, do avanço real × plano e dos remanejamentos.</p>
 <h5>Saúde do projeto</h5>
-<ul><li><b>Status</b> — on track / off track / adiantado;</li><li><b>Documentos</b> — inseridos vs exigidos pelo tipo;</li><li><b>Financeiro</b> — executado vs aprovado;</li><li><b>Próximo marco</b> — a entrega que vem aí (com aviso se atrasada).</li></ul>
+<ul><li><b>Status</b>, on track / off track / adiantado;</li><li><b>Documentos</b>, inseridos vs exigidos pelo tipo;</li><li><b>Financeiro</b>, executado vs aprovado;</li><li><b>Próximo marco</b>, a entrega que vem aí (com aviso se atrasada).</li></ul>
 <h5>Histórico de evolução</h5>
-<p>A linha do tempo do projeto: cadastro, definição do cronograma, cada step concluído (gate 100%), o step em andamento e <b>todos os remanejamentos com autor e justificativa</b> — a rastreabilidade pedida para auditoria.</p>
+<p>A linha do tempo do projeto: cadastro, definição do cronograma, cada step concluído (gate 100%), o step em andamento e <b>todos os remanejamentos com autor e justificativa</b>, a rastreabilidade pedida para auditoria.</p>
 <h5>Navegar pelo projeto</h5>
 <p>Os atalhos à direita abrem as outras áreas já no contexto do projeto selecionado: plano (marcos/atividades), steps & documentos, PSR, DRA e auditoria.</p>
-<div class="tip">💡 Comece o dia por aqui: uma tela responde “como está o projeto?” — e te leva para onde a ação é necessária.</div>`},
+<div class="tip">💡 Comece o dia por aqui: uma tela responde “como está o projeto?”, e te leva para onde a ação é necessária.</div>`},
 {ic:"🎯",t:"Classificação A–E",d:"Como o sistema define o tipo do projeto e por que isso importa.",b:`
 <p>Seis critérios pontuam o projeto de <b>0 a 100</b>: Valor de Investimento, Impacto no Cliente, Impacto no Mercado, Nível de Inovação, Tecnologia Utilizada e Tipo de Fornecedor.</p>
 <table><tr><th>Tipo</th><th>Faixa</th><th>Perfil</th><th>Documentos</th></tr>
@@ -1908,7 +1913,7 @@ const HELP=[
 <tr><td><b>C</b></td><td>26–50</td><td>Pequeno, baixa complexidade</td><td>40</td></tr>
 <tr><td><b>D</b></td><td>10–25</td><td>Muito simples</td><td>33</td></tr>
 <tr><td><b>E</b></td><td>0–9</td><td>Manutenção / compra</td><td>17 (Step 3 não se aplica)</td></tr></table>
-<p><b>Por que importa:</b> o tipo define <b>quantos documentos</b> cada step exige — projetos maiores têm mais governança; projetos simples têm fluxo enxuto.</p>
+<p><b>Por que importa:</b> o tipo define <b>quantos documentos</b> cada step exige, projetos maiores têm mais governança; projetos simples têm fluxo enxuto.</p>
 <div class="tip">💡 A tela <b>Critérios de Classificação</b> permite simular pontuações; o <b>Catálogo de Documentos</b> mostra o que cada tipo exige.</div>`},
 {ic:"📁",t:"Executar o projeto (steps e documentos)",d:"Como trabalhar dentro do projeto: gerar documentos, cumprir o gate e avançar.",b:`
 <h5>Os 7 steps do EEM</h5>
@@ -1918,31 +1923,31 @@ const HELP=[
 <li>No pipeline, clique no <b>step</b> desejado para ver seus documentos;</li>
 <li>Documentos <b>Pendentes</b>: clique em <b>⚡ Gerar</b> (ou <b>⚡ Gerar pendentes</b> para todos de uma vez);</li>
 <li>Documentos <b>Gerados</b>: clique em <b>Abrir</b> para visualizar o conteúdo;</li>
-<li>Documentos com etiqueta <b>📎</b> têm template oficial (Cardinal Rules, Comissionamento…) — clique para visualizar e use <b>⬇ Baixar template</b> para baixar o modelo.</li></ol>
+<li>Documentos com etiqueta <b>📎</b> têm template oficial (Cardinal Rules, Comissionamento…), clique para visualizar e use <b>⬇ Baixar template</b> para baixar o modelo.</li></ol>
 <h5>Gate documental</h5>
-<p>A barra de gate mostra <b>inseridos / exigidos</b> no step atual. O botão <b>Avançar step →</b> só habilita com <b>100% dos documentos inseridos</b> — é a governança do EEM aplicada por construção.</p>
-<div class="warn">⚠ Sem completar o gate, o avanço fica bloqueado. Não há exceção manual — essa é a regra do fluxo.</div>`},
+<p>A barra de gate mostra <b>inseridos / exigidos</b> no step atual. O botão <b>Avançar step →</b> só habilita com <b>100% dos documentos inseridos</b>, é a governança do EEM aplicada por construção.</p>
+<div class="warn">⚠ Sem completar o gate, o avanço fica bloqueado. Não há exceção manual, essa é a regra do fluxo.</div>`},
 {ic:"📈",t:"Portfólio EEM (Módulo 3)",d:"Acompanhamento operacional: on/off track, alertas, marcos, atividades e remanejamentos.",b:`
 <p>O <b>PSR (Project Status Report)</b> responde: <b>o projeto está on track?</b> <b>quem está off track e por quê?</b> <b>o que mudou no cronograma?</b></p>
 <h5>Indicadores gerenciais</h5>
-<ul><li><b>On Track / Off Track / Adiantados</b> — o sistema compara o avanço <b>real × planejado</b> e classifica sozinho (≥ 6 p.p. à frente = adiantado; ≤ −6 = off track);</li><li><b>Avanço Médio</b> — média do portfólio ou do líder filtrado.</li></ul>
-<h5>🔔 Alertas automáticos</h5>
+<ul><li><b>On Track / Off Track / Adiantados</b>, o sistema compara o avanço <b>real × planejado</b> e classifica sozinho (≥ 6 p.p. à frente = adiantado; ≤ −6 = off track);</li><li><b>Avanço Médio</b>, média do portfólio ou do líder filtrado.</li></ul>
+<h5>Alertas automáticos</h5>
 <p>O painel de alertas mostra sem ninguém pedir: projetos <b>off track</b>, <b>prazos remanejados</b> (quem mudou, de quando para quando e a justificativa) e <b>atividades atrasadas</b>.</p>
 <h5>Cronograma macro (como ler)</h5>
-<ul><li><b>Barra</b> — do início ao fim do projeto no ano;</li><li><b>Losango</b> — marco intermediário (meio);</li><li><b>Linha vermelha</b> — hoje;</li><li><b>Trecho claro na barra</b> — % já executado;</li><li><b style="color:#b02258">Trecho hachurado vermelho</b> — prazo remanejado além do cronograma original: a extensão fica visível para todos.</li></ul>
+<ul><li><b>Barra</b>, do início ao fim do projeto no ano;</li><li><b>Losango</b>, marco intermediário (meio);</li><li><b>Linha vermelha</b>, hoje;</li><li><b>Trecho claro na barra</b>, % já executado;</li><li><b style="color:#b02258">Trecho hachurado vermelho</b>, prazo remanejado além do cronograma original: a extensão fica visível para todos.</li></ul>
 <h5>Plano do projeto (marcos + atividades)</h5>
 <ol><li><b>Clique em um projeto</b> para abrir o plano;</li>
-<li><b>Marcos</b> — a visão gerencial: só as entregas com data (sem microtarefas);</li>
-<li><b>Atividades por mês</b> — as ações do projeto (obras, software, infraestrutura…), além dos documentos. Cada atividade é um <b>card interativo</b>: descrição, checklist de premissas, checklist de pronto (DoD), responsável e documento baixável;</li>
-<li><b>Concluir atividade</b> — o botão “✓ Concluir” marca a entrega e <b>recalcula o avanço real do projeto na hora</b>; fechar todas as atividades do mês conclui o mês (“finalizou junho, fiz as atividades de junho”);</li>
-<li><b>+ Nova atividade</b> — adicione ações ao plano (mês, título e responsável) a qualquer momento;</li>
-<li><b>Remanejar prazo</b> — mudar a data de uma atividade <b>exige justificativa</b>, que vai para a auditoria e gera alerta no portfólio.</li></ol>
+<li><b>Marcos</b>, a visão gerencial: só as entregas com data (sem microtarefas);</li>
+<li><b>Atividades por mês</b>, as ações do projeto (obras, software, infraestrutura…), além dos documentos. Cada atividade é um <b>card interativo</b>: descrição, checklist de premissas, checklist de pronto (DoD), responsável e documento baixável;</li>
+<li><b>Concluir atividade</b>, o botão “✓ Concluir” marca a entrega e <b>recalcula o avanço real do projeto na hora</b>; fechar todas as atividades do mês conclui o mês (“finalizou junho, fiz as atividades de junho”);</li>
+<li><b>+ Nova atividade</b>, adicione ações ao plano (mês, título e responsável) a qualquer momento;</li>
+<li><b>Remanejar prazo</b>, mudar a data de uma atividade <b>exige justificativa</b>, que vai para a auditoria e gera alerta no portfólio.</li></ol>
 <h5>Visão hierárquica</h5>
-<ol><li><b>🏛 Pilar Portfolio</b> vê o conjunto (overview gerencial da fábrica);</li><li><b>👤 Líder</b> vê e refina somente os seus projetos — KPIs, alertas e cronograma se recalculam na hora.</li></ol>`},
+<ol><li><b>Pilar Portfolio</b> vê o conjunto (overview gerencial da fábrica);</li><li><b>Líder</b> vê e refina somente os seus projetos, KPIs, alertas e cronograma se recalculam na hora.</li></ol>`},
 {ic:"🗓",t:"Cronograma (por steps)",d:"A linha do tempo do portfólio vista pela ótica dos steps.",b:`
 <p>Complementar ao cronograma macro do EEM: mostra <b>em que step</b> cada projeto está e como evolui <b>mês a mês</b>.</p>
 <ul><li>Cada linha é um projeto; as faixas coloridas indicam o step em cada mês;</li><li>Use junto com o EEM: o macro diz <b>se está no prazo</b>; este diz <b>onde está no fluxo</b>.</li></ul>`},
-{ic:"💶",t:"DRA · Designação de Recursos e Autorização",d:"Módulo 2 — orçado × executado por OI, com dados do SAP.",b:`
+{ic:"💶",t:"DRA · Designação de Recursos e Autorização",d:"Módulo 2, orçado × executado por OI, com dados do SAP.",b:`
 <p>Indicadores acompanhados por OI: <b>Capex Aprovado</b>, <b>Real Executado</b>, <b>Compromissado</b> (POs em aberto), <b>Saldo Disponível</b> e <b>Saving Estimado</b>.</p>
 <h5>Como usar</h5>
 <ol><li>Selecione o projeto/OI no seletor;</li><li>Veja os KPIs: orçado, executado, comprometido e saldo;</li><li>Analise o gráfico <b>orçado × executado mês a mês</b>;</li><li>Use <b>↻ Atualizar base (robô)</b> para simular a sincronização com o SAP.</li></ol>
@@ -1952,7 +1957,7 @@ const HELP=[
 {ic:"📺",t:"Relatórios, KPIs e Modo TV",d:"Indicadores executivos e exibição em telões.",b:`
 <ul><li>KPIs consolidados: capex, conformidade, savings e documentos;</li><li>Gráficos por tipo, step, capex e conformidade por projeto;</li><li>Filtro de período no topo direito.</li></ul>
 <h5>Modo TV</h5>
-<ol><li>Clique em <b>⛶ Tela cheia (TV)</b>;</li><li>O painel entra em modo telão (ideal para as TVs da fábrica), com relógio ao vivo;</li><li>Para sair, clique em <b>✕ Sair</b>.</li></ol>`},
+<ol><li>Clique em <b>Tela cheia (TV)</b>;</li><li>O painel entra em modo telão (ideal para as TVs da fábrica), com relógio ao vivo;</li><li>Para sair, clique em <b>✕ Sair</b>.</li></ol>`},
 {ic:"🛡",t:"Auditoria & Conformidade",d:"A trilha completa de documentos para auditorias internas.",b:`
 <ol><li>Filtre por status com os chips: <b>Todos · Gerados · Em revisão · Pendentes</b>;</li>
 <li>A tabela mostra tipo, projeto, step, documento, status e última atualização;</li>
@@ -1961,7 +1966,7 @@ const HELP=[
 {ic:"📚",t:"Catálogo de Documentos (config)",d:"A fonte única que define a documentação exigida por step e tipo.",b:`
 <p>Cada linha do catálogo define: <b>step</b> ao qual pertence, <b>nome</b> do documento, template associado (se houver) e o <b>tipo mínimo</b> a partir do qual é obrigatório (ex.: minType C = exigido para A, B e C).</p>
 <h5>Como editar (Admin)</h5>
-<ol><li><b>+ Novo documento</b> — adiciona ao catálogo;</li><li><b>✎</b> — edita nome, step, template ou obrigatoriedade;</li><li><b>🗑</b> — remove do catálogo.</li></ol>
+<ol><li><b>+ Novo documento</b>, adiciona ao catálogo;</li><li><b>✎</b>, edita nome, step, template ou obrigatoriedade;</li><li><b>🗑</b>, remove do catálogo.</li></ol>
 <div class="warn">⚠ Mudanças aqui valem para o sistema inteiro: os gates de todos os projetos passam a exigir a nova configuração.</div>`},
 {ic:"🔌",t:"Integrações",d:"As três conexões da plataforma.",b:`
 <table><tr><th>Integração</th><th>Função</th></tr>
@@ -1971,15 +1976,15 @@ const HELP=[
 <p>O indicador <b>SAP sincronizado</b> (canto inferior esquerdo) mostra a saúde da conexão em tempo real.</p>`},
 {ic:"👥",t:"Equipe & Papéis",d:"Gerenciar usuários e permissões (RBAC).",b:`
 <h5>Convidar usuário</h5>
-<ol><li>Clique em <b>+ Convidar usuário</b>;</li><li>Informe nome, e-mail corporativo e papel;</li><li>Clique em <b>Enviar convite</b> — o usuário entra como “Pendente” até o primeiro acesso.</li></ol>
+<ol><li>Clique em <b>+ Convidar usuário</b>;</li><li>Informe nome, e-mail corporativo e papel;</li><li>Clique em <b>Enviar convite</b>, o usuário entra como “Pendente” até o primeiro acesso.</li></ol>
 <h5>Matriz de permissões</h5>
 <p>A tabela da tela mostra o que cada papel pode fazer: criar/editar projeto, classificar, gerar e aprovar documentos, editar orçamento SAP, exportar auditoria e ver relatórios.</p>
 <div class="tip">💡 Teste na prática: troque o perfil no seletor do topo e veja a interface se adaptar (Auditor = somente leitura).</div>`},
 {ic:"⚡",t:"Dicas & atalhos",d:"Recursos que aceleram o uso no dia a dia.",b:`
 <ul>
-<li><b>Busca global</b> (topo): digite nome do projeto, OI, líder ou site — Enter abre o primeiro resultado;</li>
+<li><b>Busca global</b> (topo): digite nome do projeto, OI, líder ou site, Enter abre o primeiro resultado;</li>
 <li><b>Tour guiado</b>: apresentação narrada de 16 passos por todas as telas (setas ← → navegam, Esc sai);</li>
-<li><b>Manual</b>: este documento — use o filtro de seções ou <b>🖨 Imprimir / PDF</b> para gerar uma cópia;</li>
+<li><b>Manual</b>: este documento, use o filtro de seções ou <b>Imprimir / PDF</b> para gerar uma cópia;</li>
 <li><b>Simulação de perfil</b>: seletor no topo alterna Gerente / Auditor / Admin;</li>
 <li><b>Modo TV</b>: em Relatórios, para telões de fábrica;</li>
 <li><b>Templates</b>: documentos com 📎 têm modelo oficial baixável;</li>
@@ -1989,9 +1994,9 @@ let helpIx=0;
 function openHelp(){document.getElementById('helpModal').classList.remove('hidden');showHelpSec(helpIx);}
 function closeHelp(){document.getElementById('helpModal').classList.add('hidden');}
 function renderHelpToc(q){q=(q||'').toLowerCase();
-  document.getElementById('helpToc').innerHTML=HELP.map((s,i)=>(!q||s.t.toLowerCase().includes(q)||s.d.toLowerCase().includes(q))?`<div class="ht ${i===helpIx?'on':''}" onclick="showHelpSec(${i})"><span class="hi">${s.ic}</span>${s.t}</div>`:'').join('')||'<div style="padding:12px;font-size:12px;color:var(--ink-faint)">Nenhuma seção encontrada.</div>';}
+  document.getElementById('helpToc').innerHTML=HELP.map((s,i)=>(!q||s.t.toLowerCase().includes(q)||s.d.toLowerCase().includes(q))?`<div class="ht ${i===helpIx?'on':''}" onclick="showHelpSec(${i})">${s.t}</div>`:'').join('')||'<div style="padding:12px;font-size:12px;color:var(--ink-faint)">Nenhuma seção encontrada.</div>';}
 function showHelpSec(i){helpIx=i;const s=HELP[i];
-  document.getElementById('helpBody').innerHTML=`<h2>${s.ic} ${s.t}</h2><div class="lead">${s.d}</div>${s.b}`;
+  document.getElementById('helpBody').innerHTML=`<h2>${s.t}</h2><div class="lead">${s.d}</div>${s.b}`;
   document.getElementById('helpCrumb').textContent=`Manual de utilização · Seção ${i+1} de ${HELP.length}`;
   document.getElementById('helpPrev').style.visibility=i===0?'hidden':'visible';
   document.getElementById('helpNext').style.visibility=i===HELP.length-1?'hidden':'visible';
@@ -1999,7 +2004,7 @@ function showHelpSec(i){helpIx=i;const s=HELP[i];
   document.getElementById('helpBody').scrollTop=0;}
 function helpNav(d){showHelpSec(Math.min(HELP.length-1,Math.max(0,helpIx+d)));}
 function printHelp(){
-  document.getElementById('helpPrint').innerHTML=`<h1 style="font-family:Poppins">Manual de Utilização — Plataforma de Gestão de Projetos Unilever</h1><p>Versão 1.0 · ${HELP.length} seções · Desenvolvido por Drive Data</p><hr>`+
+  document.getElementById('helpPrint').innerHTML=`<h1 style="font-family:Poppins">Manual de Utilização, Plataforma de Gestão de Projetos Unilever</h1><p>Versão 1.0 · ${HELP.length} seções · Desenvolvido por Drive Data</p><hr>`+
     HELP.map((s,i)=>`<div class="hp-sec"><h2>${i+1}. ${s.ic} ${s.t}</h2><p><i>${s.d}</i></p>${s.b}</div>`).join('');
   window.print();
 }
@@ -2008,41 +2013,41 @@ function printHelp(){
    e aponta para os elementos REAIS de cada tela, não para o menu. */
 const TOUR=[
   {view:"dashboard",sel:'.stat-grid',c:"Visão geral",t:"O pulso do portfólio",
-   x:"A plataforma gerencia o <b>ciclo de vida completo</b> dos projetos de engenharia — do cadastro à conclusão. Estes 4 indicadores mostram em tempo real: <b>projetos ativos</b>, capex em gestão, conformidade documental e riscos abertos."},
+   x:"A plataforma gerencia o <b>ciclo de vida completo</b> dos projetos de engenharia, do cadastro à conclusão. Estes 4 indicadores mostram em tempo real: <b>projetos ativos</b>, capex em gestão, conformidade documental e riscos abertos."},
   {view:"dashboard",sel:'#projGrid',c:"Visão geral",t:"Um card por projeto",
    x:"Cada card resume o essencial: <b>tipo (A–E)</b>, líder, capex, a trilha dos <b>7 steps</b> e a OI sincronizada com o SAP. <b>Clicar no card abre o projeto</b> com documentos e gates."},
   {view:"dashboard",sel:'#view-dashboard .panel-head .btn',c:"1 · Cadastro",t:"Tudo começa aqui",
    x:"Um <b>único cadastro em 4 passos</b>: identificação (OI, líder, <b>equipe</b>) → classificação automática do tipo A–E → financeiro & <b>cronograma (início · meio · fim)</b> → revisão. Esse cadastro alimenta todas as telas do sistema."},
   {view:"lifecycle",sel:'#lcPhases',c:"2 · Ciclo de vida",t:"A jornada completa do projeto",
-   x:"O coração do sistema: <b>Iniciação → Planejamento → Execução → Monitoramento → Encerramento</b>. Cada fase com status calculado, a <b>saúde do projeto</b> (avanço, documentos, financeiro, próximo marco) e o <b>histórico de evolução</b> — quem fez o quê, quando, incluindo remanejamentos com justificativa."},
+   x:"O coração do sistema: <b>Iniciação → Planejamento → Execução → Monitoramento → Encerramento</b>. Cada fase com status calculado, a <b>saúde do projeto</b> (avanço, documentos, financeiro, próximo marco) e o <b>histórico de evolução</b>, quem fez o quê, quando, incluindo remanejamentos com justificativa."},
   {view:"project",sel:'#pipeline',c:"3 · Execução",t:"O fluxo EEM em 7 steps",
-   x:"Todo projeto percorre o mesmo caminho: <b>Briefing → Risco → Fornecedores → Construção → Instalação → FAT → Conclusão</b>. O step atual fica destacado — e só avança pelo gate documental."},
+   x:"Todo projeto percorre o mesmo caminho: <b>Briefing → Risco → Fornecedores → Construção → Instalação → FAT → Conclusão</b>. O step atual fica destacado, e só avança pelo gate documental."},
   {view:"project",sel:'#gateBar',c:"3 · Execução",t:"Gate documental",
-   x:"Cada step exige <b>documentos obrigatórios conforme o tipo</b> (A exige mais, E exige menos). O avanço <b>só libera com 100% dos documentos inseridos</b> — governança garantida por construção, não por cobrança."},
+   x:"Cada step exige <b>documentos obrigatórios conforme o tipo</b> (A exige mais, E exige menos). O avanço <b>só libera com 100% dos documentos inseridos</b>, governança garantida por construção, não por cobrança."},
   {view:"track",sel:'#trackKpis',c:"4 · Acompanhamento",t:"On track ou off track? O sistema responde",
-   x:"O Portfólio EEM (Módulo 3 — a nova demanda) compara o <b>avanço real × planejado</b> e classifica sozinho: <b>on track, off track ou adiantado</b> — a visão gerencial que a fábrica precisa, sem status reportado manualmente."},
+   x:"O Portfólio EEM (Módulo 3, a nova demanda) compara o <b>avanço real × planejado</b> e classifica sozinho: <b>on track, off track ou adiantado</b>, a visão gerencial que a fábrica precisa, sem status reportado manualmente."},
   {view:"track",sel:'#trackAlerts',c:"4 · Acompanhamento",t:"Alertas automáticos",
    x:"O sistema avisa sozinho: projetos off track, <b>prazos remanejados</b> (com quem mudou e a justificativa) e <b>atividades atrasadas</b>. Nada passa despercebido."},
-  {view:"track",sel:'#trackMacro',c:"4 · Acompanhamento",t:"Cronograma macro — com o “vermelhinho”",
-   x:"Cada barra vai do <b>início ao fim</b>; o losango é o marco do meio e a linha vermelha marca <b>hoje</b>. Quando um prazo é empurrado além do cronograma original, o trecho extra aparece <b>hachurado em vermelho</b> — a mudança fica visível para todos."},
+  {view:"track",sel:'#trackMacro',c:"4 · Acompanhamento",t:"Cronograma macro, com o “vermelhinho”",
+   x:"Cada barra vai do <b>início ao fim</b>; o losango é o marco do meio e a linha vermelha marca <b>hoje</b>. Quando um prazo é empurrado além do cronograma original, o trecho extra aparece <b>hachurado em vermelho</b>, a mudança fica visível para todos."},
   {view:"track",sel:'#trackLead',c:"4 · Acompanhamento",t:"Pilar Portfolio × Líder",
    x:"A visão hierárquica do EEM: o <b>pilar Portfolio</b> enxerga o conjunto de projetos; cada <b>líder</b> acompanha somente os seus. KPIs, alertas e cronograma se recalculam na hora. E clicando em um projeto, abre o <b>plano com marcos e atividades por mês</b>."},
   {view:"gantt",sel:'#ganttBody',c:"4 · Acompanhamento",t:"Evolução por steps",
    x:"Complementar ao cronograma macro: aqui você vê <b>em que step</b> cada projeto está e como evolui <b>mês a mês</b> ao longo do ano."},
-  {view:"dra",sel:'#draChart',c:"5 · Financeiro",t:"DRA — Designação de Recursos e Autorização",
-   x:"O Módulo 2: consumo do capex por <b>Ordem Interna (OI)</b> — aprovado, executado, compromissado e saldo — com dados extraídos do <b>SAP pelo robô (RPA)</b> e consolidados via SharePoint / Power BI. Cronograma e dinheiro lado a lado."},
+  {view:"dra",sel:'#draChart',c:"5 · Financeiro",t:"DRA, Designação de Recursos e Autorização",
+   x:"O Módulo 2: consumo do capex por <b>Ordem Interna (OI)</b>, aprovado, executado, compromissado e saldo, com dados extraídos do <b>SAP pelo robô (RPA)</b> e consolidados via SharePoint / Power BI. Cronograma e dinheiro lado a lado."},
   {view:"integrations",sel:'#view-integrations',c:"5 · Integrações",t:"Três conexões, zero digitação",
    x:"<b>Robô SAP (RPA)</b> traz os dados financeiros, o <b>SharePoint</b> guarda os documentos e o <b>Power BI</b> exibe o painel DRA. Ninguém digita dado duas vezes."},
   {view:"reports",sel:'#kpiGrid',c:"5 · Relatórios",t:"Visão executiva",
-   x:"KPIs consolidados do portfólio para a gestão — com <b>Modo TV</b> para os telões da fábrica e integração com Power BI."},
+   x:"KPIs consolidados do portfólio para a gestão, com <b>Modo TV</b> para os telões da fábrica e integração com Power BI."},
   {view:"audit",sel:'#auditBody',c:"6 · Governança",t:"Auditoria completa",
    x:"Cada ação fica registrada: <b>quem fez o quê, quando e em qual projeto</b>. Trilha exportável para conformidade e auditorias internas."},
-  {view:"catalog",sel:'#catStats',c:"6 · Governança",t:"Catálogo — fonte única",
+  {view:"catalog",sel:'#catStats',c:"6 · Governança",t:"Catálogo, fonte única",
    x:"Define <b>quais documentos cada step exige</b> e a partir de qual tipo (A–E) são obrigatórios. Editável pelo admin: <b>mudou aqui, mudou no sistema inteiro</b>."},
   {view:"classify",sel:'#critList',c:"6 · Governança",t:"Como nasce o tipo A–E",
-   x:"Seis critérios (investimento, impacto, inovação, tecnologia…) pontuam o projeto de <b>0 a 100</b> e definem o tipo — e, com ele, <b>o rigor documental exigido</b>. Objetivo, sem subjetividade."},
+   x:"Seis critérios (investimento, impacto, inovação, tecnologia…) pontuam o projeto de <b>0 a 100</b> e definem o tipo, e, com ele, <b>o rigor documental exigido</b>. Objetivo, sem subjetividade."},
   {view:"team",sel:'#roleSel',c:"Para terminar",t:"Perfis de acesso",
-   x:"<b>Admin, Gerente de Projeto e Auditor</b> — cada papel vê e faz coisas diferentes (matriz nesta tela). Use <b>este seletor</b> para simular cada perfil. Fim do tour — explore à vontade! 🚀"}
+   x:"<b>Admin, Gerente de Projeto e Auditor</b>, cada papel vê e faz coisas diferentes (matriz nesta tela). Use <b>este seletor</b> para simular cada perfil. Fim do tour, explore à vontade! 🚀"}
 ];
 let ti=-1;
 function ensureTourEls(){if(document.getElementById('tourOverlay'))return;
@@ -2098,11 +2103,11 @@ function renderCatalog(){
   document.getElementById('catStats').innerHTML=TYPE_ORDER.map(t=>`<div class="cs"><div class="csl">Tipo ${t}</div><div class="csn" style="color:${TYPES[t].color}">${totalActs(t)}</div><div class="csl" style="text-transform:none;font-weight:500">documentos exigidos</div></div>`).join('');
   const rows=CATALOG.filter(d=>catFilterVal==="all"||d.step==+catFilterVal).sort((a,b)=>a.step-b.step);
   document.getElementById('catBody').innerHTML=rows.map(d=>{
-    const tcells=TYPE_ORDER.map(t=>`<td style="text-align:center" class="${requiredFor(d,t)?'reqd':'reqn'}">${requiredFor(d,t)?'✔':'—'}</td>`).join('');
+    const tcells=TYPE_ORDER.map(t=>`<td style="text-align:center" class="${requiredFor(d,t)?'reqd':'reqn'}">${requiredFor(d,t)?'✔':', '}</td>`).join('');
     return `<tr>
       <td><span class="stp">${d.step+1}. ${STEPS[d.step].name}</span></td>
       <td style="font-weight:600">${d.name}</td>
-      <td>${d.tool?`<span class="tg">${d.tool}</span>`:'<span class="muted" style="font-size:11px">—</span>'}</td>
+      <td>${d.tool?`<span class="tg">${d.tool}</span>`:'<span class="muted" style="font-size:11px">, </span>'}</td>
       <td><span class="mt-badge" style="background:${TYPES[d.minType].color}">${d.minType}</span></td>
       ${tcells}
       <td><div class="act"><button class="ib perm-w" title="Editar" onclick="openCatForm(${d.id})">✎</button><button class="ib del perm-w" title="Excluir" onclick="delCat(${d.id})">🗑</button></div></td>
@@ -2137,7 +2142,7 @@ function propagateCatalog(){
 }
 
 const titles={dashboard:["Dashboard","Dashboard do Portfólio"],reports:["Relatórios","Relatórios & KPIs"],lifecycle:["Ciclo de Vida","Ciclo de Vida do Projeto"],track:["Portfólio EEM","Portfólio EEM · Acompanhamento Operacional (Módulo 3)"],project:["Steps & Documentos","Steps & Documentos do Projeto"],
-  dra:["DRA Financeiro","Módulo 2 · DRA — Designação de Recursos e Autorização"],
+  dra:["DRA Financeiro","Módulo 2 · DRA, Designação de Recursos e Autorização"],
   catalog:["Catálogo","Catálogo de Documentos por Step"],
   gantt:["Cronograma","Cronograma do Portfólio"],classify:["Classificação","Classificação Automática"],
   docs:["Documentos","Automação de Documentação"],audit:["Auditoria","Auditoria & Conformidade"],
