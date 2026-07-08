@@ -556,6 +556,18 @@
   .cat-tbl .ib:hover{border-color:var(--brand);color:var(--brand)}
   .cat-tbl .ib.del:hover{border-color:var(--danger);color:var(--danger)}
   .mt-badge{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:6px;color:#fff;font-weight:800;font-size:11px;font-family:"Poppins"}
+  /* ===== DRA · Portfólio de Investimentos ===== */
+  .dra-toolbar{display:flex;gap:16px;align-items:flex-end;margin-bottom:16px;flex-wrap:wrap}
+  .dra-toolbar .dra-lbl{display:block;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--ink-faint);margin-bottom:3px}
+  .seg{display:inline-flex;background:var(--surface-2);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  .seg-b{border:0;background:none;font-family:inherit;font-size:12.5px;font-weight:600;color:var(--ink-soft);padding:8px 14px;cursor:pointer;transition:.15s}
+  .seg-b.on{background:var(--brand);color:#fff}
+  .dra-pb{display:flex;align-items:center;gap:16px;padding:16px 20px;flex-wrap:wrap}
+  .dra-proj-row{display:grid;grid-template-columns:1.4fr 1fr 150px;gap:12px;align-items:center;padding:7px 0;border-top:1px solid var(--surface-2);font-size:12.5px}
+  .dra-proj-row:first-child{border-top:0}
+  .dra-proj-row .pbar{height:8px;background:var(--surface-2);border-radius:5px;overflow:hidden}
+  .dra-proj-row .pbar i{display:block;height:100%;border-radius:5px}
+  #draAlerts .alert-row .btn{margin-left:auto;flex:none}
 </style>
 </head>
 <body>
@@ -759,20 +771,31 @@
     </section>
 
     <!-- DRA FINANCEIRO -->
-    <section class="view hidden" id="view-dra">
+        <section class="view hidden" id="view-dra">
       <div class="toolbanner">
         <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><path d="M3 3v18h18"/><path d="M7 14l3-4 3 3 4-6"/></svg></div>
-        <div><h3>Módulo 2 · DRA, Designação de Recursos e Autorização</h3><p>Controle financeiro mês a mês por Ordem Interna (OI). Base extraída do SAP por robô (RPA) e gravada no SharePoint, sem API SAP ao vivo.</p></div>
-        <select class="role-sel" id="draSel" style="margin-left:auto"></select>
+        <div><h3>Módulo 2 · DRA, Portfólio de Investimentos</h3><p>Executado e replanejamento mês a mês, por projeto, com visão de quarter e semestre. Base extraída do SAP por robô (RPA), consolidada no SharePoint e publicada no Power BI. Escala LATAM.</p></div>
+        <button class="btn sap sm perm-w" style="margin-left:auto" onclick="syncSAP(this)">↻ Atualizar base (robô)</button>
       </div>
-      <div class="kpi-grid" id="draKpis" style="grid-template-columns:repeat(5,1fr)"></div>
-      <div class="chart-grid" style="grid-template-columns:1.4fr 1fr">
-        <div class="card chart"><h4>Orçado × Executado por mês <span id="draOI">OI, </span></h4><div id="draChart"></div></div>
-        <div class="card chart"><h4>Saldo de Capex <span>acumulado</span></h4><div id="draDonut"></div></div>
+      <div class="dra-toolbar">
+        <div><label class="dra-lbl">Região</label><select class="role-sel" id="draRegion" onchange="buildDRA()"></select></div>
+        <div><label class="dra-lbl">Escopo</label><select class="role-sel" id="draScope" onchange="buildDRA()"><option>Portfólio consolidado</option><option>Por projeto (OI)</option></select></div>
+        <div id="draSelWrap"><label class="dra-lbl">Projeto</label><select class="role-sel" id="draSel"></select></div>
+        <div style="margin-left:auto"><label class="dra-lbl">Período</label><div class="seg" id="draPeriod"><button class="seg-b on" data-p="ano" onclick="draPeriodSet('ano')">Ano</button><button class="seg-b" data-p="sem" onclick="draPeriodSet('sem')">Semestre</button><button class="seg-b" data-p="qtr" onclick="draPeriodSet('qtr')">Quarter</button></div></div>
       </div>
-      <div class="card" style="overflow:hidden;margin-top:14px">
-        <div class="docs-head"><div><div class="st">Detalhamento mensal (2026)</div><div class="muted">Valores em € · fonte: base SAP no SharePoint</div></div><button class="btn sap sm perm-w" onclick="syncSAP(this)">↻ Atualizar base (robô)</button></div>
-        <table class="tbl"><thead><tr><th>Mês</th><th style="text-align:right">Orçado</th><th style="text-align:right">Executado</th><th style="text-align:right">Δ Mês</th><th style="text-align:right">Saldo Capex</th></tr></thead><tbody id="draBody"></tbody></table>
+      <div class="kpi-grid" id="draKpis" style="grid-template-columns:repeat(6,1fr)"></div>
+      <div class="chart-grid" style="grid-template-columns:1.5fr 1fr">
+        <div class="card chart"><h4>Executado × Replanejado <span id="draPerLbl">2026</span></h4><div id="draChart"></div></div>
+        <div class="card chart"><h4>Saldo de Capex <span>consolidado</span></h4><div id="draDonut"></div></div>
+      </div>
+      <div class="chart-grid" style="grid-template-columns:1.3fr 1fr">
+        <div class="card" style="padding:16px 18px"><div class="section-title" style="font-size:14.5px;margin-bottom:10px">Investimento por projeto</div><div id="draByProj"></div></div>
+        <div class="card" style="padding:16px 18px"><div class="section-title" style="font-size:14.5px;margin-bottom:10px">Alertas de ajuste <span class="muted" style="font-weight:500;font-size:12px">· notificam o responsável</span></div><div id="draAlerts"></div></div>
+      </div>
+      <div class="card" id="draPublish" style="margin-bottom:14px"></div>
+      <div class="card" style="overflow:hidden">
+        <div class="docs-head"><div><div class="st">Detalhamento mensal (2026)</div><div class="muted">Valores em € · realizado (SAP) e replanejado · faixa "replan." = meses futuros</div></div></div>
+        <table class="tbl"><thead><tr><th>Mês</th><th style="text-align:right">Planejado</th><th style="text-align:right">Realizado / Replan.</th><th style="text-align:right">Δ vs plano</th><th style="text-align:right">Saldo Capex</th></tr></thead><tbody id="draBody"></tbody></table>
       </div>
     </section>
 
@@ -1267,46 +1290,83 @@ function buildGantt(){
 }
 
 /* ============ DRA FINANCEIRO ============ */
-let draProj=PROJECTS[0];
-const draSel=document.getElementById('draSel');
-PROJECTS.forEach(p=>{const o=document.createElement('option');o.value=p.id;o.textContent=`OI ${p.oi} · ${p.name}`;draSel.appendChild(o);});
-draSel.onchange=()=>{draProj=PROJECTS.find(p=>p.id===draSel.value);buildDRA();};
+/* ============ DRA · Portfólio de Investimentos ============ */
+const REGIONS={"LATAM (consolidado)":2.9,"Brasil":1.0,"México":0.85,"Argentina":0.55,"Chile":0.4};
+let draPeriod='ano';
+const draSum=(a,i,j)=>{let s=0;for(let k=i;k<=j;k++)s+=a[k]||0;return s;};
+function draSetup(){
+  const reg=document.getElementById('draRegion');
+  if(reg&&!reg.options.length){Object.keys(REGIONS).forEach(k=>{const o=document.createElement('option');o.textContent=k;reg.appendChild(o);});reg.value='Brasil';}
+  const oi=document.getElementById('draSel');
+  if(oi&&!oi.options.length){PROJECTS.forEach(p=>{const o=document.createElement('option');o.value=p.id;o.textContent='OI '+p.oi+' · '+p.name;oi.appendChild(o);});oi.onchange=buildDRA;}
+  document.querySelectorAll('#draPeriod .seg-b').forEach(b=>b.classList.toggle('on',b.dataset.p===draPeriod));
+}
+function draPeriodSet(pp){draPeriod=pp;buildDRA();}
+/* série do portfólio: plano mensal e realizado (passado) + replanejado (futuro) */
+function draFin(list,factor){
+  const plan=Array(12).fill(0),real=Array(12).fill(0),today=Math.floor(EEM_TODAY);
+  list.forEach(p=>{const f=finance(p);
+    for(let m=0;m<12;m++){plan[m]+=f.orc[m]*factor; if(m<=today)real[m]+=f.gas[m]*factor;}
+    const rem=Math.max(0,(p.budP-p.budA))*factor;
+    let fs=Math.max(p.gs,today+1),fe=Math.min(11,p.gs+p.gsp-1);if(fe<fs)fe=fs;
+    const n=Math.max(1,fe-fs+1);for(let m=fs;m<=fe&&m<12;m++)real[m]+=rem/n;});
+  return {plan,real,today};
+}
 function buildDRA(){
-  const p=draProj, f=finance(p);
-  const saldo=p.budP-p.budA-p.com;
-  document.getElementById('draOI').textContent='OI '+p.oi;
+  draSetup();
+  const scope=document.getElementById('draScope').value;
+  const region=document.getElementById('draRegion').value;
+  const isPort=scope.indexOf('Portf')===0;
+  const factor=isPort?(REGIONS[region]||1):1;
+  document.getElementById('draSelWrap').style.display=isPort?'none':'';
+  const list=isPort?PROJECTS:[PROJECTS.find(p=>p.id===document.getElementById('draSel').value)||PROJECTS[0]];
+  const fin=draFin(list,factor),today=fin.today;
+  const totP=list.reduce((a,p)=>a+p.budP,0)*factor,totA=list.reduce((a,p)=>a+p.budA,0)*factor,totC=list.reduce((a,p)=>a+p.com,0)*factor,totS=list.reduce((a,p)=>a+p.sav,0)*factor;
+  const saldo=totP-totA-totC;
+  const expT=draSum(fin.plan,0,today),realT=draSum(fin.real,0,today),ader=expT?Math.round(realT/expT*100):0;
   const kpis=[
-    {l:"Capex Aprovado",v:eur(p.budP),c:"var(--brand)"},
-    {l:"Real Executado",v:eur(p.budA),c:"var(--ok)"},
-    {l:"Compromissado",v:eur(p.com),c:"var(--warn)"},
+    {l:"Capex Aprovado",v:eur(totP),c:"var(--brand)"},
+    {l:"Executado (YTD)",v:eur(totA),c:"var(--ok)"},
+    {l:"Compromissado",v:eur(totC),c:"var(--warn)"},
     {l:"Saldo Disponível",v:eur(saldo),c:saldo<0?"var(--danger)":"var(--brand-2)"},
-    {l:"Saving Estimado",v:eur(p.sav),c:"var(--ok)"}
+    {l:"Saving Estimado",v:eur(totS),c:"var(--ok)"},
+    {l:"Aderência ao Plano",v:ader+"%",c:(ader>=90&&ader<=110)?"var(--ok)":((ader<80||ader>125)?"var(--danger)":"var(--warn)")}
   ];
   document.getElementById('draKpis').innerHTML=kpis.map(k=>`<div class="card kpi"><div class="lbl">${k.l}</div><div class="val" style="color:${k.c}">${k.v}</div></div>`).join('');
-  // chart orçado x executado por mês
-  document.getElementById('draChart').innerHTML=draBars(f.orc,f.gas);
-  // donut saldo
+  document.getElementById('draPerLbl').textContent=(isPort?region:'OI '+list[0].oi)+' · '+(draPeriod==='ano'?'mês a mês':draPeriod==='sem'?'por semestre':'por quarter');
+  document.getElementById('draChart').innerHTML=draChartRP(fin.plan,fin.real,draPeriod,today);
   document.getElementById('draDonut').innerHTML=donut([
-    {label:"Executado",value:Math.round(p.budA/1000),color:"#1f9d57"},
-    {label:"Compromissado",value:Math.round(p.com/1000),color:"#e8930c"},
-    {label:"Saldo",value:Math.max(0,Math.round(saldo/1000)),color:"#6cb2e3"}
-  ]);
-  // tabela
-  let acc=p.budP,rows='';
-  for(let m=0;m<12;m++){
-    const d=f.gas[m]; if(f.orc[m]===0 && d===0 && m<p.gs) {continue;}
-    acc-=d;
-    rows+=`<tr><td style="font-weight:600">${MESES[m]}/26</td><td style="text-align:right">${f.orc[m]?eurc(f.orc[m]):', '}</td><td style="text-align:right">${d?eurc(d):', '}</td><td style="text-align:right;color:${d>f.orc[m]&&f.orc[m]?'var(--danger)':'var(--ink-soft)'}">${d?eurc(d-f.orc[m]):', '}</td><td style="text-align:right;font-weight:600">${eurc(acc)}</td></tr>`;
-  }
+    {label:"Executado",value:Math.round(totA/1000),color:"#1f9d57"},
+    {label:"Compromissado",value:Math.round(totC/1000),color:"#e8930c"},
+    {label:"Saldo",value:Math.max(0,Math.round(saldo/1000)),color:"#6cb2e3"}]);
+  document.getElementById('draByProj').innerHTML=list.map(p=>{const ap=p.budP*factor,ex=p.budA*factor,pct=ap?Math.round(ex/ap*100):0,over=ex>ap;
+    return `<div class="dra-proj-row"><div style="font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.name}</div><div class="pbar"><i style="width:${Math.min(100,pct)}%;background:${over?'var(--danger)':'var(--brand)'}"></i></div><div style="text-align:right">${eur(ex)} <span class="muted">/ ${eur(ap)} · ${pct}%</span></div></div>`;}).join('');
+  const al=[];list.forEach(p=>{const ap=p.budP*factor,ex=p.budA*factor,f=finance(p);const expp=draSum(f.orc,0,today)*factor,rr=draSum(f.gas,0,today)*factor,ad=expp?rr/expp:1;
+    if(ex>ap)al.push({p,m:'Estouro de capex, executado acima do aprovado',lvl:'danger'});
+    else if(ad<0.75)al.push({p,m:'Execução abaixo do plano ('+Math.round(ad*100)+'%), risco de atraso no investimento',lvl:'warn'});
+    else if(ad>1.25)al.push({p,m:'Gasto acelerado ('+Math.round(ad*100)+'% do previsto), revisar a projeção',lvl:'warn'});});
+  document.getElementById('draAlerts').innerHTML=al.length?al.slice(0,5).map(a=>`<div class="alert-row"><span class="ai" style="color:var(--${a.lvl})">●</span><div style="flex:1"><b>${a.p.name}</b><small>${a.m} · líder ${a.p.lead}</small></div><button class="btn ghost sm perm-w" onclick="toast('Notificação enviada a ${a.p.lead} via Teams / Outlook.')">Notificar</button></div>`).join(''):'<div class="alert-row"><span class="ai" style="color:var(--ok)">●</span><div><b>Nenhum ajuste necessário</b><small>Portfólio dentro do planejado</small></div></div>';
+  const pend=al.length;
+  document.getElementById('draPublish').innerHTML=`<div class="dra-pb"><div style="flex:1;min-width:240px"><div class="section-title" style="font-size:14.5px">Validação para o BI</div><div class="muted" style="font-size:12.5px">Revise os dados consolidados antes de publicar no Power BI para os stakeholders (Alan, Grazi, Caro). ${pend?'<b style="color:var(--warn)">'+pend+' projeto(s) com alerta aguardando revisão.</b>':'Tudo conferido, pronto para publicar.'}</div></div><span class="pill" id="draPubStatus" style="background:#fdf3e3;color:#8a5b00">● Aguardando publicação</span><button class="btn perm-w" onclick="draPublishBI()">Revisar e publicar no BI</button></div>`;
+  let acc=totP,rows='';
+  for(let m=0;m<12;m++){const pl=fin.plan[m],rv=fin.real[m];if(pl===0&&rv===0)continue;acc-=rv;const fut=m>today;
+    rows+=`<tr><td style="font-weight:600">${MESES[m]}/26 ${fut?'<span class="pill" style="background:#eef4fb;color:#0060a8;font-size:9px;padding:1px 6px">replan.</span>':''}</td><td style="text-align:right">${pl?eurc(pl):'—'}</td><td style="text-align:right">${rv?eurc(rv):'—'}</td><td style="text-align:right;color:${rv>pl&&pl?'var(--danger)':'var(--ink-soft)'}">${rv&&pl?eurc(rv-pl):'—'}</td><td style="text-align:right;font-weight:600">${eurc(acc)}</td></tr>`;}
   document.getElementById('draBody').innerHTML=rows;
 }
-function draBars(orc,gas){const W=560,H=200,pad=30;const max=Math.max(...orc,...gas)*1.15||1;const gw=(W-pad*2)/12;let b='';
-  for(let i=0;i<12;i++){const x=pad+i*gw+gw/2;const ho=(orc[i]/max)*(H-44),hg=(gas[i]/max)*(H-44);
-    b+=`<rect x="${x-9}" y="${H-22-ho}" width="8" height="${ho}" rx="2" fill="#c7ddef"/>
-    <rect x="${x+1}" y="${H-22-hg}" width="8" height="${hg}" rx="2" fill="#0060A8"/>
-    <text x="${x}" y="${H-7}" text-anchor="middle" font-size="9" fill="#86939f">${MESES[i]}</text>`;}
-  return `<svg width="100%" viewBox="0 0 ${W} ${H}">${b}</svg><div class="legend"><span><i style="background:#c7ddef"></i>Orçado</span><span><i style="background:#0060A8"></i>Executado</span></div>`;}
-buildDRA();
+function draPublishBI(){const s=document.getElementById('draPubStatus');if(s){s.textContent='● Publicado no BI';s.style.background='#e7f4ee';s.style.color='#137a44';}toast('Dados validados e publicados no Power BI para os stakeholders.');}
+function draChartRP(plan,real,period,today){
+  let labels,pv=[],rv=[],futFrom;
+  if(period==='sem'){labels=['S1 · Jan-Jun','S2 · Jul-Dez'];pv=[draSum(plan,0,5),draSum(plan,6,11)];rv=[draSum(real,0,5),draSum(real,6,11)];futFrom=99;}
+  else if(period==='qtr'){labels=['Q1','Q2','Q3','Q4'];for(let q=0;q<4;q++){pv.push(draSum(plan,q*3,q*3+2));rv.push(draSum(real,q*3,q*3+2));}futFrom=Math.floor((today+1)/3);}
+  else{labels=MESES;pv=plan.slice();rv=real.slice();futFrom=today+1;}
+  const W=560,H=210,pad=34,n=labels.length,max=Math.max(...pv,...rv)*1.15||1,gw=(W-pad*2)/n;
+  let b='<defs><pattern id="drahatch" width="6" height="6" patternTransform="rotate(45)" patternUnits="userSpaceOnUse"><rect width="6" height="6" fill="#0060A8"/><line x1="0" y1="0" x2="0" y2="6" stroke="#fff" stroke-width="3"/></pattern></defs>';
+  for(let i=0;i<n;i++){const x=pad+i*gw+gw/2,ho=(pv[i]/max)*(H-52),hg=(rv[i]/max)*(H-52),fut=i>=futFrom;
+    b+=`<rect x="${x-9}" y="${H-26-ho}" width="8" height="${ho}" rx="2" fill="#c7ddef"/>`;
+    b+=`<rect x="${x+1}" y="${H-26-hg}" width="8" height="${hg}" rx="2" fill="${fut?'url(#drahatch)':'#0060A8'}"/>`;
+    b+=`<text x="${x}" y="${H-9}" text-anchor="middle" font-size="${n>6?'8':'9.5'}" fill="#86939f">${labels[i]}</text>`;}
+  if(period==='ano'){const hx=pad+(today+1)*gw;b+=`<line x1="${hx}" y1="14" x2="${hx}" y2="${H-28}" stroke="#d6336c" stroke-width="1.5" stroke-dasharray="3 3"/><text x="${hx}" y="11" text-anchor="middle" font-size="8" font-weight="700" fill="#d6336c">hoje</text>`;}
+  return `<svg width="100%" viewBox="0 0 ${W} ${H}">${b}</svg><div class="legend"><span><i style="background:#c7ddef"></i>Planejado</span><span><i style="background:#0060A8"></i>Executado</span><span><i style="background:url(#drahatch)"></i>Replanejado (futuro)</span></div>`;}
 const INTEG=[
   {ic:"SAP",color:"#0a6cff",name:"Robô SAP (RPA)",on:true,st:"Conectado · extração mensal",p:"Robô (RPA, VBScript/Python) que extrai do SAP, por Ordem Interna (OI), os dados financeiros, orçamento, executado, compromissado e saldo, e gera a base (Excel/TXT) consumida pela plataforma. Não utiliza API SAP ao vivo."},
   {ic:"SP",color:"#1f9d57",name:"SharePoint (Unilever)",on:true,st:"Backend principal",p:"Armazenamento dos documentos dos projetos e das bases financeiras no SharePoint da Unilever (ecossistema Microsoft)."},
@@ -2036,12 +2096,14 @@ const TOUR=[
    x:"Filtre a trilha por status, <b>gerados, em revisão, pendentes</b>. Cada ação fica registrada: <b>quem fez o quê, quando e em qual projeto</b>."},
   {view:"audit",sel:'[onclick="exportAudit()"]',c:"Módulo 1 · PSR",t:"Exportar auditoria",
    x:"<b>Exportar CSV</b> baixa a trilha filtrada para o Excel, pronta para conformidade e auditorias internas. O perfil Auditor também pode exportar."},
-  {view:"dra",sel:'#draKpis',c:"Módulo 2 · DRA",t:"Financeiro por Ordem Interna",
-   x:"Os 5 indicadores por OI: <b>capex aprovado, real executado, compromissado, saldo e saving</b>, sempre vindos do SAP. Orçado e realizado, mês a mês, sem planilha paralela."},
-  {view:"dra",sel:'#draChart',c:"Módulo 2 · DRA",t:"Orçado × executado",
-   x:"O gráfico compara <b>orçado × gasto real</b> por OI e período. O DRA (Designação de Recursos e Autorização) é o Módulo 2: dinheiro e cronograma lado a lado."},
+  {view:"dra",sel:'#draKpis',c:"Módulo 2 · DRA",t:"Portfólio de investimentos",
+   x:"O DRA é o portfólio financeiro do portfólio de projetos: <b>capex aprovado, executado (YTD), compromissado, saldo, saving e aderência ao plano</b>. Consolidado ou por OI, e escalável a <b>LATAM</b> (Brasil, México, Argentina)."},
+  {view:"dra",sel:'#draChart',c:"Módulo 2 · DRA",t:"Executado × replanejado",
+   x:"O coração do DRA: o <b>realizado até hoje</b> e o <b>replanejamento dos meses seguintes</b>, com visão de <b>mês, quarter e semestre</b>. A linha vermelha marca hoje; à direita, os meses futuros aparecem hachurados (replanejados)."},
+  {view:"dra",sel:'#draAlerts',c:"Módulo 2 · DRA",t:"Alertas e validação para o BI",
+   x:"Alertas de ajuste (estouro de capex, execução fora do plano) <b>notificam o responsável via Teams / Outlook</b>. Antes de publicar, uma <b>camada de validação</b> aprova o que vai para o Power BI dos stakeholders."},
   {view:"dra",sel:'#view-dra [onclick="syncSAP(this)"]',c:"Módulo 2 · DRA",t:"Robô SAP (RPA)",
-   x:"O botão <b>Atualizar base (robô)</b> dispara a extração no SAP. Um robô (RPA) traz os dados por OI, grava no SharePoint e alimenta o painel. Dado financeiro não se digita à mão."},
+   x:"O botão <b>Atualizar base (robô)</b> dispara a extração no SAP. Um robô (RPA) traz as transações por OI, grava no SharePoint e alimenta o painel e o BI. Substitui a planilha manual de hoje."},
   {view:"lifecycle",sel:'#lcPhases',c:"Módulo 3 · Ciclo de Vida",t:"A jornada completa do projeto",
    x:"O coração do Módulo 3: <b>Iniciação → Planejamento → Execução → Monitoramento → Encerramento</b>. Cada fase com status calculado pelo sistema."},
   {view:"lifecycle",sel:'#lcHealth',c:"Módulo 3 · Ciclo de Vida",t:"Saúde do projeto",
