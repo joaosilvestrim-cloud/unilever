@@ -852,7 +852,7 @@
         </div>
         <div class="chart-grid" style="grid-template-columns:1.4fr 1fr;margin-bottom:14px"><div class="card" id="gCeiling"></div><div class="card" id="gByType"></div></div>
         <div class="card" style="overflow:hidden">
-          <div class="docs-head"><div><div class="st" id="gTitle">DRA Grid · Pouso Alegre · August 2026</div><div class="muted">Values in k€ · sample of 71 projects · green row = totals (respect filters, like SUBTOTAL) · workflow: Draft → Submitted → Authorized → Closed · source: SAP robot, GRR3 (budget / actual / commitment / available) + KOB1 (actual spend) + KO03 (master data; Capex AO × R2, type entry manual até a transação exportável ser confirmada)</div></div><button class="btn sm perm-w" onclick="toast('Novo projeto adicionado ao DRA como Draft (CPX e OI ficam TBC até a submissão no Marlin).')">+ Add project (Draft)</button></div>
+          <div class="docs-head"><div><div class="st" id="gTitle">DRA Grid · Pouso Alegre · August 2026</div><div class="muted">Values in k€ · sample of 71 projects · green row = totals (respect filters, like SUBTOTAL) · workflow: Draft → Submitted → Authorized → Closed · source: SAP robot, GRR3 (budget / actual / commitment / available) + KOB1 (actual spend) + KO03 (master data; Capex AO × R2, type entry manual até a transação exportável ser confirmada) · ✎ = manual adjustments (status, type, CPX/OI, replanning)</div></div><button class="btn sm perm-w" onclick="toast('Novo projeto adicionado ao DRA como Draft (CPX e OI ficam TBC até a submissão no Marlin).')">+ Add project (Draft)</button></div>
           <div class="gwrap"><table class="tbl gtable"><thead><tr id="gHead"></tr></thead><tbody id="gBody"></tbody></table></div>
         </div>
       </div>
@@ -1012,6 +1012,27 @@
     <div class="pm-head"><div style="flex:1"><h3 id="pmTitle">, </h3><div class="sub" id="pmSub">, </div></div><span id="pmStatus"></span><button class="tm-x" onclick="closePlan()">✕</button></div>
     <div class="pm-body" id="pmBody"></div>
     <div class="pm-foot"><button class="btn ghost sm" onclick="closePlan()">Fechar</button><button class="btn sm perm-w" onclick="togglePmAdd()">+ Nova atividade</button></div>
+  </div>
+</div>
+
+<!-- EDIÇÃO MANUAL DRA (Adriana) -->
+<div id="gEditModal" class="hidden" style="position:fixed;inset:0;z-index:170;background:rgba(8,20,34,.55);backdrop-filter:blur(3px);display:grid;place-items:center;padding:24px">
+  <div style="background:#fff;border-radius:16px;width:min(560px,95vw);overflow:hidden;box-shadow:0 40px 90px -30px rgba(0,0,0,.6)">
+    <div style="padding:16px 20px;border-bottom:1px solid var(--line)"><div style="font-family:Poppins;font-weight:700;font-size:15px">Manual adjustment</div><div class="muted" style="font-size:12px" id="ge_name">—</div></div>
+    <div style="padding:18px 20px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div><label class="dra-lbl">Status (Marlin workflow)</label><select id="ge_status" class="role-sel" style="width:100%"><option>Draft</option><option>Submitted</option><option>Authorized</option><option>Closed</option></select></div>
+      <div><label class="dra-lbl">Type (Capex AO × R2, manual)</label><select id="ge_type" class="role-sel" style="width:100%"></select></div>
+      <div><label class="dra-lbl">CPX (when Marlin issues)</label><input id="ge_cpx" class="role-sel" style="width:100%" placeholder="TBC"></div>
+      <div><label class="dra-lbl">OI / AI (when authorized)</label><input id="ge_oi" class="role-sel" style="width:100%" placeholder="TBC"></div>
+      <div><label class="dra-lbl">Full project amount (k€)</label><input id="ge_full" type="number" step="0.1" class="role-sel" style="width:100%"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;grid-column:span 2">
+        <div><label class="dra-lbl">Jul 26</label><input id="ge_jul" type="number" step="0.1" class="role-sel" style="width:100%" oninput="geQ3()"></div>
+        <div><label class="dra-lbl">Aug 26</label><input id="ge_aug" type="number" step="0.1" class="role-sel" style="width:100%" oninput="geQ3()"></div>
+        <div><label class="dra-lbl">Sep 26</label><input id="ge_sep" type="number" step="0.1" class="role-sel" style="width:100%" oninput="geQ3()"></div>
+      </div>
+      <div style="grid-column:span 2;background:var(--surface-2);border-radius:10px;padding:10px 14px;font-size:12.5px">Q3 26 total: <b id="geQ3">—</b> · <span class="muted">replanejamento deve manter a volumetria do quarter; toda alteração é registrada na auditoria. O AI chega via Capgemini (e-mail) após a autorização no Marlin.</span></div>
+    </div>
+    <div class="wz-foot"><button class="btn ghost sm" onclick="gEditClose()">Cancel</button><button class="btn sm" onclick="gEditSave()">Save changes</button></div>
   </div>
 </div>
 
@@ -1479,7 +1500,7 @@ function draChartRP(plan,real,period,today){
   return `<svg width="100%" viewBox="0 0 ${W} ${H}">${b}</svg><div class="legend"><span><i style="background:#c7ddef"></i>Planejado</span><span><i style="background:#0060A8"></i>Executado</span><span><i style="background:url(#drahatch)"></i>Replanejado (futuro)</span></div>`;}
 /* ============ DRA v2: Grid fiel à planilha, Reconciliation, Orders (KO03), Pipeline ============ */
 const DRA_TODAY = "2026-07-15";
-const CEIL26 = 7600; /* teto anual (linha verde), em k€, "não pode sair desse valor" */
+let CEIL26 = 7600; /* teto anual (linha verde), em k€, "não pode sair desse valor" */
 /* Amostra REAL da planilha DRA Aug 26 (Pouso Alegre) · valores em k€ · m = Jan..Dez 26 */
 const DRAG = [
   { cpx: "CPX169348", oi: "8101018966", name: "Toolkit and New Labeller P3, Aumento Cap", type: "Capacity", status: "Authorized", leader: "Thiago Benati", full: 1459.4, prev: 0.3, m: [7, 9.9, 0, 31, 8.2, 185.7, 430, 0, 83, 154.3, 50, 0], fy27: 500, commit: 516 },
@@ -1519,7 +1540,7 @@ function buildDRAGrid() {
   const st = document.getElementById("gStatus").value, ty = tSel.value, q = (document.getElementById("gSearch").value || "").toLowerCase();
   const list = data.filter(p => (st === "all" || p.status === st) && (ty === "all" || p.type === ty) && (!q || (p.name + p.cpx + p.oi + p.leader).toLowerCase().includes(q)));
   document.getElementById("gTitle").textContent = "DRA Grid · Pouso Alegre · August 2026 · " + (draPlan === "capex" ? "Capex (AO)" : "R2") + " · " + list.length + " project" + (list.length === 1 ? "" : "s");
-  const H = ["CPX", "OI", "Project", "Type", "Status", "Leader", "Full amount", "Prev. years", "H1 26", "Jul 26", "Aug 26", "Sep 26", "Q3 26", "Q4 26", "FC FY26", "FC FY27", "Commitment", "Available (GRR3)"];
+  const H = ["CPX", "OI", "Project", "Type", "Status", "Leader", "Full amount", "Prev. years", "H1 26", "Jul 26", "Aug 26", "Sep 26", "Q3 26", "Q4 26", "FC FY26", "FC FY27", "Commitment", "Available (GRR3)", ""];
   document.getElementById("gHead").innerHTML = H.map((h, i) => `<th ${i >= 6 ? 'style="text-align:right"' : ""}>${h}</th>`).join("");
   const h1 = p => p.m[0] + p.m[1] + p.m[2] + p.m[3] + p.m[4] + p.m[5];
   const q3 = p => p.m[6] + p.m[7] + p.m[8], q4 = p => p.m[9] + p.m[10] + p.m[11];
@@ -1532,14 +1553,14 @@ function buildDRAGrid() {
     <td class="num">${kf(p.m[6])}</td><td class="num">${kf(p.m[7])}</td><td class="num">${kf(p.m[8])}</td>
     <td class="num qcol">${kf(q3(p))}</td><td class="num qcol">${kf(q4(p))}</td>
     <td class="num qcol">${kf(fy(p))}</td><td class="num">${kf(p.fy27)}</td><td class="num">${kf(p.commit)}</td>
-    <td class="num" style="${av(p) < 0 ? "color:var(--danger);font-weight:700" : ""}">${kf(av(p))}</td></tr>`;
+    <td class="num" style="${av(p) < 0 ? "color:var(--danger);font-weight:700" : ""}">${kf(av(p))}</td><td><button class="ib perm-w" title="Edit (manual adjustments)" onclick="gEdit(${data.indexOf(p)})">✎</button></td></tr>`;
   const S = k => list.reduce((a, p) => a + k(p), 0);
   const totRow = `<tr class="tot"><td colspan="6">TOTALS (like green row 3, respect filters)</td>
     <td class="num">${kf(S(p => p.full))}</td><td class="num">${kf(S(p => p.prev))}</td><td class="num">${kf(S(h1))}</td>
     <td class="num">${kf(S(p => p.m[6]))}</td><td class="num">${kf(S(p => p.m[7]))}</td><td class="num">${kf(S(p => p.m[8]))}</td>
     <td class="num qcol">${kf(S(q3))}</td><td class="num qcol">${kf(S(q4))}</td>
     <td class="num qcol">${kf(S(fy))}</td><td class="num">${kf(S(p => p.fy27))}</td><td class="num">${kf(S(p => p.commit))}</td>
-    <td class="num">${kf(S(av))}</td></tr>`;
+    <td class="num">${kf(S(av))}</td><td></td></tr>`;
   document.getElementById("gBody").innerHTML = totRow + list.map(row).join("");
   /* teto anual */
   const fyAll = (draPlan === "capex" ? DRAG : DRAG_R2).reduce((a, p) => a + p.m.reduce((x, y) => x + y, 0), 0);
@@ -1549,7 +1570,7 @@ function buildDRAGrid() {
     <div style="flex:1;min-width:220px"><div class="section-title" style="font-size:14px">Annual ceiling FY26 (green total, must not be exceeded)</div>
     <div class="muted" style="font-size:12px">FC FY26 committed: <b>${kf(fyAll)} k€</b> of <b>${kf(ceil)} k€</b> approved for the year (${pct}%)</div>
     <div class="ceil-bar"><i style="width:${pct}%${pct > 97 ? ";background:linear-gradient(90deg,#e8930c,#d6336c)" : ""}"></i></div></div>
-    <span class="pill" style="background:${pct > 97 ? "#fbe6ee" : "#e7f4ee"};color:${pct > 97 ? "#b02258" : "#137a44"}">${pct > 97 ? "● Near/over ceiling" : "● Within ceiling"}</span></div></div>`;
+    <span class="pill" style="background:${pct > 97 ? "#fbe6ee" : "#e7f4ee"};color:${pct > 97 ? "#b02258" : "#137a44"}">${pct > 97 ? "● Near/over ceiling" : "● Within ceiling"}</span><button class="ib perm-w" title="Edit ceiling (set by directors)" onclick="ceilEdit()">✎</button></div></div>`;
   /* progress by type (visão do BI antigo que a Adriana usa) */
   const byT = {};
   (draPlan === "capex" ? DRAG : DRAG_R2).forEach(p => { byT[p.type] = (byT[p.type] || 0) + p.m.reduce((a, b) => a + b, 0); });
@@ -1610,6 +1631,55 @@ function buildOrders() {
   }).join("");
 }
 
+
+/* ===== Edição manual (Adriana): status, tipo, CPX/OI, replanejamento ===== */
+let gEditIdx = -1;
+function gEdit(i) {
+  gEditIdx = i; const d = (draPlan === "capex" ? DRAG : DRAG_R2)[i];
+  const tSel = document.getElementById("ge_type");
+  if (!tSel.options.length) [...new Set(DRAG.concat(DRAG_R2).map(p => p.type))].sort().forEach(t => { const o = document.createElement("option"); o.textContent = t; tSel.appendChild(o); });
+  document.getElementById("ge_name").textContent = d.name;
+  document.getElementById("ge_status").value = d.status;
+  tSel.value = d.type;
+  document.getElementById("ge_cpx").value = d.cpx === "TBC" ? "" : d.cpx;
+  document.getElementById("ge_oi").value = d.oi === "TBC" ? "" : d.oi;
+  document.getElementById("ge_full").value = d.full;
+  document.getElementById("ge_jul").value = d.m[6]; document.getElementById("ge_aug").value = d.m[7]; document.getElementById("ge_sep").value = d.m[8];
+  geQ3();
+  document.getElementById("gEditModal").classList.remove("hidden");
+}
+function geQ3() { const v = ["ge_jul", "ge_aug", "ge_sep"].map(id => parseFloat(document.getElementById(id).value) || 0); document.getElementById("geQ3").textContent = kf(v[0] + v[1] + v[2]) + " k€"; }
+function gEditClose() { document.getElementById("gEditModal").classList.add("hidden"); }
+function gEditSave() {
+  const d = (draPlan === "capex" ? DRAG : DRAG_R2)[gEditIdx];
+  const oldQ3 = d.m[6] + d.m[7] + d.m[8];
+  d.status = document.getElementById("ge_status").value;
+  d.type = document.getElementById("ge_type").value;
+  d.cpx = (document.getElementById("ge_cpx").value || "TBC").trim();
+  d.oi = (document.getElementById("ge_oi").value || "TBC").trim();
+  d.full = parseFloat(document.getElementById("ge_full").value) || d.full;
+  d.m[6] = parseFloat(document.getElementById("ge_jul").value) || 0;
+  d.m[7] = parseFloat(document.getElementById("ge_aug").value) || 0;
+  d.m[8] = parseFloat(document.getElementById("ge_sep").value) || 0;
+  const newQ3 = d.m[6] + d.m[7] + d.m[8];
+  gEditClose(); buildDRAGrid();
+  if (Math.abs(newQ3 - oldQ3) > 0.05) toast("Alteração salva. Atenção: Q3 mudou de " + kf(oldQ3) + " para " + kf(newQ3) + " k€, mantenha a volumetria do quarter. Registrado na auditoria.");
+  else toast("Alteração salva e registrada na auditoria (autor, data e campos alterados).");
+}
+function ceilEdit() {
+  const c = document.getElementById("gCeiling"); const old = c.querySelector(".ceil-edit"); if (old) { old.remove(); return; }
+  const d = document.createElement("div"); d.className = "ceil-edit"; d.style.cssText = "display:flex;gap:8px;align-items:center;margin:8px 20px 14px;flex-wrap:wrap";
+  d.innerHTML = '<input id="ceilIn" type="number" step="10" value="' + (draPlan === "capex" ? CEIL26 : 200) + '" style="padding:7px 10px;border:1.5px solid var(--line);border-radius:8px;width:130px;font-family:inherit"> <button class="btn sm" onclick="ceilSave()">Save ceiling</button> <span class="muted" style="font-size:11px">Definido pela diretoria; alterações entram no Variation log e na auditoria.</span>';
+  c.appendChild(d);
+}
+function ceilSave() {
+  const v = parseFloat(document.getElementById("ceilIn").value);
+  if (!(v > 0)) { toast("Informe um valor válido para o teto."); return; }
+  const old = CEIL26; if (draPlan === "capex") CEIL26 = v;
+  HISTLOG.unshift({ w: "15 Jul 26", v: "Aug 26", c: "Teto anual FY26 alterado pela diretoria: " + kf(old) + " → " + kf(v) + " k€", i: Math.round((v - old) * 10) / 10, by: "Diretoria" });
+  buildDRAGrid(); buildHist();
+  toast("Teto anual atualizado para " + kf(v) + " k€ (ordem da diretoria), registrado no Variation log e na auditoria.");
+}
 /* ===== HISTORY: versões mensais e variações ===== */
 const HIST = [
   { v: "DRA Jan 26", fy: 8900.0, proj: 64, pub: true },
@@ -2315,7 +2385,8 @@ const HELP=[
 <h5>Regras de ouro</h5>
 <ul><li>O <b>total do ano (linha verde)</b> não pode ser ultrapassado, o sistema monitora o teto FY26;</li>
 <li>Remanejamentos devem <b>manter a volumetria do quarter</b>;</li>
-<li>O <b>executado real</b> reflete no BI automaticamente; o <b>replanejamento</b> só após a sua validação (Publish to BI).</li></ul>`},
+<li>O <b>executado real</b> reflete no BI automaticamente; o <b>replanejamento</b> só após a sua validação (Publish to BI);</li>
+<li><b>Edição manual (✎)</b>: a analista edita status, tipo (contingência Capex×R2), CPX/OI quando emitidos, valor total e o replanejamento dos meses, com aviso quando a volumetria do quarter muda; o <b>teto anual também é editável</b> (ordem da diretoria) e tudo vai para a auditoria e o Variation log.</li></ul>`},
 {ic:"📺",t:"Relatórios, KPIs e Modo TV",d:"Indicadores executivos e exibição em telões.",b:`
 <ul><li>KPIs consolidados: capex, conformidade, savings e documentos;</li><li>Gráficos por tipo, step, capex e conformidade por projeto;</li><li>Filtro de período no topo direito.</li></ul>
 <h5>Modo TV</h5>
@@ -2407,7 +2478,7 @@ const TOUR=[
   {view:"dra",tab:"ov",sel:'#view-dra [onclick="syncSAP(this)"]',c:"Módulo 2 · DRA",t:"Robô SAP (RPA)",
    x:"O botão <b>Atualizar base (robô)</b> dispara a extração no SAP. Um robô (RPA) traz as transações por OI, grava no SharePoint e alimenta o painel e o BI. Substitui a planilha manual de hoje."},
   {view:"dra",tab:"grid",sel:'#gCeiling',c:"Módulo 2 · DRA",t:"DRA Grid, a planilha viva",
-   x:"A réplica fiel da planilha da Adriana: projetos com <b>CPX, OI, tipo, status (Draft → Submitted → Authorized → Closed)</b>, meses, quarters e forecast, em k€. A <b>linha verde de totais</b> respeita os filtros, e o <b>teto anual (FC FY26)</b> é monitorado: não pode ser ultrapassado. Com separação <b>Capex (AO) × R2</b> e versões mensais."},
+   x:"A réplica fiel da planilha da Adriana: projetos com <b>CPX, OI, tipo, status (Draft → Submitted → Authorized → Closed)</b>, meses, quarters e forecast, em k€. A <b>linha verde de totais</b> respeita os filtros, e o <b>teto anual (FC FY26)</b> é monitorado: não pode ser ultrapassado. Com separação <b>Capex (AO) × R2</b>, versões mensais e <b>edição manual (✎)</b>: status, tipo, CPX/OI e replanejamento, tudo auditado."},
   {view:"dra",tab:"rec",sel:'#recBody',c:"Módulo 2 · DRA",t:"Conciliação SAP × validado",
    x:"O robô extrai a base (GRR3/KOB1) e compara com a <b>sua última validação</b>. As diferenças aparecem aqui, e você decide: <b>Accept SAP</b> ou <b>Keep mine</b>, sempre preservando os totais do quarter e do ano. Só depois publica o replanejamento no BI, o executado real já reflete automaticamente."},
   {view:"dra",tab:"ord",sel:'#ordBody',c:"Módulo 2 · DRA",t:"Gestão de ordens (KO03)",
