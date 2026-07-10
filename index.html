@@ -607,6 +607,15 @@
   .rule-card .rn{width:26px;height:26px;border-radius:8px;background:var(--brand);color:#fff;font-weight:800;font-size:13px;display:grid;place-items:center;margin-bottom:8px}
   .rule-card b{font-size:13px;display:block;margin-bottom:4px}
   .rule-card p{font-size:11.5px;color:var(--ink-soft);margin:0;line-height:1.45}
+  /* Escopo DRA: jornada prática */
+  .walk{margin-top:16px;position:relative}
+  .walk::before{content:"";position:absolute;left:16px;top:8px;bottom:8px;width:2px;background:var(--line)}
+  .walk-item{display:grid;grid-template-columns:34px 1fr;gap:14px;padding:9px 0;position:relative}
+  .walk-item .wn{width:32px;height:32px;border-radius:50%;background:var(--brand);color:#fff;font-weight:800;font-size:13px;display:grid;place-items:center;border:3px solid #fff;box-shadow:0 0 0 1px var(--line);z-index:1}
+  .walk-item .wt{font-size:13px;font-weight:700}
+  .walk-item .wt .aba{display:inline-block;font-size:9.5px;font-weight:800;letter-spacing:.3px;padding:2px 8px;border-radius:99px;background:var(--sky, #e4f0fa);background:#e4f0fa;color:#0060A8;margin-left:8px;vertical-align:middle}
+  .walk-item .wd{font-size:12px;color:var(--ink-soft);margin-top:3px;line-height:1.5;max-width:860px}
+  .walk-item .wd b{color:var(--ink)}
 </style>
 </head>
 <body>
@@ -1041,7 +1050,7 @@
       </div>
 
       <div class="card flowcard">
-        <div class="section-title" style="font-size:14.5px">5 · Mapa do módulo, o que cada aba responde</div>
+        <div class="section-title" style="font-size:14.5px">5 · Mapa do módulo e a jornada na prática</div>
         <div class="tblwrap" style="border:0;margin-top:6px"><table class="tbl">
           <thead><tr><th>Aba</th><th>Pergunta que responde</th><th>Origem do dado</th></tr></thead>
           <tbody>
@@ -1053,6 +1062,18 @@
             <tr><td style="font-weight:600">History</td><td>Como o total do ano evoluiu e o que mudou entre versões, por quem?</td><td>Versões mensais</td></tr>
           </tbody>
         </table></div>
+        <div class="section-title" style="font-size:13.5px;margin-top:20px">Na prática: a jornada de um projeto, do funil ao encerramento <span class="muted" style="font-weight:500;font-size:11px">· exemplo real, o projeto "Geradores"</span></div>
+        <div class="walk">
+          <div class="walk-item"><div class="wn">1</div><div><div class="wt">A ideia nasce no funil <span class="aba">PIPELINE</span></div><div class="wd">"Geradores" entra no Risk In-Out como <b>Idea</b> e evolui para <b>Feas</b> e <b>BC</b> (business case): fonte Local, prioridade High, CapEx estimado 255 k€, phasing todo em Y0. Ainda não existe no DRA.</div></div></div>
+          <div class="walk-item"><div class="wn">2</div><div><div class="wt">Entra no DRA como Draft <span class="aba">DRA GRID</span></div><div class="wd">Com o business case aprovado internamente, a analista clica em <b>+ Add project (Draft)</b>: CPX e OI ficam <b>TBC</b>, o tipo (Capex AO × R2) é informado manualmente, e os 255 k€ são reservados nos meses planejados. O forecast FC FY26 recalcula na hora e a barra do <b>teto anual</b> mostra o impacto. Finanças passa a avaliar.</div></div></div>
+          <div class="walk-item"><div class="wn">3</div><div><div class="wt">Submissão no Marlin <span class="aba">DRA GRID ✎</span></div><div class="wd">O líder submete o projeto no portal Marlin, que <b>cria o CPX</b>. A analista abre o ✎ na linha do projeto, muda o status para <b>Submitted</b> e preenche o CPX. Se finanças não aprovar, volta para Draft e sai do DRA.</div></div></div>
+          <div class="walk-item"><div class="wn">4</div><div><div class="wt">Autorização e AI <span class="aba">DRA GRID ✎</span></div><div class="wd">Aprovado no Marlin, o status vira <b>Authorized</b>. Dias depois o <b>AI (Authorization for Investment) chega por e-mail, via Capgemini</b>, e a analista preenche a <b>OI</b> no sistema. Cada edição fica na auditoria (autor, data, de/para).</div></div></div>
+          <div class="walk-item"><div class="wn">5</div><div><div class="wt">O robô assume o realizado <span class="aba">OVERVIEW</span></div><div class="wd">Com a OI ativa no SAP, a extração mensal (GRR3/KOB1) passa a trazer o <b>gasto real e o compromissado</b> do projeto. O executado real <b>reflete no Power BI automaticamente</b>, sem aprovação, e o Overview mostra o DRA × atual do mês.</div></div></div>
+          <div class="walk-item"><div class="wn">6</div><div><div class="wt">Fechamento do mês <span class="aba">RECONCILIATION</span></div><div class="wd">O sistema compara a extração com a <b>última validação da analista</b>. Digamos que o SAP mostre 30 k€ gastos e ela tinha planejado 20: a diferença aparece com o Δ destacado, ela decide (<b>Accept SAP × Keep mine</b>) alinhada com o líder, o excedente é compensado no mês seguinte para <b>preservar o quarter</b>, e só então ela clica em <b>Publish to BI</b>.</div></div></div>
+          <div class="walk-item"><div class="wn">7</div><div><div class="wt">Vigilância da ordem <span class="aba">ORDERS (KO03)</span></div><div class="wd">Meses depois, a <b>data de fim do trabalho</b> da OI se aproxima: o sistema alerta "Expiring in 36d". A analista decide: <b>Extend (Poupatempo)</b> para prorrogar, ou <b>Notify leader</b> para encerrar a ordem antiga.</div></div></div>
+          <div class="walk-item"><div class="wn">8</div><div><div class="wt">A história fica registrada <span class="aba">HISTORY</span></div><div class="wd">Cada fechamento gera a <b>versão do mês</b> (como as abas da planilha). A entrada do Geradores, os remanejos e qualquer mudança de teto aparecem no <b>Variation log</b> com autor e impacto, a rastreabilidade que a diretoria consulta.</div></div></div>
+          <div class="walk-item"><div class="wn">9</div><div><div class="wt">Encerramento <span class="aba">DRA GRID ✎ · ORDERS</span></div><div class="wd">Obra concluída e capitalizada: status <b>Closed</b> no DRA e ordem <b>40/50</b> no SAP. O projeto sai do forecast futuro, mas permanece no histórico e nos totais realizados do ano.</div></div></div>
+        </div>
       </div>
 
       <div class="card flowcard" style="border-left:4px solid var(--brand)">
