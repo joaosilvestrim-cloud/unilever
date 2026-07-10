@@ -568,6 +568,37 @@
   .dra-proj-row .pbar{height:8px;background:var(--surface-2);border-radius:5px;overflow:hidden}
   .dra-proj-row .pbar i{display:block;height:100%;border-radius:5px}
   #draAlerts .alert-row .btn{margin-left:auto;flex:none}
+  /* ===== DRA v2: tabs, grid, reconciliation, orders ===== */
+  .dra-pane.hidden{display:none}
+  .dra-badge{margin-left:7px;background:var(--danger);color:#fff;font-size:10px;font-weight:800;padding:1px 7px;border-radius:99px}
+  .seg-b.on .dra-badge{background:rgba(255,255,255,.28)}
+  .gwrap{overflow-x:auto}
+  .gtable{font-size:12px;min-width:1080px}
+  .gtable th{white-space:nowrap;font-size:10px;padding:8px 9px}
+  .gtable td{padding:6px 9px;white-space:nowrap}
+  .gtable td.pn{white-space:normal;min-width:180px;font-weight:600}
+  .gtable td.num{text-align:right;font-variant-numeric:tabular-nums}
+  .gtable tr.tot td{background:#e7f4ee;font-weight:800;color:#0c5c33;border-top:2px solid #1f9d57}
+  .gtable td.qcol{background:#f2f7fc}
+  .gtable tr.tot td.qcol{background:#d9efe3}
+  .st-b{display:inline-block;font-size:10px;font-weight:800;padding:2px 9px;border-radius:99px;letter-spacing:.2px}
+  .st-Draft{background:#eef1f5;color:#5c6b7a}
+  .st-Submitted{background:#e4f0fa;color:#0060A8}
+  .st-Authorized{background:#e7f4ee;color:#137a44}
+  .st-Closed{background:#e3e7ec;color:#3d4a57}
+  .sap-st{display:inline-block;font-size:10px;font-weight:800;padding:2px 9px;border-radius:99px}
+  .sap-30{background:#e7f4ee;color:#137a44}
+  .sap-40{background:#e3e7ec;color:#3d4a57}
+  .sap-50{background:#fdf3e3;color:#8a5b00}
+  .rec-delta-pos{color:var(--danger);font-weight:700}
+  .rec-delta-neg{color:#0060A8;font-weight:700}
+  .rec-ok{color:var(--ok);font-weight:700;font-size:12px}
+  .ceil-bar{height:10px;background:var(--surface-2);border-radius:6px;overflow:hidden;margin-top:8px}
+  .ceil-bar i{display:block;height:100%;border-radius:6px;background:linear-gradient(90deg,#1f9d57,#4cc283)}
+  .pipe-Idea{background:#eef1f5;color:#5c6b7a}
+  .pipe-Feas{background:#e4f0fa;color:#0060A8}
+  .pipe-BC{background:#e7f4ee;color:#137a44}
+  .pipe-NoGo{background:#fbe6ee;color:#b02258}
 </style>
 </head>
 <body>
@@ -771,12 +802,22 @@
     </section>
 
     <!-- DRA FINANCEIRO -->
-        <section class="view hidden" id="view-dra">
+            <section class="view hidden" id="view-dra">
       <div class="toolbanner">
         <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><path d="M3 3v18h18"/><path d="M7 14l3-4 3 3 4-6"/></svg></div>
-        <div><h3>Módulo 2 · DRA, Portfólio de Investimentos</h3><p>Executado e replanejamento mês a mês, por projeto, com visão de quarter e semestre. Base extraída do SAP por robô (RPA), consolidada no SharePoint e publicada no Power BI. Escala LATAM.</p></div>
+        <div><h3>Módulo 2 · DRA, Portfólio de Investimentos</h3><p>A planilha DRA viva: executado (SAP via robô), replanejamento, quarters e forecast, com conciliação, gestão de ordens e publicação no Power BI. Padrão de idioma: inglês (planilha oficial).</p></div>
         <button class="btn sap sm perm-w" style="margin-left:auto" onclick="syncSAP(this)">↻ Atualizar base (robô)</button>
       </div>
+      <div class="seg" id="draTabs" style="margin-bottom:16px">
+        <button class="seg-b on" data-t="ov" onclick="draTab('ov')">Overview</button>
+        <button class="seg-b" data-t="grid" onclick="draTab('grid')">DRA Grid</button>
+        <button class="seg-b" data-t="rec" onclick="draTab('rec')">Reconciliation<span class="dra-badge" id="recBadge">4</span></button>
+        <button class="seg-b" data-t="ord" onclick="draTab('ord')">Orders (KO03)</button>
+        <button class="seg-b" data-t="pipe" onclick="draTab('pipe')">Pipeline</button>
+      </div>
+
+      <!-- PANE: OVERVIEW -->
+      <div class="dra-pane" id="pane-ov">
       <div class="dra-toolbar">
         <div><label class="dra-lbl">Região</label><select class="role-sel" id="draRegion" onchange="buildDRA()"></select></div>
         <div><label class="dra-lbl">Escopo</label><select class="role-sel" id="draScope" onchange="buildDRA()"><option>Portfólio consolidado</option><option>Por projeto (OI)</option></select></div>
@@ -796,6 +837,57 @@
       <div class="card" style="overflow:hidden">
         <div class="docs-head"><div><div class="st">Detalhamento mensal (2026)</div><div class="muted">Valores em € · realizado (SAP) e replanejado · faixa "replan." = meses futuros</div></div></div>
         <table class="tbl"><thead><tr><th>Mês</th><th style="text-align:right">Planejado</th><th style="text-align:right">Realizado / Replan.</th><th style="text-align:right">Δ vs plano</th><th style="text-align:right">Saldo Capex</th></tr></thead><tbody id="draBody"></tbody></table>
+      </div>
+      </div>
+
+      <!-- PANE: DRA GRID -->
+      <div class="dra-pane hidden" id="pane-grid">
+        <div class="dra-toolbar">
+          <div><label class="dra-lbl">Plan</label><div class="seg"><button class="seg-b on" data-pl="capex" onclick="draPlanSet('capex')">Capex (AO)</button><button class="seg-b" data-pl="r2" onclick="draPlanSet('r2')">R2</button></div></div>
+          <div><label class="dra-lbl">Status</label><select class="role-sel" id="gStatus" onchange="buildDRAGrid()"><option value="all">All</option><option>Draft</option><option>Submitted</option><option>Authorized</option><option>Closed</option></select></div>
+          <div><label class="dra-lbl">Type</label><select class="role-sel" id="gType" onchange="buildDRAGrid()"><option value="all">All</option></select></div>
+          <div style="flex:1;min-width:160px"><label class="dra-lbl">Search</label><input id="gSearch" class="role-sel" style="width:100%" placeholder="Project, CPX, OI, leader..." oninput="buildDRAGrid()"></div>
+          <div style="margin-left:auto"><label class="dra-lbl">Version (month tab)</label><select class="role-sel" id="gVersion" onchange="toast('Versão histórica carregada: '+this.value)"><option>DRA Aug 26 (current)</option><option>DRA Jul 26</option><option>DRA Jun 26</option><option>DRA May 26</option></select></div>
+        </div>
+        <div class="card" id="gCeiling" style="margin-bottom:14px"></div>
+        <div class="card" style="overflow:hidden">
+          <div class="docs-head"><div><div class="st" id="gTitle">DRA Grid · Pouso Alegre · August 2026</div><div class="muted">Values in k€ · displaying sample of 71 projects · green row = totals (respect filters, like SUBTOTAL) · workflow: Draft → Submitted → Authorized → Closed</div></div><button class="btn sm perm-w" onclick="toast('Novo projeto adicionado ao DRA como Draft (CPX e OI ficam TBC até a submissão no Marlin).')">+ Add project (Draft)</button></div>
+          <div class="gwrap"><table class="tbl gtable"><thead><tr id="gHead"></tr></thead><tbody id="gBody"></tbody></table></div>
+        </div>
+      </div>
+
+      <!-- PANE: RECONCILIATION -->
+      <div class="dra-pane hidden" id="pane-rec">
+        <div class="card" style="padding:16px 20px;margin-bottom:14px">
+          <div class="section-title" style="font-size:15px">SAP extract × Last validated</div>
+          <div class="muted" style="font-size:12.5px">O robô extraiu a base (GRR3 / KOB1) e comparou com a sua última validação. Resolva as diferenças antes de publicar. <b>Regra: os totais do quarter e do ano (linha verde) devem ser mantidos, ajustes movem valores entre meses.</b> O executado real do mês corrente reflete no BI automaticamente, sem aprovação.</div>
+        </div>
+        <div class="card" style="overflow:hidden;margin-bottom:14px">
+          <table class="tbl"><thead><tr><th>Project</th><th>Month</th><th style="text-align:right">SAP extract</th><th style="text-align:right">Last validated</th><th style="text-align:right">Δ</th><th style="text-align:center">Action</th></tr></thead><tbody id="recBody"></tbody></table>
+        </div>
+        <div class="card" id="recPublish"></div>
+      </div>
+
+      <!-- PANE: ORDERS -->
+      <div class="dra-pane hidden" id="pane-ord">
+        <div class="card" style="padding:16px 20px;margin-bottom:14px">
+          <div class="section-title" style="font-size:15px">Order management (KO03)</div>
+          <div class="muted" style="font-size:12.5px">Dados mestres das ordens: datas de entrada, início e fim do trabalho e status do sistema. Ordens vencidas ou antigas geram alerta para <b>encerrar com o líder</b> ou <b>prorrogar via Poupatempo</b>. Status SAP: 30 = Active · 40 = Closed · 50 = Technically closed (sem novos gastos, pedidos existentes seguem).</div>
+        </div>
+        <div class="card" style="overflow:hidden">
+          <table class="tbl"><thead><tr><th>OI</th><th>Project</th><th>Entry</th><th>Work start</th><th>Work end</th><th>SAP status</th><th>Situation</th><th style="text-align:center">Action</th></tr></thead><tbody id="ordBody"></tbody></table>
+        </div>
+      </div>
+
+      <!-- PANE: PIPELINE -->
+      <div class="dra-pane hidden" id="pane-pipe">
+        <div class="card" style="padding:16px 20px;margin-bottom:14px">
+          <div class="section-title" style="font-size:15px">Pipeline · Risk In / Out</div>
+          <div class="muted" style="font-size:12.5px">Funil de pré-projetos com phasing plurianual, antes de entrarem no DRA como Draft. Stages: Idea → Feas (feasibility) → BC (business case) → No Go.</div>
+        </div>
+        <div class="card" style="overflow:hidden">
+          <table class="tbl"><thead><tr><th>Project</th><th>In/Out</th><th>Stage</th><th>Source</th><th>Priority</th><th style="text-align:right">CapEx (k€)</th><th style="text-align:right">Y0</th><th style="text-align:right">Y1</th><th style="text-align:right">Y2</th></tr></thead><tbody id="pipeBody"></tbody></table>
+        </div>
       </div>
     </section>
 
@@ -1367,6 +1459,145 @@ function draChartRP(plan,real,period,today){
     b+=`<text x="${x}" y="${H-9}" text-anchor="middle" font-size="${n>6?'8':'9.5'}" fill="#86939f">${labels[i]}</text>`;}
   if(period==='ano'){const hx=pad+(today+1)*gw;b+=`<line x1="${hx}" y1="14" x2="${hx}" y2="${H-28}" stroke="#d6336c" stroke-width="1.5" stroke-dasharray="3 3"/><text x="${hx}" y="11" text-anchor="middle" font-size="8" font-weight="700" fill="#d6336c">hoje</text>`;}
   return `<svg width="100%" viewBox="0 0 ${W} ${H}">${b}</svg><div class="legend"><span><i style="background:#c7ddef"></i>Planejado</span><span><i style="background:#0060A8"></i>Executado</span><span><i style="background:url(#drahatch)"></i>Replanejado (futuro)</span></div>`;}
+/* ============ DRA v2: Grid fiel à planilha, Reconciliation, Orders (KO03), Pipeline ============ */
+const DRA_TODAY = "2026-07-15";
+const CEIL26 = 7600; /* teto anual (linha verde), em k€, "não pode sair desse valor" */
+/* Amostra REAL da planilha DRA Aug 26 (Pouso Alegre) · valores em k€ · m = Jan..Dez 26 */
+const DRAG = [
+  { cpx: "CPX169348", oi: "8101018966", name: "Toolkit and New Labeller P3, Aumento Cap", type: "Capacity", status: "Authorized", leader: "Thiago Benati", full: 1459.4, prev: 0.3, m: [7, 9.9, 0, 31, 8.2, 185.7, 430, 0, 83, 154.3, 50, 0], fy27: 500, commit: 516 },
+  { cpx: "CPX173972", oi: "8101019402", name: "Mould, Preform 25,5g Jar 500/600g", type: "Mould", status: "Authorized", leader: "Anna", full: 782.9, prev: 0, m: [0, 0, 0, 0, 0, 0, 0, 0, 0, 783, 0, 0], fy27: 0, commit: 701.6 },
+  { cpx: "CPX173253", oi: "8101019380", name: "Sludge dryer", type: "Savings", status: "Authorized", leader: "Rodrigo Cano", full: 600.3, prev: 0, m: [0, 0, 0, 0, 3.1, 15.5, 0, 0, 0, 233, 200, 150], fy27: 0, commit: 514.3 },
+  { cpx: "CPX148619", oi: "8101016544", name: "New line SQZ BR", type: "Capacity", status: "Authorized", leader: "Thiago Benati", full: 12469.4, prev: 11425.6, m: [2.3, 17.9, 533, 10, 2.8, 0, 0, 0, 0, 0, 0, 0], fy27: 477.9, commit: 0 },
+  { cpx: "CPX171709", oi: "8101019182", name: "PPK, Jerry, Capacity Portion Pack", type: "Capacity", status: "Authorized", leader: "Thiago Benati", full: 1369.7, prev: 0, m: [0, 0, 3.7, 0, 0.3, 11.1, 0, 0, 0, 0, 0, 520], fy27: 834.6, commit: 750.4 },
+  { cpx: "CPX166747", oi: "8101018580", name: "Bunny, Tanque Ovos Caipira", type: "Savings", status: "Authorized", leader: "Reginaldo Pinto", full: 858, prev: 379.4, m: [297.1, 65, 104, 23, 2.7, 0, 0, 0, 0, 0, 0, 0], fy27: 0, commit: 0 },
+  { cpx: "CPX174684", oi: "8101019620", name: "Brine", type: "SHE", status: "Authorized", leader: "Gisela Fagnani", full: 886.9, prev: 0, m: [0, 0, 0, 0, 3, 2.4, 0, 20.8, 0, 0, 100, 0], fy27: 760.8, commit: 20.8 },
+  { cpx: "CPX178833", oi: "TBC", name: "NNE, Filter Starch cooking (Ystral)", type: "Quality", status: "Submitted", leader: "Paula Sá", full: 19.2, prev: 0, m: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 19.2], fy27: 0, commit: 0 },
+  { cpx: "TBC", oi: "TBC", name: "Technic, Single Pack 500g capacity Incr", type: "Capacity", status: "Draft", leader: "Thiago Benati", full: 11300, prev: 0, m: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], fy27: 11300, commit: 0 },
+  { cpx: "TBC", oi: "TBC", name: "Spectrum, Mini Factory Hellmann's", type: "Capacity", status: "Draft", leader: "Thiago Benati", full: 8100, prev: 0, m: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], fy27: 8100, commit: 0 },
+  { cpx: "TBC", oi: "TBC", name: "Multipack Internalization", type: "Savings", status: "Draft", leader: "Reginaldo Pinto", full: 2965, prev: 0, m: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], fy27: 2965, commit: 0 },
+  { cpx: "TBC", oi: "TBC", name: "FTS, MT factory replacement", type: "Savings", status: "Draft", leader: "Natanael", full: 1400, prev: 0, m: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], fy27: 1400, commit: 0 },
+  { cpx: "CPX144514", oi: "8101016041", name: "Fat Plan Retrofit", type: "M&I", status: "Closed", leader: "Hyago Salviano", full: 111.6, prev: 5.3, m: [3.2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], fy27: 0, commit: 0 },
+  { cpx: "CPX154948", oi: "8101017221", name: "Filtros Magnéticos", type: "Quality", status: "Closed", leader: "Bruna", full: 47.6, prev: 45, m: [3.1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], fy27: 0, commit: 0 },
+];
+const DRAG_R2 = [
+  { cpx: "R2-0142", oi: "8102001142", name: "Demolição de parede, área Squeeze", type: "M&I", status: "Authorized", leader: "Thiago Benati", full: 85, prev: 0, m: [0, 0, 0, 0, 12, 18, 25, 30, 0, 0, 0, 0], fy27: 0, commit: 22 },
+  { cpx: "R2-0155", oi: "8102001155", name: "Movimentação de máquinas, Mezanino", type: "M&I", status: "Authorized", leader: "Reginaldo Pinto", full: 46, prev: 0, m: [0, 0, 0, 0, 0, 8, 14, 24, 0, 0, 0, 0], fy27: 0, commit: 9 },
+  { cpx: "TBC", oi: "TBC", name: "Adequação civil, sala elétrica", type: "SHE", status: "Draft", leader: "Jean Ramos", full: 60, prev: 0, m: [0, 0, 0, 0, 0, 0, 0, 0, 30, 30, 0, 0], fy27: 0, commit: 0 },
+];
+let draPlan = "capex";
+const kf = n => n.toLocaleString("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+function draTab(t) {
+  document.querySelectorAll("#draTabs .seg-b").forEach(b => b.classList.toggle("on", b.dataset.t === t));
+  document.querySelectorAll(".dra-pane").forEach(p => p.classList.add("hidden"));
+  const pane = document.getElementById("pane-" + t); if (pane) pane.classList.remove("hidden");
+}
+function draPlanSet(pl) { draPlan = pl; document.querySelectorAll('#pane-grid [data-pl]').forEach(b => b.classList.toggle("on", b.dataset.pl === pl)); buildDRAGrid(); }
+function draTabsBuild() { buildDRAGrid(); buildRecon(); buildOrders(); buildPipe(); }
+/* ===== DRA GRID ===== */
+function buildDRAGrid() {
+  const data = draPlan === "capex" ? DRAG : DRAG_R2;
+  const tSel = document.getElementById("gType");
+  if (tSel.options.length === 1) [...new Set(DRAG.concat(DRAG_R2).map(p => p.type))].sort().forEach(t => { const o = document.createElement("option"); o.textContent = t; tSel.appendChild(o); });
+  const st = document.getElementById("gStatus").value, ty = tSel.value, q = (document.getElementById("gSearch").value || "").toLowerCase();
+  const list = data.filter(p => (st === "all" || p.status === st) && (ty === "all" || p.type === ty) && (!q || (p.name + p.cpx + p.oi + p.leader).toLowerCase().includes(q)));
+  document.getElementById("gTitle").textContent = "DRA Grid · Pouso Alegre · August 2026 · " + (draPlan === "capex" ? "Capex (AO)" : "R2") + " · " + list.length + " project" + (list.length === 1 ? "" : "s");
+  const H = ["CPX", "OI", "Project", "Type", "Status", "Leader", "Full amount", "Prev. years", "Jul 26", "Aug 26", "Sep 26", "Q3 26", "Q4 26", "FC FY26", "FC FY27", "Commitment"];
+  document.getElementById("gHead").innerHTML = H.map((h, i) => `<th ${i >= 6 ? 'style="text-align:right"' : ""}>${h}</th>`).join("");
+  const q3 = p => p.m[6] + p.m[7] + p.m[8], q4 = p => p.m[9] + p.m[10] + p.m[11];
+  const fy = p => p.m.reduce((a, b) => a + b, 0);
+  const row = p => `<tr>
+    <td>${p.cpx}</td><td>${p.oi}</td><td class="pn">${p.name}</td><td>${p.type}</td>
+    <td><span class="st-b st-${p.status}">${p.status}</span></td><td>${p.leader}</td>
+    <td class="num">${kf(p.full)}</td><td class="num">${kf(p.prev)}</td>
+    <td class="num">${kf(p.m[6])}</td><td class="num">${kf(p.m[7])}</td><td class="num">${kf(p.m[8])}</td>
+    <td class="num qcol">${kf(q3(p))}</td><td class="num qcol">${kf(q4(p))}</td>
+    <td class="num qcol">${kf(fy(p))}</td><td class="num">${kf(p.fy27)}</td><td class="num">${kf(p.commit)}</td></tr>`;
+  const S = k => list.reduce((a, p) => a + k(p), 0);
+  const totRow = `<tr class="tot"><td colspan="6">TOTALS (like green row 3, respect filters)</td>
+    <td class="num">${kf(S(p => p.full))}</td><td class="num">${kf(S(p => p.prev))}</td>
+    <td class="num">${kf(S(p => p.m[6]))}</td><td class="num">${kf(S(p => p.m[7]))}</td><td class="num">${kf(S(p => p.m[8]))}</td>
+    <td class="num qcol">${kf(S(q3))}</td><td class="num qcol">${kf(S(q4))}</td>
+    <td class="num qcol">${kf(S(fy))}</td><td class="num">${kf(S(p => p.fy27))}</td><td class="num">${kf(S(p => p.commit))}</td></tr>`;
+  document.getElementById("gBody").innerHTML = totRow + list.map(row).join("");
+  /* teto anual */
+  const fyAll = (draPlan === "capex" ? DRAG : DRAG_R2).reduce((a, p) => a + p.m.reduce((x, y) => x + y, 0), 0);
+  const ceil = draPlan === "capex" ? CEIL26 : 200;
+  const pct = Math.min(100, Math.round(fyAll / ceil * 1000) / 10);
+  document.getElementById("gCeiling").innerHTML = `<div style="padding:14px 20px"><div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+    <div style="flex:1;min-width:220px"><div class="section-title" style="font-size:14px">Annual ceiling FY26 (green total, must not be exceeded)</div>
+    <div class="muted" style="font-size:12px">FC FY26 committed: <b>${kf(fyAll)} k€</b> of <b>${kf(ceil)} k€</b> approved for the year (${pct}%)</div>
+    <div class="ceil-bar"><i style="width:${pct}%${pct > 97 ? ";background:linear-gradient(90deg,#e8930c,#d6336c)" : ""}"></i></div></div>
+    <span class="pill" style="background:${pct > 97 ? "#fbe6ee" : "#e7f4ee"};color:${pct > 97 ? "#b02258" : "#137a44"}">${pct > 97 ? "● Near/over ceiling" : "● Within ceiling"}</span></div></div>`;
+}
+/* ===== RECONCILIATION ===== */
+const RECON = [
+  { name: "Sludge dryer", cpx: "CPX173253", month: "Aug 26", sap: 18.4, val: 15.5, done: null },
+  { name: "Toolkit and New Labeller P3", cpx: "CPX169348", month: "Jul 26", sap: 406.2, val: 430, done: null },
+  { name: "Brine", cpx: "CPX174684", month: "Aug 26", sap: 24.9, val: 20.8, done: null },
+  { name: "Bunny, Tanque Ovos Caipira", cpx: "CPX166747", month: "May 26", sap: 0, val: 2.7, done: null },
+];
+function buildRecon() {
+  const pend = RECON.filter(r => r.done === null).length;
+  const badge = document.getElementById("recBadge"); if (badge) { badge.textContent = pend; badge.style.display = pend ? "" : "none"; }
+  document.getElementById("recBody").innerHTML = RECON.map((r, i) => {
+    const d = Math.round((r.sap - r.val) * 100) / 100;
+    const act = r.done ? `<span class="rec-ok">✓ ${r.done === "sap" ? "SAP accepted" : "Validated kept"}</span>`
+      : `<button class="btn sm perm-w" onclick="reconAct(${i},'sap')">Accept SAP</button> <button class="btn ghost sm perm-w" onclick="reconAct(${i},'keep')">Keep mine</button>`;
+    return `<tr><td style="font-weight:600">${r.name}<br><span class="muted" style="font-size:10.5px">${r.cpx}</span></td><td>${r.month}</td>
+      <td style="text-align:right">${kf(r.sap)}</td><td style="text-align:right">${kf(r.val)}</td>
+      <td style="text-align:right" class="${d > 0 ? "rec-delta-pos" : "rec-delta-neg"}">${d > 0 ? "+" : ""}${kf(d)}</td>
+      <td style="text-align:center;white-space:nowrap">${act}</td></tr>`;
+  }).join("");
+  const pub = document.getElementById("recPublish");
+  pub.innerHTML = `<div class="dra-pb"><div style="flex:1;min-width:240px"><div class="section-title" style="font-size:14.5px">Publish to Power BI</div>
+    <div class="muted" style="font-size:12.5px">${pend ? "<b style='color:var(--warn)'>" + pend + " difference(s) pending review.</b> Resolve them to publish the replanning. O executado real já reflete no BI automaticamente." : "All differences resolved. Quarter and FY totals preserved."}</div></div>
+    <span class="pill" id="recStatus" style="background:${pend ? "#fdf3e3" : "#e7f4ee"};color:${pend ? "#8a5b00" : "#137a44"}">${pend ? "● Pending review" : "● Ready to publish"}</span>
+    <button class="btn perm-w" ${pend ? 'style="opacity:.5;pointer-events:none"' : ""} onclick="reconPublish()">Publish to BI</button></div>`;
+}
+function reconAct(i, mode) { RECON[i].done = mode; buildRecon(); toast(mode === "sap" ? "Valor do SAP acatado, ajuste registrado na auditoria." : "Sua última validação mantida, diferença registrada na auditoria."); }
+function reconPublish() { const s = document.getElementById("recStatus"); if (s) { s.textContent = "● Published to BI"; } toast("Replanejamento validado e publicado no Power BI (Alan, Grazi, Caro)."); }
+/* ===== ORDERS (KO03) ===== */
+const ORDERS = [
+  { oi: "8101016544", name: "New line SQZ BR", entry: "2023-02-10", ws: "2023-03-01", we: "2026-09-30", st: 30 },
+  { oi: "8101018966", name: "Toolkit and New Labeller P3", entry: "2025-01-20", ws: "2025-02-01", we: "2026-08-20", st: 30 },
+  { oi: "8101018580", name: "Bunny, Tanque Ovos Caipira", entry: "2024-05-12", ws: "2024-06-01", we: "2026-06-30", st: 30 },
+  { oi: "8101019380", name: "Sludge dryer", entry: "2025-11-03", ws: "2026-01-05", we: "2027-03-31", st: 30 },
+  { oi: "8101016041", name: "Fat Plan Retrofit", entry: "2022-08-15", ws: "2022-09-01", we: "2026-01-31", st: 40 },
+  { oi: "8101017221", name: "Filtros Magnéticos", entry: "2023-10-02", ws: "2023-11-01", we: "2026-03-15", st: 50 },
+];
+function buildOrders() {
+  const today = new Date(DRA_TODAY + "T00:00:00");
+  const stLbl = { 30: "30 · Active", 40: "40 · Closed", 50: "50 · Tech. closed" };
+  document.getElementById("ordBody").innerHTML = ORDERS.map((o, i) => {
+    const we = new Date(o.we + "T00:00:00");
+    const days = Math.round((we - today) / 86400000);
+    let sit = '<span class="muted">OK</span>', act = "";
+    if (o.st === 30 && days < 0) { sit = '<span style="color:var(--danger);font-weight:700">Overdue ' + (-days) + 'd</span>'; act = `<button class="btn sm perm-w" onclick="toast('Prorrogação solicitada via Poupatempo para a OI ${o.oi}.')">Extend (Poupatempo)</button> <button class="btn ghost sm perm-w" onclick="toast('Líder notificado para encerrar a ordem ${o.oi}.')">Notify leader</button>`; }
+    else if (o.st === 30 && days < 60) { sit = '<span style="color:var(--warn);font-weight:700">Expiring in ' + days + 'd</span>'; act = `<button class="btn ghost sm perm-w" onclick="toast('Prorrogação solicitada via Poupatempo para a OI ${o.oi}.')">Extend (Poupatempo)</button>`; }
+    else if (o.st === 30) { sit = '<span class="rec-ok">Active</span>'; }
+    return `<tr><td style="font-weight:600">${o.oi}</td><td class="pn">${o.name}</td><td>${o.entry}</td><td>${o.ws}</td><td>${o.we}</td>
+      <td><span class="sap-st sap-${o.st}">${stLbl[o.st]}</span></td><td>${sit}</td><td style="text-align:center;white-space:nowrap">${act}</td></tr>`;
+  }).join("");
+}
+/* ===== PIPELINE (Risk In/Out) ===== */
+const PIPE = [
+  { name: "Doypack Capacity", io: "In", stage: "NoGo", src: "Strategic", pri: "Low", capex: "5,141.5", y: [0, 0, 0] },
+  { name: "Geradores", io: "In", stage: "BC", src: "Local", pri: "High", capex: "255", y: [255, 0, 0] },
+  { name: "Squeeze Capacity", io: "In", stage: "Idea", src: "Strategic", pri: "Medium", capex: "9,000 - 10,000", y: [0, 6000, 4000] },
+  { name: "Relaunch Arisco", io: "In", stage: "Feas", src: "Strategic", pri: "Medium", capex: "600", y: [100, 500, 0] },
+  { name: "Mexidão", io: "In", stage: "Feas", src: "Local", pri: "High", capex: "350", y: [200, 50, 0] },
+  { name: "New process (Squeeze Big)", io: "In", stage: "Idea", src: "Strategic", pri: "Medium", capex: "1,500 - 1,700", y: [100, 1600, 0] },
+  { name: "Tiger", io: "In", stage: "NoGo", src: "Global", pri: "Low", capex: "1,001", y: [0, 0, 0] },
+  { name: "Burly", io: "In", stage: "Feas", src: "Local", pri: "Low", capex: "56", y: [56, 0, 0] },
+];
+function buildPipe() {
+  const lbl = { Idea: "Idea", Feas: "Feas", BC: "BC", NoGo: "No Go" };
+  document.getElementById("pipeBody").innerHTML = PIPE.map(p => `<tr>
+    <td style="font-weight:600">${p.name}</td><td>${p.io}</td>
+    <td><span class="st-b pipe-${p.stage}">${lbl[p.stage]}</span></td><td>${p.src}</td><td>${p.pri}</td>
+    <td style="text-align:right">${p.capex}</td><td style="text-align:right">${p.y[0] || "—"}</td><td style="text-align:right">${p.y[1] || "—"}</td><td style="text-align:right">${p.y[2] || "—"}</td></tr>`).join("");
+}
+
 const INTEG=[
   {ic:"SAP",color:"#0a6cff",name:"Robô SAP (RPA)",on:true,st:"Conectado · extração mensal",p:"Robô (RPA, VBScript/Python) que extrai do SAP, por Ordem Interna (OI), os dados financeiros, orçamento, executado, compromissado e saldo, e gera a base (Excel/TXT) consumida pela plataforma. Não utiliza API SAP ao vivo."},
   {ic:"SP",color:"#1f9d57",name:"SharePoint (Unilever)",on:true,st:"Backend principal",p:"Armazenamento dos documentos dos projetos e das bases financeiras no SharePoint da Unilever (ecossistema Microsoft)."},
@@ -2007,13 +2238,20 @@ const HELP=[
 {ic:"🗓",t:"Cronograma (por steps)",d:"A linha do tempo do portfólio vista pela ótica dos steps.",b:`
 <p>Complementar ao cronograma macro do EEM: mostra <b>em que step</b> cada projeto está e como evolui <b>mês a mês</b>.</p>
 <ul><li>Cada linha é um projeto; as faixas coloridas indicam o step em cada mês;</li><li>Use junto com o EEM: o macro diz <b>se está no prazo</b>; este diz <b>onde está no fluxo</b>.</li></ul>`},
-{ic:"💶",t:"DRA · Designação de Recursos e Autorização",d:"Módulo 2, orçado × executado por OI, com dados do SAP.",b:`
-<p>Indicadores acompanhados por OI: <b>Capex Aprovado</b>, <b>Real Executado</b>, <b>Compromissado</b> (POs em aberto), <b>Saldo Disponível</b> e <b>Saving Estimado</b>.</p>
-<h5>Como usar</h5>
-<ol><li>Selecione o projeto/OI no seletor;</li><li>Veja os KPIs: orçado, executado, comprometido e saldo;</li><li>Analise o gráfico <b>orçado × executado mês a mês</b>;</li><li>Use <b>↻ Atualizar base (robô)</b> para simular a sincronização com o SAP.</li></ol>
-<h5>De onde vêm os dados</h5>
-<p>O <b>robô RPA</b> extrai os lançamentos do SAP → consolida no <b>SharePoint</b> → o painel (e o Power BI) exibem. Ninguém digita valores manualmente.</p>
-<div class="tip">💡 Diferença de papéis: o <b>EEM</b> acompanha prazo e execução; o <b>DRA</b> acompanha dinheiro. Juntos dão a visão completa.</div>`},
+{ic:"💶",t:"DRA · Portfólio de Investimentos",d:"Módulo 2, a planilha DRA viva: grid, conciliação, ordens e publicação no BI.",b:`
+<p>O DRA gerencia o portfólio de investimentos da fábrica, substituindo a planilha manual. Base extraída do SAP por robô (transações <b>GRR3</b>, orçamento/real/compromissado/disponível; <b>KOB1</b>, gasto atual; <b>KO03</b>, dados da ordem).</p>
+<h5>As 5 abas do módulo</h5>
+<ol><li><b>Overview</b>: KPIs, executado × replanejado (mês/quarter/semestre), por projeto, alertas e publicação;</li>
+<li><b>DRA Grid</b>: a planilha fiel, CPX, OI, tipo, status, meses, quarters, FC FY26/FY27 e commitment, em k€, com filtros (a linha verde de totais respeita os filtros) e separação <b>Capex (AO) × R2</b>;</li>
+<li><b>Reconciliation</b>: diferenças entre a extração do SAP e a sua última validação, para acatar ou manter, preservando os totais do quarter e do ano;</li>
+<li><b>Orders (KO03)</b>: gestão das ordens, datas de início/fim do trabalho, status SAP (30 ativo, 40 encerrado, 50 encerrado tecnicamente), com alertas para prorrogar (Poupatempo) ou encerrar;</li>
+<li><b>Pipeline</b>: funil Risk In/Out dos pré-projetos (Idea → Feas → BC → No Go) com phasing plurianual.</li></ol>
+<h5>Workflow de status do projeto</h5>
+<p><b>Draft</b> (sem CPX/OI, em avaliação com finanças) → <b>Submitted</b> (submetido no Marlin, cria o CPX) → <b>Authorized</b> (AI emitido) → <b>Closed</b>. </p>
+<h5>Regras de ouro</h5>
+<ul><li>O <b>total do ano (linha verde)</b> não pode ser ultrapassado, o sistema monitora o teto FY26;</li>
+<li>Remanejamentos devem <b>manter a volumetria do quarter</b>;</li>
+<li>O <b>executado real</b> reflete no BI automaticamente; o <b>replanejamento</b> só após a sua validação (Publish to BI).</li></ul>`},
 {ic:"📺",t:"Relatórios, KPIs e Modo TV",d:"Indicadores executivos e exibição em telões.",b:`
 <ul><li>KPIs consolidados: capex, conformidade, savings e documentos;</li><li>Gráficos por tipo, step, capex e conformidade por projeto;</li><li>Filtro de período no topo direito.</li></ul>
 <h5>Modo TV</h5>
@@ -2096,14 +2334,20 @@ const TOUR=[
    x:"Filtre a trilha por status, <b>gerados, em revisão, pendentes</b>. Cada ação fica registrada: <b>quem fez o quê, quando e em qual projeto</b>."},
   {view:"audit",sel:'[onclick="exportAudit()"]',c:"Módulo 1 · PSR",t:"Exportar auditoria",
    x:"<b>Exportar CSV</b> baixa a trilha filtrada para o Excel, pronta para conformidade e auditorias internas. O perfil Auditor também pode exportar."},
-  {view:"dra",sel:'#draKpis',c:"Módulo 2 · DRA",t:"Portfólio de investimentos",
+  {view:"dra",tab:"ov",sel:'#draKpis',c:"Módulo 2 · DRA",t:"Portfólio de investimentos",
    x:"O DRA é o portfólio financeiro do portfólio de projetos: <b>capex aprovado, executado (YTD), compromissado, saldo, saving e aderência ao plano</b>. Consolidado ou por OI, e escalável a <b>LATAM</b> (Brasil, México, Argentina)."},
-  {view:"dra",sel:'#draChart',c:"Módulo 2 · DRA",t:"Executado × replanejado",
+  {view:"dra",tab:"ov",sel:'#draChart',c:"Módulo 2 · DRA",t:"Executado × replanejado",
    x:"O coração do DRA: o <b>realizado até hoje</b> e o <b>replanejamento dos meses seguintes</b>, com visão de <b>mês, quarter e semestre</b>. A linha vermelha marca hoje; à direita, os meses futuros aparecem hachurados (replanejados)."},
-  {view:"dra",sel:'#draAlerts',c:"Módulo 2 · DRA",t:"Alertas e validação para o BI",
+  {view:"dra",tab:"ov",sel:'#draAlerts',c:"Módulo 2 · DRA",t:"Alertas e validação para o BI",
    x:"Alertas de ajuste (estouro de capex, execução fora do plano) <b>notificam o responsável via Teams / Outlook</b>. Antes de publicar, uma <b>camada de validação</b> aprova o que vai para o Power BI dos stakeholders."},
-  {view:"dra",sel:'#view-dra [onclick="syncSAP(this)"]',c:"Módulo 2 · DRA",t:"Robô SAP (RPA)",
+  {view:"dra",tab:"ov",sel:'#view-dra [onclick="syncSAP(this)"]',c:"Módulo 2 · DRA",t:"Robô SAP (RPA)",
    x:"O botão <b>Atualizar base (robô)</b> dispara a extração no SAP. Um robô (RPA) traz as transações por OI, grava no SharePoint e alimenta o painel e o BI. Substitui a planilha manual de hoje."},
+  {view:"dra",tab:"grid",sel:'#gCeiling',c:"Módulo 2 · DRA",t:"DRA Grid, a planilha viva",
+   x:"A réplica fiel da planilha da Adriana: projetos com <b>CPX, OI, tipo, status (Draft → Submitted → Authorized → Closed)</b>, meses, quarters e forecast, em k€. A <b>linha verde de totais</b> respeita os filtros, e o <b>teto anual (FC FY26)</b> é monitorado: não pode ser ultrapassado. Com separação <b>Capex (AO) × R2</b> e versões mensais."},
+  {view:"dra",tab:"rec",sel:'#recBody',c:"Módulo 2 · DRA",t:"Conciliação SAP × validado",
+   x:"O robô extrai a base (GRR3/KOB1) e compara com a <b>sua última validação</b>. As diferenças aparecem aqui, e você decide: <b>Accept SAP</b> ou <b>Keep mine</b>, sempre preservando os totais do quarter e do ano. Só depois publica o replanejamento no BI, o executado real já reflete automaticamente."},
+  {view:"dra",tab:"ord",sel:'#ordBody',c:"Módulo 2 · DRA",t:"Gestão de ordens (KO03)",
+   x:"Dados mestres das ordens: entrada, início e fim do trabalho e status SAP (<b>30 ativo, 40 encerrado, 50 encerrado tecnicamente</b>). Ordens vencidas alertam para <b>prorrogar via Poupatempo</b> ou <b>notificar o líder</b> para encerrar."},
   {view:"lifecycle",sel:'#lcPhases',c:"Módulo 3 · Ciclo de Vida",t:"A jornada completa do projeto",
    x:"O coração do Módulo 3: <b>Iniciação → Planejamento → Execução → Monitoramento → Encerramento</b>. Cada fase com status calculado pelo sistema."},
   {view:"lifecycle",sel:'#lcHealth',c:"Módulo 3 · Ciclo de Vida",t:"Saúde do projeto",
@@ -2145,7 +2389,7 @@ function ensureTourEls(){if(document.getElementById('tourOverlay'))return;
   window.addEventListener('resize',()=>{if(ti>=0)placeTour();});
   document.addEventListener('keydown',e=>{if(ti<0)return;if(e.key==='Escape')endTour();if(e.key==='ArrowRight')tourNav(1);if(e.key==='ArrowLeft')tourNav(-1);});}
 function startTour(){ensureTourEls();ti=0;document.getElementById('tourOverlay').style.display='';document.getElementById('tourTip').style.display='';showTourStep();}
-function showTourStep(){const s=TOUR[ti];if(s.view)switchView(s.view);setTimeout(placeTour,s.view?420:60);}
+function showTourStep(){const s=TOUR[ti];if(s.view)switchView(s.view);if(s.tab&&typeof draTab==='function')draTab(s.tab);setTimeout(placeTour,s.view?420:60);}
 function placeTour(){const s=TOUR[ti];const el=document.querySelector(s.sel);if(!el){tourNav(1);return;}
   // rola até o elemento destacado (o tour aponta para conteúdo real, não só para o menu)
   el.scrollIntoView({block:'center',behavior:'auto'});
@@ -2241,7 +2485,7 @@ function switchView(v){document.querySelectorAll('.view').forEach(s=>s.classList
   if(v==='catalog')renderCatalog();
   if(v==='track')buildTrack();
   if(v==='lifecycle')buildLifecycle(document.getElementById('lcSel').value||'P1');
-  if(v==='dra')buildDRA();
+  if(v==='dra'){buildDRA();draTabsBuild();}
   window.scrollTo({top:0,behavior:'smooth'});}
 document.querySelectorAll('[data-view]').forEach(n=>n.addEventListener('click',()=>switchView(n.dataset.view)));
 function enterApp(){const l=document.getElementById('login');l.style.opacity='0';setTimeout(()=>{l.style.display='none';startOnb();},500);}
