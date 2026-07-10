@@ -850,9 +850,9 @@
           <div style="flex:1;min-width:160px"><label class="dra-lbl">Search</label><input id="gSearch" class="role-sel" style="width:100%" placeholder="Project, CPX, OI, leader..." oninput="buildDRAGrid()"></div>
           <div style="margin-left:auto"><label class="dra-lbl">Version (month tab)</label><select class="role-sel" id="gVersion" onchange="toast('Versão histórica carregada: '+this.value)"><option>DRA Aug 26 (current)</option><option>DRA Jul 26</option><option>DRA Jun 26</option><option>DRA May 26</option></select></div>
         </div>
-        <div class="card" id="gCeiling" style="margin-bottom:14px"></div>
+        <div class="chart-grid" style="grid-template-columns:1.4fr 1fr;margin-bottom:14px"><div class="card" id="gCeiling"></div><div class="card" id="gByType"></div></div>
         <div class="card" style="overflow:hidden">
-          <div class="docs-head"><div><div class="st" id="gTitle">DRA Grid · Pouso Alegre · August 2026</div><div class="muted">Values in k€ · displaying sample of 71 projects · green row = totals (respect filters, like SUBTOTAL) · workflow: Draft → Submitted → Authorized → Closed</div></div><button class="btn sm perm-w" onclick="toast('Novo projeto adicionado ao DRA como Draft (CPX e OI ficam TBC até a submissão no Marlin).')">+ Add project (Draft)</button></div>
+          <div class="docs-head"><div><div class="st" id="gTitle">DRA Grid · Pouso Alegre · August 2026</div><div class="muted">Values in k€ · sample of 71 projects · green row = totals (respect filters, like SUBTOTAL) · workflow: Draft → Submitted → Authorized → Closed · source: SAP robot, GRR3 (budget / actual / commitment / available) + KOB1 (actual spend) + KO03 (master data; Capex AO × R2, type entry manual até a transação exportável ser confirmada)</div></div><button class="btn sm perm-w" onclick="toast('Novo projeto adicionado ao DRA como Draft (CPX e OI ficam TBC até a submissão no Marlin).')">+ Add project (Draft)</button></div>
           <div class="gwrap"><table class="tbl gtable"><thead><tr id="gHead"></tr></thead><tbody id="gBody"></tbody></table></div>
         </div>
       </div>
@@ -861,7 +861,7 @@
       <div class="dra-pane hidden" id="pane-rec">
         <div class="card" style="padding:16px 20px;margin-bottom:14px">
           <div class="section-title" style="font-size:15px">SAP extract × Last validated</div>
-          <div class="muted" style="font-size:12.5px">O robô extraiu a base (GRR3 / KOB1) e comparou com a sua última validação. Resolva as diferenças antes de publicar. <b>Regra: os totais do quarter e do ano (linha verde) devem ser mantidos, ajustes movem valores entre meses.</b> O executado real do mês corrente reflete no BI automaticamente, sem aprovação.</div>
+          <div class="muted" style="font-size:12.5px">O robô extraiu a base (GRR3 / KOB1) e comparou com a sua última validação. Resolva as diferenças antes de publicar. <b>Regra: os totais do quarter e do ano (linha verde) devem ser mantidos, ajustes movem valores entre meses.</b> O executado real do mês corrente reflete no BI automaticamente, sem aprovação. <b>Carga inicial:</b> o realizado de Jan a Jul/26 foi importado para conferência retroativa (correção de falhas de reporte passadas). Diferenças aceitas que alterem o mês corrente são compensadas no mês seguinte, preservando o quarter.</div>
         </div>
         <div class="card" style="overflow:hidden;margin-bottom:14px">
           <table class="tbl"><thead><tr><th>Project</th><th>Month</th><th style="text-align:right">SAP extract</th><th style="text-align:right">Last validated</th><th style="text-align:right">Δ</th><th style="text-align:center">Action</th></tr></thead><tbody id="recBody"></tbody></table>
@@ -873,10 +873,10 @@
       <div class="dra-pane hidden" id="pane-ord">
         <div class="card" style="padding:16px 20px;margin-bottom:14px">
           <div class="section-title" style="font-size:15px">Order management (KO03)</div>
-          <div class="muted" style="font-size:12.5px">Dados mestres das ordens: datas de entrada, início e fim do trabalho e status do sistema. Ordens vencidas ou antigas geram alerta para <b>encerrar com o líder</b> ou <b>prorrogar via Poupatempo</b>. Status SAP: 30 = Active · 40 = Closed · 50 = Technically closed (sem novos gastos, pedidos existentes seguem).</div>
+          <div class="muted" style="font-size:12.5px">Dados mestres das ordens: datas de entrada, início e fim do trabalho e status do sistema. Ordens vencidas ou antigas geram alerta para <b>encerrar com o líder</b> ou <b>prorrogar via Poupatempo</b>. Status SAP: 30 = Active (aberto) · 40 = Closed (encerrado) · 50 = Technically closed (sem novos gastos, pedidos existentes seguem). Atenção: o <b>responsável cadastrado no SAP</b> pode ser diferente do <b>líder real</b> do projeto, o sistema mostra os dois.</div>
         </div>
         <div class="card" style="overflow:hidden">
-          <table class="tbl"><thead><tr><th>OI</th><th>Project</th><th>Entry</th><th>Work start</th><th>Work end</th><th>SAP status</th><th>Situation</th><th style="text-align:center">Action</th></tr></thead><tbody id="ordBody"></tbody></table>
+          <table class="tbl"><thead><tr><th>OI</th><th>Project</th><th>Leader · SAP resp.</th><th>Entry</th><th>Work start</th><th>Work end</th><th>SAP status</th><th>Situation</th><th style="text-align:center">Action</th></tr></thead><tbody id="ordBody"></tbody></table>
         </div>
       </div>
 
@@ -1519,23 +1519,27 @@ function buildDRAGrid() {
   const st = document.getElementById("gStatus").value, ty = tSel.value, q = (document.getElementById("gSearch").value || "").toLowerCase();
   const list = data.filter(p => (st === "all" || p.status === st) && (ty === "all" || p.type === ty) && (!q || (p.name + p.cpx + p.oi + p.leader).toLowerCase().includes(q)));
   document.getElementById("gTitle").textContent = "DRA Grid · Pouso Alegre · August 2026 · " + (draPlan === "capex" ? "Capex (AO)" : "R2") + " · " + list.length + " project" + (list.length === 1 ? "" : "s");
-  const H = ["CPX", "OI", "Project", "Type", "Status", "Leader", "Full amount", "Prev. years", "Jul 26", "Aug 26", "Sep 26", "Q3 26", "Q4 26", "FC FY26", "FC FY27", "Commitment"];
+  const H = ["CPX", "OI", "Project", "Type", "Status", "Leader", "Full amount", "Prev. years", "H1 26", "Jul 26", "Aug 26", "Sep 26", "Q3 26", "Q4 26", "FC FY26", "FC FY27", "Commitment", "Available (GRR3)"];
   document.getElementById("gHead").innerHTML = H.map((h, i) => `<th ${i >= 6 ? 'style="text-align:right"' : ""}>${h}</th>`).join("");
+  const h1 = p => p.m[0] + p.m[1] + p.m[2] + p.m[3] + p.m[4] + p.m[5];
   const q3 = p => p.m[6] + p.m[7] + p.m[8], q4 = p => p.m[9] + p.m[10] + p.m[11];
   const fy = p => p.m.reduce((a, b) => a + b, 0);
+  const av = p => Math.round((p.full - p.prev - h1(p) - p.commit) * 10) / 10; /* GRR3: budget − actuals − commitment */
   const row = p => `<tr>
     <td>${p.cpx}</td><td>${p.oi}</td><td class="pn">${p.name}</td><td>${p.type}</td>
     <td><span class="st-b st-${p.status}">${p.status}</span></td><td>${p.leader}</td>
-    <td class="num">${kf(p.full)}</td><td class="num">${kf(p.prev)}</td>
+    <td class="num">${kf(p.full)}</td><td class="num">${kf(p.prev)}</td><td class="num">${kf(h1(p))}</td>
     <td class="num">${kf(p.m[6])}</td><td class="num">${kf(p.m[7])}</td><td class="num">${kf(p.m[8])}</td>
     <td class="num qcol">${kf(q3(p))}</td><td class="num qcol">${kf(q4(p))}</td>
-    <td class="num qcol">${kf(fy(p))}</td><td class="num">${kf(p.fy27)}</td><td class="num">${kf(p.commit)}</td></tr>`;
+    <td class="num qcol">${kf(fy(p))}</td><td class="num">${kf(p.fy27)}</td><td class="num">${kf(p.commit)}</td>
+    <td class="num" style="${av(p) < 0 ? "color:var(--danger);font-weight:700" : ""}">${kf(av(p))}</td></tr>`;
   const S = k => list.reduce((a, p) => a + k(p), 0);
   const totRow = `<tr class="tot"><td colspan="6">TOTALS (like green row 3, respect filters)</td>
-    <td class="num">${kf(S(p => p.full))}</td><td class="num">${kf(S(p => p.prev))}</td>
+    <td class="num">${kf(S(p => p.full))}</td><td class="num">${kf(S(p => p.prev))}</td><td class="num">${kf(S(h1))}</td>
     <td class="num">${kf(S(p => p.m[6]))}</td><td class="num">${kf(S(p => p.m[7]))}</td><td class="num">${kf(S(p => p.m[8]))}</td>
     <td class="num qcol">${kf(S(q3))}</td><td class="num qcol">${kf(S(q4))}</td>
-    <td class="num qcol">${kf(S(fy))}</td><td class="num">${kf(S(p => p.fy27))}</td><td class="num">${kf(S(p => p.commit))}</td></tr>`;
+    <td class="num qcol">${kf(S(fy))}</td><td class="num">${kf(S(p => p.fy27))}</td><td class="num">${kf(S(p => p.commit))}</td>
+    <td class="num">${kf(S(av))}</td></tr>`;
   document.getElementById("gBody").innerHTML = totRow + list.map(row).join("");
   /* teto anual */
   const fyAll = (draPlan === "capex" ? DRAG : DRAG_R2).reduce((a, p) => a + p.m.reduce((x, y) => x + y, 0), 0);
@@ -1546,6 +1550,14 @@ function buildDRAGrid() {
     <div class="muted" style="font-size:12px">FC FY26 committed: <b>${kf(fyAll)} k€</b> of <b>${kf(ceil)} k€</b> approved for the year (${pct}%)</div>
     <div class="ceil-bar"><i style="width:${pct}%${pct > 97 ? ";background:linear-gradient(90deg,#e8930c,#d6336c)" : ""}"></i></div></div>
     <span class="pill" style="background:${pct > 97 ? "#fbe6ee" : "#e7f4ee"};color:${pct > 97 ? "#b02258" : "#137a44"}">${pct > 97 ? "● Near/over ceiling" : "● Within ceiling"}</span></div></div>`;
+  /* progress by type (visão do BI antigo que a Adriana usa) */
+  const byT = {};
+  (draPlan === "capex" ? DRAG : DRAG_R2).forEach(p => { byT[p.type] = (byT[p.type] || 0) + p.m.reduce((a, b) => a + b, 0); });
+  const ent = Object.entries(byT).filter(([, v]) => v > 0).sort((a, b) => b[1] - a[1]);
+  const mx = Math.max(...ent.map(([, v]) => v), 1);
+  const cores = ["#0060A8", "#1f9d57", "#e8930c", "#8250df", "#d6336c", "#0a9396", "#6cb2e3"];
+  document.getElementById("gByType").innerHTML = '<div style="padding:14px 20px"><div class="section-title" style="font-size:14px">Progress by type <span class="muted" style="font-weight:500;font-size:11px">· FC FY26 k€</span></div>' +
+    ent.map(([t, v], i) => `<div style="display:grid;grid-template-columns:88px 1fr 62px;gap:8px;align-items:center;margin-top:7px;font-size:11.5px"><b>${t}</b><div style="height:9px;background:var(--surface-2);border-radius:5px;overflow:hidden"><i style="display:block;height:100%;width:${Math.round(v / mx * 100)}%;background:${cores[i % cores.length]};border-radius:5px"></i></div><span style="text-align:right;font-variant-numeric:tabular-nums">${kf(v)}</span></div>`).join("") + "</div>";
 }
 /* ===== RECONCILIATION ===== */
 const RECON = [
@@ -1576,12 +1588,12 @@ function reconAct(i, mode) { RECON[i].done = mode; buildRecon(); toast(mode === 
 function reconPublish() { const s = document.getElementById("recStatus"); if (s) { s.textContent = "● Published to BI"; } toast("Replanejamento validado e publicado no Power BI (Alan, Grazi, Caro)."); }
 /* ===== ORDERS (KO03) ===== */
 const ORDERS = [
-  { oi: "8101016544", name: "New line SQZ BR", entry: "2023-02-10", ws: "2023-03-01", we: "2026-09-30", st: 30 },
-  { oi: "8101018966", name: "Toolkit and New Labeller P3", entry: "2025-01-20", ws: "2025-02-01", we: "2026-08-20", st: 30 },
-  { oi: "8101018580", name: "Bunny, Tanque Ovos Caipira", entry: "2024-05-12", ws: "2024-06-01", we: "2026-06-30", st: 30 },
-  { oi: "8101019380", name: "Sludge dryer", entry: "2025-11-03", ws: "2026-01-05", we: "2027-03-31", st: 30 },
-  { oi: "8101016041", name: "Fat Plan Retrofit", entry: "2022-08-15", ws: "2022-09-01", we: "2026-01-31", st: 40 },
-  { oi: "8101017221", name: "Filtros Magnéticos", entry: "2023-10-02", ws: "2023-11-01", we: "2026-03-15", st: 50 },
+  { oi: "8101016544", name: "New line SQZ BR", lead: "Thiago Benati", resp: "A. Camargo", entry: "2023-02-10", ws: "2023-03-01", we: "2026-09-30", st: 30 },
+  { oi: "8101018966", name: "Toolkit and New Labeller P3", lead: "Thiago Benati", resp: "A. Camargo", entry: "2025-01-20", ws: "2025-02-01", we: "2026-08-20", st: 30 },
+  { oi: "8101018580", name: "Bunny, Tanque Ovos Caipira", lead: "Reginaldo Pinto", resp: "A. Camargo", entry: "2024-05-12", ws: "2024-06-01", we: "2026-06-30", st: 30 },
+  { oi: "8101019380", name: "Sludge dryer", lead: "Rodrigo Cano", resp: "A. Camargo", entry: "2025-11-03", ws: "2026-01-05", we: "2027-03-31", st: 30 },
+  { oi: "8101016041", name: "Fat Plan Retrofit", lead: "Hyago Salviano", resp: "A. Camargo", entry: "2022-08-15", ws: "2022-09-01", we: "2026-01-31", st: 40 },
+  { oi: "8101017221", name: "Filtros Magnéticos", lead: "Bruna", resp: "A. Camargo", entry: "2023-10-02", ws: "2023-11-01", we: "2026-03-15", st: 50 },
 ];
 function buildOrders() {
   const today = new Date(DRA_TODAY + "T00:00:00");
@@ -1593,7 +1605,7 @@ function buildOrders() {
     if (o.st === 30 && days < 0) { sit = '<span style="color:var(--danger);font-weight:700">Overdue ' + (-days) + 'd</span>'; act = `<button class="btn sm perm-w" onclick="toast('Prorrogação solicitada via Poupatempo para a OI ${o.oi}.')">Extend (Poupatempo)</button> <button class="btn ghost sm perm-w" onclick="toast('Líder notificado para encerrar a ordem ${o.oi}.')">Notify leader</button>`; }
     else if (o.st === 30 && days < 60) { sit = '<span style="color:var(--warn);font-weight:700">Expiring in ' + days + 'd</span>'; act = `<button class="btn ghost sm perm-w" onclick="toast('Prorrogação solicitada via Poupatempo para a OI ${o.oi}.')">Extend (Poupatempo)</button>`; }
     else if (o.st === 30) { sit = '<span class="rec-ok">Active</span>'; }
-    return `<tr><td style="font-weight:600">${o.oi}</td><td class="pn">${o.name}</td><td>${o.entry}</td><td>${o.ws}</td><td>${o.we}</td>
+    return `<tr><td style="font-weight:600">${o.oi}</td><td class="pn">${o.name}</td><td>${o.lead}<br><span class="muted" style="font-size:10px">SAP: ${o.resp}</span></td><td>${o.entry}</td><td>${o.ws}</td><td>${o.we}</td>
       <td><span class="sap-st sap-${o.st}">${stLbl[o.st]}</span></td><td>${sit}</td><td style="text-align:center;white-space:nowrap">${act}</td></tr>`;
   }).join("");
 }
@@ -2293,7 +2305,7 @@ const HELP=[
 <p>O DRA gerencia o portfólio de investimentos da fábrica, substituindo a planilha manual. Base extraída do SAP por robô (transações <b>GRR3</b>, orçamento/real/compromissado/disponível; <b>KOB1</b>, gasto atual; <b>KO03</b>, dados da ordem).</p>
 <h5>As 6 abas do módulo</h5>
 <ol><li><b>Overview</b>: KPIs, executado × replanejado (mês/quarter/semestre), por projeto, alertas e publicação;</li>
-<li><b>DRA Grid</b>: a planilha fiel, CPX, OI, tipo, status, meses, quarters, FC FY26/FY27 e commitment, em k€, com filtros (a linha verde de totais respeita os filtros) e separação <b>Capex (AO) × R2</b>;</li>
+<li><b>DRA Grid</b>: a planilha fiel, CPX, OI, tipo, status, meses, H1, quarters, FC FY26/FY27, commitment e disponível (GRR3), em k€, com filtros (a linha verde de totais respeita os filtros) e separação <b>Capex (AO) × R2</b>;</li>
 <li><b>Reconciliation</b>: diferenças entre a extração do SAP e a sua última validação, para acatar ou manter, preservando os totais do quarter e do ano;</li>
 <li><b>Orders (KO03)</b>: gestão das ordens, datas de início/fim do trabalho, status SAP (30 ativo, 40 encerrado, 50 encerrado tecnicamente), com alertas para prorrogar (Poupatempo) ou encerrar;</li>
 <li><b>Pipeline</b>: funil Risk In/Out dos pré-projetos (Idea → Feas → BC → No Go) com phasing plurianual;</li>
