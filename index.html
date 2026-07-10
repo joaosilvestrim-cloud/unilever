@@ -1158,6 +1158,30 @@
           </div>
         </div>
       </div>
+    
+      <div class="card flowcard" style="border-left:4px solid #e8930c">
+        <div class="section-title" style="font-size:14.5px">10 · Camada Power BI, o que fica fora do sistema <span class="muted" style="font-weight:500;font-size:11.5px">· dashboards gerenciais</span></div>
+        <div class="muted" style="font-size:12.5px;max-width:920px;margin-bottom:10px">O sistema cuida da operação (grid, conciliação, ordens, edição e publicação). As <b>visualizações gerenciais ficam no Power BI</b>, consumindo a base publicada no SharePoint: o executado real chega automaticamente e o replanejamento só após a validação da analista. Consumidores: Alan, Grazi e Caro, com visão consolidada LATAM.</div>
+        <div class="tblwrap" style="border:0"><table class="tbl">
+          <thead><tr><th>Onde</th><th>O que fica</th><th>Por quê</th></tr></thead>
+          <tbody>
+            <tr><td style="font-weight:600">Sistema (este mock)</td><td>DRA Grid, conciliação, edição manual ✎, ordens (KO03), pipeline, histórico, publicação</td><td>Operação diária da analista: dados, regras e auditoria</td></tr>
+            <tr><td style="font-weight:600">Power BI</td><td>Dashboards gerenciais: DRA × Actual, quanto aprovado, progresso por tipo, visão por projeto, quarters e forecast, consolidação LATAM</td><td>Consumo executivo, gráficos ricos e distribuição no ecossistema Microsoft</td></tr>
+          </tbody>
+        </table></div>
+        <div class="section-title" style="font-size:13px;margin-top:16px">Páginas propostas do BI do DRA <span class="muted" style="font-weight:500;font-size:11px">· recuperando as visões do BI LATAM antigo, no padrão de navegação dos dashboards Drive Data (ex.: TMG PRD)</span></div>
+        <div class="tblwrap" style="border:0;margin-top:6px"><table class="tbl">
+          <thead><tr><th>Página</th><th>Conteúdo</th><th>Origem (BI antigo da Adriana)</th></tr></thead>
+          <tbody>
+            <tr><td style="font-weight:600">Home</td><td>Menu de navegação com botões e data da última atualização da base</td><td>Padrão Drive Data (Home com actionButtons)</td></tr>
+            <tr><td style="font-weight:600">DRA Overview</td><td>Cards: total aprovado, executado YTD, saldo · DRA × Actual do mês (planejado × gasto × quanto falta) · quarters com legenda (Q1..Q4, H1/H2) · forecast do ano</td><td>"DRA vezes o atual", "quanto foi aprovado", acompanhamento semanal</td></tr>
+            <tr><td style="font-weight:600">Progress by Type</td><td>Execução por tipo de projeto (SHE, Savings, Capacity, M&I, Quality...)</td><td>"Progresso por tipo, porque trabalhamos com os tipos"</td></tr>
+            <tr><td style="font-weight:600">View by Project</td><td>Visão projeto a projeto: status (Draft/Submitted/Authorized), valores, líder</td><td>"A visão de cada projeto, o status dele"</td></tr>
+            <tr><td style="font-weight:600">DRA Analítico</td><td>Tabela detalhada com slicers (site, tipo, status, quarter, líder) para exploração e export</td><td>Padrão de página analítica dos dashboards Drive Data</td></tr>
+          </tbody>
+        </table></div>
+        <div class="muted" style="font-size:11.5px;margin-top:8px">Idioma: inglês prioritário (espanhol e português na sequência) · tema visual livre, mais claro e legível que o BI antigo · fonte única: a base publicada pelo sistema no SharePoint, nunca digitação direta no BI.</div>
+      </div>
     </section>
 
     <!-- CATÁLOGO DE DOCUMENTOS -->
@@ -2738,7 +2762,7 @@ const TOUR=[
   {view:"dra",tab:"hist",sel:'#histBody',c:"Módulo 2 · DRA",t:"Histórico de versões",
    x:"Como as abas mensais da planilha: cada mês é uma <b>versão do DRA</b>. Aqui fica a <b>evolução do total do ano</b> (de 8.900 para 7.599 k€) e o <b>log de variações</b>: projetos incluídos, removidos e remanejos, com autor, a rastreabilidade que a diretoria olha."},
   {view:"draescopo",sel:'#scopeFlow1',c:"Módulo 2 · DRA",t:"O escopo explicado no próprio sistema",
-   x:"A página Escopo do DRA documenta o módulo com <b>fluxogramas</b> (arquitetura de dados, ciclo mensal, workflow Marlin/AI), as <b>regras de ouro</b> e a <b>especificação técnica para o desenvolvedor</b>: modelo de dados, de-para SAP → planilha → sistema, fórmulas e permissões. Qualquer pessoa entende o DRA sem treinamento."},
+   x:"A página Escopo do DRA documenta o módulo com <b>fluxogramas</b> (arquitetura de dados, ciclo mensal, workflow Marlin/AI), as <b>regras de ouro</b> e a <b>especificação técnica para o desenvolvedor</b>: modelo de dados, de-para SAP → planilha → sistema, fórmulas, permissões e a <b>camada Power BI</b> (o que fica no sistema × o que fica no BI, com as páginas propostas). Qualquer pessoa entende o DRA sem treinamento."},
   {view:"lifecycle",sel:'#lcPhases',c:"Módulo 3 · Ciclo de Vida",t:"A jornada completa do projeto",
    x:"O coração do Módulo 3: <b>Iniciação → Planejamento → Execução → Monitoramento → Encerramento</b>. Cada fase com status calculado pelo sistema."},
   {view:"lifecycle",sel:'#lcHealth',c:"Módulo 3 · Ciclo de Vida",t:"Saúde do projeto",
