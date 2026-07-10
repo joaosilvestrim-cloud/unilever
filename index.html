@@ -814,6 +814,7 @@
         <button class="seg-b" data-t="rec" onclick="draTab('rec')">Reconciliation<span class="dra-badge" id="recBadge">4</span></button>
         <button class="seg-b" data-t="ord" onclick="draTab('ord')">Orders (KO03)</button>
         <button class="seg-b" data-t="pipe" onclick="draTab('pipe')">Pipeline</button>
+        <button class="seg-b" data-t="hist" onclick="draTab('hist')">History</button>
       </div>
 
       <!-- PANE: OVERVIEW -->
@@ -887,6 +888,23 @@
         </div>
         <div class="card" style="overflow:hidden">
           <table class="tbl"><thead><tr><th>Project</th><th>In/Out</th><th>Stage</th><th>Source</th><th>Priority</th><th style="text-align:right">CapEx (k€)</th><th style="text-align:right">Y0</th><th style="text-align:right">Y1</th><th style="text-align:right">Y2</th></tr></thead><tbody id="pipeBody"></tbody></table>
+        </div>
+      </div>
+    
+      <!-- PANE: HISTORY -->
+      <div class="dra-pane hidden" id="pane-hist">
+        <div class="card" style="padding:16px 20px;margin-bottom:14px">
+          <div class="section-title" style="font-size:15px">Monthly versions & variations</div>
+          <div class="muted" style="font-size:12.5px">Cada mês gera uma versão do DRA (como as abas da planilha). Aqui fica a evolução do total do ano (FC FY26) e o log das variações: projetos incluídos, removidos e remanejamentos, com autor e justificativa.</div>
+        </div>
+        <div class="chart-grid" style="grid-template-columns:1.1fr 1fr">
+          <div class="card chart"><h4>FC FY26 evolution <span>k€ per version</span></h4><div id="histChart"></div></div>
+          <div class="card" style="overflow:hidden"><div class="docs-head" style="padding-bottom:8px"><div><div class="st">Versions</div></div></div>
+            <table class="tbl"><thead><tr><th>Version</th><th style="text-align:right">FC FY26</th><th style="text-align:right">Δ vs prev.</th><th style="text-align:right">Projects</th><th>Status</th></tr></thead><tbody id="histBody"></tbody></table></div>
+        </div>
+        <div class="card" style="overflow:hidden">
+          <div class="docs-head"><div><div class="st">Variation log</div><div class="muted">O que mudou entre as versões, rastreável para a diretoria</div></div></div>
+          <table class="tbl"><thead><tr><th>When</th><th>Version</th><th>Change</th><th style="text-align:right">Impact FY26</th><th>By</th></tr></thead><tbody id="histLog"></tbody></table>
         </div>
       </div>
     </section>
@@ -1439,7 +1457,7 @@ function buildDRA(){
     else if(ad>1.25)al.push({p,m:'Gasto acelerado ('+Math.round(ad*100)+'% do previsto), revisar a projeção',lvl:'warn'});});
   document.getElementById('draAlerts').innerHTML=al.length?al.slice(0,5).map(a=>`<div class="alert-row"><span class="ai" style="color:var(--${a.lvl})">●</span><div style="flex:1"><b>${a.p.name}</b><small>${a.m} · líder ${a.p.lead}</small></div><button class="btn ghost sm perm-w" onclick="toast('Notificação enviada a ${a.p.lead} via Teams / Outlook.')">Notificar</button></div>`).join(''):'<div class="alert-row"><span class="ai" style="color:var(--ok)">●</span><div><b>Nenhum ajuste necessário</b><small>Portfólio dentro do planejado</small></div></div>';
   const pend=al.length;
-  document.getElementById('draPublish').innerHTML=`<div class="dra-pb"><div style="flex:1;min-width:240px"><div class="section-title" style="font-size:14.5px">Validação para o BI</div><div class="muted" style="font-size:12.5px">Revise os dados consolidados antes de publicar no Power BI para os stakeholders (Alan, Grazi, Caro). ${pend?'<b style="color:var(--warn)">'+pend+' projeto(s) com alerta aguardando revisão.</b>':'Tudo conferido, pronto para publicar.'}</div></div><span class="pill" id="draPubStatus" style="background:#fdf3e3;color:#8a5b00">● Aguardando publicação</span><button class="btn perm-w" onclick="draPublishBI()">Revisar e publicar no BI</button></div>`;
+  document.getElementById('draPublish').innerHTML=`<div class="dra-pb"><div style="flex:1;min-width:240px"><div class="section-title" style="font-size:14.5px">Ciclo mensal do DRA</div><div class="muted" style="font-size:12.5px">O <b>executado real</b> reflete no Power BI automaticamente. O <b>replanejamento</b> passa pela aba Reconciliation: resolva as diferenças da extração e publique.</div></div><span class="pill" style="background:#e4f0fa;color:#0060A8">● Extração de hoje comparada</span><button class="btn" onclick="draTab('rec')">Abrir Reconciliation</button></div>`;
   let acc=totP,rows='';
   for(let m=0;m<12;m++){const pl=fin.plan[m],rv=fin.real[m];if(pl===0&&rv===0)continue;acc-=rv;const fut=m>today;
     rows+=`<tr><td style="font-weight:600">${MESES[m]}/26 ${fut?'<span class="pill" style="background:#eef4fb;color:#0060a8;font-size:9px;padding:1px 6px">replan.</span>':''}</td><td style="text-align:right">${pl?eurc(pl):'—'}</td><td style="text-align:right">${rv?eurc(rv):'—'}</td><td style="text-align:right;color:${rv>pl&&pl?'var(--danger)':'var(--ink-soft)'}">${rv&&pl?eurc(rv-pl):'—'}</td><td style="text-align:right;font-weight:600">${eurc(acc)}</td></tr>`;}
@@ -1492,7 +1510,7 @@ function draTab(t) {
   const pane = document.getElementById("pane-" + t); if (pane) pane.classList.remove("hidden");
 }
 function draPlanSet(pl) { draPlan = pl; document.querySelectorAll('#pane-grid [data-pl]').forEach(b => b.classList.toggle("on", b.dataset.pl === pl)); buildDRAGrid(); }
-function draTabsBuild() { buildDRAGrid(); buildRecon(); buildOrders(); buildPipe(); }
+function draTabsBuild() { buildDRAGrid(); buildRecon(); buildOrders(); buildPipe(); buildHist(); }
 /* ===== DRA GRID ===== */
 function buildDRAGrid() {
   const data = draPlan === "capex" ? DRAG : DRAG_R2;
@@ -1578,6 +1596,39 @@ function buildOrders() {
     return `<tr><td style="font-weight:600">${o.oi}</td><td class="pn">${o.name}</td><td>${o.entry}</td><td>${o.ws}</td><td>${o.we}</td>
       <td><span class="sap-st sap-${o.st}">${stLbl[o.st]}</span></td><td>${sit}</td><td style="text-align:center;white-space:nowrap">${act}</td></tr>`;
   }).join("");
+}
+
+/* ===== HISTORY: versões mensais e variações ===== */
+const HIST = [
+  { v: "DRA Jan 26", fy: 8900.0, proj: 64, pub: true },
+  { v: "DRA Feb 26", fy: 8740.5, proj: 65, pub: true },
+  { v: "DRA Mar 26", fy: 8420.0, proj: 66, pub: true },
+  { v: "DRA Apr 26", fy: 8150.8, proj: 66, pub: true },
+  { v: "DRA May 26", fy: 7980.2, proj: 68, pub: true },
+  { v: "DRA Jun 26", fy: 7815.6, proj: 69, pub: true },
+  { v: "DRA Jul 26", fy: 7642.4, proj: 70, pub: true },
+  { v: "DRA Aug 26", fy: 7599.5, proj: 71, pub: false },
+];
+const HISTLOG = [
+  { w: "08 Aug 26", v: "Aug 26", c: "Projeto removido do DRA a pedido da diretoria: Doypack Capacity (No Go)", i: -42.9, by: "Adriana R." },
+  { w: "05 Aug 26", v: "Aug 26", c: "Remanejamento Q3: Sludge dryer, Ago 18.4 → 15.5 (fornecedor)", i: -2.9, by: "Adriana R." },
+  { w: "10 Jul 26", v: "Jul 26", c: "Finanças solicitou segurar execução de julho (notas retidas no SAP)", i: -173.2, by: "Finanças" },
+  { w: "02 Jul 26", v: "Jul 26", c: "Novo projeto autorizado: Brine (CPX174684), entra com FY26 126.1", i: 126.1, by: "Marlin" },
+  { w: "12 Jun 26", v: "Jun 26", c: "Projeto encerrado (status 40): Fat Plan Retrofit", i: -3.2, by: "Adriana R." },
+  { w: "03 Jun 26", v: "Jun 26", c: "Ajuste de teto anual definido pela diretoria (redução de portfólio)", i: -164.6, by: "Diretoria" },
+];
+function buildHist() {
+  const W = 520, H = 190, pad = 40, n = HIST.length;
+  const min = Math.min(...HIST.map(h => h.fy)) * 0.98, max = Math.max(...HIST.map(h => h.fy)) * 1.02;
+  const x = i => pad + i * (W - pad * 2) / (n - 1), y = v => H - 30 - (v - min) / (max - min) * (H - 60);
+  let pts = HIST.map((h, i) => x(i) + "," + y(h.fy)).join(" ");
+  let dots = HIST.map((h, i) => `<circle cx="${x(i)}" cy="${y(h.fy)}" r="${i === n - 1 ? 5 : 3.5}" fill="${i === n - 1 ? "#d6336c" : "#0060A8"}"/><text x="${x(i)}" y="${H - 12}" text-anchor="middle" font-size="8.5" fill="#86939f">${h.v.replace("DRA ", "")}</text>` + (i === 0 || i === n - 1 ? `<text x="${x(i)}" y="${y(h.fy) - 9}" text-anchor="middle" font-size="9" font-weight="700" fill="#0e2438">${kf(h.fy)}</text>` : "")).join("");
+  document.getElementById("histChart").innerHTML = `<svg width="100%" viewBox="0 0 ${W} ${H}"><polyline points="${pts}" fill="none" stroke="#0060A8" stroke-width="2"/>${dots}</svg><div class="legend"><span><i style="background:#0060A8"></i>FC FY26 por versão</span><span><i style="background:#d6336c"></i>Versão atual</span></div>`;
+  document.getElementById("histBody").innerHTML = HIST.slice().reverse().map((h, i, arr) => {
+    const prev = arr[i + 1]; const d = prev ? Math.round((h.fy - prev.fy) * 10) / 10 : null;
+    return `<tr><td style="font-weight:600">${h.v}${!h.pub ? ' <span class="pill" style="background:#fdf3e3;color:#8a5b00;font-size:9px">current</span>' : ""}</td><td style="text-align:right">${kf(h.fy)}</td><td style="text-align:right;color:${d === null ? "var(--ink-faint)" : d < 0 ? "#0060A8" : "var(--danger)"}">${d === null ? "—" : (d > 0 ? "+" : "") + kf(d)}</td><td style="text-align:right">${h.proj}</td><td>${h.pub ? '<span class="st-b st-Authorized">Published</span>' : '<span class="st-b st-Draft">In review</span>'}</td></tr>`;
+  }).join("");
+  document.getElementById("histLog").innerHTML = HISTLOG.map(l => `<tr><td>${l.w}</td><td>${l.v}</td><td class="pn">${l.c}</td><td style="text-align:right;color:${l.i < 0 ? "#0060A8" : "var(--danger)"};font-weight:700">${l.i > 0 ? "+" : ""}${kf(l.i)}</td><td>${l.by}</td></tr>`).join("");
 }
 /* ===== PIPELINE (Risk In/Out) ===== */
 const PIPE = [
@@ -2240,12 +2291,13 @@ const HELP=[
 <ul><li>Cada linha é um projeto; as faixas coloridas indicam o step em cada mês;</li><li>Use junto com o EEM: o macro diz <b>se está no prazo</b>; este diz <b>onde está no fluxo</b>.</li></ul>`},
 {ic:"💶",t:"DRA · Portfólio de Investimentos",d:"Módulo 2, a planilha DRA viva: grid, conciliação, ordens e publicação no BI.",b:`
 <p>O DRA gerencia o portfólio de investimentos da fábrica, substituindo a planilha manual. Base extraída do SAP por robô (transações <b>GRR3</b>, orçamento/real/compromissado/disponível; <b>KOB1</b>, gasto atual; <b>KO03</b>, dados da ordem).</p>
-<h5>As 5 abas do módulo</h5>
+<h5>As 6 abas do módulo</h5>
 <ol><li><b>Overview</b>: KPIs, executado × replanejado (mês/quarter/semestre), por projeto, alertas e publicação;</li>
 <li><b>DRA Grid</b>: a planilha fiel, CPX, OI, tipo, status, meses, quarters, FC FY26/FY27 e commitment, em k€, com filtros (a linha verde de totais respeita os filtros) e separação <b>Capex (AO) × R2</b>;</li>
 <li><b>Reconciliation</b>: diferenças entre a extração do SAP e a sua última validação, para acatar ou manter, preservando os totais do quarter e do ano;</li>
 <li><b>Orders (KO03)</b>: gestão das ordens, datas de início/fim do trabalho, status SAP (30 ativo, 40 encerrado, 50 encerrado tecnicamente), com alertas para prorrogar (Poupatempo) ou encerrar;</li>
-<li><b>Pipeline</b>: funil Risk In/Out dos pré-projetos (Idea → Feas → BC → No Go) com phasing plurianual.</li></ol>
+<li><b>Pipeline</b>: funil Risk In/Out dos pré-projetos (Idea → Feas → BC → No Go) com phasing plurianual;</li>
+<li><b>History</b>: as versões mensais do DRA (como as abas da planilha), com a evolução do total do ano e o log de variações (inclusões, remoções e remanejos, com autor).</li></ol>
 <h5>Workflow de status do projeto</h5>
 <p><b>Draft</b> (sem CPX/OI, em avaliação com finanças) → <b>Submitted</b> (submetido no Marlin, cria o CPX) → <b>Authorized</b> (AI emitido) → <b>Closed</b>. </p>
 <h5>Regras de ouro</h5>
@@ -2348,6 +2400,8 @@ const TOUR=[
    x:"O robô extrai a base (GRR3/KOB1) e compara com a <b>sua última validação</b>. As diferenças aparecem aqui, e você decide: <b>Accept SAP</b> ou <b>Keep mine</b>, sempre preservando os totais do quarter e do ano. Só depois publica o replanejamento no BI, o executado real já reflete automaticamente."},
   {view:"dra",tab:"ord",sel:'#ordBody',c:"Módulo 2 · DRA",t:"Gestão de ordens (KO03)",
    x:"Dados mestres das ordens: entrada, início e fim do trabalho e status SAP (<b>30 ativo, 40 encerrado, 50 encerrado tecnicamente</b>). Ordens vencidas alertam para <b>prorrogar via Poupatempo</b> ou <b>notificar o líder</b> para encerrar."},
+  {view:"dra",tab:"hist",sel:'#histBody',c:"Módulo 2 · DRA",t:"Histórico de versões",
+   x:"Como as abas mensais da planilha: cada mês é uma <b>versão do DRA</b>. Aqui fica a <b>evolução do total do ano</b> (de 8.900 para 7.599 k€) e o <b>log de variações</b>: projetos incluídos, removidos e remanejos, com autor, a rastreabilidade que a diretoria olha."},
   {view:"lifecycle",sel:'#lcPhases',c:"Módulo 3 · Ciclo de Vida",t:"A jornada completa do projeto",
    x:"O coração do Módulo 3: <b>Iniciação → Planejamento → Execução → Monitoramento → Encerramento</b>. Cada fase com status calculado pelo sistema."},
   {view:"lifecycle",sel:'#lcHealth',c:"Módulo 3 · Ciclo de Vida",t:"Saúde do projeto",
