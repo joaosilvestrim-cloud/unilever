@@ -599,6 +599,14 @@
   .pipe-Feas{background:#e4f0fa;color:#0060A8}
   .pipe-BC{background:#e7f4ee;color:#137a44}
   .pipe-NoGo{background:#fbe6ee;color:#b02258}
+  /* DRA: aba Escopo (fluxogramas) */
+  .flowcard{padding:18px 20px;margin-bottom:14px}
+  .flowcard svg{width:100%;height:auto;display:block;margin-top:8px}
+  .rules-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:10px}
+  .rule-card{border:1px solid var(--line);border-radius:12px;padding:13px 15px;background:var(--surface-2)}
+  .rule-card .rn{width:26px;height:26px;border-radius:8px;background:var(--brand);color:#fff;font-weight:800;font-size:13px;display:grid;place-items:center;margin-bottom:8px}
+  .rule-card b{font-size:13px;display:block;margin-bottom:4px}
+  .rule-card p{font-size:11.5px;color:var(--ink-soft);margin:0;line-height:1.45}
 </style>
 </head>
 <body>
@@ -815,6 +823,7 @@
         <button class="seg-b" data-t="ord" onclick="draTab('ord')">Orders (KO03)</button>
         <button class="seg-b" data-t="pipe" onclick="draTab('pipe')">Pipeline</button>
         <button class="seg-b" data-t="hist" onclick="draTab('hist')">History</button>
+        <button class="seg-b" data-t="scope" onclick="draTab('scope')">Escopo</button>
       </div>
 
       <!-- PANE: OVERVIEW -->
@@ -905,6 +914,141 @@
         <div class="card" style="overflow:hidden">
           <div class="docs-head"><div><div class="st">Variation log</div><div class="muted">O que mudou entre as versões, rastreável para a diretoria</div></div></div>
           <table class="tbl"><thead><tr><th>When</th><th>Version</th><th>Change</th><th style="text-align:right">Impact FY26</th><th>By</th></tr></thead><tbody id="histLog"></tbody></table>
+        </div>
+      </div>
+    
+      <!-- PANE: ESCOPO -->
+      <div class="dra-pane hidden" id="pane-scope">
+        <div class="card flowcard">
+          <div class="section-title" style="font-size:15px">O que é o Módulo DRA neste sistema</div>
+          <div class="muted" style="font-size:12.5px;max-width:900px">O DRA é o portfólio de investimentos da fábrica: a planilha mensal da analista transformada em sistema. Um robô extrai os dados do SAP, o sistema compara com a última validação humana, destaca o que mudou, permite os ajustes manuais que são decisão de negócio (status, tipo, CPX/AI, valores, replanejamento, teto) e publica no Power BI apenas o que foi validado, com o executado real fluindo automaticamente. Tudo em k€, com histórico mensal e rastreabilidade total.</div>
+        </div>
+
+        <div class="card flowcard" id="scopeFlow1">
+          <div class="section-title" style="font-size:14.5px">1 · Arquitetura de dados <span class="muted" style="font-weight:500;font-size:11.5px">· sem API ao vivo no SAP, tudo via robô</span></div>
+          <svg viewBox="0 0 920 175" xmlns="http://www.w3.org/2000/svg">
+            <defs><marker id="aw1" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#4d6175"/></marker></defs>
+            <rect x="8" y="38" width="152" height="66" rx="12" fill="#eef1f5" stroke="#4d6175" stroke-width="1.5"/>
+            <text x="84" y="62" text-anchor="middle" font-size="13" font-weight="700" fill="#0e2438">SAP ERP</text>
+            <text x="84" y="79" text-anchor="middle" font-size="10" fill="#4d6175">GRR3 · KOB1 · KO03</text>
+            <text x="84" y="93" text-anchor="middle" font-size="9" fill="#86939f">acesso só pelo SAP Client</text>
+            <line x1="160" y1="71" x2="192" y2="71" stroke="#4d6175" stroke-width="1.6" marker-end="url(#aw1)"/>
+            <rect x="194" y="38" width="152" height="66" rx="12" fill="#e4f0fa" stroke="#0060A8" stroke-width="1.5"/>
+            <text x="270" y="62" text-anchor="middle" font-size="13" font-weight="700" fill="#003E73">Robô (RPA)</text>
+            <text x="270" y="79" text-anchor="middle" font-size="10" fill="#4d6175">Task Scheduler, mensal</text>
+            <text x="270" y="93" text-anchor="middle" font-size="9" fill="#86939f">exporta Excel / TXT</text>
+            <line x1="346" y1="71" x2="378" y2="71" stroke="#4d6175" stroke-width="1.6" marker-end="url(#aw1)"/>
+            <rect x="380" y="38" width="152" height="66" rx="12" fill="#e7f4ee" stroke="#1f9d57" stroke-width="1.5"/>
+            <text x="456" y="62" text-anchor="middle" font-size="13" font-weight="700" fill="#0c5c33">SharePoint</text>
+            <text x="456" y="79" text-anchor="middle" font-size="10" fill="#4d6175">base oficial (Unilever)</text>
+            <text x="456" y="93" text-anchor="middle" font-size="9" fill="#86939f">versionamento nativo</text>
+            <line x1="532" y1="71" x2="564" y2="71" stroke="#4d6175" stroke-width="1.6" marker-end="url(#aw1)"/>
+            <rect x="566" y="38" width="160" height="66" rx="12" fill="#003E73"/>
+            <text x="646" y="62" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">Sistema DRA</text>
+            <text x="646" y="79" text-anchor="middle" font-size="10" fill="#cfe0ef">converte €→k€ · compara</text>
+            <text x="646" y="93" text-anchor="middle" font-size="9" fill="#8fb0cd">grid · conciliação · ordens</text>
+            <line x1="726" y1="58" x2="762" y2="58" stroke="#1f9d57" stroke-width="1.8" marker-end="url(#aw1)"/>
+            <text x="744" y="46" text-anchor="middle" font-size="8.5" font-weight="700" fill="#1f9d57">executado real</text>
+            <text x="744" y="53" text-anchor="middle" font-size="8" fill="#86939f">automático</text>
+            <line x1="726" y1="88" x2="762" y2="88" stroke="#e8930c" stroke-width="1.8" stroke-dasharray="4 3" marker-end="url(#aw1)"/>
+            <text x="744" y="105" text-anchor="middle" font-size="8.5" font-weight="700" fill="#8a5b00">replanejado</text>
+            <text x="744" y="113" text-anchor="middle" font-size="8" fill="#86939f">após validação</text>
+            <rect x="764" y="38" width="148" height="66" rx="12" fill="#fdf3e3" stroke="#e8930c" stroke-width="1.5"/>
+            <text x="838" y="62" text-anchor="middle" font-size="13" font-weight="700" fill="#8a5b00">Power BI</text>
+            <text x="838" y="79" text-anchor="middle" font-size="10" fill="#4d6175">Alan · Grazi · Caro</text>
+            <text x="838" y="93" text-anchor="middle" font-size="9" fill="#86939f">visão LATAM</text>
+            <text x="176" y="130" font-size="9.5" fill="#86939f">GRR3: orçamento, real, compromissado e disponível · KOB1: gasto atual · KO03: dados da ordem (datas, tipo AO/R2, status 30/40/50; sem relatório exportável, tipo entra manual)</text>
+          </svg>
+        </div>
+
+        <div class="card flowcard" id="scopeFlow2">
+          <div class="section-title" style="font-size:14.5px">2 · Ciclo mensal da analista <span class="muted" style="font-weight:500;font-size:11.5px">· monitoria com decisão humana, não automação cega</span></div>
+          <svg viewBox="0 0 920 150" xmlns="http://www.w3.org/2000/svg">
+            <defs><marker id="aw2" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#4d6175"/></marker></defs>
+            <rect x="8" y="30" width="160" height="62" rx="12" fill="#e4f0fa" stroke="#0060A8" stroke-width="1.5"/>
+            <text x="88" y="53" text-anchor="middle" font-size="12" font-weight="700" fill="#003E73">1. Extração</text>
+            <text x="88" y="69" text-anchor="middle" font-size="9.5" fill="#4d6175">a data do relatório define</text>
+            <text x="88" y="81" text-anchor="middle" font-size="9.5" fill="#4d6175">o mês e o quarter</text>
+            <line x1="168" y1="61" x2="196" y2="61" stroke="#4d6175" stroke-width="1.6" marker-end="url(#aw2)"/>
+            <rect x="198" y="30" width="160" height="62" rx="12" fill="#e4f0fa" stroke="#0060A8" stroke-width="1.5"/>
+            <text x="278" y="53" text-anchor="middle" font-size="12" font-weight="700" fill="#003E73">2. Comparação</text>
+            <text x="278" y="69" text-anchor="middle" font-size="9.5" fill="#4d6175">extração × última validação</text>
+            <text x="278" y="81" text-anchor="middle" font-size="9.5" fill="#4d6175">(sempre o último ajuste humano)</text>
+            <line x1="358" y1="61" x2="386" y2="61" stroke="#4d6175" stroke-width="1.6" marker-end="url(#aw2)"/>
+            <rect x="388" y="30" width="160" height="62" rx="12" fill="#fdf3e3" stroke="#e8930c" stroke-width="1.5"/>
+            <text x="468" y="53" text-anchor="middle" font-size="12" font-weight="700" fill="#8a5b00">3. Ajuste manual</text>
+            <text x="468" y="69" text-anchor="middle" font-size="9.5" fill="#4d6175">Accept SAP × Keep mine</text>
+            <text x="468" y="81" text-anchor="middle" font-size="9.5" fill="#4d6175">alinhado com os líderes</text>
+            <line x1="548" y1="61" x2="576" y2="61" stroke="#4d6175" stroke-width="1.6" marker-end="url(#aw2)"/>
+            <rect x="578" y="30" width="160" height="62" rx="12" fill="#e7f4ee" stroke="#1f9d57" stroke-width="1.5"/>
+            <text x="658" y="53" text-anchor="middle" font-size="12" font-weight="700" fill="#0c5c33">4. Validação</text>
+            <text x="658" y="69" text-anchor="middle" font-size="9.5" fill="#4d6175">teto do ano e volumetria</text>
+            <text x="658" y="81" text-anchor="middle" font-size="9.5" fill="#4d6175">do quarter preservados</text>
+            <line x1="738" y1="61" x2="766" y2="61" stroke="#4d6175" stroke-width="1.6" marker-end="url(#aw2)"/>
+            <rect x="768" y="30" width="144" height="62" rx="12" fill="#003E73"/>
+            <text x="840" y="53" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">5. Publish BI</text>
+            <text x="840" y="69" text-anchor="middle" font-size="9.5" fill="#cfe0ef">cópia dos dados</text>
+            <text x="840" y="81" text-anchor="middle" font-size="9.5" fill="#cfe0ef">validados</text>
+            <path d="M 468 92 L 468 116 L 88 116 L 88 94" fill="none" stroke="#86939f" stroke-width="1.3" stroke-dasharray="4 3" marker-end="url(#aw2)"/>
+            <text x="278" y="130" text-anchor="middle" font-size="9" fill="#86939f">diferenças aceitas que alterem o mês corrente compensam no mês seguinte · carga inicial retroativa (Jan-Jul) para corrigir o passado</text>
+          </svg>
+        </div>
+
+        <div class="card flowcard" id="scopeFlow3">
+          <div class="section-title" style="font-size:14.5px">3 · Workflow de aprovação do projeto <span class="muted" style="font-weight:500;font-size:11.5px">· Marlin + AI via Capgemini</span></div>
+          <svg viewBox="0 0 920 168" xmlns="http://www.w3.org/2000/svg">
+            <defs><marker id="aw3" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#4d6175"/></marker></defs>
+            <rect x="20" y="34" width="190" height="70" rx="12" fill="#eef1f5" stroke="#5c6b7a" stroke-width="1.5"/>
+            <text x="115" y="58" text-anchor="middle" font-size="13" font-weight="700" fill="#3d4a57">Draft</text>
+            <text x="115" y="75" text-anchor="middle" font-size="9.5" fill="#4d6175">CPX e OI = TBC · reserva verba</text>
+            <text x="115" y="88" text-anchor="middle" font-size="9.5" fill="#4d6175">finanças avaliando</text>
+            <line x1="210" y1="69" x2="248" y2="69" stroke="#4d6175" stroke-width="1.6" marker-end="url(#aw3)"/>
+            <text x="229" y="60" text-anchor="middle" font-size="8.5" fill="#86939f">submete</text>
+            <rect x="250" y="34" width="190" height="70" rx="12" fill="#e4f0fa" stroke="#0060A8" stroke-width="1.5"/>
+            <text x="345" y="58" text-anchor="middle" font-size="13" font-weight="700" fill="#0060A8">Submitted</text>
+            <text x="345" y="75" text-anchor="middle" font-size="9.5" fill="#4d6175">no portal Marlin</text>
+            <text x="345" y="88" text-anchor="middle" font-size="9.5" fill="#4d6175">o CPX é criado aqui</text>
+            <line x1="440" y1="69" x2="478" y2="69" stroke="#4d6175" stroke-width="1.6" marker-end="url(#aw3)"/>
+            <text x="459" y="60" text-anchor="middle" font-size="8.5" fill="#86939f">aprova</text>
+            <rect x="480" y="34" width="200" height="70" rx="12" fill="#e7f4ee" stroke="#1f9d57" stroke-width="1.5"/>
+            <text x="580" y="58" text-anchor="middle" font-size="13" font-weight="700" fill="#0c5c33">Authorized</text>
+            <text x="580" y="75" text-anchor="middle" font-size="9.5" fill="#4d6175">AI (Authorization for Investment)</text>
+            <text x="580" y="88" text-anchor="middle" font-size="9.5" fill="#4d6175">chega via Capgemini, por e-mail</text>
+            <line x1="680" y1="69" x2="718" y2="69" stroke="#4d6175" stroke-width="1.6" marker-end="url(#aw3)"/>
+            <text x="699" y="60" text-anchor="middle" font-size="8.5" fill="#86939f">conclui</text>
+            <rect x="720" y="34" width="180" height="70" rx="12" fill="#e3e7ec" stroke="#3d4a57" stroke-width="1.5"/>
+            <text x="810" y="58" text-anchor="middle" font-size="13" font-weight="700" fill="#3d4a57">Closed</text>
+            <text x="810" y="75" text-anchor="middle" font-size="9.5" fill="#4d6175">status SAP 40 (encerrado) ou</text>
+            <text x="810" y="88" text-anchor="middle" font-size="9.5" fill="#4d6175">50 (encerrado tecnicamente)</text>
+            <path d="M 345 104 L 345 130 L 115 130 L 115 106" fill="none" stroke="#d6336c" stroke-width="1.3" stroke-dasharray="4 3" marker-end="url(#aw3)"/>
+            <text x="230" y="143" text-anchor="middle" font-size="9" fill="#b02258">finanças não aprova → volta para Draft (sai do DRA)</text>
+            <text x="580" y="158" text-anchor="middle" font-size="9" fill="#86939f">a analista alimenta o CPX, a OI e o AI no sistema quando são emitidos (edição manual ✎ no grid)</text>
+          </svg>
+        </div>
+
+        <div class="card flowcard">
+          <div class="section-title" style="font-size:14.5px">4 · Regras de ouro do DRA</div>
+          <div class="rules-grid">
+            <div class="rule-card"><div class="rn">1</div><b>Teto do ano é intocável</b><p>O total FC FY26 (linha verde, ~7.600 k€) não pode ser ultrapassado. É o primeiro número que a diretoria olha. O sistema monitora com a barra de ceiling e só a diretoria altera (✎, auditado).</p></div>
+            <div class="rule-card"><div class="rn">2</div><b>Volumetria do quarter</b><p>Ao remanejar valores entre meses, o total do quarter deve se manter. O modal de edição mostra o Q3 recalculando ao vivo e avisa quando a volumetria muda.</p></div>
+            <div class="rule-card"><div class="rn">3</div><b>Humano decide, sistema monitora</b><p>O replanejamento não tem regra fixa: depende dos líderes, de finanças e da diretoria. O sistema compara e destaca diferenças; a analista decide (Accept SAP × Keep mine). Tudo auditado.</p></div>
+            <div class="rule-card"><div class="rn">4</div><b>BI em duas velocidades</b><p>O executado real reflete no Power BI automaticamente, sem aprovação. O replanejamento só entra no BI após a validação (Publish to BI).</p></div>
+          </div>
+        </div>
+
+        <div class="card flowcard">
+          <div class="section-title" style="font-size:14.5px">5 · Mapa do módulo, o que cada aba responde</div>
+          <div class="tblwrap" style="border:0;margin-top:6px"><table class="tbl">
+            <thead><tr><th>Aba</th><th>Pergunta que responde</th><th>Origem</th></tr></thead>
+            <tbody>
+              <tr><td style="font-weight:600">Overview</td><td>Como está o portfólio? (executado × replanejado, quarter/semestre, LATAM)</td><td>Consolidação do grid</td></tr>
+              <tr><td style="font-weight:600">DRA Grid</td><td>A planilha viva: projetos, meses, quarters, forecast, disponível, com edição manual ✎</td><td>GRR3 + KOB1 + ajustes</td></tr>
+              <tr><td style="font-weight:600">Reconciliation</td><td>O que mudou entre o SAP e a minha última validação? Publico?</td><td>Extração × validado</td></tr>
+              <tr><td style="font-weight:600">Orders (KO03)</td><td>Que ordens preciso encerrar ou prorrogar (Poupatempo)?</td><td>KO03</td></tr>
+              <tr><td style="font-weight:600">Pipeline</td><td>O que está no funil antes de virar Draft? (Idea → Feas → BC → No Go)</td><td>Risk In-Out</td></tr>
+              <tr><td style="font-weight:600">History</td><td>Como o total do ano evoluiu e o que mudou entre versões, por quem?</td><td>Versões mensais</td></tr>
+            </tbody>
+          </table></div>
         </div>
       </div>
     </section>
@@ -2373,13 +2517,14 @@ const HELP=[
 <ul><li>Cada linha é um projeto; as faixas coloridas indicam o step em cada mês;</li><li>Use junto com o EEM: o macro diz <b>se está no prazo</b>; este diz <b>onde está no fluxo</b>.</li></ul>`},
 {ic:"💶",t:"DRA · Portfólio de Investimentos",d:"Módulo 2, a planilha DRA viva: grid, conciliação, ordens e publicação no BI.",b:`
 <p>O DRA gerencia o portfólio de investimentos da fábrica, substituindo a planilha manual. Base extraída do SAP por robô (transações <b>GRR3</b>, orçamento/real/compromissado/disponível; <b>KOB1</b>, gasto atual; <b>KO03</b>, dados da ordem).</p>
-<h5>As 6 abas do módulo</h5>
+<h5>As 7 abas do módulo</h5>
 <ol><li><b>Overview</b>: KPIs, executado × replanejado (mês/quarter/semestre), por projeto, alertas e publicação;</li>
 <li><b>DRA Grid</b>: a planilha fiel, CPX, OI, tipo, status, meses, H1, quarters, FC FY26/FY27, commitment e disponível (GRR3), em k€, com filtros (a linha verde de totais respeita os filtros) e separação <b>Capex (AO) × R2</b>;</li>
 <li><b>Reconciliation</b>: diferenças entre a extração do SAP e a sua última validação, para acatar ou manter, preservando os totais do quarter e do ano;</li>
 <li><b>Orders (KO03)</b>: gestão das ordens, datas de início/fim do trabalho, status SAP (30 ativo, 40 encerrado, 50 encerrado tecnicamente), com alertas para prorrogar (Poupatempo) ou encerrar;</li>
 <li><b>Pipeline</b>: funil Risk In/Out dos pré-projetos (Idea → Feas → BC → No Go) com phasing plurianual;</li>
-<li><b>History</b>: as versões mensais do DRA (como as abas da planilha), com a evolução do total do ano e o log de variações (inclusões, remoções e remanejos, com autor).</li></ol>
+<li><b>History</b>: as versões mensais do DRA (como as abas da planilha), com a evolução do total do ano e o log de variações (inclusões, remoções e remanejos, com autor);</li>
+<li><b>Escopo</b>: a documentação viva do módulo, fluxogramas da arquitetura de dados, do ciclo mensal, do workflow de aprovação (Marlin/AI), as regras de ouro e o mapa das abas.</li></ol>
 <h5>Workflow de status do projeto</h5>
 <p><b>Draft</b> (sem CPX/OI, em avaliação com finanças) → <b>Submitted</b> (submetido no Marlin, cria o CPX) → <b>Authorized</b> (AI emitido) → <b>Closed</b>. </p>
 <h5>Regras de ouro</h5>
@@ -2485,6 +2630,8 @@ const TOUR=[
    x:"Dados mestres das ordens: entrada, início e fim do trabalho e status SAP (<b>30 ativo, 40 encerrado, 50 encerrado tecnicamente</b>). Ordens vencidas alertam para <b>prorrogar via Poupatempo</b> ou <b>notificar o líder</b> para encerrar."},
   {view:"dra",tab:"hist",sel:'#histBody',c:"Módulo 2 · DRA",t:"Histórico de versões",
    x:"Como as abas mensais da planilha: cada mês é uma <b>versão do DRA</b>. Aqui fica a <b>evolução do total do ano</b> (de 8.900 para 7.599 k€) e o <b>log de variações</b>: projetos incluídos, removidos e remanejos, com autor, a rastreabilidade que a diretoria olha."},
+  {view:"dra",tab:"scope",sel:'#scopeFlow1',c:"Módulo 2 · DRA",t:"O escopo explicado no próprio sistema",
+   x:"A aba Escopo documenta o módulo com <b>fluxogramas</b>: a arquitetura de dados (SAP → robô → SharePoint → sistema → BI), o <b>ciclo mensal da analista</b>, o workflow de aprovação (Marlin, CPX, AI) e as <b>regras de ouro</b>. Qualquer pessoa entende o DRA sem precisar de treinamento."},
   {view:"lifecycle",sel:'#lcPhases',c:"Módulo 3 · Ciclo de Vida",t:"A jornada completa do projeto",
    x:"O coração do Módulo 3: <b>Iniciação → Planejamento → Execução → Monitoramento → Encerramento</b>. Cada fase com status calculado pelo sistema."},
   {view:"lifecycle",sel:'#lcHealth',c:"Módulo 3 · Ciclo de Vida",t:"Saúde do projeto",
