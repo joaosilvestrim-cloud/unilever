@@ -702,6 +702,7 @@
   .wtag{flex:none;font-size:8.5px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;padding:2px 8px;border-radius:99px;margin-top:2px;min-width:52px;text-align:center}
   .wtag-p{background:#fdf3e3;color:#8a5b00}
   .wtag-s{background:#e4f0fa;color:#0060A8}
+  .wtag-e{background:#eef1f5;color:#4d6175}
   .who b{color:var(--ink)}
   /* Escopo: divisórias de público (negócio × desenvolvedor) */
   .esc-divider{display:flex;align-items:center;gap:12px;margin:26px 0 14px}
@@ -744,9 +745,9 @@
     <div class="nav-item nav-sub" data-tab="ord" onclick="draNav('ord')">Orders (KO03)</div>
     <div class="nav-item nav-sub" data-tab="hist" onclick="draNav('hist')">History</div>
     <div class="nav-item" data-view="draescopo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h4"/></svg>Escopo do DRA</div>
-    <div class="nav-label">Módulo 3 · Ciclo de Vida, Novo</div>
-    <div class="nav-item" data-view="lifecycle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v5h-5"/><circle cx="12" cy="12" r="2.4"/></svg>Ciclo de Vida<span class="badge">Novo</span></div>
-    <div class="nav-item" data-view="track"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 3v18h18"/><path d="M7 15l3-4 3 2 5-6"/><circle cx="7" cy="15" r="1.4" fill="currentColor" stroke="none"/><circle cx="18" cy="7" r="1.4" fill="currentColor" stroke="none"/></svg>Portfólio EEM<span class="badge">Novo</span></div>
+    <div class="nav-label hidden">Módulo 3 · Ciclo de Vida, Novo</div>
+    <div class="nav-item hidden" data-view="lifecycle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v5h-5"/><circle cx="12" cy="12" r="2.4"/></svg>Ciclo de Vida<span class="badge">Novo</span></div>
+    <div class="nav-item hidden" data-view="track"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 3v18h18"/><path d="M7 15l3-4 3 2 5-6"/><circle cx="7" cy="15" r="1.4" fill="currentColor" stroke="none"/><circle cx="18" cy="7" r="1.4" fill="currentColor" stroke="none"/></svg>Portfólio EEM<span class="badge">Novo</span></div>
     <div class="nav-label">Configuração</div>
     <div class="nav-item" data-view="catalog"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 6h16M4 12h16M4 18h10"/><circle cx="20" cy="18" r="2"/></svg>Catálogo de Documentos</div>
     <div class="nav-item" data-view="classify"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></svg>Classificação (A–E)</div>
@@ -977,7 +978,7 @@
         </div>
         <div class="chart-grid" style="grid-template-columns:1.4fr 1fr;margin-bottom:14px"><div class="card" id="gCeiling"></div><div class="card" id="gByType"></div></div>
         <div class="card" style="overflow:hidden">
-          <div class="docs-head"><div><div class="st" id="gTitle">DRA Grid · Pouso Alegre · August 2026</div><div class="muted">Values in k€ · sample of 71 projects · green row = totals (respect filters, like SUBTOTAL) · workflow: Draft → Submitted → Authorized → Closed · source: SAP robot, GRR3 (budget / actual / commitment / available) + KOB1 (actual spend) + KO03 (master data; Capex AO × R2, type entry manual até a transação exportável ser confirmada) · ✎ = manual adjustments (status, type, CPX/OI, replanning)</div></div><button class="btn sm perm-w" onclick="toast('Novo projeto adicionado ao DRA como Draft (CPX e OI ficam TBC até a submissão no Marlin).')">+ Add project (Draft)</button></div>
+          <div class="docs-head"><div><div class="st" id="gTitle">DRA Grid · Pouso Alegre · August 2026</div><div class="muted">Values in k€ · sample of 71 projects · green row = totals (respect filters, like SUBTOTAL) · workflow: Draft → Submitted → Authorized → Closed · source: SAP robot, GRR3 (budget / actual / commitment / available) + KOB1 (actual spend) + KO03 (datas, tipo AO/R2, status 30/40/50) lançado manualmente, fora do robô · ✎ = manual adjustments (status, type, CPX/OI, replanning)</div></div><button class="btn sm perm-w" onclick="gAdd()">+ Cadastrar projeto (Draft)</button></div>
           <div class="gwrap"><table class="tbl gtable"><thead><tr id="gHead"></tr></thead><tbody id="gBody"></tbody></table></div>
         </div>
       </div>
@@ -1055,7 +1056,7 @@
           <defs><marker id="aw1" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#4d6175"/></marker></defs>
           <rect x="8" y="28" width="158" height="70" rx="12" fill="#eef1f5" stroke="#4d6175" stroke-width="1.5"/>
           <text x="87" y="54" text-anchor="middle" font-size="13.5" font-weight="700" fill="#0e2438">SAP ERP</text>
-          <text x="87" y="71" text-anchor="middle" font-size="10" fill="#4d6175">GRR3 · KOB1 · KO03</text>
+          <text x="87" y="71" text-anchor="middle" font-size="10" fill="#4d6175">GRR3 · KOB1 (robô)</text>
           <text x="87" y="85" text-anchor="middle" font-size="9" fill="#86939f">acesso só pelo SAP Client</text>
           <line x1="166" y1="63" x2="198" y2="63" stroke="#4d6175" stroke-width="1.6" marker-end="url(#aw1)"/>
           <rect x="200" y="28" width="158" height="70" rx="12" fill="#e4f0fa" stroke="#0060A8" stroke-width="1.5"/>
@@ -1080,7 +1081,7 @@
           <text x="860" y="85" text-anchor="middle" font-size="9" fill="#86939f">visão LATAM</text>
         </svg>
         <div class="muted" style="font-size:11.5px;margin-top:10px"><span style="color:#137a44;font-weight:700">━━</span> executado real, reflete no BI automaticamente &nbsp;·&nbsp; <span style="color:#8a5b00;font-weight:700">╌╌</span> replanejado, só após a validação da analista</div>
-        <div class="muted" style="font-size:11.5px;margin-top:4px"><b>GRR3</b>: orçamento, real, compromissado e disponível por projeto · <b>KOB1</b>: gasto atual (lançamentos) · <b>KO03</b>: dados mestres da ordem (datas de entrada/início/fim, motivo do investimento AO/R2, status 30/40/50); sem relatório exportável, o tipo entra manualmente como contingência.</div>
+        <div class="muted" style="font-size:11.5px;margin-top:4px"><b>GRR3</b>: orçamento, real, compromissado e disponível por projeto · <b>KOB1</b>: gasto atual (lançamentos) · <b>KO03</b>: datas de entrada/início/fim, tipo AO/R2 e status 30/40/50, lançado manualmente no sistema, não vem pelo robô.</div>
       </div>
 
       <div class="card flowcard" id="scopeFlow2">
@@ -1172,19 +1173,29 @@
             <tr><td style="text-align:center;color:var(--ink-faint);font-weight:700">6</td><td style="font-weight:600">History</td><td>Como o total do ano evoluiu e o que mudou entre versões, por quem?</td><td>Versões mensais</td></tr>
           </tbody>
         </table></div>
+        <div class="section-title" style="font-size:13.5px;margin-top:18px">Como um projeto entra no DRA</div>
+        <div class="tblwrap" style="border:0;margin-top:6px"><table class="tbl">
+          <thead><tr><th>Forma de entrada</th><th>Quando</th><th>Quem faz</th></tr></thead>
+          <tbody>
+            <tr><td style="font-weight:600">Cadastro manual (Draft)</td><td>Projeto ainda não está no SAP (planejamento)</td><td>Analista, no formulário "+ Cadastrar projeto"</td></tr>
+            <tr><td style="font-weight:600">Import automático</td><td>Projeto já tem OI no SAP</td><td>Sistema (robô: GRR3 + KOB1)</td></tr>
+            <tr><td style="font-weight:600">Upload da planilha</td><td>Sites sem robô (Argentina, México)</td><td>Analista do site</td></tr>
+          </tbody>
+        </table></div>
+        <div class="muted" style="font-size:11.5px;margin-top:8px;background:#e7f4ee;border-radius:8px;padding:9px 13px;color:#0c5c33"><b>Anti-duplicidade:</b> quando um Draft cadastrado à mão é autorizado e ganha uma <b>OI</b>, o sistema casa os dados do SAP com a linha já existente <b>pela OI</b>, sem criar um projeto duplicado.</div>
         <div class="section-title" style="font-size:13.5px;margin-top:20px">Na prática: a jornada financeira de um projeto no DRA <span class="muted" style="font-weight:500;font-size:11px">· do funil à baixa, exemplo real "Geradores"</span></div>
         <div class="muted" style="font-size:11.5px;margin-bottom:6px">É o caminho do <b>dinheiro</b> (verba, autorização e gasto). O acompanhamento de engenharia (steps, documentos, cronograma) é do Módulo 1 · PSR.</div>
-        <div class="muted" style="font-size:11.5px;margin:6px 0 4px"><span class="wtag wtag-p">Pessoa</span> o que a analista faz &nbsp;·&nbsp; <span class="wtag wtag-s">Sistema</span> o que o sistema faz sozinho</div>
+        <div class="muted" style="font-size:11.5px;margin:6px 0 8px"><span class="wtag wtag-p">Analista</span> ação da pessoa &nbsp;·&nbsp; <span class="wtag wtag-s">Sistema</span> automático &nbsp;·&nbsp; <span class="wtag wtag-e">Externo</span> Marlin / SAP / Capgemini</div>
         <div class="walk">
-          <div class="walk-item"><div class="wn">1</div><div><div class="wt">A ideia nasce no funil <span class="aba">PIPELINE</span></div><div class="wd"><div class="who"><span class="wtag wtag-p">Pessoa</span><span>Registra e amadurece a ideia no funil: de <b>Idea</b> a <b>Feas</b> e <b>BC</b> (business case), com fonte, prioridade e CapEx estimado (255 k€).</span></div><div class="who"><span class="wtag wtag-s">Sistema</span><span>Mostra o funil e a projeção. O projeto ainda não reserva verba nem existe no DRA.</span></div></div></div></div>
-          <div class="walk-item"><div class="wn">2</div><div><div class="wt">Entra no DRA como Draft <span class="aba">DRA GRID</span></div><div class="wd"><div class="who"><span class="wtag wtag-p">Pessoa</span><span>Clica em <b>+ Add project (Draft)</b>, dá o nome, escolhe o tipo (<b>Capex</b> ou <b>R2</b>) e distribui os 255 k€ pelos meses.</span></div><div class="who"><span class="wtag wtag-s">Sistema</span><span>Cria a linha com <b>CPX e OI ainda "TBC"</b>, recalcula o forecast do ano e atualiza a <b>barra do teto</b> na hora.</span></div></div></div></div>
-          <div class="walk-item"><div class="wn">3</div><div><div class="wt">Submissão no Marlin <span class="aba">DRA GRID ✎</span></div><div class="wd"><div class="who"><span class="wtag wtag-p">Pessoa</span><span>Submete o projeto no portal <b>Marlin</b> (que gera o <b>CPX</b>) e, no sistema, muda o status para <b>Submitted</b> e anota o CPX.</span></div><div class="who"><span class="wtag wtag-s">Sistema</span><span>Registra a alteração na auditoria. Se finanças reprovar, o projeto volta para Draft.</span></div></div></div></div>
-          <div class="walk-item"><div class="wn">4</div><div><div class="wt">Autorização (AI e OI) <span class="aba">DRA GRID ✎</span></div><div class="wd"><div class="who"><span class="wtag wtag-p">Pessoa</span><span>Com a aprovação no Marlin, recebe o <b>AI</b> por e-mail (via Capgemini) e a <b>OI</b> aberta no SAP; anota os dois na linha e muda o status para <b>Authorized</b>.</span></div><div class="who"><span class="wtag wtag-s">Sistema</span><span>Passa a tratar a OI como ativa e a acompanhar o gasto ligado a ela.</span></div></div></div></div>
-          <div class="walk-item"><div class="wn">5</div><div><div class="wt">O robô traz o realizado <span class="aba">DRA GRID · OVERVIEW</span></div><div class="wd"><div class="who"><span class="wtag wtag-s">Sistema</span><span>O robô extrai <b>GRR3</b> e <b>KOB1</b> do SAP e preenche sozinho o <b>gasto real</b> e o <b>compromissado</b>. O executado reflete no <b>Power BI automaticamente</b>.</span></div><div class="who"><span class="wtag wtag-p">Pessoa</span><span>Só acompanha: no Overview vê o planejado × gasto × saldo do mês.</span></div></div></div></div>
-          <div class="walk-item"><div class="wn">6</div><div><div class="wt">Fechamento do mês <span class="aba">RECONCILIATION</span></div><div class="wd"><div class="who"><span class="wtag wtag-s">Sistema</span><span>Compara a extração do SAP com a última validação e destaca cada diferença (ex.: SAP 30, planejado 20 → Δ <b>+10</b>).</span></div><div class="who"><span class="wtag wtag-p">Pessoa</span><span>Decide, com o líder, <b>aceitar o SAP</b> ou <b>manter o seu número</b>, e clica em <b>Publish to BI</b>.</span></div><div class="who"><span class="wtag wtag-s">Sistema</span><span>Compensa o excedente no mês seguinte (mantém o quarter) e publica o replanejado no BI.</span></div></div></div></div>
-          <div class="walk-item"><div class="wn">7</div><div><div class="wt">Vigilância da ordem <span class="aba">ORDERS (KO03)</span></div><div class="wd"><div class="who"><span class="wtag wtag-s">Sistema</span><span>Avisa quando uma ordem está vencendo (ex.: <b>"Expiring in 36d"</b>).</span></div><div class="who"><span class="wtag wtag-p">Pessoa</span><span>Decide: <b>prorrogar</b> (Poupatempo) ou <b>avisar o líder</b> para encerrar.</span></div></div></div></div>
-          <div class="walk-item"><div class="wn">8</div><div><div class="wt">A história fica registrada <span class="aba">HISTORY</span></div><div class="wd"><div class="who"><span class="wtag wtag-s">Sistema</span><span>Gera sozinho a <b>versão do mês</b> e o <b>log de variações</b> (inclusões, remanejos, mudança de teto), com autor e impacto.</span></div><div class="who"><span class="wtag wtag-p">Pessoa</span><span>Consulta o histórico. A diretoria acompanha a evolução por aqui.</span></div></div></div></div>
-          <div class="walk-item"><div class="wn">9</div><div><div class="wt">Encerramento <span class="aba">DRA GRID ✎ · ORDERS</span></div><div class="wd"><div class="who"><span class="wtag wtag-p">Pessoa</span><span>Quando a obra termina, marca o projeto como <b>Closed</b>.</span></div><div class="who"><span class="wtag wtag-s">Sistema</span><span>Tira do forecast futuro e mantém no histórico e nos realizados do ano (ordem <b>40/50</b> no SAP).</span></div></div></div></div>
+          <div class="walk-item"><div class="wn">1</div><div><div class="wt">A ideia nasce no funil <span class="aba">PIPELINE</span></div><div class="wd"><div class="who"><span class="wtag wtag-p">Analista</span><span>Registra e amadurece a ideia no funil: de <b>Idea</b> a <b>Feas</b> e <b>BC</b>, com fonte, prioridade e CapEx estimado (255 k€).</span></div><div class="who"><span class="wtag wtag-s">Sistema</span><span>Mostra o funil e a projeção. O projeto ainda não reserva verba nem existe no DRA.</span></div></div></div></div>
+          <div class="walk-item"><div class="wn">2</div><div><div class="wt">Cadastro no DRA como Draft <span class="aba">DRA GRID</span></div><div class="wd"><div class="who"><span class="wtag wtag-p">Analista</span><span>Clica em <b>+ Cadastrar projeto (Draft)</b> e preenche nome, tipo, líder, valor e o phasing pelos meses.</span></div><div class="who"><span class="wtag wtag-s">Sistema</span><span>Cria a linha com <b>CPX e OI = TBC</b>, recalcula o forecast do ano e atualiza a <b>barra do teto</b>.</span></div></div></div></div>
+          <div class="walk-item"><div class="wn">3</div><div><div class="wt">Submissão no Marlin <span class="aba">EXTERNO · DRA GRID</span></div><div class="wd"><div class="who"><span class="wtag wtag-e">Externo</span><span>O projeto é submetido no portal <b>Marlin</b>, que gera o <b>CPX</b>. Finanças avalia.</span></div><div class="who"><span class="wtag wtag-p">Analista</span><span>Reflete no sistema: muda o status para <b>Submitted</b> e anota o CPX. Se reprovar, volta para Draft.</span></div></div></div></div>
+          <div class="walk-item"><div class="wn">4</div><div><div class="wt">Autorização (AI e OI) <span class="aba">EXTERNO · DRA GRID</span></div><div class="wd"><div class="who"><span class="wtag wtag-e">Externo</span><span>Aprovado no Marlin, o <b>AI</b> chega por e-mail (via Capgemini) e a <b>OI</b> é aberta no SAP.</span></div><div class="who"><span class="wtag wtag-p">Analista</span><span>Anota o AI e a OI na linha e muda o status para <b>Authorized</b>.</span></div><div class="who"><span class="wtag wtag-s">Sistema</span><span>Casa a OI com os dados do SAP <b>sem duplicar</b> a linha, e passa a acompanhar o gasto.</span></div></div></div></div>
+          <div class="walk-item"><div class="wn">5</div><div><div class="wt">O robô traz o realizado <span class="aba">DRA GRID · OVERVIEW</span></div><div class="wd"><div class="who"><span class="wtag wtag-s">Sistema</span><span>O robô extrai <b>GRR3</b> e <b>KOB1</b> do SAP e preenche o <b>gasto real</b> e o <b>compromissado</b>. O executado reflete no <b>Power BI automaticamente</b>.</span></div><div class="who"><span class="wtag wtag-p">Analista</span><span>Só acompanha: no Overview vê o planejado × gasto × saldo do mês.</span></div></div></div></div>
+          <div class="walk-item"><div class="wn">6</div><div><div class="wt">Fechamento do mês <span class="aba">RECONCILIATION</span></div><div class="wd"><div class="who"><span class="wtag wtag-s">Sistema</span><span>Compara a extração do SAP com a última validação e destaca cada diferença (ex.: SAP 30, planejado 20 → Δ <b>+10</b>).</span></div><div class="who"><span class="wtag wtag-p">Analista</span><span>Decide, com o líder, <b>aceitar o SAP</b> ou <b>manter o seu número</b>, e clica em <b>Publish to BI</b>.</span></div><div class="who"><span class="wtag wtag-s">Sistema</span><span>Compensa o excedente no mês seguinte (mantém o quarter) e publica o replanejado no BI.</span></div></div></div></div>
+          <div class="walk-item"><div class="wn">7</div><div><div class="wt">Ordens e prazos <span class="aba">ORDERS (KO03)</span></div><div class="wd"><div class="who"><span class="wtag wtag-p">Analista</span><span><b>Lança e mantém à mão os dados da ordem (KO03)</b>: datas, tipo e status. O robô não traz o KO03.</span></div><div class="who"><span class="wtag wtag-s">Sistema</span><span>Avisa quando a ordem está vencendo (ex.: <b>"Expiring in 36d"</b>).</span></div><div class="who"><span class="wtag wtag-p">Analista</span><span>Decide: <b>prorrogar</b> (Poupatempo) ou <b>avisar o líder</b> para encerrar.</span></div></div></div></div>
+          <div class="walk-item"><div class="wn">8</div><div><div class="wt">A história fica registrada <span class="aba">HISTORY</span></div><div class="wd"><div class="who"><span class="wtag wtag-s">Sistema</span><span>Gera sozinho a <b>versão do mês</b> e o <b>log de variações</b> (inclusões, remanejos, teto), com autor e impacto.</span></div><div class="who"><span class="wtag wtag-p">Analista</span><span>Consulta o histórico. A diretoria acompanha a evolução por aqui.</span></div></div></div></div>
+          <div class="walk-item"><div class="wn">9</div><div><div class="wt">Encerramento <span class="aba">EXTERNO · DRA GRID</span></div><div class="wd"><div class="who"><span class="wtag wtag-e">Externo</span><span>A obra termina e a ordem é <b>encerrada no SAP</b> (status 40 ou 50).</span></div><div class="who"><span class="wtag wtag-p">Analista</span><span>Marca o projeto como <b>Closed</b> no DRA.</span></div><div class="who"><span class="wtag wtag-s">Sistema</span><span>Tira do forecast futuro e mantém no histórico e nos realizados do ano.</span></div></div></div></div>
         </div>
         <div class="muted" style="font-size:11.5px;margin-top:12px;padding-top:10px;border-top:1px dashed var(--line)"><b>Sites sem automação (Argentina, México):</b> os passos 5 e 6 (robô e conciliação) são substituídos pelo <b>upload da planilha do DRA já validada</b>; os demais passos seguem iguais, e o projeto entra direto na consolidação e no BI.</div>
       </div>
@@ -1221,7 +1232,7 @@
             <tr><td>cpx</td><td>string ("TBC" em draft)</td><td>Marlin (na submissão)</td><td>Sim, até ser emitido</td></tr>
             <tr><td>oi / ai</td><td>string ("TBC" até autorizar)</td><td>SAP · AI via Capgemini (e-mail)</td><td>Sim, quando chega</td></tr>
             <tr><td>name · category · smallC · site</td><td>string / enum</td><td>Cadastro (listas da Hoja1)</td><td>Sim</td></tr>
-            <tr><td>type</td><td>enum (SHE, Savings, M&I, Capacity, Quality, Mould, Sustainability, SQM, Restructuring)</td><td>KO03 (motivo do investimento), sem export</td><td><b>Sim, manual (contingência)</b></td></tr>
+            <tr><td>type</td><td>enum (SHE, Savings, M&I, Capacity, Quality, Mould, Sustainability, SQM, Restructuring)</td><td>KO03 (dados da ordem), manual</td><td><b>Sim, manual (contingência)</b></td></tr>
             <tr><td>status</td><td>enum (Draft · Submitted · Authorized · Closed)</td><td>Workflow Marlin</td><td>Sim (a analista alimenta)</td></tr>
             <tr><td>leader · pdm</td><td>string</td><td>Cadastro (líder real ≠ responsável SAP)</td><td>Sim</td></tr>
             <tr><td>full (Full Project Amount)</td><td>decimal k€</td><td>GRR3 (orçamento)</td><td>Sim (diretoria pode mudar)</td></tr>
@@ -1422,6 +1433,27 @@
       <div style="grid-column:span 2;background:var(--surface-2);border-radius:10px;padding:10px 14px;font-size:12.5px">Q3 26 total: <b id="geQ3">—</b> · <span class="muted">replanejamento deve manter a volumetria do quarter; toda alteração é registrada na auditoria. O AI chega via Capgemini (e-mail) após a autorização no Marlin.</span></div>
     </div>
     <div class="wz-foot"><button class="btn ghost sm" onclick="gEditClose()">Cancel</button><button class="btn sm" onclick="gEditSave()">Save changes</button></div>
+  </div>
+</div>
+
+<div id="gAddModal" class="hidden" style="position:fixed;inset:0;z-index:170;background:rgba(8,20,34,.55);backdrop-filter:blur(3px);display:grid;place-items:center;padding:24px">
+  <div style="background:#fff;border-radius:16px;width:min(600px,95vw);max-height:92vh;overflow:auto;box-shadow:0 40px 90px -30px rgba(0,0,0,.6)">
+    <div style="padding:16px 20px;border-bottom:1px solid var(--line)"><div style="font-family:Poppins;font-weight:700;font-size:15px">Cadastrar projeto · Draft</div><div class="muted" style="font-size:12px">Projeto ainda não existe no SAP. Entra como Draft (CPX e OI = TBC) e reserva verba no forecast.</div></div>
+    <div class="ge-fields" style="padding:18px 20px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div style="grid-column:span 2"><label class="dra-lbl">Nome do projeto</label><input id="ga_name" class="role-sel" style="width:100%" placeholder="Ex.: Nova envasadora, linha 3"></div>
+      <div><label class="dra-lbl">País / Site</label><select id="ga_site" class="role-sel" style="width:100%"><option value="Brasil|Pouso Alegre">Brasil · Pouso Alegre</option><option value="Argentina|Tortuguitas">Argentina · Tortuguitas</option><option value="México|Civac">México · Civac</option></select></div>
+      <div><label class="dra-lbl">Plano</label><select id="ga_plan" class="role-sel" style="width:100%"><option value="capex">Capex (AO)</option><option value="r2">R2</option></select></div>
+      <div><label class="dra-lbl">Tipo (KO03, manual)</label><select id="ga_type" class="role-sel" style="width:100%"></select></div>
+      <div><label class="dra-lbl">Líder</label><input id="ga_leader" class="role-sel" style="width:100%" placeholder="Responsável do projeto"></div>
+      <div><label class="dra-lbl">Valor total (k€)</label><input id="ga_full" type="number" step="0.1" class="role-sel" style="width:100%" placeholder="0"></div>
+      <div><label class="dra-lbl">Ano do investimento</label><select id="ga_year" class="role-sel" style="width:100%" onchange="gaYear()"><option value="26">FY26 (este ano)</option><option value="27">FY27 (futuro)</option></select></div>
+      <div id="ga_phaseWrap" style="grid-column:span 2;display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div><label class="dra-lbl">Início (mês FY26)</label><select id="ga_start" class="role-sel" style="width:100%"></select></div>
+        <div><label class="dra-lbl">Duração (meses)</label><input id="ga_months" type="number" min="1" max="12" step="1" class="role-sel" style="width:100%" value="3"></div>
+      </div>
+      <div style="grid-column:span 2;background:var(--surface-2);border-radius:10px;padding:10px 14px;font-size:12px;color:var(--ink-soft)">O valor é distribuído igualmente pelos meses escolhidos (ou vai para o FC FY27). O <b>CPX</b> é criado na submissão ao Marlin; a <b>OI</b>, na autorização. Quando a OI existir, o robô <b>casa o SAP com esta linha pela OI</b>, sem duplicar.</div>
+    </div>
+    <div class="wz-foot"><button class="btn ghost sm" onclick="gAddClose()">Cancelar</button><button class="btn sm" onclick="gAddSave()">Cadastrar Draft</button></div>
   </div>
 </div>
 
@@ -1999,6 +2031,40 @@ function buildDRAGrid() {
   const cores = ["#0060A8", "#1f9d57", "#e8930c", "#8250df", "#d6336c", "#0a9396", "#6cb2e3"];
   document.getElementById("gByType").innerHTML = '<div style="padding:14px 20px"><div class="section-title" style="font-size:14px">Progress by type <span class="muted" style="font-weight:500;font-size:11px">· FC FY26 k€</span></div>' +
     ent.map(([t, v], i) => `<div style="display:grid;grid-template-columns:88px 1fr 62px;gap:8px;align-items:center;margin-top:7px;font-size:11.5px"><b>${t}</b><div style="height:9px;background:var(--surface-2);border-radius:5px;overflow:hidden"><i style="display:block;height:100%;width:${Math.round(v / mx * 100)}%;background:${cores[i % cores.length]};border-radius:5px"></i></div><span style="text-align:right;font-variant-numeric:tabular-nums">${kf(v)}</span></div>`).join("") + "</div>";
+}
+/* ===== Cadastro de projeto (Draft) ===== */
+function gAdd(){
+  const tSel=document.getElementById("ga_type");
+  if(!tSel.options.length)[...new Set(DRAG.concat(DRAG_R2,DRAG_LATAM).map(p=>p.type))].sort().forEach(t=>{const o=document.createElement("option");o.textContent=t;tSel.appendChild(o);});
+  const st=document.getElementById("ga_start");
+  if(!st.options.length)MESES.forEach((mn,i)=>{const o=document.createElement("option");o.value=i;o.textContent=mn+" 26";st.appendChild(o);});
+  document.getElementById("ga_name").value="";document.getElementById("ga_leader").value="";document.getElementById("ga_full").value="";
+  document.getElementById("ga_months").value="3";document.getElementById("ga_year").value="26";document.getElementById("ga_start").value="6";document.getElementById("ga_plan").value="capex";
+  gaYear();
+  document.getElementById("gAddModal").classList.remove("hidden");
+}
+function gAddClose(){document.getElementById("gAddModal").classList.add("hidden");}
+function gaYear(){document.getElementById("ga_phaseWrap").style.display=document.getElementById("ga_year").value==="26"?"grid":"none";}
+function gAddSave(){
+  const name=(document.getElementById("ga_name").value||"").trim();
+  if(!name){toast("Informe o nome do projeto.");return;}
+  const full=parseFloat(document.getElementById("ga_full").value)||0;
+  const parts=document.getElementById("ga_site").value.split("|");const country=parts[0],site=parts[1];
+  const plan=country!=="Brasil"?"capex":document.getElementById("ga_plan").value;
+  const type=document.getElementById("ga_type").value;
+  const leader=(document.getElementById("ga_leader").value||"").trim()||"—";
+  const m=Array(12).fill(0);let fy27=0;
+  if(document.getElementById("ga_year").value==="26"){
+    const start=parseInt(document.getElementById("ga_start").value)||6;
+    const months=Math.max(1,Math.min(12-start,parseInt(document.getElementById("ga_months").value)||1));
+    const per=full/months;for(let k=0;k<months;k++)m[start+k]=Math.round(per*10)/10;
+  }else{fy27=full;}
+  const proj={cpx:"TBC",oi:"TBC",name,type,status:"Draft",leader,full,prev:0,m,fy27,commit:0,country,site,origin:country==="Brasil"?"auto":"upload"};
+  (country!=="Brasil"?DRAG_LATAM:(plan==="capex"?DRAG:DRAG_R2)).unshift(proj);
+  gAddClose();
+  draPlan=plan;document.querySelectorAll('#pane-grid [data-pl]').forEach(b=>b.classList.toggle("on",b.dataset.pl===plan));
+  draCountrySet(country);draTab("grid");
+  toast('Projeto "'+name+'" cadastrado como Draft. CPX e OI ficam TBC até a submissão no Marlin; a auditoria registrou a criação.');
 }
 /* ===== RECONCILIATION ===== */
 const RECON = [
@@ -2941,6 +3007,7 @@ const TOUR=[
   {view:"team",sel:'#roleSel',c:"Administração",t:"Simule cada perfil",
    x:"Use <b>este seletor</b> no topo para ver a plataforma como Gerente, Auditor ou Admin, a interface se adapta às permissões de cada papel. Fim do tour, explore à vontade!"}
 ];
+for(let i=TOUR.length-1;i>=0;i--){if(TOUR[i].view==="lifecycle"||TOUR[i].view==="track")TOUR.splice(i,1);}
 let ti=-1;
 function ensureTourEls(){if(document.getElementById('tourOverlay'))return;
   const o=document.createElement('div');o.id='tourOverlay';o.innerHTML='<div id="tourHole"></div>';document.body.appendChild(o);
