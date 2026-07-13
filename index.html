@@ -703,6 +703,11 @@
   .wtag-p{background:#fdf3e3;color:#8a5b00}
   .wtag-s{background:#e4f0fa;color:#0060A8}
   .who b{color:var(--ink)}
+  /* Escopo: divisórias de público (negócio × desenvolvedor) */
+  .esc-divider{display:flex;align-items:center;gap:12px;margin:26px 0 14px}
+  .esc-divider .lbl{font-family:"Poppins";font-size:12.5px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--brand-deep);white-space:nowrap}
+  .esc-divider .tagx{font-size:10.5px;font-weight:600;color:var(--ink-faint);white-space:nowrap}
+  .esc-divider .ln{flex:1;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--brand),rgba(0,96,168,.05))}
 </style>
 </head>
 <body>
@@ -1042,6 +1047,8 @@
         <div class="muted" style="font-size:12.5px;max-width:920px">O DRA é o portfólio de investimentos da fábrica: a planilha mensal da analista transformada em sistema. Um robô extrai os dados do SAP, o sistema compara com a última validação humana, destaca o que mudou, permite os ajustes manuais que são decisão de negócio (status, tipo, CPX/AI, valores, replanejamento, teto) e publica no Power BI apenas o que foi validado, com o executado real fluindo automaticamente. Tudo em k€, com histórico mensal e rastreabilidade total.</div>
       </div>
 
+      <div class="card flowcard" style="border-left:4px solid var(--warn);padding:13px 16px"><div style="font-size:12.5px;color:var(--ink-soft)"><b>Fronteira dos módulos:</b> o DRA trata do <b>dinheiro</b> do projeto (verba, CPX/OI, gasto, compromissado e teto). O acompanhamento do projeto em si (steps, documentos, cronograma, marcos) é do <b>Módulo 1 · PSR</b> e do <b>Ciclo de Vida</b>. Esta página descreve apenas o DRA.</div></div>
+      <div class="esc-divider"><span class="lbl">Para o negócio</span><span class="tagx">cliente · como funciona</span><span class="ln"></span></div>
       <div class="card flowcard" id="scopeFlow1">
         <div class="section-title" style="font-size:14.5px">1 · Arquitetura de dados <span class="muted" style="font-weight:500;font-size:11.5px">· sem API ao vivo no SAP, tudo via robô</span></div>
         <svg viewBox="0 0 940 128" xmlns="http://www.w3.org/2000/svg">
@@ -1165,7 +1172,8 @@
             <tr><td style="text-align:center;color:var(--ink-faint);font-weight:700">6</td><td style="font-weight:600">History</td><td>Como o total do ano evoluiu e o que mudou entre versões, por quem?</td><td>Versões mensais</td></tr>
           </tbody>
         </table></div>
-        <div class="section-title" style="font-size:13.5px;margin-top:20px">Na prática: a jornada de um projeto, do funil ao encerramento <span class="muted" style="font-weight:500;font-size:11px">· exemplo real, o projeto "Geradores"</span></div>
+        <div class="section-title" style="font-size:13.5px;margin-top:20px">Na prática: a jornada financeira de um projeto no DRA <span class="muted" style="font-weight:500;font-size:11px">· do funil à baixa, exemplo real "Geradores"</span></div>
+        <div class="muted" style="font-size:11.5px;margin-bottom:6px">É o caminho do <b>dinheiro</b> (verba, autorização e gasto). O acompanhamento de engenharia (steps, documentos, cronograma) é do Módulo 1 · PSR.</div>
         <div class="muted" style="font-size:11.5px;margin:6px 0 4px"><span class="wtag wtag-p">Pessoa</span> o que a analista faz &nbsp;·&nbsp; <span class="wtag wtag-s">Sistema</span> o que o sistema faz sozinho</div>
         <div class="walk">
           <div class="walk-item"><div class="wn">1</div><div><div class="wt">A ideia nasce no funil <span class="aba">PIPELINE</span></div><div class="wd"><div class="who"><span class="wtag wtag-p">Pessoa</span><span>Registra e amadurece a ideia no funil: de <b>Idea</b> a <b>Feas</b> e <b>BC</b> (business case), com fonte, prioridade e CapEx estimado (255 k€).</span></div><div class="who"><span class="wtag wtag-s">Sistema</span><span>Mostra o funil e a projeção. O projeto ainda não reserva verba nem existe no DRA.</span></div></div></div></div>
@@ -1181,8 +1189,32 @@
         <div class="muted" style="font-size:11.5px;margin-top:12px;padding-top:10px;border-top:1px dashed var(--line)"><b>Sites sem automação (Argentina, México):</b> os passos 5 e 6 (robô e conciliação) são substituídos pelo <b>upload da planilha do DRA já validada</b>; os demais passos seguem iguais, e o projeto entra direto na consolidação e no BI.</div>
       </div>
 
+      <div class="card flowcard" style="border-left:4px solid #e8930c">
+        <div class="section-title" style="font-size:14.5px">6 · Camada Power BI, o que fica fora do sistema <span class="muted" style="font-weight:500;font-size:11.5px">· dashboards gerenciais</span></div>
+        <div class="muted" style="font-size:12.5px;max-width:920px;margin-bottom:10px">O sistema cuida da operação (grid, conciliação, ordens, edição e publicação). As <b>visualizações gerenciais ficam no Power BI</b>, consumindo a base publicada no SharePoint: o executado real chega automaticamente e o replanejamento só após a validação da analista. Consumidores: Alan, Grazi e Caro, com visão consolidada LATAM.</div>
+        <div class="tblwrap" style="border:0"><table class="tbl">
+          <thead><tr><th>Onde</th><th>O que fica</th><th>Por quê</th></tr></thead>
+          <tbody>
+            <tr><td style="font-weight:600">Sistema (este mock)</td><td>DRA Grid, conciliação, edição manual ✎, ordens (KO03), pipeline, histórico, publicação</td><td>Operação diária da analista: dados, regras e auditoria</td></tr>
+            <tr><td style="font-weight:600">Power BI</td><td>Dashboards gerenciais: DRA × Actual, quanto aprovado, progresso por tipo, visão por projeto, quarters e forecast, consolidação LATAM</td><td>Consumo executivo, gráficos ricos e distribuição no ecossistema Microsoft</td></tr>
+          </tbody>
+        </table></div>
+        <div class="section-title" style="font-size:13px;margin-top:16px">Páginas propostas do BI do DRA <span class="muted" style="font-weight:500;font-size:11px">· recuperando as visões do BI LATAM antigo, no padrão de navegação dos dashboards Drive Data (ex.: TMG PRD)</span></div>
+        <div class="tblwrap" style="border:0;margin-top:6px"><table class="tbl">
+          <thead><tr><th>Página</th><th>Conteúdo</th><th>Origem (BI antigo da Adriana)</th></tr></thead>
+          <tbody>
+            <tr><td style="font-weight:600">Home</td><td>Menu de navegação com botões e data da última atualização da base</td><td>Padrão Drive Data (Home com actionButtons)</td></tr>
+            <tr><td style="font-weight:600">DRA Overview</td><td>Cards: total aprovado, executado YTD, saldo · DRA × Actual do mês (planejado × gasto × quanto falta) · quarters com legenda (Q1..Q4, H1/H2) · forecast do ano</td><td>"DRA vezes o atual", "quanto foi aprovado", acompanhamento semanal</td></tr>
+            <tr><td style="font-weight:600">Progress by Type</td><td>Execução por tipo de projeto (SHE, Savings, Capacity, M&I, Quality...)</td><td>"Progresso por tipo, porque trabalhamos com os tipos"</td></tr>
+            <tr><td style="font-weight:600">View by Project</td><td>Visão projeto a projeto: status (Draft/Submitted/Authorized), valores, líder</td><td>"A visão de cada projeto, o status dele"</td></tr>
+            <tr><td style="font-weight:600">DRA Analítico</td><td>Tabela detalhada com slicers (site, tipo, status, quarter, líder) para exploração e export</td><td>Padrão de página analítica dos dashboards Drive Data</td></tr>
+          </tbody>
+        </table></div>
+        <div class="muted" style="font-size:11.5px;margin-top:8px">Idioma: inglês prioritário (espanhol e português na sequência) · tema visual livre, mais claro e legível que o BI antigo · fonte única: a base publicada pelo sistema no SharePoint, nunca digitação direta no BI.</div>
+      </div>
+      <div class="esc-divider"><span class="lbl">Para o desenvolvedor</span><span class="tagx">técnico · como construir</span><span class="ln"></span></div>
       <div class="card flowcard" style="border-left:4px solid var(--brand)">
-        <div class="section-title" style="font-size:14.5px">6 · Modelo de dados da linha do DRA <span class="muted" style="font-weight:500;font-size:11.5px">· para o desenvolvedor</span></div>
+        <div class="section-title" style="font-size:14.5px">7 · Modelo de dados da linha do DRA <span class="muted" style="font-weight:500;font-size:11.5px">· para o desenvolvedor</span></div>
         <div class="tblwrap" style="border:0;margin-top:6px"><table class="tbl">
           <thead><tr><th>Campo</th><th>Tipo</th><th>Origem</th><th>Editável?</th></tr></thead>
           <tbody>
@@ -1204,7 +1236,7 @@
       </div>
 
       <div class="card flowcard" style="border-left:4px solid var(--brand)">
-        <div class="section-title" style="font-size:14.5px">7 · De-Para: SAP → planilha → sistema <span class="muted" style="font-weight:500;font-size:11.5px">· para o desenvolvedor</span></div>
+        <div class="section-title" style="font-size:14.5px">8 · De-Para: SAP → planilha → sistema <span class="muted" style="font-weight:500;font-size:11.5px">· para o desenvolvedor</span></div>
         <div class="tblwrap" style="border:0;margin-top:6px"><table class="tbl">
           <thead><tr><th>Fonte SAP</th><th>Coluna da planilha</th><th>Campo no sistema</th><th>Observação</th></tr></thead>
           <tbody>
@@ -1223,7 +1255,7 @@
       </div>
 
       <div class="card flowcard" style="border-left:4px solid var(--brand)">
-        <div class="section-title" style="font-size:14.5px">8 · Regras de cálculo <span class="muted" style="font-weight:500;font-size:11.5px">· para o desenvolvedor</span></div>
+        <div class="section-title" style="font-size:14.5px">9 · Regras de cálculo <span class="muted" style="font-weight:500;font-size:11.5px">· para o desenvolvedor</span></div>
         <div class="tblwrap" style="border:0;margin-top:6px"><table class="tbl">
           <thead><tr><th>Métrica</th><th>Fórmula</th></tr></thead>
           <tbody>
@@ -1240,7 +1272,7 @@
       </div>
 
       <div class="card flowcard" style="border-left:4px solid var(--brand)">
-        <div class="section-title" style="font-size:14.5px">9 · Especificação do robô e permissões <span class="muted" style="font-weight:500;font-size:11.5px">· para o desenvolvedor</span></div>
+        <div class="section-title" style="font-size:14.5px">10 · Especificação do robô e permissões <span class="muted" style="font-weight:500;font-size:11.5px">· para o desenvolvedor</span></div>
         <div class="chart-grid" style="grid-template-columns:1fr 1fr;margin-top:6px">
           <div>
             <b style="font-size:12.5px">Robô (RPA)</b>
@@ -1264,30 +1296,7 @@
         </div>
       </div>
     
-      <div class="card flowcard" style="border-left:4px solid #e8930c">
-        <div class="section-title" style="font-size:14.5px">10 · Camada Power BI, o que fica fora do sistema <span class="muted" style="font-weight:500;font-size:11.5px">· dashboards gerenciais</span></div>
-        <div class="muted" style="font-size:12.5px;max-width:920px;margin-bottom:10px">O sistema cuida da operação (grid, conciliação, ordens, edição e publicação). As <b>visualizações gerenciais ficam no Power BI</b>, consumindo a base publicada no SharePoint: o executado real chega automaticamente e o replanejamento só após a validação da analista. Consumidores: Alan, Grazi e Caro, com visão consolidada LATAM.</div>
-        <div class="tblwrap" style="border:0"><table class="tbl">
-          <thead><tr><th>Onde</th><th>O que fica</th><th>Por quê</th></tr></thead>
-          <tbody>
-            <tr><td style="font-weight:600">Sistema (este mock)</td><td>DRA Grid, conciliação, edição manual ✎, ordens (KO03), pipeline, histórico, publicação</td><td>Operação diária da analista: dados, regras e auditoria</td></tr>
-            <tr><td style="font-weight:600">Power BI</td><td>Dashboards gerenciais: DRA × Actual, quanto aprovado, progresso por tipo, visão por projeto, quarters e forecast, consolidação LATAM</td><td>Consumo executivo, gráficos ricos e distribuição no ecossistema Microsoft</td></tr>
-          </tbody>
-        </table></div>
-        <div class="section-title" style="font-size:13px;margin-top:16px">Páginas propostas do BI do DRA <span class="muted" style="font-weight:500;font-size:11px">· recuperando as visões do BI LATAM antigo, no padrão de navegação dos dashboards Drive Data (ex.: TMG PRD)</span></div>
-        <div class="tblwrap" style="border:0;margin-top:6px"><table class="tbl">
-          <thead><tr><th>Página</th><th>Conteúdo</th><th>Origem (BI antigo da Adriana)</th></tr></thead>
-          <tbody>
-            <tr><td style="font-weight:600">Home</td><td>Menu de navegação com botões e data da última atualização da base</td><td>Padrão Drive Data (Home com actionButtons)</td></tr>
-            <tr><td style="font-weight:600">DRA Overview</td><td>Cards: total aprovado, executado YTD, saldo · DRA × Actual do mês (planejado × gasto × quanto falta) · quarters com legenda (Q1..Q4, H1/H2) · forecast do ano</td><td>"DRA vezes o atual", "quanto foi aprovado", acompanhamento semanal</td></tr>
-            <tr><td style="font-weight:600">Progress by Type</td><td>Execução por tipo de projeto (SHE, Savings, Capacity, M&I, Quality...)</td><td>"Progresso por tipo, porque trabalhamos com os tipos"</td></tr>
-            <tr><td style="font-weight:600">View by Project</td><td>Visão projeto a projeto: status (Draft/Submitted/Authorized), valores, líder</td><td>"A visão de cada projeto, o status dele"</td></tr>
-            <tr><td style="font-weight:600">DRA Analítico</td><td>Tabela detalhada com slicers (site, tipo, status, quarter, líder) para exploração e export</td><td>Padrão de página analítica dos dashboards Drive Data</td></tr>
-          </tbody>
-        </table></div>
-        <div class="muted" style="font-size:11.5px;margin-top:8px">Idioma: inglês prioritário (espanhol e português na sequência) · tema visual livre, mais claro e legível que o BI antigo · fonte única: a base publicada pelo sistema no SharePoint, nunca digitação direta no BI.</div>
-      </div>
-    </section>
+      </section>
 
     <!-- CATÁLOGO DE DOCUMENTOS -->
     <section class="view hidden" id="view-catalog">
