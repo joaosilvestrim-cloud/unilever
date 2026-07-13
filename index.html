@@ -736,6 +736,7 @@
     <div class="nav-item" data-view="project"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h4"/></svg>Steps & Documentos</div>
     <div class="nav-item" data-view="gantt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="5" width="11" height="3" rx="1"/><rect x="7" y="10.5" width="13" height="3" rx="1"/><rect x="5" y="16" width="9" height="3" rx="1"/></svg>Cronograma</div>
     <div class="nav-item" data-view="audit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2 3 7v6c0 5 3.5 8 9 9 5.5-1 9-4 9-9V7z"/><path d="M9 12l2 2 4-4"/></svg>Auditoria</div>
+    <div class="nav-item" data-view="psrescopo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h4"/></svg>Escopo do PSR</div>
     <div class="nav-label">Módulo 2 · DRA, Financeiro</div>
     <div class="nav-item" data-view="dra"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 3v18h18"/><path d="M7 14l3-4 3 3 4-6"/></svg>DRA · Financeiro</div>
     <div class="nav-item nav-sub" data-tab="ov" onclick="draNav('ov')">Overview</div>
@@ -1051,34 +1052,36 @@
       <div class="card flowcard" style="border-left:4px solid var(--warn);padding:13px 16px"><div style="font-size:12.5px;color:var(--ink-soft)"><b>Fronteira dos módulos:</b> o DRA trata do <b>dinheiro</b> do projeto (verba, CPX/OI, gasto, compromissado e teto). O acompanhamento do projeto em si (steps, documentos, cronograma, marcos) é do <b>Módulo 1 · PSR</b> e do <b>Ciclo de Vida</b>. Esta página descreve apenas o DRA.</div></div>
       <div class="esc-divider"><span class="lbl">Para o negócio</span><span class="tagx">cliente · como funciona</span><span class="ln"></span></div>
       <div class="card flowcard" id="scopeFlow1">
-        <div class="section-title" style="font-size:14.5px">1 · Arquitetura de dados <span class="muted" style="font-weight:500;font-size:11.5px">· sem API ao vivo no SAP, tudo via robô</span></div>
-        <svg viewBox="0 0 940 128" xmlns="http://www.w3.org/2000/svg">
+        <div class="section-title" style="font-size:14.5px">1 · Arquitetura de dados <span class="muted" style="font-weight:500;font-size:11.5px">· 3 entradas: robô (GRR3/KOB1), entrada manual (KO03) e upload (LATAM)</span></div>
+        <svg viewBox="0 0 940 196" xmlns="http://www.w3.org/2000/svg">
           <defs><marker id="aw1" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#4d6175"/></marker></defs>
-          <rect x="8" y="28" width="158" height="70" rx="12" fill="#eef1f5" stroke="#4d6175" stroke-width="1.5"/>
-          <text x="87" y="54" text-anchor="middle" font-size="13.5" font-weight="700" fill="#0e2438">SAP ERP</text>
-          <text x="87" y="71" text-anchor="middle" font-size="10" fill="#4d6175">GRR3 · KOB1 (robô)</text>
-          <text x="87" y="85" text-anchor="middle" font-size="9" fill="#86939f">acesso só pelo SAP Client</text>
-          <line x1="166" y1="63" x2="198" y2="63" stroke="#4d6175" stroke-width="1.6" marker-end="url(#aw1)"/>
-          <rect x="200" y="28" width="158" height="70" rx="12" fill="#e4f0fa" stroke="#0060A8" stroke-width="1.5"/>
-          <text x="279" y="54" text-anchor="middle" font-size="13.5" font-weight="700" fill="#003E73">Robô (RPA)</text>
-          <text x="279" y="71" text-anchor="middle" font-size="10" fill="#4d6175">Task Scheduler, mensal</text>
-          <text x="279" y="85" text-anchor="middle" font-size="9" fill="#86939f">exporta Excel / TXT</text>
-          <line x1="358" y1="63" x2="390" y2="63" stroke="#4d6175" stroke-width="1.6" marker-end="url(#aw1)"/>
-          <rect x="392" y="28" width="158" height="70" rx="12" fill="#e7f4ee" stroke="#1f9d57" stroke-width="1.5"/>
-          <text x="471" y="54" text-anchor="middle" font-size="13.5" font-weight="700" fill="#0c5c33">SharePoint</text>
-          <text x="471" y="71" text-anchor="middle" font-size="10" fill="#4d6175">base oficial (Unilever)</text>
-          <text x="471" y="85" text-anchor="middle" font-size="9" fill="#86939f">versionamento nativo</text>
-          <line x1="550" y1="63" x2="582" y2="63" stroke="#4d6175" stroke-width="1.6" marker-end="url(#aw1)"/>
-          <rect x="584" y="28" width="168" height="70" rx="12" fill="#003E73"/>
-          <text x="668" y="54" text-anchor="middle" font-size="13.5" font-weight="700" fill="#fff">Sistema DRA</text>
-          <text x="668" y="71" text-anchor="middle" font-size="10" fill="#cfe0ef">converte €→k€ · compara</text>
-          <text x="668" y="85" text-anchor="middle" font-size="9" fill="#8fb0cd">grid · conciliação · ordens</text>
-          <line x1="752" y1="50" x2="786" y2="50" stroke="#1f9d57" stroke-width="2" marker-end="url(#aw1)"/>
-          <line x1="752" y1="78" x2="786" y2="78" stroke="#e8930c" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#aw1)"/>
-          <rect x="788" y="28" width="144" height="70" rx="12" fill="#fdf3e3" stroke="#e8930c" stroke-width="1.5"/>
-          <text x="860" y="54" text-anchor="middle" font-size="13.5" font-weight="700" fill="#8a5b00">Power BI</text>
-          <text x="860" y="71" text-anchor="middle" font-size="10" fill="#4d6175">Alan · Grazi · Caro</text>
-          <text x="860" y="85" text-anchor="middle" font-size="9" fill="#86939f">visão LATAM</text>
+          <rect x="6" y="6" width="214" height="54" rx="12" fill="#e4f0fa" stroke="#0060A8" stroke-width="1.5"/>
+          <text x="113" y="26" text-anchor="middle" font-size="12.5" font-weight="700" fill="#003E73">Robô (RPA)</text>
+          <text x="113" y="41" text-anchor="middle" font-size="9.5" fill="#4d6175">SAP: GRR3 · KOB1</text>
+          <text x="113" y="53" text-anchor="middle" font-size="9" fill="#86939f">automático, mensal</text>
+          <rect x="6" y="71" width="214" height="54" rx="12" fill="#fdf3e3" stroke="#e8930c" stroke-width="1.5"/>
+          <text x="113" y="91" text-anchor="middle" font-size="12.5" font-weight="700" fill="#8a5b00">Entrada manual</text>
+          <text x="113" y="106" text-anchor="middle" font-size="9.5" fill="#4d6175">KO03 (datas, tipo, status)</text>
+          <text x="113" y="118" text-anchor="middle" font-size="9" fill="#86939f">+ cadastro de Drafts</text>
+          <rect x="6" y="136" width="214" height="54" rx="12" fill="#e7f4ee" stroke="#1f9d57" stroke-width="1.5"/>
+          <text x="113" y="156" text-anchor="middle" font-size="12.5" font-weight="700" fill="#0c5c33">Upload da planilha</text>
+          <text x="113" y="171" text-anchor="middle" font-size="9.5" fill="#4d6175">LATAM: Argentina · México</text>
+          <text x="113" y="183" text-anchor="middle" font-size="9" fill="#86939f">já validada</text>
+          <line x1="220" y1="33" x2="386" y2="82" stroke="#4d6175" stroke-width="1.5" marker-end="url(#aw1)"/>
+          <line x1="220" y1="98" x2="386" y2="98" stroke="#4d6175" stroke-width="1.5" marker-end="url(#aw1)"/>
+          <line x1="220" y1="163" x2="386" y2="114" stroke="#4d6175" stroke-width="1.5" marker-end="url(#aw1)"/>
+          <rect x="390" y="62" width="230" height="72" rx="12" fill="#003E73"/>
+          <text x="505" y="90" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">Sistema DRA</text>
+          <text x="505" y="108" text-anchor="middle" font-size="10" fill="#cfe0ef">base SharePoint · €→k€</text>
+          <text x="505" y="122" text-anchor="middle" font-size="9.5" fill="#8fb0cd">concilia · grid · ordens</text>
+          <line x1="620" y1="86" x2="750" y2="86" stroke="#1f9d57" stroke-width="2" marker-end="url(#aw1)"/>
+          <line x1="620" y1="112" x2="750" y2="112" stroke="#e8930c" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#aw1)"/>
+          <text x="686" y="80" text-anchor="middle" font-size="8" font-weight="700" fill="#137a44">auto</text>
+          <text x="686" y="127" text-anchor="middle" font-size="8" font-weight="700" fill="#8a5b00">validado</text>
+          <rect x="752" y="62" width="182" height="72" rx="12" fill="#fdf3e3" stroke="#e8930c" stroke-width="1.5"/>
+          <text x="843" y="90" text-anchor="middle" font-size="14" font-weight="700" fill="#8a5b00">Power BI</text>
+          <text x="843" y="108" text-anchor="middle" font-size="10" fill="#4d6175">Alan · Grazi · Caro</text>
+          <text x="843" y="122" text-anchor="middle" font-size="9.5" fill="#86939f">visão LATAM</text>
         </svg>
         <div class="muted" style="font-size:11.5px;margin-top:10px"><span style="color:#137a44;font-weight:700">━━</span> executado real, reflete no BI automaticamente &nbsp;·&nbsp; <span style="color:#8a5b00;font-weight:700">╌╌</span> replanejado, só após a validação da analista</div>
         <div class="muted" style="font-size:11.5px;margin-top:4px"><b>GRR3</b>: orçamento, real, compromissado e disponível por projeto · <b>KOB1</b>: gasto atual (lançamentos) · <b>KO03</b>: datas de entrada/início/fim, tipo AO/R2 e status 30/40/50, lançado manualmente no sistema, não vem pelo robô.</div>
@@ -1308,6 +1311,199 @@
       </div>
     
       </section>
+
+    <!-- ESCOPO DO PSR (página própria) -->
+    <section class="view hidden" id="view-psrescopo">
+      <div class="toolbanner">
+        <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h4"/></svg></div>
+        <div><h3>Escopo do Módulo PSR, documentação viva</h3><p>O escopo do Módulo 1 aplicado no sistema, com fluxogramas, regras de ouro, jornada prática e a especificação técnica. Referência para o negócio e para o desenvolvedor.</p></div>
+      </div>
+
+      <div class="card flowcard">
+        <div class="section-title" style="font-size:15px">O que é o Módulo PSR neste sistema</div>
+        <div class="muted" style="font-size:12.5px;max-width:920px">O PSR (Project Status Report) é a gestão do <b>projeto de engenharia em si</b>, seguindo o ciclo EEM da Unilever: cadastro e classificação (A–E), 7 steps com <b>gates documentais</b> (o avanço trava até a documentação obrigatória estar completa), evidências, cronograma com baseline e status <b>on track × off track</b> calculado automaticamente. Substitui planilhas e pastas dispersas por um fluxo único, auditável de ponta a ponta.</div>
+      </div>
+
+      <div class="card flowcard" style="border-left:4px solid var(--warn);padding:13px 16px"><div style="font-size:12.5px;color:var(--ink-soft)"><b>Fronteira dos módulos:</b> o PSR trata do <b>projeto</b> (steps, documentos, evidências, cronograma e status). O <b>dinheiro</b> do projeto (verba, CPX/OI, gasto, teto) é do <b>Módulo 2 · DRA</b>. Esta página descreve apenas o PSR.</div></div>
+      <div class="esc-divider"><span class="lbl">Para o negócio</span><span class="tagx">cliente · como funciona</span><span class="ln"></span></div>
+
+      <div class="card flowcard" id="psrFlow1">
+        <div class="section-title" style="font-size:14.5px">1 · Fluxo do projeto no PSR <span class="muted" style="font-weight:500;font-size:11.5px">· do cadastro ao acompanhamento</span></div>
+        <svg viewBox="0 0 940 128" xmlns="http://www.w3.org/2000/svg">
+          <defs><marker id="pw1" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#4d6175"/></marker></defs>
+          <rect x="8" y="28" width="158" height="70" rx="12" fill="#e4f0fa" stroke="#0060A8" stroke-width="1.5"/>
+          <text x="87" y="54" text-anchor="middle" font-size="13" font-weight="700" fill="#003E73">Cadastro</text>
+          <text x="87" y="71" text-anchor="middle" font-size="10" fill="#4d6175">wizard do projeto</text>
+          <text x="87" y="85" text-anchor="middle" font-size="9" fill="#86939f">dados, líder, capex</text>
+          <line x1="166" y1="63" x2="198" y2="63" stroke="#4d6175" stroke-width="1.6" marker-end="url(#pw1)"/>
+          <rect x="200" y="28" width="158" height="70" rx="12" fill="#e4f0fa" stroke="#0060A8" stroke-width="1.5"/>
+          <text x="279" y="54" text-anchor="middle" font-size="13" font-weight="700" fill="#003E73">Classificação</text>
+          <text x="279" y="71" text-anchor="middle" font-size="10" fill="#4d6175">6 critérios → Tipo A–E</text>
+          <text x="279" y="85" text-anchor="middle" font-size="9" fill="#86939f">define o rigor documental</text>
+          <line x1="358" y1="63" x2="390" y2="63" stroke="#4d6175" stroke-width="1.6" marker-end="url(#pw1)"/>
+          <rect x="392" y="28" width="158" height="70" rx="12" fill="#003E73"/>
+          <text x="471" y="54" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">Steps & Gates</text>
+          <text x="471" y="71" text-anchor="middle" font-size="10" fill="#cfe0ef">7 steps EEM</text>
+          <text x="471" y="85" text-anchor="middle" font-size="9" fill="#8fb0cd">docs obrigatórios + evidências</text>
+          <line x1="550" y1="63" x2="582" y2="63" stroke="#4d6175" stroke-width="1.6" marker-end="url(#pw1)"/>
+          <rect x="584" y="28" width="158" height="70" rx="12" fill="#e7f4ee" stroke="#1f9d57" stroke-width="1.5"/>
+          <text x="663" y="54" text-anchor="middle" font-size="13" font-weight="700" fill="#0c5c33">Status</text>
+          <text x="663" y="71" text-anchor="middle" font-size="10" fill="#4d6175">on track × off track</text>
+          <text x="663" y="85" text-anchor="middle" font-size="9" fill="#86939f">real × planejado, automático</text>
+          <line x1="742" y1="63" x2="774" y2="63" stroke="#4d6175" stroke-width="1.6" marker-end="url(#pw1)"/>
+          <rect x="776" y="28" width="156" height="70" rx="12" fill="#fdf3e3" stroke="#e8930c" stroke-width="1.5"/>
+          <text x="854" y="54" text-anchor="middle" font-size="13" font-weight="700" fill="#8a5b00">Acompanhamento</text>
+          <text x="854" y="71" text-anchor="middle" font-size="10" fill="#4d6175">PSR, cronograma</text>
+          <text x="854" y="85" text-anchor="middle" font-size="9" fill="#86939f">auditoria total</text>
+        </svg>
+      </div>
+
+      <div class="card flowcard" id="psrFlow2">
+        <div class="section-title" style="font-size:14.5px">2 · O gate documental <span class="muted" style="font-weight:500;font-size:11.5px">· o avanço só ocorre com a documentação completa</span></div>
+        <svg viewBox="0 0 940 168" xmlns="http://www.w3.org/2000/svg">
+          <defs><marker id="pw2" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#4d6175"/></marker></defs>
+          <rect x="20" y="34" width="192" height="70" rx="12" fill="#e4f0fa" stroke="#0060A8" stroke-width="1.5"/>
+          <text x="116" y="60" text-anchor="middle" font-size="13" font-weight="700" fill="#003E73">Step atual</text>
+          <text x="116" y="77" text-anchor="middle" font-size="9.5" fill="#4d6175">equipe insere os documentos</text>
+          <text x="116" y="90" text-anchor="middle" font-size="9.5" fill="#4d6175">obrigatórios e as evidências</text>
+          <line x1="212" y1="69" x2="250" y2="69" stroke="#4d6175" stroke-width="1.6" marker-end="url(#pw2)"/>
+          <rect x="252" y="34" width="192" height="70" rx="12" fill="#fdf3e3" stroke="#e8930c" stroke-width="1.5"/>
+          <text x="348" y="60" text-anchor="middle" font-size="13" font-weight="700" fill="#8a5b00">Gate: 100%?</text>
+          <text x="348" y="77" text-anchor="middle" font-size="9.5" fill="#4d6175">o sistema confere o checklist</text>
+          <text x="348" y="90" text-anchor="middle" font-size="9.5" fill="#4d6175">do tipo (A–E) para o step</text>
+          <line x1="444" y1="69" x2="482" y2="69" stroke="#1f9d57" stroke-width="1.8" marker-end="url(#pw2)"/>
+          <text x="463" y="60" text-anchor="middle" font-size="8.5" font-weight="700" fill="#137a44">completo</text>
+          <rect x="484" y="34" width="200" height="70" rx="12" fill="#e7f4ee" stroke="#1f9d57" stroke-width="1.5"/>
+          <text x="584" y="60" text-anchor="middle" font-size="13" font-weight="700" fill="#0c5c33">Avança ao próximo step</text>
+          <text x="584" y="77" text-anchor="middle" font-size="9.5" fill="#4d6175">progresso e datas atualizados</text>
+          <text x="584" y="90" text-anchor="middle" font-size="9.5" fill="#4d6175">registrado na auditoria</text>
+          <line x1="684" y1="69" x2="722" y2="69" stroke="#4d6175" stroke-width="1.6" marker-end="url(#pw2)"/>
+          <rect x="724" y="34" width="192" height="70" rx="12" fill="#e3e7ec" stroke="#3d4a57" stroke-width="1.5"/>
+          <text x="820" y="60" text-anchor="middle" font-size="13" font-weight="700" fill="#3d4a57">Step 7 · Conclusão</text>
+          <text x="820" y="77" text-anchor="middle" font-size="9.5" fill="#4d6175">projeto encerrado com o</text>
+          <text x="820" y="90" text-anchor="middle" font-size="9.5" fill="#4d6175">dossiê documental completo</text>
+          <path d="M 348 104 L 348 132 L 116 132 L 116 106" fill="none" stroke="#d6336c" stroke-width="1.3" stroke-dasharray="4 3" marker-end="url(#pw2)"/>
+          <text x="232" y="146" text-anchor="middle" font-size="9" fill="#b02258">incompleto → bloqueado no step, com a lista do que falta</text>
+        </svg>
+      </div>
+
+      <div class="card flowcard" id="psrFlow3">
+        <div class="section-title" style="font-size:14.5px">3 · Os 7 steps do ciclo EEM</div>
+        <svg viewBox="0 0 940 96" xmlns="http://www.w3.org/2000/svg">
+          <defs><marker id="pw3" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#4d6175"/></marker></defs>
+          <rect x="4" y="22" width="112" height="52" rx="10" fill="#e4f0fa" stroke="#0060A8" stroke-width="1.4"/>
+          <text x="60" y="43" text-anchor="middle" font-size="10.5" font-weight="700" fill="#003E73">1 · Project</text>
+          <text x="60" y="57" text-anchor="middle" font-size="10.5" font-weight="700" fill="#003E73">Briefing</text>
+          <line x1="116" y1="48" x2="134" y2="48" stroke="#4d6175" stroke-width="1.5" marker-end="url(#pw3)"/>
+          <rect x="136" y="22" width="112" height="52" rx="10" fill="#e4f0fa" stroke="#0060A8" stroke-width="1.4"/>
+          <text x="192" y="43" text-anchor="middle" font-size="10.5" font-weight="700" fill="#003E73">2 · Análise</text>
+          <text x="192" y="57" text-anchor="middle" font-size="10.5" font-weight="700" fill="#003E73">de Risco</text>
+          <line x1="248" y1="48" x2="266" y2="48" stroke="#4d6175" stroke-width="1.5" marker-end="url(#pw3)"/>
+          <rect x="268" y="22" width="112" height="52" rx="10" fill="#e4f0fa" stroke="#0060A8" stroke-width="1.4"/>
+          <text x="324" y="43" text-anchor="middle" font-size="10.5" font-weight="700" fill="#003E73">3 · Comparativo</text>
+          <text x="324" y="57" text-anchor="middle" font-size="10.5" font-weight="700" fill="#003E73">de Fornecedores</text>
+          <line x1="380" y1="48" x2="398" y2="48" stroke="#4d6175" stroke-width="1.5" marker-end="url(#pw3)"/>
+          <rect x="400" y="22" width="112" height="52" rx="10" fill="#e4f0fa" stroke="#0060A8" stroke-width="1.4"/>
+          <text x="456" y="43" text-anchor="middle" font-size="10.5" font-weight="700" fill="#003E73">4 · Fabricação /</text>
+          <text x="456" y="57" text-anchor="middle" font-size="10.5" font-weight="700" fill="#003E73">Construção</text>
+          <line x1="512" y1="48" x2="530" y2="48" stroke="#4d6175" stroke-width="1.5" marker-end="url(#pw3)"/>
+          <rect x="532" y="22" width="112" height="52" rx="10" fill="#e4f0fa" stroke="#0060A8" stroke-width="1.4"/>
+          <text x="588" y="43" text-anchor="middle" font-size="10.5" font-weight="700" fill="#003E73">5 · Instalação e</text>
+          <text x="588" y="57" text-anchor="middle" font-size="10.5" font-weight="700" fill="#003E73">Treinamento</text>
+          <line x1="644" y1="48" x2="662" y2="48" stroke="#4d6175" stroke-width="1.5" marker-end="url(#pw3)"/>
+          <rect x="664" y="22" width="112" height="52" rx="10" fill="#e4f0fa" stroke="#0060A8" stroke-width="1.4"/>
+          <text x="720" y="43" text-anchor="middle" font-size="10.5" font-weight="700" fill="#003E73">6 · FAT</text>
+          <text x="720" y="57" text-anchor="middle" font-size="10.5" font-weight="700" fill="#003E73">(aceitação)</text>
+          <line x1="776" y1="48" x2="794" y2="48" stroke="#4d6175" stroke-width="1.5" marker-end="url(#pw3)"/>
+          <rect x="796" y="22" width="112" height="52" rx="10" fill="#e7f4ee" stroke="#1f9d57" stroke-width="1.4"/>
+          <text x="852" y="43" text-anchor="middle" font-size="10.5" font-weight="700" fill="#0c5c33">7 · Conclusão</text>
+          <text x="852" y="57" text-anchor="middle" font-size="10.5" font-weight="700" fill="#0c5c33">(dossiê)</text>
+        </svg>
+        <div class="muted" style="font-size:11.5px;margin-top:8px">Cada step tem seu checklist documental, definido pelo tipo do projeto. No <b>Tipo E</b> (Manutenção / Compra), o Step 3 não se aplica (NA).</div>
+      </div>
+
+      <div class="card flowcard">
+        <div class="section-title" style="font-size:14.5px">4 · Regras de ouro do PSR</div>
+        <div class="rules-grid">
+          <div class="rule-card"><div class="rn">1</div><b>Gate documental trava o avanço</b><p>O step só avança com 100% dos documentos obrigatórios inseridos. O sistema confere o checklist e lista as pendências; não há como pular etapa.</p></div>
+          <div class="rule-card"><div class="rn">2</div><b>A classificação define o rigor</b><p>6 critérios pontuam o projeto (0–100) e definem o Tipo A–E: A/B com 57 documentos, C com 37, D com 36 e E com 16 (sem o Step 3). Quanto maior o projeto, maior a exigência.</p></div>
+          <div class="rule-card"><div class="rn">3</div><b>Status calculado, não declarado</b><p>On track × off track sai da comparação automática entre o real e o planejado (datas e avanço). Ninguém "escolhe" o status do próprio projeto.</p></div>
+          <div class="rule-card"><div class="rn">4</div><b>Tudo auditável</b><p>Cada cadastro, documento, evidência e avanço de step fica registrado com autor e data. O Auditor tem leitura total, sem escrita.</p></div>
+        </div>
+      </div>
+
+      <div class="card flowcard">
+        <div class="section-title" style="font-size:14.5px">5 · Mapa do módulo e a jornada na prática</div>
+        <div class="muted" style="font-size:12px;max-width:900px;margin-top:4px">As telas aparecem no menu lateral <b>na ordem da jornada do projeto</b>: cadastrar e documentar, planejar no tempo e auditar.</div>
+        <div class="tblwrap" style="border:0;margin-top:6px"><table class="tbl">
+          <thead><tr><th style="text-align:center">#</th><th>Tela</th><th>Pergunta que responde</th><th>Origem do dado</th></tr></thead>
+          <tbody>
+            <tr><td style="text-align:center;color:var(--ink-faint);font-weight:700">1</td><td style="font-weight:600">Steps & Documentos</td><td>Em que step o projeto está? O que falta para avançar (gate)?</td><td>Cadastro + checklist A–E</td></tr>
+            <tr><td style="text-align:center;color:var(--ink-faint);font-weight:700">2</td><td style="font-weight:600">Cronograma</td><td>Como as fases se distribuem no tempo? Onde está o desvio vs. baseline?</td><td>Datas planejadas × reais</td></tr>
+            <tr><td style="text-align:center;color:var(--ink-faint);font-weight:700">3</td><td style="font-weight:600">Auditoria</td><td>Quem fez o quê, quando? O projeto está conforme?</td><td>Trilha de eventos</td></tr>
+            <tr><td style="text-align:center;color:var(--ink-faint);font-weight:700">—</td><td style="font-weight:600">Dashboard · Relatórios</td><td>Visão geral do portfólio e KPIs (transversal aos módulos)</td><td>Consolidação</td></tr>
+          </tbody>
+        </table></div>
+        <div class="section-title" style="font-size:13.5px;margin-top:20px">Na prática: a jornada de um projeto no PSR <span class="muted" style="font-weight:500;font-size:11px">· do cadastro ao dossiê final</span></div>
+        <div class="muted" style="font-size:11.5px;margin:6px 0 8px"><span class="wtag wtag-p">Gerente</span> ação da pessoa &nbsp;·&nbsp; <span class="wtag wtag-s">Sistema</span> automático</div>
+        <div class="walk">
+          <div class="walk-item"><div class="wn">1</div><div><div class="wt">Cadastro do projeto <span class="aba">STEPS & DOCUMENTOS</span></div><div class="wd"><div class="who"><span class="wtag wtag-p">Gerente</span><span>Abre o wizard e preenche nome, categoria, site, líder, equipe, capex e as datas macro.</span></div><div class="who"><span class="wtag wtag-s">Sistema</span><span>Cria o projeto e prepara a etapa de classificação.</span></div></div></div></div>
+          <div class="walk-item"><div class="wn">2</div><div><div class="wt">Classificação A–E <span class="aba">CLASSIFICAÇÃO</span></div><div class="wd"><div class="who"><span class="wtag wtag-p">Gerente</span><span>Responde os 6 critérios (complexidade, investimento, tecnologia...).</span></div><div class="who"><span class="wtag wtag-s">Sistema</span><span>Pontua (0–100), define o <b>Tipo A–E</b> e gera automaticamente o checklist documental de cada step (57, 37, 36 ou 16 documentos).</span></div></div></div></div>
+          <div class="walk-item"><div class="wn">3</div><div><div class="wt">Documentos do step <span class="aba">STEPS & DOCUMENTOS</span></div><div class="wd"><div class="who"><span class="wtag wtag-p">Gerente</span><span>Insere os documentos obrigatórios e anexa as evidências do step atual.</span></div><div class="who"><span class="wtag wtag-s">Sistema</span><span>Mostra o percentual do gate e a lista do que falta; registra cada upload na auditoria.</span></div></div></div></div>
+          <div class="walk-item"><div class="wn">4</div><div><div class="wt">Avanço de step (gate) <span class="aba">STEPS & DOCUMENTOS</span></div><div class="wd"><div class="who"><span class="wtag wtag-s">Sistema</span><span>Só libera o avanço com o gate a <b>100%</b>. Incompleto = bloqueado, com pendências visíveis.</span></div><div class="who"><span class="wtag wtag-p">Gerente</span><span>Avança para o próximo step quando liberado.</span></div></div></div></div>
+          <div class="walk-item"><div class="wn">5</div><div><div class="wt">Cronograma e baseline <span class="aba">CRONOGRAMA</span></div><div class="wd"><div class="who"><span class="wtag wtag-p">Gerente</span><span>Ajusta as datas reais conforme o projeto anda.</span></div><div class="who"><span class="wtag wtag-s">Sistema</span><span>Compara com a baseline e evidencia o desvio de cada fase.</span></div></div></div></div>
+          <div class="walk-item"><div class="wn">6</div><div><div class="wt">Status on track × off track <span class="aba">DASHBOARD</span></div><div class="wd"><div class="who"><span class="wtag wtag-s">Sistema</span><span>Calcula sozinho o status pelo desvio real × planejado e sinaliza o portfólio.</span></div><div class="who"><span class="wtag wtag-p">Gerente</span><span>Atua nos projetos sinalizados; a diretoria acompanha pelos KPIs.</span></div></div></div></div>
+          <div class="walk-item"><div class="wn">7</div><div><div class="wt">Conclusão e dossiê <span class="aba">STEPS & DOCUMENTOS · AUDITORIA</span></div><div class="wd"><div class="who"><span class="wtag wtag-p">Gerente</span><span>Fecha o Step 7 com a documentação final (FAT aprovado, entrega).</span></div><div class="who"><span class="wtag wtag-s">Sistema</span><span>Consolida o dossiê completo do projeto e preserva a trilha de auditoria.</span></div></div></div></div>
+        </div>
+      </div>
+
+      <div class="esc-divider"><span class="lbl">Para o desenvolvedor</span><span class="tagx">técnico · como construir</span><span class="ln"></span></div>
+
+      <div class="card flowcard" style="border-left:4px solid var(--brand)">
+        <div class="section-title" style="font-size:14.5px">6 · Modelo de dados do projeto <span class="muted" style="font-weight:500;font-size:11.5px">· para o desenvolvedor</span></div>
+        <div class="tblwrap" style="border:0;margin-top:6px"><table class="tbl">
+          <thead><tr><th>Campo</th><th>Tipo</th><th>Origem / observação</th></tr></thead>
+          <tbody>
+            <tr><td>id · name · loc (site/categoria)</td><td>string</td><td>Cadastro (wizard)</td></tr>
+            <tr><td>type</td><td>enum A–E</td><td>Calculado pela classificação (6 critérios, score 0–100)</td></tr>
+            <tr><td>lead · team</td><td>string</td><td>Cadastro</td></tr>
+            <tr><td>oi</td><td>string</td><td>Ordem Interna, elo com o DRA (Módulo 2)</td></tr>
+            <tr><td>cur (step atual)</td><td>int 1–7</td><td>Avança apenas via gate 100%</td></tr>
+            <tr><td>docs por step</td><td>checklist</td><td>Gerado pelo tipo (A/B=57 · C=37 · D=36 · E=16; E sem Step 3)</td></tr>
+            <tr><td>evidências</td><td>arquivos</td><td>Upload por step, com autor e data</td></tr>
+            <tr><td>datas plan × real</td><td>datas por fase</td><td>Base do cronograma (baseline) e do on/off track</td></tr>
+            <tr><td>budP · budA · com · sav</td><td>decimal</td><td>Espelho financeiro (leitura; a gestão do dinheiro é no DRA)</td></tr>
+            <tr><td>schP (aderência)</td><td>%</td><td>Calculado, progresso vs. plano</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <div class="card flowcard" style="border-left:4px solid var(--brand)">
+        <div class="section-title" style="font-size:14.5px">7 · Regras de cálculo <span class="muted" style="font-weight:500;font-size:11.5px">· para o desenvolvedor</span></div>
+        <div class="tblwrap" style="border:0;margin-top:6px"><table class="tbl">
+          <thead><tr><th>Regra</th><th>Fórmula / faixa</th></tr></thead>
+          <tbody>
+            <tr><td>Classificação (score → tipo)</td><td><code>76–100 = A · 51–75 = B · 26–50 = C · 10–25 = D · 0–9 = E</code></td></tr>
+            <tr><td>Gate do step</td><td><code>docs inseridos ÷ docs obrigatórios do step = 100%</code> para liberar o avanço</td></tr>
+            <tr><td>Progresso documental</td><td><code>Σ docs inseridos ÷ Σ docs obrigatórios do tipo</code></td></tr>
+            <tr><td>On track × off track</td><td>Desvio entre datas/avanço reais e planejados dentro da tolerância = on track; fora = off track (automático)</td></tr>
+            <tr><td>Baseline do cronograma</td><td>As datas originais ficam congeladas; o desvio de cada fase é sempre exibido contra elas</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <div class="card flowcard" style="border-left:4px solid var(--brand)">
+        <div class="section-title" style="font-size:14.5px">8 · Permissões <span class="muted" style="font-weight:500;font-size:11.5px">· para o desenvolvedor</span></div>
+        <div class="tblwrap" style="border:0;margin-top:6px"><table class="tbl">
+          <thead><tr><th>Papel</th><th>Pode</th><th>Não pode</th></tr></thead>
+          <tbody>
+            <tr><td style="font-weight:600">Administrador</td><td>Tudo do Gerente + catálogos de documentos e configuração</td><td>—</td></tr>
+            <tr><td style="font-weight:600">Gerente</td><td>Cadastrar e editar projetos, inserir documentos e evidências, avançar steps, ajustar datas</td><td>Alterar catálogos</td></tr>
+            <tr><td style="font-weight:600">Auditor</td><td>Ler tudo e exportar</td><td>Qualquer escrita (controles com a classe perm-w ficam ocultos)</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+    </section>
 
     <!-- CATÁLOGO DE DOCUMENTOS -->
     <section class="view hidden" id="view-catalog">
@@ -3101,7 +3297,7 @@ function propagateCatalog(){
 }
 
 const titles={dashboard:["Dashboard","Dashboard do Portfólio"],reports:["Relatórios","Relatórios & KPIs"],lifecycle:["Ciclo de Vida","Ciclo de Vida do Projeto"],track:["Portfólio EEM","Portfólio EEM · Acompanhamento Operacional (Módulo 3)"],project:["Steps & Documentos","Steps & Documentos do Projeto"],
-  draescopo:["Escopo do DRA","Escopo do Módulo DRA, documentação viva"],dra:["DRA Financeiro","Módulo 2 · DRA, Designação de Recursos e Autorização"],
+  psrescopo:["Escopo do PSR","Escopo do Módulo PSR, documentação viva"],draescopo:["Escopo do DRA","Escopo do Módulo DRA, documentação viva"],dra:["DRA Financeiro","Módulo 2 · DRA, Designação de Recursos e Autorização"],
   catalog:["Catálogo","Catálogo de Documentos por Step"],
   gantt:["Cronograma","Cronograma do Portfólio"],classify:["Classificação","Classificação Automática"],
   docs:["Documentos","Automação de Documentação"],audit:["Auditoria","Auditoria & Conformidade"],
