@@ -2966,9 +2966,8 @@ const HELP=[
 <h5>Como o menu está organizado</h5>
 <table><tr><th>Grupo</th><th>O que contém</th></tr>
 <tr><td><b>Visão Geral</b></td><td>Dashboard do portfólio e Relatórios & KPIs, a foto executiva.</td></tr>
-<tr><td><b>Módulo 1 · PSR</b></td><td>A governança documental: Steps & Documentos → Cronograma → Auditoria. <b>Coberto pela proposta vigente.</b></td></tr>
-<tr><td><b>Módulo 3 · Ciclo de Vida (novo)</b></td><td><b>Ciclo de Vida</b> e <b>Portfólio EEM</b>, a nova demanda de acompanhamento operacional (03/07), em cotação complementar.</td></tr>
-<tr><td><b>Módulo 2 · DRA</b></td><td>Financeiro por OI (Designação de Recursos e Autorização), alimentado pelo robô SAP. <b>Coberto pela proposta vigente.</b></td></tr>
+<tr><td><b>Módulo 1 · PSR</b></td><td>A governança documental: Steps & Documentos → Cronograma → Auditoria → <b>Escopo do PSR</b> (a documentação viva do módulo). <b>Coberto pela proposta vigente.</b></td></tr>
+<tr><td><b>Módulo 2 · DRA</b></td><td>Financeiro por OI (Designação de Recursos e Autorização), com os subitens na ordem da jornada (Overview → Pipeline → Grid → Reconciliation → Orders → History), <b>consolidação LATAM</b> (Brasil, Argentina, México) e a página <b>Escopo do DRA</b>. <b>Coberto pela proposta vigente.</b></td></tr>
 <tr><td><b>Configuração</b></td><td>Catálogo de Documentos, Classificação (A–E) e Integrações.</td></tr>
 <tr><td><b>Administração</b></td><td>Equipe & Papéis (RBAC).</td></tr></table>
 <div class="tip">💡 Use o <b>Tour guiado</b> (botão no topo) para uma apresentação passo a passo, ou navegue por este manual pelas seções ao lado.</div>`},
@@ -3058,8 +3057,8 @@ const HELP=[
 <p>Complementar ao cronograma macro do EEM: mostra <b>em que step</b> cada projeto está e como evolui <b>mês a mês</b>.</p>
 <ul><li>Cada linha é um projeto; as faixas coloridas indicam o step em cada mês;</li><li>Use junto com o EEM: o macro diz <b>se está no prazo</b>; este diz <b>onde está no fluxo</b>.</li></ul>`},
 {ic:"💶",t:"DRA · Portfólio de Investimentos",d:"Módulo 2, a planilha DRA viva: grid, conciliação, ordens e publicação no BI.",b:`
-<p>O DRA gerencia o portfólio de investimentos da fábrica, substituindo a planilha manual. Base extraída do SAP por robô (transações <b>GRR3</b>, orçamento/real/compromissado/disponível; <b>KOB1</b>, gasto atual; <b>KO03</b>, dados da ordem).</p>
-<h5>As 6 abas do módulo + a página Escopo</h5>
+<p>O DRA gerencia o portfólio de investimentos da fábrica, substituindo a planilha manual. O dado chega por <b>3 entradas</b>: robô SAP (<b>GRR3</b>, orçamento/real/compromissado/disponível; <b>KOB1</b>, gasto atual), <b>entrada manual</b> (<b>KO03</b>, dados da ordem, e o cadastro de Drafts pelo botão <b>+ Cadastrar projeto</b>) e <b>upload da planilha</b> dos sites LATAM sem robô (Argentina e México, já validada). A faixa <b>País/Site</b> consolida tudo, com selo de origem em cada linha e exportação do consolidado.</p>
+<h5>As 6 telas do módulo (subitens no menu, na ordem da jornada) + a página Escopo</h5>
 <ol><li><b>Overview</b>: KPIs, executado × replanejado (mês/quarter/semestre), por projeto, alertas e publicação;</li>
 <li><b>DRA Grid</b>: a planilha fiel, CPX, OI, tipo, status, meses, H1, quarters, FC FY26/FY27, commitment e disponível (GRR3), em k€, com filtros (a linha verde de totais respeita os filtros) e separação <b>Capex (AO) × R2</b>;</li>
 <li><b>Reconciliation</b>: diferenças entre a extração do SAP e a sua última validação, para acatar ou manter, preservando os totais do quarter e do ano;</li>
@@ -3156,16 +3155,20 @@ const TOUR=[
    x:"Filtre a trilha por status, <b>gerados, em revisão, pendentes</b>. Cada ação fica registrada: <b>quem fez o quê, quando e em qual projeto</b>."},
   {view:"audit",sel:'[onclick="exportAudit()"]',c:"Módulo 1 · PSR",t:"Exportar auditoria",
    x:"<b>Exportar CSV</b> baixa a trilha filtrada para o Excel, pronta para conformidade e auditorias internas. O perfil Auditor também pode exportar."},
+  {view:"psrescopo",sel:'#psrFlow1',c:"Módulo 1 · PSR",t:"O escopo do PSR no próprio sistema",
+   x:"A página <b>Escopo do PSR</b> documenta o Módulo 1 com fluxogramas (fluxo do projeto, <b>gate documental</b> com bloqueio, os <b>7 steps do EEM</b>), as regras de ouro (classificação <b>A–E</b> define o rigor: 57/37/36/16 documentos) e a especificação para o desenvolvedor."},
+  {view:"dra",tab:"ov",sel:'.dra-context',c:"Módulo 2 · DRA",t:"Consolidação LATAM (país/site)",
+   x:"A faixa <b>País/Site</b> consolida de verdade <b>Brasil, Argentina e México</b>: as pills filtram todo o módulo, <b>⬆ Importar planilha</b> recebe o DRA dos sites sem robô (já validado, com pré-visualização) e <b>⬇ Exportar consolidado</b> gera o padrão oficial para o time Global. Cada linha do grid tem o selo de origem (robô × upload)."},
   {view:"dra",tab:"ov",sel:'#draKpis',c:"Módulo 2 · DRA",t:"Portfólio de investimentos",
-   x:"O DRA é o portfólio financeiro do portfólio de projetos: <b>capex aprovado, executado (YTD), compromissado, saldo, saving e aderência ao plano</b>. Consolidado ou por OI, e escalável a <b>LATAM</b> (Brasil, México, Argentina)."},
+   x:"O DRA é o portfólio financeiro do portfólio de projetos: <b>capex aprovado, executado (YTD), compromissado, saldo, saving e aderência ao plano</b>. Consolidado ou por OI."},
   {view:"dra",tab:"ov",sel:'#draChart',c:"Módulo 2 · DRA",t:"Executado × replanejado",
    x:"O coração do DRA: o <b>realizado até hoje</b> e o <b>replanejamento dos meses seguintes</b>, com visão de <b>mês, quarter e semestre</b>. A linha vermelha marca hoje; à direita, os meses futuros aparecem hachurados (replanejados)."},
   {view:"dra",tab:"ov",sel:'#draAlerts',c:"Módulo 2 · DRA",t:"Alertas e validação para o BI",
    x:"Alertas de ajuste (estouro de capex, execução fora do plano) <b>notificam o responsável via Teams / Outlook</b>. Antes de publicar, uma <b>camada de validação</b> aprova o que vai para o Power BI dos stakeholders."},
   {view:"dra",tab:"ov",sel:'#view-dra [onclick="syncSAP(this)"]',c:"Módulo 2 · DRA",t:"Robô SAP (RPA)",
-   x:"O botão <b>Atualizar base (robô)</b> dispara a extração no SAP. Um robô (RPA) traz as transações por OI, grava no SharePoint e alimenta o painel e o BI. Substitui a planilha manual de hoje."},
+   x:"O botão <b>Atualizar base (robô)</b> dispara a extração no SAP. Um robô (RPA) traz o <b>GRR3 e o KOB1</b> por OI, grava no SharePoint e alimenta o painel e o BI. O <b>KO03</b> (datas, tipo, status) é <b>lançado manualmente</b>. Substitui a planilha manual de hoje."},
   {view:"dra",tab:"grid",sel:'#gCeiling',c:"Módulo 2 · DRA",t:"DRA Grid, a planilha viva",
-   x:"A réplica fiel da planilha da Adriana: projetos com <b>CPX, OI, tipo, status (Draft → Submitted → Authorized → Closed)</b>, meses, quarters e forecast, em k€. A <b>linha verde de totais</b> respeita os filtros, e o <b>teto anual (FC FY26)</b> é monitorado: não pode ser ultrapassado. Com separação <b>Capex (AO) × R2</b>, versões mensais e <b>edição manual (✎)</b>: status, tipo, CPX/OI e replanejamento, tudo auditado."},
+   x:"A réplica fiel da planilha da Adriana: projetos com <b>CPX, OI, tipo, status (Draft → Submitted → Authorized → Closed)</b>, meses, quarters e forecast, em k€. A <b>linha verde de totais</b> respeita os filtros, e o <b>teto anual (FC FY26)</b> é monitorado: não pode ser ultrapassado. Com separação <b>Capex (AO) × R2</b>, versões mensais, <b>cadastro de novos Drafts (+ Cadastrar projeto)</b> e <b>edição manual (✎)</b>: status, tipo, CPX/OI e replanejamento, tudo auditado."},
   {view:"dra",tab:"rec",sel:'#recBody',c:"Módulo 2 · DRA",t:"Conciliação SAP × validado",
    x:"O robô extrai a base (GRR3/KOB1) e compara com a <b>sua última validação</b>. As diferenças aparecem aqui, e você decide: <b>Accept SAP</b> ou <b>Keep mine</b>, sempre preservando os totais do quarter e do ano. Só depois publica o replanejamento no BI, o executado real já reflete automaticamente."},
   {view:"dra",tab:"ord",sel:'#ordBody',c:"Módulo 2 · DRA",t:"Gestão de ordens (KO03)",
