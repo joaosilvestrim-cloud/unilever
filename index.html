@@ -746,9 +746,10 @@
     <div class="nav-item nav-sub" data-tab="ord" onclick="draNav('ord')">Orders (KO03)</div>
     <div class="nav-item nav-sub" data-tab="hist" onclick="draNav('hist')">History</div>
     <div class="nav-item" data-view="draescopo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h4"/></svg>Escopo do DRA</div>
-    <div class="nav-label hidden">Módulo 3 · Ciclo de Vida, Novo</div>
-    <div class="nav-item hidden" data-view="lifecycle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v5h-5"/><circle cx="12" cy="12" r="2.4"/></svg>Ciclo de Vida<span class="badge">Novo</span></div>
-    <div class="nav-item hidden" data-view="track"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 3v18h18"/><path d="M7 15l3-4 3 2 5-6"/><circle cx="7" cy="15" r="1.4" fill="currentColor" stroke="none"/><circle cx="18" cy="7" r="1.4" fill="currentColor" stroke="none"/></svg>Portfólio EEM<span class="badge">Novo</span></div>
+    <div class="nav-label">Módulo 3 · Ciclo de Vida, Novo</div>
+    <div class="nav-item" data-view="lifecycle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v5h-5"/><circle cx="12" cy="12" r="2.4"/></svg>Ciclo de Vida<span class="badge">Novo</span></div>
+    <div class="nav-item" data-view="track"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 3v18h18"/><path d="M7 15l3-4 3 2 5-6"/><circle cx="7" cy="15" r="1.4" fill="currentColor" stroke="none"/><circle cx="18" cy="7" r="1.4" fill="currentColor" stroke="none"/></svg>Portfólio EEM<span class="badge">Novo</span></div>
+    <div class="nav-item" data-view="lcescopo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h4"/></svg>Escopo do Ciclo de Vida</div>
     <div class="nav-label">Configuração</div>
     <div class="nav-item" data-view="catalog"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 6h16M4 12h16M4 18h10"/><circle cx="20" cy="18" r="2"/></svg>Catálogo de Documentos</div>
     <div class="nav-item" data-view="classify"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></svg>Classificação (A–E)</div>
@@ -1505,6 +1506,147 @@
       </div>
     </section>
 
+    <!-- ESCOPO DO CICLO DE VIDA (página própria) -->
+    <section class="view hidden" id="view-lcescopo">
+      <div class="toolbanner">
+        <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v5h-5"/><circle cx="12" cy="12" r="2.4"/></svg></div>
+        <div><h3>Escopo do Módulo 3 · Ciclo de Vida, documentação viva</h3><p>O escopo da nova demanda aplicado no sistema: monitoria gerencial por marcos, remanejamento com justificativa obrigatória e status calculado. Referência para o negócio e para o desenvolvedor.</p></div>
+      </div>
+
+      <div class="card flowcard">
+        <div class="section-title" style="font-size:15px">O que é o Módulo 3 neste sistema</div>
+        <div class="muted" style="font-size:12.5px;max-width:920px">O Ciclo de Vida é a <b>monitoria gerencial do andamento</b> dos projetos, a nova demanda apresentada em 03/07/2026 (Maria Correa). A visão é por <b>marcos</b> (entregas com data, sem microtarefas) e por <b>atividades do mês</b>, com cronograma macro contra a <b>baseline</b>: qualquer remanejamento de prazo exige <b>justificativa obrigatória</b> e fica marcado em vermelho (o "vermelhinho") sem apagar o plano original. O status <b>on track × off track</b> é calculado pelo sistema, com alertas automáticos.</div>
+        <div class="muted" style="font-size:11.5px;margin-top:8px;background:#fdf3e3;border-radius:8px;padding:9px 13px;color:#8a5b00"><b>Situação comercial:</b> demanda nova, fora da proposta vigente (Módulos 1 e 2). Em cotação complementar, prevista para a Wave 2.</div>
+      </div>
+
+      <div class="card flowcard" style="border-left:4px solid var(--warn);padding:13px 16px"><div style="font-size:12.5px;color:var(--ink-soft)"><b>Fronteira dos módulos:</b> o Ciclo de Vida trata do <b>andamento gerencial</b> (fases, marcos, atividades, desvios e alertas). Os documentos e steps são do <b>Módulo 1 · PSR</b>; o dinheiro é do <b>Módulo 2 · DRA</b>. Esta página descreve apenas o Módulo 3.</div></div>
+      <div class="esc-divider"><span class="lbl">Para o negócio</span><span class="tagx">cliente · como funciona</span><span class="ln"></span></div>
+
+      <div class="card flowcard" id="lcFlow1">
+        <div class="section-title" style="font-size:14.5px">1 · As 5 fases da jornada do projeto <span class="muted" style="font-weight:500;font-size:11.5px">· a visão gerencial de cada projeto</span></div>
+        <svg viewBox="0 0 940 122" xmlns="http://www.w3.org/2000/svg">
+          <defs><marker id="lw1" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#4d6175"/></marker></defs>
+          <rect x="8" y="26" width="158" height="66" rx="12" fill="#e4f0fa" stroke="#0060A8" stroke-width="1.5"/>
+          <text x="87" y="50" text-anchor="middle" font-size="13" font-weight="700" fill="#003E73">1. Iniciação</text>
+          <text x="87" y="67" text-anchor="middle" font-size="9.5" fill="#4d6175">cadastro, OI e</text>
+          <text x="87" y="80" text-anchor="middle" font-size="9.5" fill="#4d6175">classificação (A–E)</text>
+          <line x1="166" y1="59" x2="198" y2="59" stroke="#4d6175" stroke-width="1.6" marker-end="url(#lw1)"/>
+          <rect x="200" y="26" width="158" height="66" rx="12" fill="#e4f0fa" stroke="#0060A8" stroke-width="1.5"/>
+          <text x="279" y="50" text-anchor="middle" font-size="13" font-weight="700" fill="#003E73">2. Planejamento</text>
+          <text x="279" y="67" text-anchor="middle" font-size="9.5" fill="#4d6175">cronograma, marcos</text>
+          <text x="279" y="80" text-anchor="middle" font-size="9.5" fill="#4d6175">e equipe (baseline)</text>
+          <line x1="358" y1="59" x2="390" y2="59" stroke="#4d6175" stroke-width="1.6" marker-end="url(#lw1)"/>
+          <rect x="392" y="26" width="158" height="66" rx="12" fill="#003E73"/>
+          <text x="471" y="50" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">3. Execução</text>
+          <text x="471" y="67" text-anchor="middle" font-size="9.5" fill="#cfe0ef">steps, documentos</text>
+          <text x="471" y="80" text-anchor="middle" font-size="9.5" fill="#8fb0cd">e atividades do mês</text>
+          <line x1="550" y1="59" x2="582" y2="59" stroke="#4d6175" stroke-width="1.6" marker-end="url(#lw1)"/>
+          <rect x="584" y="26" width="158" height="66" rx="12" fill="#fdf3e3" stroke="#e8930c" stroke-width="1.5"/>
+          <text x="663" y="50" text-anchor="middle" font-size="13" font-weight="700" fill="#8a5b00">4. Monitoramento</text>
+          <text x="663" y="67" text-anchor="middle" font-size="9.5" fill="#4d6175">status, alertas e</text>
+          <text x="663" y="80" text-anchor="middle" font-size="9.5" fill="#4d6175">remanejos justificados</text>
+          <line x1="742" y1="59" x2="774" y2="59" stroke="#4d6175" stroke-width="1.6" marker-end="url(#lw1)"/>
+          <rect x="776" y="26" width="156" height="66" rx="12" fill="#e7f4ee" stroke="#1f9d57" stroke-width="1.5"/>
+          <text x="854" y="50" text-anchor="middle" font-size="13" font-weight="700" fill="#0c5c33">5. Encerramento</text>
+          <text x="854" y="67" text-anchor="middle" font-size="9.5" fill="#4d6175">capex closure,</text>
+          <text x="854" y="80" text-anchor="middle" font-size="9.5" fill="#4d6175">KPIs e lições</text>
+        </svg>
+        <div class="muted" style="font-size:11.5px;margin-top:8px">A tela Ciclo de Vida mostra as 5 fases de cada projeto com o estado (concluída, em andamento, atenção, aguardando), a <b>saúde do projeto</b> e o histórico de evolução.</div>
+      </div>
+
+      <div class="card flowcard" id="lcFlow2">
+        <div class="section-title" style="font-size:14.5px">2 · Remanejamento com justificativa <span class="muted" style="font-weight:500;font-size:11.5px">· o "vermelhinho" contra a baseline</span></div>
+        <svg viewBox="0 0 940 168" xmlns="http://www.w3.org/2000/svg">
+          <defs><marker id="lw2" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#4d6175"/></marker></defs>
+          <rect x="20" y="34" width="192" height="70" rx="12" fill="#e4f0fa" stroke="#0060A8" stroke-width="1.5"/>
+          <text x="116" y="60" text-anchor="middle" font-size="13" font-weight="700" fill="#003E73">Marco com data</text>
+          <text x="116" y="77" text-anchor="middle" font-size="9.5" fill="#4d6175">entrega gerencial definida</text>
+          <text x="116" y="90" text-anchor="middle" font-size="9.5" fill="#4d6175">no planejamento (baseline)</text>
+          <line x1="212" y1="69" x2="250" y2="69" stroke="#4d6175" stroke-width="1.6" marker-end="url(#lw2)"/>
+          <rect x="252" y="34" width="192" height="70" rx="12" fill="#fdf3e3" stroke="#e8930c" stroke-width="1.5"/>
+          <text x="348" y="60" text-anchor="middle" font-size="13" font-weight="700" fill="#8a5b00">Precisa remanejar?</text>
+          <text x="348" y="77" text-anchor="middle" font-size="9.5" fill="#4d6175">o gerente propõe a nova data</text>
+          <text x="348" y="90" text-anchor="middle" font-size="9.5" fill="#4d6175">no plano do projeto</text>
+          <line x1="444" y1="69" x2="482" y2="69" stroke="#4d6175" stroke-width="1.6" marker-end="url(#lw2)"/>
+          <text x="463" y="60" text-anchor="middle" font-size="8.5" font-weight="700" fill="#8a5b00">justifica</text>
+          <rect x="484" y="34" width="200" height="70" rx="12" fill="#e7f4ee" stroke="#1f9d57" stroke-width="1.5"/>
+          <text x="584" y="60" text-anchor="middle" font-size="13" font-weight="700" fill="#0c5c33">Justificativa registrada</text>
+          <text x="584" y="77" text-anchor="middle" font-size="9.5" fill="#4d6175">obrigatória; vai para a trilha</text>
+          <text x="584" y="90" text-anchor="middle" font-size="9.5" fill="#4d6175">de auditoria com autor e data</text>
+          <line x1="684" y1="69" x2="722" y2="69" stroke="#4d6175" stroke-width="1.6" marker-end="url(#lw2)"/>
+          <rect x="724" y="34" width="192" height="70" rx="12" fill="#fbe6ee" stroke="#d6336c" stroke-width="1.5"/>
+          <text x="820" y="60" text-anchor="middle" font-size="13" font-weight="700" fill="#b02258">O "vermelhinho"</text>
+          <text x="820" y="77" text-anchor="middle" font-size="9.5" fill="#4d6175">o desvio fica visível contra a</text>
+          <text x="820" y="90" text-anchor="middle" font-size="9.5" fill="#4d6175">baseline, que nunca se apaga</text>
+          <path d="M 348 104 L 348 132 L 116 132 L 116 106" fill="none" stroke="#d6336c" stroke-width="1.3" stroke-dasharray="4 3" marker-end="url(#lw2)"/>
+          <text x="232" y="146" text-anchor="middle" font-size="9" fill="#b02258">sem justificativa → o sistema bloqueia o remanejamento</text>
+        </svg>
+      </div>
+
+      <div class="card flowcard">
+        <div class="section-title" style="font-size:14.5px">3 · Regras de ouro do Ciclo de Vida</div>
+        <div class="rules-grid">
+          <div class="rule-card"><div class="rn">1</div><b>Marcos, não microtarefas</b><p>A visão é gerencial: entregas com data (kickoff, obra civil, montagem, FAT). O detalhe operacional fica nas atividades do mês, sem virar um MS Project.</p></div>
+          <div class="rule-card"><div class="rn">2</div><b>Justificativa obrigatória</b><p>Nenhum prazo se move sem justificativa. O sistema bloqueia o remanejamento sem ela e registra tudo na auditoria.</p></div>
+          <div class="rule-card"><div class="rn">3</div><b>A baseline nunca se apaga</b><p>O plano original fica congelado; o desvio aparece em vermelho (o "vermelhinho") no cronograma. A diretoria vê o combinado × o real, sempre.</p></div>
+          <div class="rule-card"><div class="rn">4</div><b>Status calculado + alertas</b><p>On track × off track sai do desvio real × planejado, e os alertas automáticos notificam o responsável. Ninguém declara o próprio status.</p></div>
+        </div>
+      </div>
+
+      <div class="card flowcard">
+        <div class="section-title" style="font-size:14.5px">4 · Mapa do módulo e a jornada na prática</div>
+        <div class="tblwrap" style="border:0;margin-top:6px"><table class="tbl">
+          <thead><tr><th style="text-align:center">#</th><th>Tela</th><th>Pergunta que responde</th><th>Origem do dado</th></tr></thead>
+          <tbody>
+            <tr><td style="text-align:center;color:var(--ink-faint);font-weight:700">1</td><td style="font-weight:600">Ciclo de Vida</td><td>Como está a jornada deste projeto? (5 fases, saúde, histórico de evolução)</td><td>Projeto + plano</td></tr>
+            <tr><td style="text-align:center;color:var(--ink-faint);font-weight:700">2</td><td style="font-weight:600">Portfólio EEM</td><td>Como está o andamento de todos? (cronograma macro, marcos, on/off track, alertas, plano detalhado com remanejo)</td><td>Planos + baseline</td></tr>
+          </tbody>
+        </table></div>
+        <div class="section-title" style="font-size:13.5px;margin-top:20px">Na prática: a jornada de acompanhamento <span class="muted" style="font-weight:500;font-size:11px">· do plano ao encerramento</span></div>
+        <div class="muted" style="font-size:11.5px;margin:6px 0 8px"><span class="wtag wtag-p">Gerente</span> ação da pessoa &nbsp;·&nbsp; <span class="wtag wtag-s">Sistema</span> automático</div>
+        <div class="walk">
+          <div class="walk-item"><div class="wn">1</div><div><div class="wt">Plano do projeto <span class="aba">PORTFÓLIO EEM</span></div><div class="wd"><div class="who"><span class="wtag wtag-p">Gerente</span><span>Define os <b>marcos</b> (entregas com data) e as <b>atividades por mês</b>, com responsáveis.</span></div><div class="who"><span class="wtag wtag-s">Sistema</span><span>Congela a <b>baseline</b> e monta o cronograma macro (barra início→fim, losango = marco).</span></div></div></div></div>
+          <div class="walk-item"><div class="wn">2</div><div><div class="wt">Acompanhamento do mês <span class="aba">PORTFÓLIO EEM</span></div><div class="wd"><div class="who"><span class="wtag wtag-p">Gerente</span><span>Atualiza o andamento das atividades e anexa os relatórios do mês.</span></div><div class="who"><span class="wtag wtag-s">Sistema</span><span>Recalcula o avanço real × planejado de cada projeto.</span></div></div></div></div>
+          <div class="walk-item"><div class="wn">3</div><div><div class="wt">Remanejamento de prazo <span class="aba">PORTFÓLIO EEM</span></div><div class="wd"><div class="who"><span class="wtag wtag-p">Gerente</span><span>Move a data de um marco e <b>escreve a justificativa</b> (obrigatória).</span></div><div class="who"><span class="wtag wtag-s">Sistema</span><span>Bloqueia sem justificativa; com ela, registra na auditoria e marca o <b>vermelhinho</b> contra a baseline.</span></div></div></div></div>
+          <div class="walk-item"><div class="wn">4</div><div><div class="wt">Status e alertas <span class="aba">PORTFÓLIO EEM</span></div><div class="wd"><div class="who"><span class="wtag wtag-s">Sistema</span><span>Calcula <b>on track × off track</b> e dispara os <b>alertas automáticos</b> ao responsável.</span></div><div class="who"><span class="wtag wtag-p">Gerente</span><span>Atua nos projetos sinalizados.</span></div></div></div></div>
+          <div class="walk-item"><div class="wn">5</div><div><div class="wt">Saúde e histórico <span class="aba">CICLO DE VIDA</span></div><div class="wd"><div class="who"><span class="wtag wtag-s">Sistema</span><span>Consolida a <b>saúde do projeto</b> (fases, docs, prazo, finanças) e o <b>histórico de evolução</b>.</span></div><div class="who"><span class="wtag wtag-p">Gerente</span><span>Consulta a jornada completa; a diretoria acompanha por aqui.</span></div></div></div></div>
+          <div class="walk-item"><div class="wn">6</div><div><div class="wt">Encerramento <span class="aba">CICLO DE VIDA</span></div><div class="wd"><div class="who"><span class="wtag wtag-p">Gerente</span><span>Conclui a fase 5 com capex closure, KPIs e lições aprendidas.</span></div><div class="who"><span class="wtag wtag-s">Sistema</span><span>Preserva a jornada inteira: baseline, remanejos justificados e evolução.</span></div></div></div></div>
+        </div>
+      </div>
+
+      <div class="esc-divider"><span class="lbl">Para o desenvolvedor</span><span class="tagx">técnico · como construir</span><span class="ln"></span></div>
+
+      <div class="card flowcard" style="border-left:4px solid var(--brand)">
+        <div class="section-title" style="font-size:14.5px">5 · Modelo de dados do plano <span class="muted" style="font-weight:500;font-size:11.5px">· para o desenvolvedor</span></div>
+        <div class="tblwrap" style="border:0;margin-top:6px"><table class="tbl">
+          <thead><tr><th>Campo</th><th>Tipo</th><th>Observação</th></tr></thead>
+          <tbody>
+            <tr><td>plan.marcos[]</td><td>[mês, título, status]</td><td>Entregas gerenciais com data; status done/next/pend</td></tr>
+            <tr><td>plan.acts[]</td><td>[mês, título, responsável, status, doc]</td><td>Atividades por mês, com evidência opcional</td></tr>
+            <tr><td>plan.baseline</td><td>datas originais</td><td>Congelada no planejamento; nunca é sobrescrita</td></tr>
+            <tr><td>plan.rep</td><td>{marco, de, para, justificativa, autor, data}</td><td>Cada remanejo registrado; alimenta o vermelhinho e a auditoria</td></tr>
+            <tr><td>status (on/off track)</td><td>calculado</td><td>Desvio entre avanço real e planejado</td></tr>
+            <tr><td>saúde</td><td>calculada</td><td>Combina fase, gate documental (PSR), prazo e finanças (DRA), somente leitura dos outros módulos</td></tr>
+            <tr><td>fallback</td><td>derivação</td><td>Projetos novos (do wizard) ganham plano derivado automaticamente, nenhuma tela quebra sem dados</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <div class="card flowcard" style="border-left:4px solid var(--brand)">
+        <div class="section-title" style="font-size:14.5px">6 · Regras de cálculo e permissões <span class="muted" style="font-weight:500;font-size:11.5px">· para o desenvolvedor</span></div>
+        <div class="tblwrap" style="border:0;margin-top:6px"><table class="tbl">
+          <thead><tr><th>Regra</th><th>Definição</th></tr></thead>
+          <tbody>
+            <tr><td>On track × off track</td><td>Desvio entre o avanço real e o planejado dentro da tolerância = on track; fora = off track (automático, por projeto)</td></tr>
+            <tr><td>Vermelhinho</td><td>Marco cuja data atual difere da baseline; exibido em vermelho no cronograma, com a justificativa acessível</td></tr>
+            <tr><td>Bloqueio de remanejo</td><td>Sem justificativa preenchida, a alteração de data não é salva</td></tr>
+            <tr><td>Alertas</td><td>Disparados por atraso de marco, atividade vencida e mudança para off track; notificam o responsável</td></tr>
+            <tr><td>Permissões</td><td>Gerente edita plano, atividades e remaneja (com justificativa); Auditor somente leitura; escrita oculta no perfil Auditor (perm-w)</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+    </section>
+
     <!-- CATÁLOGO DE DOCUMENTOS -->
     <section class="view hidden" id="view-catalog">
       <div class="toolbanner">
@@ -1616,17 +1758,17 @@
   <div style="background:#fff;border-radius:16px;width:min(560px,95vw);overflow:hidden;box-shadow:0 40px 90px -30px rgba(0,0,0,.6)">
     <div style="padding:16px 20px;border-bottom:1px solid var(--line)"><div style="font-family:Poppins;font-weight:700;font-size:15px">Manual adjustment</div><div class="muted" style="font-size:12px" id="ge_name">—</div></div>
     <div class="ge-fields" style="padding:18px 20px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
-      <div><label class="dra-lbl">Status (Marlin workflow)</label><select id="ge_status" class="role-sel" style="width:100%"><option>Draft</option><option>Submitted</option><option>Authorized</option><option>Closed</option></select></div>
+      <div><label class="dra-lbl">Status</label><select id="ge_status" class="role-sel" style="width:100%"><option>Draft</option><option>Submitted</option><option>Authorized</option><option>Closed</option></select></div>
       <div><label class="dra-lbl">Type (Capex AO × R2, manual)</label><select id="ge_type" class="role-sel" style="width:100%"></select></div>
-      <div><label class="dra-lbl">CPX (when Marlin issues)</label><input id="ge_cpx" class="role-sel" style="width:100%" placeholder="TBC"></div>
-      <div><label class="dra-lbl">OI / AI (when authorized)</label><input id="ge_oi" class="role-sel" style="width:100%" placeholder="TBC"></div>
+      <div><label class="dra-lbl">CPX</label><input id="ge_cpx" class="role-sel" style="width:100%" placeholder="TBC"></div>
+      <div><label class="dra-lbl">OI / AI</label><input id="ge_oi" class="role-sel" style="width:100%" placeholder="TBC"></div>
       <div><label class="dra-lbl">Full project amount (k€)</label><input id="ge_full" type="number" step="0.1" class="role-sel" style="width:100%"></div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;grid-column:span 2">
         <div><label class="dra-lbl">Jul 26</label><input id="ge_jul" type="number" step="0.1" class="role-sel" style="width:100%" oninput="geQ3()"></div>
         <div><label class="dra-lbl">Aug 26</label><input id="ge_aug" type="number" step="0.1" class="role-sel" style="width:100%" oninput="geQ3()"></div>
         <div><label class="dra-lbl">Sep 26</label><input id="ge_sep" type="number" step="0.1" class="role-sel" style="width:100%" oninput="geQ3()"></div>
       </div>
-      <div style="grid-column:span 2;background:var(--surface-2);border-radius:10px;padding:10px 14px;font-size:12.5px">Q3 26 total: <b id="geQ3">—</b> · <span class="muted">replanejamento deve manter a volumetria do quarter; toda alteração é registrada na auditoria. O AI chega via Capgemini (e-mail) após a autorização no Marlin.</span></div>
+      <div style="grid-column:span 2;background:var(--surface-2);border-radius:10px;padding:10px 14px;font-size:12.5px">Q3 26 total: <b id="geQ3">—</b> · <span class="muted">replanejamento deve manter a volumetria do quarter; toda alteração é registrada na auditoria.</span></div>
     </div>
     <div class="wz-foot"><button class="btn ghost sm" onclick="gEditClose()">Cancel</button><button class="btn sm" onclick="gEditSave()">Save changes</button></div>
   </div>
@@ -1647,7 +1789,7 @@
         <div><label class="dra-lbl">Início (mês FY26)</label><select id="ga_start" class="role-sel" style="width:100%"></select></div>
         <div><label class="dra-lbl">Duração (meses)</label><input id="ga_months" type="number" min="1" max="12" step="1" class="role-sel" style="width:100%" value="3"></div>
       </div>
-      <div style="grid-column:span 2;background:var(--surface-2);border-radius:10px;padding:10px 14px;font-size:12px;color:var(--ink-soft)">O valor é distribuído igualmente pelos meses escolhidos (ou vai para o FC FY27). O <b>CPX</b> é criado na submissão ao Marlin; a <b>OI</b>, na autorização. Quando a OI existir, o robô <b>casa o SAP com esta linha pela OI</b>, sem duplicar.</div>
+      <div style="grid-column:span 2;background:var(--surface-2);border-radius:10px;padding:10px 14px;font-size:12px;color:var(--ink-soft)">O valor é distribuído igualmente pelos meses escolhidos (ou vai para o FC FY27). Quando a OI for emitida, o sistema <b>casa os dados do SAP com esta linha pela OI</b>, sem duplicar o projeto.</div>
     </div>
     <div class="wz-foot"><button class="btn ghost sm" onclick="gAddClose()">Cancelar</button><button class="btn sm" onclick="gAddSave()">Cadastrar Draft</button></div>
   </div>
@@ -2260,7 +2402,7 @@ function gAddSave(){
   gAddClose();
   draPlan=plan;document.querySelectorAll('#pane-grid [data-pl]').forEach(b=>b.classList.toggle("on",b.dataset.pl===plan));
   draCountrySet(country);draTab("grid");
-  toast('Projeto "'+name+'" cadastrado como Draft. CPX e OI ficam TBC até a submissão no Marlin; a auditoria registrou a criação.');
+  toast('Projeto "'+name+'" cadastrado como Draft (CPX e OI = TBC). Criação registrada na auditoria.');
 }
 /* ===== RECONCILIATION ===== */
 const RECON = [
@@ -2288,7 +2430,7 @@ function buildRecon() {
     <button class="btn perm-w" ${pend ? 'style="opacity:.5;pointer-events:none"' : ""} onclick="reconPublish()">Publish to BI</button></div>`;
 }
 function reconAct(i, mode) { RECON[i].done = mode; buildRecon(); toast(mode === "sap" ? "Valor do SAP acatado, ajuste registrado na auditoria." : "Sua última validação mantida, diferença registrada na auditoria."); }
-function reconPublish() { const s = document.getElementById("recStatus"); if (s) { s.textContent = "● Published to BI"; } toast("Replanejamento validado e publicado no Power BI (Alan, Grazi, Caro)."); }
+function reconPublish() { const s = document.getElementById("recStatus"); if (s) { s.textContent = "● Published to BI"; } toast("Replanejamento validado e publicado no Power BI."); }
 /* ===== ORDERS (KO03) ===== */
 const ORDERS = [
   { oi: "8101016544", name: "New line SQZ BR", lead: "Thiago Benati", resp: "A. Camargo", entry: "2023-02-10", ws: "2023-03-01", we: "2026-09-30", st: 30 },
@@ -2968,6 +3110,7 @@ const HELP=[
 <tr><td><b>Visão Geral</b></td><td>Dashboard do portfólio e Relatórios & KPIs, a foto executiva.</td></tr>
 <tr><td><b>Módulo 1 · PSR</b></td><td>A governança documental: Steps & Documentos → Cronograma → Auditoria → <b>Escopo do PSR</b> (a documentação viva do módulo). <b>Coberto pela proposta vigente.</b></td></tr>
 <tr><td><b>Módulo 2 · DRA</b></td><td>Financeiro por OI (Designação de Recursos e Autorização), com os subitens na ordem da jornada (Overview → Pipeline → Grid → Reconciliation → Orders → History), <b>consolidação LATAM</b> (Brasil, Argentina, México) e a página <b>Escopo do DRA</b>. <b>Coberto pela proposta vigente.</b></td></tr>
+<tr><td><b>Módulo 3 · Ciclo de Vida (novo)</b></td><td><b>Ciclo de Vida</b>, <b>Portfólio EEM</b> e a página <b>Escopo do Ciclo de Vida</b>: a monitoria gerencial por marcos, com remanejamento justificado e status calculado (demanda de 03/07). <b>Em cotação complementar (Wave 2).</b></td></tr>
 <tr><td><b>Configuração</b></td><td>Catálogo de Documentos, Classificação (A–E) e Integrações.</td></tr>
 <tr><td><b>Administração</b></td><td>Equipe & Papéis (RBAC).</td></tr></table>
 <div class="tip">💡 Use o <b>Tour guiado</b> (botão no topo) para uma apresentação passo a passo, ou navegue por este manual pelas seções ao lado.</div>`},
@@ -3195,6 +3338,8 @@ const TOUR=[
    x:"Cada card traz <b>equipe, datas e a barra real × plano</b>. <b>Clique em um projeto</b> para abrir o plano: marcos, atividades por mês, concluir tarefas (recalcula o avanço na hora) e remanejar prazos com justificativa."},
   {view:"track",sel:'#trackLead',c:"Módulo 3 · Ciclo de Vida",t:"Pilar Portfolio × Líder",
    x:"A visão hierárquica do EEM: o <b>pilar Portfolio</b> enxerga o conjunto de projetos; cada <b>líder</b> acompanha somente os seus. KPIs, alertas e cronograma se recalculam na hora."},
+  {view:"lcescopo",sel:'#lcFlow1',c:"Módulo 3 · Ciclo de Vida",t:"O escopo do Módulo 3 no próprio sistema",
+   x:"A página <b>Escopo do Ciclo de Vida</b> documenta a nova demanda com fluxogramas (as <b>5 fases</b> da jornada e o <b>remanejamento com justificativa obrigatória</b>, o vermelhinho contra a baseline), as regras de ouro e a especificação para o desenvolvedor. Em cotação complementar (Wave 2)."},
   {view:"catalog",sel:'#catStats',c:"Configuração",t:"Catálogo, fonte única",
    x:"Define <b>quais documentos cada step exige</b> e a partir de qual tipo (A–E) são obrigatórios. Editável pelo admin: <b>mudou aqui, mudou no sistema inteiro</b>, sem tocar em código."},
   {view:"classify",sel:'#critList',c:"Configuração",t:"Como nasce o tipo A–E",
@@ -3206,7 +3351,6 @@ const TOUR=[
   {view:"team",sel:'#roleSel',c:"Administração",t:"Simule cada perfil",
    x:"Use <b>este seletor</b> no topo para ver a plataforma como Gerente, Auditor ou Admin, a interface se adapta às permissões de cada papel. Fim do tour, explore à vontade!"}
 ];
-for(let i=TOUR.length-1;i>=0;i--){if(TOUR[i].view==="lifecycle"||TOUR[i].view==="track")TOUR.splice(i,1);}
 let ti=-1;
 function ensureTourEls(){if(document.getElementById('tourOverlay'))return;
   const o=document.createElement('div');o.id='tourOverlay';o.innerHTML='<div id="tourHole"></div>';document.body.appendChild(o);
@@ -3300,7 +3444,7 @@ function propagateCatalog(){
 }
 
 const titles={dashboard:["Dashboard","Dashboard do Portfólio"],reports:["Relatórios","Relatórios & KPIs"],lifecycle:["Ciclo de Vida","Ciclo de Vida do Projeto"],track:["Portfólio EEM","Portfólio EEM · Acompanhamento Operacional (Módulo 3)"],project:["Steps & Documentos","Steps & Documentos do Projeto"],
-  psrescopo:["Escopo do PSR","Escopo do Módulo PSR, documentação viva"],draescopo:["Escopo do DRA","Escopo do Módulo DRA, documentação viva"],dra:["DRA Financeiro","Módulo 2 · DRA, Designação de Recursos e Autorização"],
+  lcescopo:["Escopo do Ciclo de Vida","Escopo do Módulo 3, documentação viva"],psrescopo:["Escopo do PSR","Escopo do Módulo PSR, documentação viva"],draescopo:["Escopo do DRA","Escopo do Módulo DRA, documentação viva"],dra:["DRA Financeiro","Módulo 2 · DRA, Designação de Recursos e Autorização"],
   catalog:["Catálogo","Catálogo de Documentos por Step"],
   gantt:["Cronograma","Cronograma do Portfólio"],classify:["Classificação","Classificação Automática"],
   docs:["Documentos","Automação de Documentação"],audit:["Auditoria","Auditoria & Conformidade"],
