@@ -709,6 +709,12 @@
   .esc-divider .lbl{font-family:"Poppins";font-size:12.5px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--brand-deep);white-space:nowrap}
   .esc-divider .tagx{font-size:10.5px;font-weight:600;color:var(--ink-faint);white-space:nowrap}
   .esc-divider .ln{flex:1;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--brand),rgba(0,96,168,.05))}
+  /* Módulo 3: remanejo de marco */
+  .pm-marco{cursor:pointer;transition:.15s}
+  .pm-marco:hover .dot{box-shadow:0 0 0 4px rgba(0,96,168,.14)}
+  .pm-marco .mrep{display:block;font-size:9px;color:var(--danger);font-weight:800;margin-top:2px}
+  .pm-marco.late .mm{color:var(--danger);font-weight:700}
+  #pmMarcoForm{border:1.5px dashed var(--danger);border-radius:12px;padding:12px 15px;margin:10px 0 4px;background:#fdf0f4}
 </style>
 </head>
 <body>
@@ -2897,8 +2903,9 @@ function openPlan(id){
   let h='';
   if(pl.rep)h+=`<div class="pm-rep"><b>Prazo final remanejado:</b> ${pl.rep.de} → ${pl.rep.para} por <b>${pl.rep.por}</b><br><span style="font-size:12px;color:var(--ink-soft)">Justificativa: ${pl.rep.just} · registrado na trilha de auditoria</span></div>`;
   h+=`<div class="pm-sec">Marcos do projeto <span style="font-weight:500;color:var(--ink-faint)">· visão gerencial, sem tarefas, só entregas</span></div><div class="pm-marcos">`+
-    pl.marcos.map(m=>{const st=m[2];const lbl={done:'Concluído',next:'Próximo',late:'Atrasado',pend:'Planejado'}[st];
-      return `<div class="pm-marco ${st}"><div class="dot"></div><div class="mm">${MESES[m[0]]}</div><div class="mt">${m[1]}</div><div class="ms">${lbl}</div></div>`;}).join('')+`</div>`;
+    pl.marcos.map((m,mi)=>{const st=m[2];const lbl={done:'Concluído',next:'Próximo',late:'Atrasado',pend:'Planejado'}[st];
+      const mrep=m[3]?`<span class="mrep" title="Justificativa: ${m[3].just}">↦ era ${m[3].de}</span>`:'';
+      return `<div class="pm-marco ${st} perm-w" onclick="pmMarcoForm(${mi})" title="Clique para remanejar este marco (justificativa obrigatória)"><div class="dot"></div><div class="mm">${MESES[m[0]]}</div><div class="mt">${m[1]}</div><div class="ms">${lbl}</div>${mrep}</div>`;}).join('')+`</div><div id="pmMarcoFormWrap"></div>`;
   h+=`<div class="pm-sec" style="margin-top:20px">Atividades por mês <span style="font-weight:500;color:var(--ink-faint)">· documentos e ações do projeto, clique para abrir o card</span></div>`;
   h+=`<div id="pmAddForm" style="display:none;border:1.5px dashed var(--brand);border-radius:12px;padding:13px 16px;margin-bottom:12px;background:var(--brand-soft)">
     <div class="pm-sec" style="margin:0 0 8px;font-size:12px">Nova atividade</div>
@@ -2934,6 +2941,34 @@ function openPlan(id){
   });
   document.getElementById('pmBody').innerHTML=h;
   document.getElementById('planModal').classList.remove('hidden');
+}
+let pmMarcoIdx=-1;
+function pmMarcoForm(i){
+  pmMarcoIdx=i;const pl=planOf(pmProj);const m=pl.marcos[i];
+  const w=document.getElementById('pmMarcoFormWrap');
+  w.innerHTML=`<div id="pmMarcoForm"><div class="pm-sec" style="margin:0 0 8px;font-size:12px">Remanejar o marco “${m[1]}” (hoje em ${MESES[m[0]]})</div>
+    <div class="reprow" style="margin-top:0">
+      <select id="mrepm" style="padding:8px 11px;border:1.5px solid var(--line);border-radius:9px;font-family:inherit;font-size:12.5px">${MESES.map((mm,k)=>`<option value="${k}" ${k===m[0]?'selected':''}>${mm} 26</option>`).join('')}</select>
+      <input type="text" id="mrepj" placeholder="Justificativa obrigatória, vai para a auditoria">
+      <button class="btn sm perm-w" onclick="pmMarcoSave()">Registrar remanejo</button>
+      <button class="btn ghost sm" onclick="document.getElementById('pmMarcoFormWrap').innerHTML=''">Cancelar</button>
+    </div></div>`;
+  w.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function pmMarcoSave(){
+  const pl=planOf(pmProj);const m=pl.marcos[pmMarcoIdx];
+  const nm=parseInt(document.getElementById('mrepm').value);
+  const j=(document.getElementById('mrepj').value||'').trim();
+  if(!j){toast('Informe a justificativa, ela é obrigatória para remanejar prazos.');return;}
+  if(nm===m[0]){toast('Escolha um mês diferente do atual para remanejar o marco.');return;}
+  const de=MESES[m[0]];
+  m[3]={de,just:j,por:'Você (sessão atual)'};m[0]=nm;if(m[2]!=='done')m[2]='late';
+  pl.marcos.sort((a,b)=>a[0]-b[0]);
+  const fimIdx=pmProj.gs+pmProj.gsp-1;
+  if(nm>fimIdx){const e=eemOf(pmProj);pl.rep={de:e.fim,para:MESES[nm]+' 26',por:'Você (sessão atual)',just:j,ext:Math.min(12-(pmProj.gs+pmProj.gsp),nm-fimIdx)};}
+  EXTRA_ALERTS.push({ic:'🔴',t:`Marco “${m[1]}” (${pmProj.name}) remanejado de ${de} para ${MESES[nm]}`,d:'Justificativa: '+j+' · registrado na trilha de auditoria'});
+  openPlan(pmProj.id);buildTrack();
+  toast('Marco remanejado de '+de+' para '+MESES[nm]+'. O desvio fica visível contra a baseline (vermelhinho) e a justificativa foi para a auditoria.');
 }
 function closePlan(){document.getElementById('planModal').classList.add('hidden');}
 function togglePmAct(i){document.getElementById('pmact'+i).classList.toggle('open');}
@@ -3193,7 +3228,7 @@ const HELP=[
 <li><b>Atividades por mês</b>, as ações do projeto (obras, software, infraestrutura…), além dos documentos. Cada atividade é um <b>card interativo</b>: descrição, checklist de premissas, checklist de pronto (DoD), responsável e documento baixável;</li>
 <li><b>Concluir atividade</b>, o botão “✓ Concluir” marca a entrega e <b>recalcula o avanço real do projeto na hora</b>; fechar todas as atividades do mês conclui o mês (“finalizou junho, fiz as atividades de junho”);</li>
 <li><b>+ Nova atividade</b>, adicione ações ao plano (mês, título e responsável) a qualquer momento;</li>
-<li><b>Remanejar prazo</b>, mudar a data de uma atividade <b>exige justificativa</b>, que vai para a auditoria e gera alerta no portfólio.</li></ol>
+<li><b>Remanejar prazo</b>, mudar a data de um <b>marco</b> (clique nele na linha de marcos) ou de uma atividade <b>exige justificativa</b>, que vai para a auditoria e gera alerta no portfólio. O marco remanejado mostra “era mês X” e o desvio fica visível contra a baseline (o vermelhinho).</li></ol>
 <h5>Visão hierárquica</h5>
 <ol><li><b>Pilar Portfolio</b> vê o conjunto (overview gerencial da fábrica);</li><li><b>Líder</b> vê e refina somente os seus projetos, KPIs, alertas e cronograma se recalculam na hora.</li></ol>`},
 {ic:"🗓",t:"Cronograma (por steps)",d:"A linha do tempo do portfólio vista pela ótica dos steps.",b:`
@@ -3335,7 +3370,7 @@ const TOUR=[
   {view:"track",sel:'#trackMacro',c:"Módulo 3 · Ciclo de Vida",t:"Cronograma macro, com o “vermelhinho”",
    x:"Cada barra vai do <b>início ao fim</b>; o losango é o marco do meio e a linha vermelha marca <b>hoje</b>. Quando um prazo é empurrado além do cronograma original, o trecho extra aparece <b>hachurado em vermelho</b>, a mudança fica visível para todos."},
   {view:"track",sel:'#trackList',c:"Módulo 3 · Ciclo de Vida",t:"Cards de andamento e o plano",
-   x:"Cada card traz <b>equipe, datas e a barra real × plano</b>. <b>Clique em um projeto</b> para abrir o plano: marcos, atividades por mês, concluir tarefas (recalcula o avanço na hora) e remanejar prazos com justificativa."},
+   x:"Cada card traz <b>equipe, datas e a barra real × plano</b>. <b>Clique em um projeto</b> para abrir o plano: <b>marcos remanejáveis</b> (clique em um, a justificativa é obrigatória e o desvio vira o vermelhinho contra a baseline), atividades por mês e concluir tarefas (recalcula o avanço na hora)."},
   {view:"track",sel:'#trackLead',c:"Módulo 3 · Ciclo de Vida",t:"Pilar Portfolio × Líder",
    x:"A visão hierárquica do EEM: o <b>pilar Portfolio</b> enxerga o conjunto de projetos; cada <b>líder</b> acompanha somente os seus. KPIs, alertas e cronograma se recalculam na hora."},
   {view:"lcescopo",sel:'#lcFlow1',c:"Módulo 3 · Ciclo de Vida",t:"O escopo do Módulo 3 no próprio sistema",
