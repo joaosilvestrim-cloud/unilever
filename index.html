@@ -735,6 +735,15 @@
   .nm-chip{display:inline-flex;align-items:center;gap:6px;background:var(--brand-soft);color:var(--brand-deep);border:1px solid #bcd8ef;font-size:11.5px;font-weight:600;padding:4px 10px;border-radius:99px}
   .nm-chip i{cursor:pointer;font-style:normal;color:var(--danger);font-weight:800}
   @media(max-width:900px){.cvp-stat{grid-template-columns:repeat(2,1fr)}.cvp-wrap{overflow-x:auto}.cvp-tbl{min-width:640px}}
+  /* Gestão de Projetos (Módulo 3) */
+  .org-badge{display:inline-block;font-size:9.5px;font-weight:800;letter-spacing:.3px;padding:3px 9px;border-radius:99px;white-space:nowrap}
+  .org-psr{background:#e4f0fa;color:#0060A8}
+  .org-man{background:#fdf3e3;color:#8a5b00}
+  .cvg-bar{height:7px;border-radius:4px;background:var(--surface-2);overflow:hidden;min-width:70px}
+  .cvg-bar i{display:block;height:100%;border-radius:4px;background:var(--brand)}
+  .cvg-wrap{overflow-x:auto}
+  .cvg-wrap .cvp-tbl{min-width:860px}
+  .cvg-filters{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
 </style>
 </head>
 <body>
@@ -773,8 +782,9 @@
     <div class="nav-item nav-sub" data-tab="hist" onclick="draNav('hist')">History</div>
     <div class="nav-item" data-view="draescopo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h4"/></svg>Escopo do DRA</div>
     <div class="nav-label">Módulo 3 · Ciclo de Vida, Novo</div>
-    <div class="nav-item" data-view="lifecycle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v5h-5"/><circle cx="12" cy="12" r="2.4"/></svg>Ciclo de Vida<span class="badge">Novo</span></div>
+    <div class="nav-item" data-view="cvgest"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="4" rx="1.5"/><rect x="3" y="10" width="18" height="4" rx="1.5"/><rect x="3" y="16" width="12" height="4" rx="1.5"/></svg>Gestão de Projetos<span class="nav-cnt" id="cvgBadge" style="display:none"></span></div>
     <div class="nav-item" data-view="track"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 3v18h18"/><path d="M7 15l3-4 3 2 5-6"/><circle cx="7" cy="15" r="1.4" fill="currentColor" stroke="none"/><circle cx="18" cy="7" r="1.4" fill="currentColor" stroke="none"/></svg>Portfólio EEM<span class="badge">Novo</span></div>
+    <div class="nav-item" data-view="lifecycle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v5h-5"/><circle cx="12" cy="12" r="2.4"/></svg>Ciclo de Vida<span class="badge">Novo</span></div>
     <div class="nav-item" data-view="lcescopo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h4"/></svg>Escopo do Ciclo de Vida</div>
     <div class="nav-label">Configuração</div>
     <div class="nav-item" data-view="catalog"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 6h16M4 12h16M4 18h10"/><circle cx="20" cy="18" r="2"/></svg>Catálogo de Documentos</div>
@@ -1637,9 +1647,10 @@
         <div class="tblwrap" style="border:0;margin-top:6px"><table class="tbl">
           <thead><tr><th style="text-align:center">#</th><th>Tela</th><th>Pergunta que responde</th><th>Origem do dado</th></tr></thead>
           <tbody>
-            <tr><td style="text-align:center;color:var(--ink-faint);font-weight:700">1</td><td style="font-weight:600">Ciclo de Vida</td><td>Como está a jornada deste projeto? (5 fases, saúde, histórico de evolução)</td><td>Projeto + plano</td></tr>
+            <tr><td style="text-align:center;color:var(--ink-faint);font-weight:700">1</td><td style="font-weight:600">Gestão de Projetos</td><td>Quais projetos existem e de onde vieram? (PSR automático × sem CAPEX manual, filtros, saúde e acesso ao espaço de cada um)</td><td>Todos os projetos</td></tr>
             <tr><td style="text-align:center;color:var(--ink-faint);font-weight:700">2</td><td style="font-weight:600">Portfólio EEM</td><td>Como está o andamento de todos? (cronograma macro, marcos, on/off track, alertas)</td><td>Planos + baseline</td></tr>
-            <tr><td style="text-align:center;color:var(--ink-faint);font-weight:700">3</td><td style="font-weight:600">Espaço do projeto</td><td>Como está este projeto por dentro? Marcos remanejáveis e atividades com prazo, status, descrição, documento e log de atualizações (clique em qualquer projeto)</td><td>Plano + atividades</td></tr>
+            <tr><td style="text-align:center;color:var(--ink-faint);font-weight:700">3</td><td style="font-weight:600">Ciclo de Vida</td><td>Como está a jornada deste projeto? (5 fases, saúde, histórico de evolução)</td><td>Projeto + plano</td></tr>
+            <tr><td style="text-align:center;color:var(--ink-faint);font-weight:700">4</td><td style="font-weight:600">Espaço do projeto</td><td>Como está este projeto por dentro? Marcos remanejáveis e atividades com prazo, status, descrição, documento e log de atualizações (clique em qualquer projeto)</td><td>Plano + atividades</td></tr>
           </tbody>
         </table></div>
         <div class="section-title" style="font-size:13.5px;margin-top:20px">Na prática: a jornada de acompanhamento <span class="muted" style="font-weight:500;font-size:11px">· do plano ao encerramento</span></div>
@@ -1669,6 +1680,7 @@
             <tr><td>status (on/off track)</td><td>calculado</td><td>Desvio entre avanço real e planejado</td></tr>
             <tr><td>saúde</td><td>calculada</td><td>Combina fase, gate documental (PSR), prazo e finanças (DRA), somente leitura dos outros módulos</td></tr>
             <tr><td>fallback</td><td>derivação</td><td>Projetos novos (do wizard) ganham plano derivado automaticamente, nenhuma tela quebra sem dados</td></tr>
+            <tr><td>origem</td><td>PSR (automática) × manual (sem CAPEX)</td><td>Derivada do cadastro; exibida como selo em toda a Gestão de Projetos</td></tr>
           </tbody>
         </table></div>
       </div>
@@ -1687,6 +1699,29 @@
             <tr><td>Permissões</td><td>Gerente edita plano, atividades e remaneja (com justificativa); Auditor somente leitura; escrita oculta no perfil Auditor (perm-w)</td></tr>
           </tbody>
         </table></div>
+      </div>
+    </section>
+
+    <!-- GESTÃO DE PROJETOS (MÓDULO 3) -->
+    <section class="view hidden" id="view-cvgest">
+      <div class="toolbanner">
+        <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><rect x="3" y="4" width="18" height="4" rx="1.5"/><rect x="3" y="10" width="18" height="4" rx="1.5"/><rect x="3" y="16" width="12" height="4" rx="1.5"/></svg></div>
+        <div><h3>Gestão de Projetos · Módulo 3</h3><p>Todos os projetos da fábrica em um só lugar: os do <b>PSR</b> (entrada automática) e os <b>sem CAPEX</b> (inseridos manualmente). Filtre por origem e status, e abra o espaço de cada projeto.</p></div>
+        <button class="btn sm perm-w" style="margin-left:auto;background:#fff;color:var(--brand-deep)" onclick="cvAdd()">+ Novo projeto (sem CAPEX)</button>
+      </div>
+      <div class="kpi-grid" id="cvgStats" style="grid-template-columns:repeat(6,1fr)"></div>
+      <div class="cvg-filters">
+        <div><label class="dra-lbl">Origem</label><div class="ctry-pills" id="cvgPills">
+          <button class="ctry on" data-o="all" onclick="cvgSet('all')">Todos</button>
+          <button class="ctry" data-o="psr" onclick="cvgSet('psr')">Do PSR · automático</button>
+          <button class="ctry" data-o="manual" onclick="cvgSet('manual')">Sem CAPEX · manual</button>
+        </div></div>
+        <div><label class="dra-lbl">Status</label><select id="cvgStatus" class="role-sel" onchange="buildCvGest()"><option value="all">Todos</option><option>On track</option><option>Off track</option><option>Adiantado</option></select></div>
+        <div style="flex:1;min-width:180px"><label class="dra-lbl">Busca</label><input id="cvgSearch" class="role-sel" style="width:100%" placeholder="Projeto, dono, categoria..." oninput="buildCvGest()"></div>
+      </div>
+      <div class="card" style="overflow:hidden">
+        <div class="docs-head"><div><div class="st" id="cvgTitle">Projetos</div><div class="muted">Clique em um projeto para abrir o espaço (marcos e atividades) · ✎ os sem CAPEX nascem aqui, os do PSR entram sozinhos</div></div></div>
+        <div class="cvg-wrap"><table class="cvp-tbl"><thead><tr><th>Origem</th><th style="width:26%">Projeto</th><th>Dono</th><th>Período</th><th>Próximo marco</th><th>Atividades</th><th>Progresso</th><th>Status</th><th></th></tr></thead><tbody id="cvgBody"></tbody></table></div>
       </div>
     </section>
 
@@ -2881,7 +2916,7 @@ function eemStatus(p){const e=eemOf(p);const d=(p.schP||0)-e.plan;const days=Mat
 function avColor(s){const c=['#0060A8','#1f9d57','#e8930c','#8250df','#d6336c','#0a9396'];let h=0;for(const ch of (s||'?'))h=(h*31+ch.charCodeAt(0))%c.length;return c[h];}
 const CV_PROJECTS=[
   {id:"CV1",simple:true,type:"S",name:"Automação de Relatórios de Qualidade",loc:"Pouso Alegre · Digitalização · Sem CAPEX",cur:1,budP:0,budA:0,com:0,sav:120000,savType:"Hard Save",schP:35,lead:"Maria Correa",oi:"—",gs:5,gsp:5},
-  {id:"CV2",simple:true,type:"S",name:"Troca de Sensores Linha 3",loc:"Pouso Alegre · Melhoria · Sem CAPEX",cur:1,budP:0,budA:0,com:0,sav:80000,savType:"Cost Avoidance",schP:60,lead:"Jean Ramos",oi:"—",gs:4,gsp:4},
+  {id:"CV2",simple:true,type:"S",name:"Sensorização IoT da Linha 3",loc:"Pouso Alegre · Melhoria · Sem CAPEX",cur:1,budP:0,budA:0,com:0,sav:80000,savType:"Cost Avoidance",schP:60,lead:"Jean Ramos",oi:"—",gs:4,gsp:4},
 ];
 CV_PROJECTS[0]._plan={rep:null,marcos:[[5,'Início do projeto','done'],[6,'Mapeamento dos relatórios','done'],[7,'Desenvolvimento do fluxo','next'],[8,'Go-live e treinamento','pend'],[9,'Encerramento','pend']],acts:[]};
 CV_PROJECTS[0]._tasks=[
@@ -2900,6 +2935,51 @@ CV_PROJECTS[1]._tasks=[
   {id:5,t:'Comissionamento',due:'2026-08-18',st:'pend',marco:2,desc:'Teste ponta a ponta com a produção rodando.',notes:[],rep:null}];
 CV_PROJECTS[1].schP=20;
 const eemAll=()=>PROJECTS.concat(CV_PROJECTS);
+/* ===== Gestão de Projetos (Módulo 3): hub com origem PSR × manual ===== */
+let cvgO='all';
+function cvgSet(o){cvgO=o;document.querySelectorAll('#cvgPills .ctry').forEach(b=>b.classList.toggle('on',b.dataset.o===o));buildCvGest();}
+function cvgLate(p){const ts=p._tasks;if(ts)return ts.filter(t=>t.st!=='done'&&t.due&&t.due<cvToday).length;return (planOf(p).acts||[]).filter(a=>a[3]==='late').length;}
+function cvgRep(p){const pl=planOf(p);return !!(pl.rep||pl.marcos.some(m=>m[3])||(p._tasks||[]).some(t=>t.rep));}
+function buildCvGest(){
+  const q=(document.getElementById('cvgSearch').value||'').toLowerCase();
+  const stF=document.getElementById('cvgStatus').value;
+  const all=eemAll();
+  const off=all.filter(p=>eemStatus(p).label==='Off track').length;
+  const badge=document.getElementById('cvgBadge');
+  if(badge){badge.textContent=off;badge.style.display=off?'':'none';}
+  const psr=all.filter(p=>!p.simple).length,man=all.filter(p=>p.simple).length;
+  const lateT=all.reduce((a,p)=>a+cvgLate(p),0);
+  const reman=all.filter(cvgRep).length;
+  document.getElementById('cvgStats').innerHTML=[
+    {k:'Projetos',v:all.length,c:'var(--brand)'},
+    {k:'Do PSR (auto)',v:psr,c:'var(--brand-2)'},
+    {k:'Sem CAPEX (manual)',v:man,c:'var(--warn)'},
+    {k:'Off track',v:off,c:off?'var(--danger)':'var(--ok)'},
+    {k:'Remanejados',v:reman,c:reman?'var(--warn)':'var(--ink-soft)'},
+    {k:'Ativ. atrasadas',v:lateT,c:lateT?'var(--danger)':'var(--ok)'}
+  ].map(x=>`<div class="card kpi"><div class="lbl">${x.k}</div><div class="val" style="color:${x.c}">${x.v}</div></div>`).join('');
+  const list=all.filter(p=>(cvgO==='all'||(cvgO==='manual'?p.simple:!p.simple))
+    &&(stF==='all'||eemStatus(p).label===stF)
+    &&(!q||(p.name+' '+p.lead+' '+(p.loc||'')).toLowerCase().includes(q)));
+  document.getElementById('cvgTitle').textContent='Projetos · '+list.length+' de '+all.length;
+  document.getElementById('cvgBody').innerHTML=list.map(p=>{
+    const st=eemStatus(p),pl=planOf(p);
+    const nx=pl.marcos.find(m=>m[2]==='next'||m[2]==='late');
+    const ts=p._tasks;const done=ts?ts.filter(t=>t.st==='done').length:(pl.acts||[]).filter(a=>a[3]==='done').length;
+    const tot=ts?ts.length:(pl.acts||[]).length;
+    const late=cvgLate(p);
+    return `<tr class="cvp-row" onclick="cvOpen('${p.id}')">
+      <td><span class="org-badge ${p.simple?'org-man':'org-psr'}">${p.simple?'MANUAL · S/ CAPEX':'PSR · AUTO'}</span></td>
+      <td style="font-weight:600">${p.name}${cvgRep(p)?' <span class="cvp-chip cvp-late" title="Prazo remanejado com justificativa">↦</span>':''}<br><span class="muted" style="font-size:10.5px;font-weight:500">${p.simple?(p.savType||'Saving')+' · '+eur(p.sav):'Tipo '+p.type+' · OI '+p.oi}</span></td>
+      <td>${p.lead}</td>
+      <td class="muted">${MESES[p.gs]} → ${MESES[Math.min(11,p.gs+p.gsp-1)]}</td>
+      <td class="muted" style="font-size:11.5px">${nx?nx[1]:'—'}</td>
+      <td>${done}/${tot}${late?' <span class="cvp-chip cvp-late">'+late+' atrasada'+(late>1?'s':'')+'</span>':''}</td>
+      <td><div class="cvg-bar"><i style="width:${Math.min(100,p.schP||0)}%${(p.schP||0)>=100?';background:var(--ok)':''}"></i></div><span class="muted" style="font-size:10.5px">${p.schP||0}%</span></td>
+      <td><span class="tk-status ${st.cls}"><span class="dot"></span>${st.label}</span></td>
+      <td style="text-align:right;white-space:nowrap"><button class="btn ghost sm" onclick="event.stopPropagation();switchView('lifecycle');buildLifecycle('${p.id}')">Jornada</button> <button class="btn sm" onclick="event.stopPropagation();cvOpen('${p.id}')">Abrir</button></td></tr>`;
+  }).join('')||'<tr><td colspan="9" class="muted" style="padding:18px">Nenhum projeto com esses filtros.</td></tr>';
+}
 /* ===== Espaço do projeto sem CAPEX: navegação e gestão madura de atividades ===== */
 let cvProj=null,cvOpenTask=-1,cvNewMarcos=[];
 const cvToday='2026-07-20';
@@ -3464,7 +3544,7 @@ const HELP=[
 <tr><td><b>Visão Geral</b></td><td>Dashboard do portfólio e Relatórios & KPIs, a foto executiva.</td></tr>
 <tr><td><b>Módulo 1 · PSR</b></td><td>A governança documental: Steps & Documentos → Cronograma → Auditoria → <b>Escopo do PSR</b> (a documentação viva do módulo). <b>Coberto pela proposta vigente.</b></td></tr>
 <tr><td><b>Módulo 2 · DRA</b></td><td>Financeiro por OI (Designação de Recursos e Autorização), com os subitens na ordem da jornada (Overview → Pipeline → Grid → Reconciliation → Orders → History), <b>consolidação LATAM</b> (Brasil, Argentina, México) e a página <b>Escopo do DRA</b>. <b>Coberto pela proposta vigente.</b></td></tr>
-<tr><td><b>Módulo 3 · Ciclo de Vida (novo)</b></td><td><b>Ciclo de Vida</b>, <b>Portfólio EEM</b> e a página <b>Escopo do Ciclo de Vida</b>: a monitoria gerencial por marcos, com remanejamento justificado e status calculado (demanda de 03/07). <b>Em cotação complementar (Wave 2).</b></td></tr>
+<tr><td><b>Módulo 3 · Ciclo de Vida (novo)</b></td><td><b>Gestão de Projetos</b> (origem PSR × manual), <b>Portfólio EEM</b>, <b>Ciclo de Vida</b> e a página <b>Escopo do Ciclo de Vida</b>: a monitoria gerencial por marcos, com remanejamento justificado e status calculado (demanda de 03/07). <b>Em cotação complementar (Wave 2).</b></td></tr>
 <tr><td><b>Configuração</b></td><td>Catálogo de Documentos, Classificação (A–E) e Integrações.</td></tr>
 <tr><td><b>Administração</b></td><td>Equipe & Papéis (RBAC).</td></tr></table>
 <div class="tip">💡 Use o <b>Tour guiado</b> (botão no topo) para uma apresentação passo a passo, ou navegue por este manual pelas seções ao lado.</div>`},
@@ -3544,6 +3624,7 @@ const HELP=[
 <h5>Plano do projeto (marcos + atividades)</h5>
 <ol><li><b>Clique em um projeto</b> para abrir o plano;</li>
 <li><b>Marcos</b>, a visão gerencial: só as entregas com data (sem microtarefas);</li>
+<li><b>Gestão de Projetos</b>, o hub do módulo: todos os projetos com o selo de origem (<b>PSR · automático</b> × <b>Manual · sem CAPEX</b>), filtros por origem/status, busca, progresso, atividades atrasadas e acesso direto ao espaço de cada projeto;</li>
 <li><b>Espaço do projeto</b>, clique em um projeto (do PSR ou sem CAPEX) para abrir a página do plano: marcos remanejáveis, e atividades com <b>prazo, status, descrição, documento anexado e log de atualizações</b>, tudo em nome do dono do projeto;</li>
 <li><b>Status da atividade</b>, mude entre Planejada, Em andamento e Concluída direto na tabela; nos projetos sem CAPEX o avanço recalcula na hora, e prazos vencidos ganham o selo <b>Atrasada</b> automaticamente;</li>
 <li><b>+ Nova atividade</b>, adicione ações ao plano (mês e título); a responsabilidade é sempre do <b>dono do projeto</b>, sem atribuição por atividade;</li>
@@ -3675,14 +3756,8 @@ const TOUR=[
    x:"Como as abas mensais da planilha: cada mês é uma <b>versão do DRA</b>. Aqui fica a <b>evolução do total do ano</b> (de 8.900 para 7.599 k€) e o <b>log de variações</b>: projetos incluídos, removidos e remanejos, com autor, a rastreabilidade que a diretoria olha."},
   {view:"draescopo",sel:'#scopeFlow1',c:"Módulo 2 · DRA",t:"O escopo explicado no próprio sistema",
    x:"A página Escopo do DRA documenta o módulo com <b>fluxogramas</b> (arquitetura de dados, ciclo mensal, workflow Marlin/AI), as <b>regras de ouro</b> e a <b>especificação técnica para o desenvolvedor</b>: modelo de dados, de-para SAP → planilha → sistema, fórmulas, permissões e a <b>camada Power BI</b> (o que fica no sistema × o que fica no BI, com as páginas propostas). Qualquer pessoa entende o DRA sem treinamento."},
-  {view:"lifecycle",sel:'#lcPhases',c:"Módulo 3 · Ciclo de Vida",t:"A jornada completa do projeto",
-   x:"O coração do Módulo 3: <b>Iniciação → Planejamento → Execução → Monitoramento → Encerramento</b>. Cada fase com status calculado pelo sistema."},
-  {view:"lifecycle",sel:'#lcHealth',c:"Módulo 3 · Ciclo de Vida",t:"Saúde do projeto",
-   x:"Quatro cartões respondem <b>como está o projeto</b>: status on/off track, documentos inseridos × exigidos, financeiro executado × aprovado e o <b>próximo marco</b>, com aviso se atrasado."},
-  {view:"lifecycle",sel:'#lcEvents',c:"Módulo 3 · Ciclo de Vida",t:"Histórico de evolução",
-   x:"A linha do tempo do projeto: cadastro, cronograma, cada step concluído (gate 100%) e todos os <b>remanejamentos com autor e justificativa</b>. A rastreabilidade pedida para auditoria."},
-  {view:"lifecycle",sel:'#lcLinks',c:"Módulo 3 · Ciclo de Vida",t:"Atalhos contextuais",
-   x:"Saltos diretos para o <b>plano, os documentos, o PSR, o DRA e a auditoria</b>, já no contexto do projeto selecionado. Comece o dia por aqui."},
+  {view:"cvgest",sel:'#cvgBody',c:"Módulo 3 · Ciclo de Vida",t:"Gestão de Projetos, o hub do módulo",
+   x:"Todos os projetos da fábrica em um só lugar, com o <b>selo de origem</b>: <b>PSR · automático</b> (entram sozinhos, obrigatório) × <b>Manual · sem CAPEX</b> (nascem aqui). Filtros por origem e status, progresso, atividades atrasadas e o botão <b>Abrir</b> leva ao espaço do projeto."},
   {view:"track",sel:'#trackKpis',c:"Módulo 3 · Ciclo de Vida",t:"On track ou off track?",
    x:"O Portfólio EEM compara o <b>avanço real × planejado</b> e classifica sozinho: <b>on track, off track ou adiantado</b>, a visão gerencial que a fábrica precisa, sem status reportado manualmente."},
   {view:"track",sel:'#trackAlerts',c:"Módulo 3 · Ciclo de Vida",t:"Alertas automáticos",
@@ -3693,6 +3768,14 @@ const TOUR=[
    x:"Cada card traz <b>equipe, datas e a barra real × plano</b>. <b>Clique em um projeto</b> para abrir o plano: <b>marcos remanejáveis</b> (clique em um, a justificativa é obrigatória e o desvio vira o vermelhinho contra a baseline), atividades por mês e concluir tarefas (recalcula o avanço na hora)."},
   {view:"track",sel:'#trackLead',c:"Módulo 3 · Ciclo de Vida",t:"Pilar Portfolio × Líder",
    x:"A visão hierárquica do EEM: o <b>pilar Portfolio</b> enxerga o conjunto de projetos; cada <b>líder</b> acompanha somente os seus. KPIs, alertas e cronograma se recalculam na hora."},
+  {view:"lifecycle",sel:'#lcPhases',c:"Módulo 3 · Ciclo de Vida",t:"A jornada completa do projeto",
+   x:"O coração do Módulo 3: <b>Iniciação → Planejamento → Execução → Monitoramento → Encerramento</b>. Cada fase com status calculado pelo sistema."},
+  {view:"lifecycle",sel:'#lcHealth',c:"Módulo 3 · Ciclo de Vida",t:"Saúde do projeto",
+   x:"Quatro cartões respondem <b>como está o projeto</b>: status on/off track, documentos inseridos × exigidos, financeiro executado × aprovado e o <b>próximo marco</b>, com aviso se atrasado."},
+  {view:"lifecycle",sel:'#lcEvents',c:"Módulo 3 · Ciclo de Vida",t:"Histórico de evolução",
+   x:"A linha do tempo do projeto: cadastro, cronograma, cada step concluído (gate 100%) e todos os <b>remanejamentos com autor e justificativa</b>. A rastreabilidade pedida para auditoria."},
+  {view:"lifecycle",sel:'#lcLinks',c:"Módulo 3 · Ciclo de Vida",t:"Atalhos contextuais",
+   x:"Saltos diretos para o <b>plano, os documentos, o PSR, o DRA e a auditoria</b>, já no contexto do projeto selecionado. Comece o dia por aqui."},
   {view:"lcescopo",sel:'#lcFlow1',c:"Módulo 3 · Ciclo de Vida",t:"O escopo do Módulo 3 no próprio sistema",
    x:"A página <b>Escopo do Ciclo de Vida</b> documenta a nova demanda com fluxogramas (as <b>5 fases</b> da jornada e o <b>remanejamento com justificativa obrigatória</b>, o vermelhinho contra a baseline), as regras de ouro e a especificação para o desenvolvedor. Refinado em 20/07: <b>todos os projetos passam pelo módulo</b> e os <b>sem CAPEX</b> nascem aqui, com tipo de saving. Em cotação complementar (Wave 2)."},
   {view:"catalog",sel:'#catStats',c:"Configuração",t:"Catálogo, fonte única",
@@ -3799,7 +3882,7 @@ function propagateCatalog(){
 }
 
 const titles={dashboard:["Dashboard","Dashboard do Portfólio"],reports:["Relatórios","Relatórios & KPIs"],lifecycle:["Ciclo de Vida","Ciclo de Vida do Projeto"],track:["Portfólio EEM","Portfólio EEM · Acompanhamento Operacional (Módulo 3)"],project:["Steps & Documentos","Steps & Documentos do Projeto"],
-  cvproj:["Plano do projeto","Espaço do projeto, marcos e atividades"],lcescopo:["Escopo do Ciclo de Vida","Escopo do Módulo 3, documentação viva"],psrescopo:["Escopo do PSR","Escopo do Módulo PSR, documentação viva"],draescopo:["Escopo do DRA","Escopo do Módulo DRA, documentação viva"],dra:["DRA Financeiro","Módulo 2 · DRA, Designação de Recursos e Autorização"],
+  cvgest:["Gestão de Projetos","Módulo 3 · todos os projetos, do PSR e sem CAPEX"],cvproj:["Plano do projeto","Espaço do projeto, marcos e atividades"],lcescopo:["Escopo do Ciclo de Vida","Escopo do Módulo 3, documentação viva"],psrescopo:["Escopo do PSR","Escopo do Módulo PSR, documentação viva"],draescopo:["Escopo do DRA","Escopo do Módulo DRA, documentação viva"],dra:["DRA Financeiro","Módulo 2 · DRA, Designação de Recursos e Autorização"],
   catalog:["Catálogo","Catálogo de Documentos por Step"],
   gantt:["Cronograma","Cronograma do Portfólio"],classify:["Classificação","Classificação Automática"],
   docs:["Documentos","Automação de Documentação"],audit:["Auditoria","Auditoria & Conformidade"],
@@ -3815,6 +3898,7 @@ function switchView(v){document.querySelectorAll('.view').forEach(s=>s.classList
   if(v==='track')buildTrack();
   if(v==='lifecycle')buildLifecycle(document.getElementById('lcSel').value||'P1');
   if(v==='dra'){buildDRA();draTabsBuild();syncDraNav();}
+  if(v==='cvgest'){buildCvGest();}
   window.scrollTo({top:0,behavior:'smooth'});}
 document.querySelectorAll('[data-view]').forEach(n=>n.addEventListener('click',()=>switchView(n.dataset.view)));
 function enterApp(){const l=document.getElementById('login');l.style.opacity='0';setTimeout(()=>{l.style.display='none';startOnb();},500);}
