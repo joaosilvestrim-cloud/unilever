@@ -1036,7 +1036,8 @@
       <!-- PANE: ORDERS -->
       <div class="dra-pane hidden" id="pane-ord">
         <div class="card" style="padding:16px 20px;margin-bottom:14px">
-          <div class="section-title" style="font-size:15px">Order management (KO03)</div>
+          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap"><div class="section-title" style="font-size:15px">Order management (KO03)</div><button class="btn sm perm-w" style="margin-left:auto" onclick="ordEdit(-1)">+ Lançar ordem (KO03)</button></div>
+          <div class="muted" style="font-size:11.5px;margin-top:4px"><b>Lançamento manual:</b> os dados mestre são consultados no SAP (transação KO03, tela "Exibir ordem interna: dados mestre") e inseridos aqui pelo usuário, ordem, texto breve (tipo CPBR), nº externo (CPX), datas, status e motivo do investimento. <b>Não há importação de planilha nem robô para o KO03.</b></div>
           <div class="muted" style="font-size:12.5px">Dados mestres das ordens: datas de entrada, início e fim do trabalho e status do sistema. Ordens vencidas ou antigas geram alerta para <b>encerrar com o líder</b> ou <b>prorrogar via Poupatempo</b>. Status SAP: 30 = Active (aberto) · 40 = Closed (encerrado) · 50 = Technically closed (sem novos gastos, pedidos existentes seguem). Atenção: o <b>responsável cadastrado no SAP</b> pode ser diferente do <b>líder real</b> do projeto, o sistema mostra os dois.</div>
         </div>
         <div class="card" style="overflow:hidden">
@@ -1209,7 +1210,7 @@
             <tr><td style="text-align:center;color:var(--ink-faint);font-weight:700">2</td><td style="font-weight:600">Pipeline</td><td>O que está no funil, antes de virar Draft? (Idea → Feas → BC → No Go)</td><td>Risk In-Out</td></tr>
             <tr><td style="text-align:center;color:var(--ink-faint);font-weight:700">3</td><td style="font-weight:600">DRA Grid</td><td>A planilha viva: projetos, meses, quarters, forecast, disponível, com edição manual ✎</td><td>GRR3 + KOB1 + ajustes</td></tr>
             <tr><td style="text-align:center;color:var(--ink-faint);font-weight:700">4</td><td style="font-weight:600">Reconciliation</td><td>O que mudou entre o SAP e a minha última validação? Publico?</td><td>Extração × validado</td></tr>
-            <tr><td style="text-align:center;color:var(--ink-faint);font-weight:700">5</td><td style="font-weight:600">Orders (KO03)</td><td>Que ordens preciso encerrar ou prorrogar (Poupatempo)?</td><td>KO03</td></tr>
+            <tr><td style="text-align:center;color:var(--ink-faint);font-weight:700">5</td><td style="font-weight:600">Orders (KO03)</td><td>Que ordens preciso encerrar ou prorrogar (Poupatempo)?</td><td>KO03, lançamento manual (espelha os dados mestre do SAP)</td></tr>
             <tr><td style="text-align:center;color:var(--ink-faint);font-weight:700">6</td><td style="font-weight:600">History</td><td>Como o total do ano evoluiu e o que mudou entre versões, por quem?</td><td>Versões mensais</td></tr>
           </tbody>
         </table></div>
@@ -1926,6 +1927,26 @@
   </div>
 </div>
 
+<div id="ordModal" class="hidden" style="position:fixed;inset:0;z-index:170;background:rgba(8,20,34,.55);backdrop-filter:blur(3px);display:grid;place-items:center;padding:24px">
+  <div style="background:#fff;border-radius:16px;width:min(620px,95vw);max-height:92vh;overflow:auto;box-shadow:0 40px 90px -30px rgba(0,0,0,.6)">
+    <div style="padding:16px 20px;border-bottom:1px solid var(--line)"><div style="font-family:Poppins;font-weight:700;font-size:15px" id="ordTitle">Lançar ordem (KO03) · dados mestre</div><div class="muted" style="font-size:12px">Espelha a tela do SAP "Exibir ordem interna: dados mestre". Consulte na KO03 e lance aqui, manualmente.</div></div>
+    <div class="ge-fields" style="padding:18px 20px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div><label class="dra-lbl">Ordem (OI)</label><input id="ko_oi" class="role-sel" style="width:100%" placeholder="Ex.: 8101016544"></div>
+      <div><label class="dra-lbl">Tipo ordem</label><input class="role-sel" style="width:100%;background:var(--surface-2)" value="CPBR · Capital Project - Brazil" disabled></div>
+      <div style="grid-column:span 2"><label class="dra-lbl">Texto breve</label><input id="ko_name" class="role-sel" style="width:100%" placeholder="Ex.: New line SQZ"></div>
+      <div><label class="dra-lbl">Nº externo de ordem (CPX)</label><input id="ko_cpx" class="role-sel" style="width:100%" placeholder="Ex.: CPX148619"></div>
+      <div><label class="dra-lbl">Motivo investimento</label><select id="ko_mot" class="role-sel" style="width:100%"><option value="AO">AO · Capex</option><option value="R2">R2</option><option value="OA">OA · Other Administration</option></select></div>
+      <div><label class="dra-lbl">Data de entrada</label><input id="ko_entry" type="date" class="role-sel" style="width:100%"></div>
+      <div><label class="dra-lbl">Início do trabalho</label><input id="ko_ws" type="date" class="role-sel" style="width:100%"></div>
+      <div><label class="dra-lbl">Fim do trabalho</label><input id="ko_we" type="date" class="role-sel" style="width:100%"></div>
+      <div><label class="dra-lbl">Status do sistema</label><select id="ko_st" class="role-sel" style="width:100%"><option value="30">30 · Aberto</option><option value="40">40 · Encerrado</option><option value="50">50 · Encerrado tecnicamente</option></select></div>
+      <div style="grid-column:span 2"><label class="dra-lbl">Líder do projeto</label><input id="ko_lead" class="role-sel" style="width:100%" placeholder="Líder real (pode diferir do responsável SAP)"></div>
+      <div style="grid-column:span 2;background:var(--surface-2);border-radius:10px;padding:10px 14px;font-size:12px;color:var(--ink-soft)">Centro: <b>5038 · UBI Fca Pouso Alegre</b> · Empresa 9311 · Área ULAM (pré-definidos). O lançamento fica registrado na auditoria; o fim do trabalho alimenta os alertas de vencimento.</div>
+    </div>
+    <div class="wz-foot"><button class="btn ghost sm" onclick="ordClose()">Cancelar</button><button class="btn sm" onclick="ordSave()">Salvar ordem</button></div>
+  </div>
+</div>
+
 <!-- CONVIDAR USUÁRIO -->
 <div id="inviteModal" class="hidden">
   <div class="im">
@@ -2552,7 +2573,7 @@ function buildRecon() {
     return `<tr><td style="font-weight:600">${r.name}<br><span class="muted" style="font-size:10.5px">${r.cpx}</span></td><td>${r.month}</td>
       <td style="text-align:right">${kf(r.sap)}</td><td style="text-align:right">${kf(r.val)}</td>
       <td style="text-align:right" class="${d > 0 ? "rec-delta-pos" : "rec-delta-neg"}">${d > 0 ? "+" : ""}${kf(d)}</td>
-      <td style="text-align:center;white-space:nowrap">${act}</td></tr>`;
+      <td style="text-align:center;white-space:nowrap"><button class="ib perm-w" title="Editar dados mestre (KO03)" onclick="ordEdit(${i})">✎</button> ${act}</td></tr>`;
   }).join("");
   const pub = document.getElementById("recPublish");
   pub.innerHTML = `<div class="dra-pb"><div style="flex:1;min-width:240px"><div class="section-title" style="font-size:14.5px">Publish to Power BI</div>
@@ -2564,13 +2585,46 @@ function reconAct(i, mode) { RECON[i].done = mode; buildRecon(); toast(mode === 
 function reconPublish() { const s = document.getElementById("recStatus"); if (s) { s.textContent = "● Published to BI"; } toast("Replanejamento validado e publicado no Power BI."); }
 /* ===== ORDERS (KO03) ===== */
 const ORDERS = [
-  { oi: "8101016544", name: "New line SQZ BR", lead: "Thiago Benati", resp: "A. Camargo", entry: "2023-02-10", ws: "2023-03-01", we: "2026-09-30", st: 30 },
-  { oi: "8101018966", name: "Toolkit and New Labeller P3", lead: "Thiago Benati", resp: "A. Camargo", entry: "2025-01-20", ws: "2025-02-01", we: "2026-08-20", st: 30 },
+  { oi: "8101016544", name: "New line SQZ BR", lead: "Thiago Benati", resp: "A. Camargo", entry: "2023-02-10", ws: "2023-03-01", we: "2026-09-30", st: 30, cpx: "CPX148619", mot: "OA" },
+  { oi: "8101018966", name: "Toolkit and New Labeller P3", lead: "Thiago Benati", resp: "A. Camargo", entry: "2025-01-20", ws: "2025-02-01", we: "2026-08-20", st: 30, cpx: "CPX169348", mot: "AO" },
   { oi: "8101018580", name: "Bunny, Tanque Ovos Caipira", lead: "Reginaldo Pinto", resp: "A. Camargo", entry: "2024-05-12", ws: "2024-06-01", we: "2026-06-30", st: 30 },
   { oi: "8101019380", name: "Sludge dryer", lead: "Rodrigo Cano", resp: "A. Camargo", entry: "2025-11-03", ws: "2026-01-05", we: "2027-03-31", st: 30 },
   { oi: "8101016041", name: "Fat Plan Retrofit", lead: "Hyago Salviano", resp: "A. Camargo", entry: "2022-08-15", ws: "2022-09-01", we: "2026-01-31", st: 40 },
   { oi: "8101017221", name: "Filtros Magnéticos", lead: "Bruna", resp: "A. Camargo", entry: "2023-10-02", ws: "2023-11-01", we: "2026-03-15", st: 50 },
 ];
+let ordIdx=-1;
+function ordEdit(i){
+  ordIdx=i;const o=i>=0?ORDERS[i]:null;
+  document.getElementById('ordTitle').textContent=o?('Editar ordem (KO03) · '+o.oi):'Lançar ordem (KO03) · dados mestre';
+  document.getElementById('ko_oi').value=o?o.oi:'';
+  document.getElementById('ko_name').value=o?o.name:'';
+  document.getElementById('ko_cpx').value=o&&o.cpx?o.cpx:'';
+  document.getElementById('ko_mot').value=o&&o.mot?o.mot:'AO';
+  document.getElementById('ko_entry').value=o?o.entry:DRA_TODAY;
+  document.getElementById('ko_ws').value=o?o.ws:DRA_TODAY;
+  document.getElementById('ko_we').value=o?o.we:'';
+  document.getElementById('ko_st').value=o?String(o.st):'30';
+  document.getElementById('ko_lead').value=o?o.lead:'';
+  document.getElementById('ordModal').classList.remove('hidden');
+}
+function ordClose(){document.getElementById('ordModal').classList.add('hidden');}
+function ordSave(){
+  const oi=(document.getElementById('ko_oi').value||'').trim();
+  const name=(document.getElementById('ko_name').value||'').trim();
+  if(!oi||!name){toast('Informe a ordem (OI) e o texto breve.');return;}
+  const o=ordIdx>=0?ORDERS[ordIdx]:{resp:'A. Camargo'};
+  o.oi=oi;o.name=name;
+  o.cpx=(document.getElementById('ko_cpx').value||'').trim()||null;
+  o.mot=document.getElementById('ko_mot').value;
+  o.entry=document.getElementById('ko_entry').value||o.entry||DRA_TODAY;
+  o.ws=document.getElementById('ko_ws').value||o.ws||o.entry;
+  o.we=document.getElementById('ko_we').value||o.we||o.ws;
+  o.st=parseInt(document.getElementById('ko_st').value);
+  o.lead=(document.getElementById('ko_lead').value||'').trim()||o.lead||'—';
+  if(ordIdx<0)ORDERS.unshift(o);
+  ordClose();buildOrders();
+  toast('Ordem '+oi+' '+(ordIdx<0?'lançada':'atualizada')+' manualmente (dados mestre KO03). Registrado na auditoria.');
+}
 function buildOrders() {
   const today = new Date(DRA_TODAY + "T00:00:00");
   const stLbl = { 30: "30 · Active", 40: "40 · Closed", 50: "50 · Tech. closed" };
@@ -2581,8 +2635,8 @@ function buildOrders() {
     if (o.st === 30 && days < 0) { sit = '<span style="color:var(--danger);font-weight:700">Overdue ' + (-days) + 'd</span>'; act = `<button class="btn sm perm-w" onclick="toast('Prorrogação solicitada via Poupatempo para a OI ${o.oi}.')">Extend (Poupatempo)</button> <button class="btn ghost sm perm-w" onclick="toast('Líder notificado para encerrar a ordem ${o.oi}.')">Notify leader</button>`; }
     else if (o.st === 30 && days < 60) { sit = '<span style="color:var(--warn);font-weight:700">Expiring in ' + days + 'd</span>'; act = `<button class="btn ghost sm perm-w" onclick="toast('Prorrogação solicitada via Poupatempo para a OI ${o.oi}.')">Extend (Poupatempo)</button>`; }
     else if (o.st === 30) { sit = '<span class="rec-ok">Active</span>'; }
-    return `<tr><td style="font-weight:600">${o.oi}</td><td class="pn">${o.name}</td><td>${o.lead}<br><span class="muted" style="font-size:10px">SAP: ${o.resp}</span></td><td>${o.entry}</td><td>${o.ws}</td><td>${o.we}</td>
-      <td><span class="sap-st sap-${o.st}">${stLbl[o.st]}</span></td><td>${sit}</td><td style="text-align:center;white-space:nowrap">${act}</td></tr>`;
+    return `<tr><td style="font-weight:600">${o.oi}</td><td class="pn">${o.name}${o.cpx?'<br><span class="muted" style="font-size:10px">Nº externo: '+o.cpx+'</span>':''}</td><td>${o.lead}<br><span class="muted" style="font-size:10px">SAP: ${o.resp}</span></td><td>${o.entry}</td><td>${o.ws}</td><td>${o.we}</td>
+      <td><span class="sap-st sap-${o.st}">${stLbl[o.st]}</span></td><td>${sit}</td><td style="text-align:center;white-space:nowrap"><button class="ib perm-w" title="Editar dados mestre (KO03)" onclick="ordEdit(${i})">✎</button> ${act}</td></tr>`;
   }).join("");
 }
 
@@ -3641,7 +3695,7 @@ const HELP=[
 <ol><li><b>Overview</b>: KPIs, executado × replanejado (mês/quarter/semestre), por projeto, alertas e publicação;</li>
 <li><b>DRA Grid</b>: a planilha fiel, CPX, OI, tipo, status, meses, H1, quarters, FC FY26/FY27, commitment e disponível (GRR3), em k€, com filtros (a linha verde de totais respeita os filtros) e separação <b>Capex (AO) × R2</b>;</li>
 <li><b>Reconciliation</b>: diferenças entre a extração do SAP e a sua última validação, para acatar ou manter, preservando os totais do quarter e do ano;</li>
-<li><b>Orders (KO03)</b>: gestão das ordens, datas de início/fim do trabalho, status SAP (30 ativo, 40 encerrado, 50 encerrado tecnicamente), com alertas para prorrogar (Poupatempo) ou encerrar;</li>
+<li><b>Orders (KO03)</b>: gestão das ordens, datas de início/fim do trabalho, status SAP (30 ativo, 40 encerrado, 50 encerrado tecnicamente), com alertas para prorrogar (Poupatempo) ou encerrar; os dados mestre são <b>consultados no SAP e lançados manualmente</b> pelo botão + Lançar ordem (sem planilha e sem robô);</li>
 <li><b>Pipeline</b>: funil Risk In/Out dos pré-projetos (Idea → Feas → BC → No Go) com phasing plurianual;</li>
 <li><b>History</b>: as versões mensais do DRA (como as abas da planilha), com a evolução do total do ano e o log de variações (inclusões, remoções e remanejos, com autor);</li>
 <li><b>Escopo do DRA</b> (item próprio no menu, abaixo de DRA · Financeiro): a documentação viva do módulo, com fluxogramas (arquitetura, ciclo mensal, workflow Marlin/AI), regras de ouro, mapa das abas e a especificação técnica para o desenvolvedor (modelo de dados, de-para SAP, fórmulas, robô e permissões).</li></ol>
@@ -3751,7 +3805,7 @@ const TOUR=[
   {view:"dra",tab:"rec",sel:'#recBody',c:"Módulo 2 · DRA",t:"Conciliação SAP × validado",
    x:"O robô extrai a base (GRR3/KOB1) e compara com a <b>sua última validação</b>. As diferenças aparecem aqui, e você decide: <b>Accept SAP</b> ou <b>Keep mine</b>, sempre preservando os totais do quarter e do ano. Só depois publica o replanejamento no BI, o executado real já reflete automaticamente."},
   {view:"dra",tab:"ord",sel:'#ordBody',c:"Módulo 2 · DRA",t:"Gestão de ordens (KO03)",
-   x:"Dados mestres das ordens: entrada, início e fim do trabalho e status SAP (<b>30 ativo, 40 encerrado, 50 encerrado tecnicamente</b>). Ordens vencidas alertam para <b>prorrogar via Poupatempo</b> ou <b>notificar o líder</b> para encerrar."},
+   x:"Dados mestres das ordens: entrada, início e fim do trabalho e status SAP (<b>30 ativo, 40 encerrado, 50 encerrado tecnicamente</b>). Ordens vencidas alertam para <b>prorrogar via Poupatempo</b> ou <b>notificar o líder</b> para encerrar. Os dados mestre são <b>consultados no SAP e lançados manualmente</b> aqui (+ Lançar ordem), sem planilha e sem robô."},
   {view:"dra",tab:"hist",sel:'#histBody',c:"Módulo 2 · DRA",t:"Histórico de versões",
    x:"Como as abas mensais da planilha: cada mês é uma <b>versão do DRA</b>. Aqui fica a <b>evolução do total do ano</b> (de 8.900 para 7.599 k€) e o <b>log de variações</b>: projetos incluídos, removidos e remanejos, com autor, a rastreabilidade que a diretoria olha."},
   {view:"draescopo",sel:'#scopeFlow1',c:"Módulo 2 · DRA",t:"O escopo explicado no próprio sistema",
