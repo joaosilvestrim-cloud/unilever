@@ -744,6 +744,9 @@
   .cvg-wrap{overflow-x:auto}
   .cvg-wrap .cvp-tbl{min-width:860px}
   .cvg-filters{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.cvtk-chip{border:1px solid var(--line);background:var(--surface-2);color:var(--ink-soft);border-radius:999px;padding:5px 12px;font-size:11.5px;font-weight:600;cursor:pointer;transition:all .15s}
+.cvtk-chip:hover{border-color:var(--brand);color:var(--brand)}
+.cvtk-chip.on{background:var(--brand);border-color:var(--brand);color:#fff}
 </style>
 </head>
 <body>
@@ -1737,16 +1740,7 @@
         <div id="cvMarcoWrap"></div>
       </div>
       <div class="card" style="overflow:hidden">
-        <div class="docs-head"><div><div class="st">Gestão de atividades</div><div class="muted">Prazos, status, descrição e atualizações · a responsabilidade é do dono do projeto · clique na linha para abrir o detalhe</div></div><button class="btn sm perm-w" onclick="cvTaskFormToggle()">+ Nova atividade</button></div>
-        <div id="cvTaskForm" style="display:none;margin:0 20px 6px" class="cvp-add">
-          <div class="reprow" style="margin-top:0;flex-wrap:wrap">
-            <input type="text" id="cvt_t" class="role-sel" style="flex:2;min-width:200px" placeholder="Título da atividade (ex.: Passagem de cabo dos sensores)">
-            <input type="date" id="cvt_due" class="role-sel">
-            <select id="cvt_marco" class="role-sel" style="min-width:150px"></select>
-            <button class="btn sm" onclick="cvAddTask()">Adicionar</button>
-          </div>
-          <input type="text" id="cvt_desc" class="role-sel" style="width:100%;margin-top:8px" placeholder="Descrição (opcional): o que precisa acontecer para esta atividade estar pronta">
-        </div>
+        <div class="docs-head"><div><div class="st">Gestão de atividades</div><div class="muted">Prazos, status, descrição e atualizações · a responsabilidade é do dono do projeto · clique na linha para abrir o detalhe</div></div><button class="btn sm perm-w" onclick="cvTaskModal()">+ Nova atividade</button></div>
         <div class="cvp-wrap"><table class="cvp-tbl"><thead><tr><th style="width:34%">Atividade</th><th>Marco</th><th>Prazo</th><th>Status</th><th>Última atualização</th><th></th></tr></thead><tbody id="cvpTasks"></tbody></table></div>
       </div>
     </section>
@@ -1924,6 +1918,26 @@
       <div style="grid-column:span 2;background:var(--surface-2);border-radius:10px;padding:10px 14px;font-size:12px;color:var(--ink-soft)"><b>Início</b> e <b>Encerramento</b> são criados automaticamente (obrigatórios). Ao criar, o projeto abre no seu <b>espaço próprio</b>: marcos, atividades com prazo/status/notas, sem aprovação nem gate documental.</div>
     </div>
     <div class="wz-foot"><button class="btn ghost sm" onclick="cvAddClose()">Cancelar</button><button class="btn sm" onclick="cvAddSave()">Criar projeto</button></div>
+  </div>
+</div>
+
+<div id="cvTaskModal" class="hidden" style="position:fixed;inset:0;z-index:170;background:rgba(8,20,34,.55);backdrop-filter:blur(3px);display:grid;place-items:center;padding:24px" onclick="if(event.target===this)cvTkClose()">
+  <div style="background:#fff;border-radius:16px;width:min(560px,95vw);max-height:92vh;overflow:auto;box-shadow:0 40px 90px -30px rgba(0,0,0,.6)">
+    <div style="padding:16px 20px;border-bottom:1px solid var(--line);display:flex;align-items:flex-start;gap:12px">
+      <div style="flex:1"><div style="font-family:Poppins;font-weight:700;font-size:15px">Nova atividade</div><div class="muted" style="font-size:12px"><span id="cvTkProj"></span> · a responsabilidade é do dono do projeto</div></div>
+      <button class="btn ghost sm" onclick="cvTkClose()" title="Fechar">✕</button>
+    </div>
+    <div style="padding:18px 20px;display:grid;gap:14px">
+      <div><label class="dra-lbl">Título da atividade *</label><input id="cvTk_t" class="role-sel" style="width:100%" placeholder="Ex.: Passagem de cabo dos sensores" oninput="cvTkCheck()" onkeydown="if(event.key==='Enter')cvTkSave()"></div>
+      <div><label class="dra-lbl">Marco vinculado</label><div id="cvTkMarcos" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px"></div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div><label class="dra-lbl">Prazo</label><input type="date" id="cvTk_due" class="role-sel" style="width:100%"><div class="muted" id="cvTkHint" style="font-size:11px;margin-top:3px">Selecione um marco para o sistema sugerir o prazo.</div></div>
+        <div><label class="dra-lbl">Status inicial</label><div style="display:flex;gap:6px;margin-top:2px"><button type="button" id="cvTkSt_pend" class="cvtk-chip on" onclick="cvTkSt('pend')">Planejada</button><button type="button" id="cvTkSt_now" class="cvtk-chip" onclick="cvTkSt('now')">Em andamento</button></div></div>
+      </div>
+      <div><label class="dra-lbl">Descrição (opcional)</label><textarea id="cvTk_desc" class="role-sel" style="width:100%;min-height:64px;resize:vertical;font-family:inherit" placeholder="O que precisa acontecer para esta atividade estar pronta"></textarea></div>
+      <div><label class="dra-lbl">Primeira atualização (opcional)</label><input id="cvTk_note" class="role-sel" style="width:100%" placeholder="Ex.: fornecedor contatado, aguardando orçamento"><div class="muted" style="font-size:11px;margin-top:3px">Entra no histórico da atividade, visível ao portfólio.</div></div>
+    </div>
+    <div class="wz-foot"><button class="btn ghost sm" onclick="cvTkClose()">Cancelar</button><button class="btn sm" id="cvTkSave" onclick="cvTkSave()" disabled style="opacity:.45;cursor:not-allowed">Adicionar atividade</button></div>
   </div>
 </div>
 
@@ -3075,8 +3089,6 @@ function cvRender(){
   document.getElementById('cvpMarcos').innerHTML=pl.marcos.map((m,mi)=>{const lbl={done:'Concluído',next:'Próximo',late:'Atrasado',pend:'Planejado'}[m[2]];
     const mrep=m[3]?`<span class="mrep" title="Justificativa: ${m[3].just}">↦ era ${m[3].de}</span>`:'';
     return `<div class="pm-marco ${m[2]} perm-w" onclick="cvMarcoForm(${mi})" title="Clique para remanejar (justificativa obrigatória)"><div class="dot"></div><div class="mm">${MESES[m[0]]}</div><div class="mt">${m[1]}</div><div class="ms">${lbl}</div>${mrep}</div>`;}).join('');
-  const msel=document.getElementById('cvt_marco');
-  msel.innerHTML='<option value="">Sem marco</option>'+pl.marcos.map((m,i)=>`<option value="${i}">${m[1]}</option>`).join('');
   document.getElementById('cvpTasks').innerHTML=ts.map((t,i)=>{
     const late=cvIsLate(t);
     const stSel=`<select class="cvp-status" onclick="event.stopPropagation()" onchange="cvTaskStatus(${i},this.value)">
@@ -3106,15 +3118,46 @@ function cvRender(){
     return row;}).join('')||'<tr><td colspan="6" class="muted" style="padding:18px">Nenhuma atividade ainda. Use "+ Nova atividade".</td></tr>';
 }
 function cvTaskToggle(i){cvOpenTask=cvOpenTask===i?-1:i;cvRender();}
-function cvTaskFormToggle(){const el=document.getElementById('cvTaskForm');el.style.display=el.style.display==='none'?'block':'none';}
-function cvAddTask(){
-  const t=(document.getElementById('cvt_t').value||'').trim();
-  if(!t){toast('Dê um título à atividade.');return;}
-  const marco=document.getElementById('cvt_marco').value;
-  cvTasksOf(cvProj).push({id:Date.now()%100000,t,due:document.getElementById('cvt_due').value||null,st:'pend',marco:marco===''?null:parseInt(marco),desc:(document.getElementById('cvt_desc').value||'').trim(),notes:[],rep:null});
-  document.getElementById('cvt_t').value='';document.getElementById('cvt_desc').value='';
-  cvRender();buildTrack();
-  toast('Atividade adicionada. A responsabilidade é do dono do projeto.');
+let cvTkMarco=null,cvTkStat='pend';
+function cvTaskModal(){
+  if(!cvProj)return;
+  cvTkMarco=null;cvTkStat='pend';
+  document.getElementById('cvTkProj').textContent=cvProj.name;
+  document.getElementById('cvTk_t').value='';document.getElementById('cvTk_due').value='';
+  document.getElementById('cvTk_desc').value='';document.getElementById('cvTk_note').value='';
+  document.getElementById('cvTkHint').textContent='Selecione um marco para o sistema sugerir o prazo.';
+  cvTkChips();cvTkStBtns();cvTkCheck();
+  document.getElementById('cvTaskModal').classList.remove('hidden');
+  setTimeout(()=>document.getElementById('cvTk_t').focus(),80);
+}
+function cvTkClose(){document.getElementById('cvTaskModal').classList.add('hidden');}
+function cvTkChips(){
+  const pl=planOf(cvProj);
+  document.getElementById('cvTkMarcos').innerHTML=
+    '<button type="button" class="cvtk-chip'+(cvTkMarco===null?' on':'')+'" onclick="cvTkChip(null)">Sem marco</button>'+
+    pl.marcos.map((m,i)=>'<button type="button" class="cvtk-chip'+(cvTkMarco===i?' on':'')+'" onclick="cvTkChip('+i+')">'+MESES[m[0]]+' · '+m[1]+'</button>').join('');
+}
+function cvTkChip(i){
+  cvTkMarco=i;cvTkChips();
+  if(i!==null){const m=planOf(cvProj).marcos[i];const due=document.getElementById('cvTk_due');
+    due.value='2026-'+String(m[0]+1).padStart(2,'0')+'-20';
+    document.getElementById('cvTkHint').textContent='Prazo sugerido pelo mês do marco, ajuste se precisar.';}
+}
+function cvTkStBtns(){['pend','now'].forEach(v=>{document.getElementById('cvTkSt_'+v).className='cvtk-chip'+(cvTkStat===v?' on':'');});}
+function cvTkSt(v){cvTkStat=v;cvTkStBtns();}
+function cvTkCheck(){
+  const okk=(document.getElementById('cvTk_t').value||'').trim().length>=3;
+  const b=document.getElementById('cvTkSave');b.disabled=!okk;b.style.opacity=okk?'1':'.45';b.style.cursor=okk?'pointer':'not-allowed';
+}
+function cvTkSave(){
+  const t=(document.getElementById('cvTk_t').value||'').trim();
+  if(t.length<3){toast('Dê um título à atividade (mínimo 3 letras).');return;}
+  const ts=cvTasksOf(cvProj);
+  ts.push({id:Date.now()%100000,t,due:document.getElementById('cvTk_due').value||null,st:cvTkStat,marco:cvTkMarco,desc:(document.getElementById('cvTk_desc').value||'').trim(),notes:[],rep:null});
+  const nx=(document.getElementById('cvTk_note').value||'').trim();
+  if(nx)ts[ts.length-1].notes.push({d:cvFmt(cvToday),by:cvProj.lead,x:nx});
+  cvTkClose();cvOpenTask=ts.length-1;cvRecalc();cvRender();buildTrack();
+  toast('Atividade "'+t+'" adicionada ao plano. A responsabilidade é do dono do projeto.');
 }
 function cvTaskStatus(i,v){const t=cvTasksOf(cvProj)[i];t.st=v;cvRecalc();cvRender();buildTrack();
   if(v==='done')toast(cvProj.simple?('Atividade concluída, o avanço do projeto recalculou para '+cvProj.schP+'%.'):'Atividade concluída e registrada no plano do projeto.');}
@@ -3681,7 +3724,7 @@ const HELP=[
 <li><b>Gestão de Projetos</b>, o hub do módulo: todos os projetos com o selo de origem (<b>PSR · automático</b> × <b>Manual · sem CAPEX</b>), filtros por origem/status, busca, progresso, atividades atrasadas e acesso direto ao espaço de cada projeto;</li>
 <li><b>Espaço do projeto</b>, clique em um projeto (do PSR ou sem CAPEX) para abrir a página do plano: marcos remanejáveis, e atividades com <b>prazo, status, descrição, documento anexado e log de atualizações</b>, tudo em nome do dono do projeto;</li>
 <li><b>Status da atividade</b>, mude entre Planejada, Em andamento e Concluída direto na tabela; nos projetos sem CAPEX o avanço recalcula na hora, e prazos vencidos ganham o selo <b>Atrasada</b> automaticamente;</li>
-<li><b>+ Nova atividade</b>, adicione ações ao plano (mês e título); a responsabilidade é sempre do <b>dono do projeto</b>, sem atribuição por atividade;</li>
+<li><b>+ Nova atividade</b>, abre uma janela para criar a atividade completa: título, marco vinculado (clique no chip do marco e o sistema sugere o prazo pelo mês dele), prazo, status inicial, descrição e primeira atualização; a responsabilidade é sempre do <b>dono do projeto</b>, sem atribuição por atividade;</li>
 <li><b>+ Novo projeto (sem CAPEX)</b>, projetos simples (digitalização, automação) são criados direto no Ciclo de Vida, com <b>tipo de saving</b> (Hard Save, Cost Avoidance, Virtual Saving) e sem classificação A–E, com os <b>marcos configurados já no cadastro</b>; o projeto abre no seu <b>espaço próprio</b>: marcos remanejáveis, atividades com prazo, status, descrição e atualizações; <b>todos os projetos da fábrica passam pelo módulo</b>, os do PSR entram automaticamente;</li>
 <li><b>Remanejar prazo</b>, mudar a data de um <b>marco</b> (clique nele na linha de marcos) ou de uma atividade <b>exige justificativa</b>, que vai para a auditoria e gera alerta no portfólio. O marco remanejado mostra “era mês X” e o desvio fica visível contra a baseline (o vermelhinho).</li></ol>
 <h5>Visão hierárquica</h5>
