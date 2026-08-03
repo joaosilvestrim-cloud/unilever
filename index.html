@@ -768,6 +768,9 @@
 .cvd-note .nd b{color:var(--brand-deep);font-size:11px}
 .cvd-note .nx{margin-top:1px}
 .cvd-count{display:inline-block;background:var(--brand);color:#fff;border-radius:99px;font-size:10px;padding:1px 7px;margin-left:2px}
+#view-cvconfig input[type=text]{padding:8px 11px;border:1.5px solid var(--line);border-radius:9px;font-family:inherit;font-size:12.5px;outline:none}
+#view-cvconfig input[type=text]:focus{border-color:var(--brand)}
+.lc-ph .pdt{font-size:10.5px;font-weight:700;color:var(--brand-deep);margin:3px 0 5px}
 </style>
 </head>
 <body>
@@ -806,6 +809,7 @@
     <div class="nav-item nav-sub" data-tab="hist" onclick="draNav('hist')">History</div>
     <div class="nav-item" data-view="draescopo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h4"/></svg>Escopo do DRA</div>
     <div class="nav-label">Módulo 3 · Ciclo de Vida, Novo</div>
+    <div class="nav-item" data-view="cvhome"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>Visão Consolidada<span class="badge">Novo</span></div>
     <div class="nav-item" data-view="cvgest"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="4" rx="1.5"/><rect x="3" y="10" width="18" height="4" rx="1.5"/><rect x="3" y="16" width="12" height="4" rx="1.5"/></svg>Gestão de Projetos<span class="nav-cnt" id="cvgBadge" style="display:none"></span></div>
     <div class="nav-item" data-view="track"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 3v18h18"/><path d="M7 15l3-4 3 2 5-6"/><circle cx="7" cy="15" r="1.4" fill="currentColor" stroke="none"/><circle cx="18" cy="7" r="1.4" fill="currentColor" stroke="none"/></svg>Portfólio EEM<span class="badge">Novo</span></div>
     <div class="nav-item" data-view="lifecycle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v5h-5"/><circle cx="12" cy="12" r="2.4"/></svg>Ciclo de Vida<span class="badge">Novo</span></div>
@@ -814,6 +818,7 @@
     <div class="nav-item" data-view="catalog"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 6h16M4 12h16M4 18h10"/><circle cx="20" cy="18" r="2"/></svg>Catálogo de Documentos</div>
     <div class="nav-item" data-view="classify"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></svg>Classificação (A–E)</div>
     <div class="nav-item" data-view="integrations"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 3v6M15 3v6M9 15v6M15 15v6M3 9h6M15 9h6M3 15h6M15 15h6"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg>Integrações</div>
+    <div class="nav-item" data-view="cvconfig"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 6h16M4 12h10M4 18h7"/><circle cx="18" cy="16" r="4"/><path d="M18 14.5v3M16.5 16h3"/></svg>Cadastros do Ciclo de Vida</div>
     <div class="nav-label">Administração</div>
     <div class="nav-item" data-view="team"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5"/><circle cx="17" cy="9" r="2.3"/><path d="M16 14c3 0 5 2 5 5"/></svg>Equipe & Papéis</div>
     <div class="sidebar-foot"><div class="sap-mini"><span class="led"></span>SAP sincronizado · há 4 min</div>Desenvolvido por <b>Drive Data</b><br>Plataforma v1.0 · 2026</div>
@@ -861,7 +866,7 @@
       <div class="card lc-journey"><div class="pm-sec" style="margin:0 0 16px">Fases do ciclo de vida <span style="font-weight:500;color:var(--ink-faint)">· status calculado pelo sistema</span></div><div class="lc-phases" id="lcPhases"></div></div>
       <div class="stat-grid" id="lcHealth"></div>
       <div class="lc-grid">
-        <div class="card lc-hist"><div class="pm-sec" style="margin:0 0 10px">Histórico de evolução</div><div id="lcEvents"></div></div>
+        <div class="card lc-hist"><div class="pm-sec" style="margin:0 0 10px">Histórico de evolução <span style="font-weight:500;color:var(--ink-faint);font-size:11px">· planejado × realizado, quebrado pelos marcos</span></div><div id="lcEvents"></div></div>
         <div class="card lc-links"><div class="pm-sec" style="margin:0 0 10px">Navegar pelo projeto</div><div id="lcLinks"></div></div>
       </div>
     </section>
@@ -1581,6 +1586,19 @@
       </div>
 
       <div class="card flowcard" style="border-left:4px solid var(--warn);padding:13px 16px"><div style="font-size:12.5px;color:var(--ink-soft)"><b>Fronteira dos módulos:</b> o Ciclo de Vida trata do <b>andamento gerencial</b> (fases, marcos, atividades, desvios e alertas). Os documentos e steps são do <b>Módulo 1 · PSR</b>; o dinheiro é do <b>Módulo 2 · DRA</b>. Esta página descreve apenas o Módulo 3.</div></div>
+      <div class="card flowcard" style="border-left:4px solid var(--brand);padding:14px 17px">
+        <div class="section-title" style="font-size:13.5px">Revisão de escopo · call de 03/08/2026 (Maria Correa, Lucas Tex)</div>
+        <div style="font-size:12.5px;color:var(--ink-soft);margin-top:6px;line-height:1.75">
+          <b>1.</b> Nova tela inicial <b>Visão Consolidada</b>: totais da fábrica, com CAPEX × sem CAPEX com valores, fases e alertas.<br>
+          <b>2.</b> Projetos do PSR têm <b>marcos somente leitura</b> no módulo (definidos com a engenharia); a gestão da fábrica atua nos sem CAPEX.<br>
+          <b>3.</b> Permissões por papel: <b>criar e editar é exclusivo do líder do projeto</b>; os demais perfis visualizam, inclusive o detalhe, sem editar.<br>
+          <b>4.</b> "Dono" vira <b>líder do projeto</b>, preenchido automaticamente com o usuário logado (quem cria é o líder).<br>
+          <b>5.</b> O cadastro ganha a <b>fase do projeto</b>: Ideia, Estudo de viabilidade, Em andamento, Pausado, Cancelado (sem tela de backlog separada).<br>
+          <b>6.</b> <b>Categorias e tipos de saving configuráveis</b> em Configuração → Cadastros do Ciclo de Vida; <b>Hard Save exige o nº do projeto no NPP</b>, a ferramenta de validação de saving.<br>
+          <b>7.</b> Ciclo de Vida com <b>datas nas fases</b> (início, execução, encerramento previsto) e histórico de evolução quebrado pelos <b>marcos</b>, planejado × realizado.<br>
+          <b>8.</b> Status de atividade permanece fixo (Planejada, Em andamento, Concluída) para preservar o padrão. Plataforma confirmada em <b>Power Apps</b>, no mesmo ambiente da engenharia.
+        </div>
+      </div>
       <div class="esc-divider"><span class="lbl">Para o negócio</span><span class="tagx">cliente · como funciona</span><span class="ln"></span></div>
 
       <div class="card flowcard">
@@ -1660,7 +1678,7 @@
       <div class="card flowcard">
         <div class="section-title" style="font-size:14.5px">3 · Regras de ouro do Ciclo de Vida</div>
         <div class="rules-grid">
-          <div class="rule-card"><div class="rn">1</div><b>Marcos, não microtarefas</b><p>A visão é gerencial: entregas com data (kickoff, obra civil, montagem, FAT). O detalhe operacional fica nas atividades do mês, sem virar um MS Project. Os marcos são <b>configuráveis pelo dono do projeto</b>; início e encerramento são obrigatórios.</p></div>
+          <div class="rule-card"><div class="rn">1</div><b>Marcos, não microtarefas</b><p>A visão é gerencial: entregas com data (kickoff, obra civil, montagem, FAT). O detalhe operacional fica nas atividades do mês, sem virar um MS Project. Os marcos são <b>configuráveis pelo líder do projeto</b>; início e encerramento são obrigatórios.</p></div>
           <div class="rule-card"><div class="rn">2</div><b>Justificativa obrigatória</b><p>Nenhum prazo se move sem justificativa. O sistema bloqueia o remanejamento sem ela e registra tudo na auditoria.</p></div>
           <div class="rule-card"><div class="rn">3</div><b>A baseline nunca se apaga</b><p>O plano original fica congelado; o desvio aparece em vermelho (o "vermelhinho") no cronograma. A diretoria vê o combinado × o real, sempre.</p></div>
           <div class="rule-card"><div class="rn">4</div><b>Status calculado + alertas</b><p>On track × off track sai do desvio real × planejado, e os alertas automáticos notificam o responsável. Ninguém declara o próprio status.</p></div>
@@ -1672,6 +1690,7 @@
         <div class="tblwrap" style="border:0;margin-top:6px"><table class="tbl">
           <thead><tr><th style="text-align:center">#</th><th>Tela</th><th>Pergunta que responde</th><th>Origem do dado</th></tr></thead>
           <tbody>
+            <tr><td style="text-align:center;color:var(--brand);font-weight:800">★</td><td style="font-weight:600">Visão Consolidada <span class="pill" style="background:#e4f0fa;color:#0060A8;font-size:9px;vertical-align:middle">novo 03/08</span></td><td>Como está a fábrica como um todo? (totais, fases, com × sem CAPEX com valores, alertas clicáveis)</td><td>Todos os projetos</td></tr>
             <tr><td style="text-align:center;color:var(--ink-faint);font-weight:700">1</td><td style="font-weight:600">Gestão de Projetos</td><td>Quais projetos existem e de onde vieram? (PSR automático × sem CAPEX manual, filtros, saúde e acesso ao espaço de cada um)</td><td>Todos os projetos</td></tr>
             <tr><td style="text-align:center;color:var(--ink-faint);font-weight:700">2</td><td style="font-weight:600">Portfólio EEM</td><td>Como está o andamento de todos? (cronograma macro, marcos, on/off track, alertas)</td><td>Planos + baseline</td></tr>
             <tr><td style="text-align:center;color:var(--ink-faint);font-weight:700">3</td><td style="font-weight:600">Ciclo de Vida</td><td>Como está a jornada deste projeto? (5 fases, saúde, histórico de evolução)</td><td>Projeto + plano</td></tr>
@@ -1681,7 +1700,7 @@
         <div class="section-title" style="font-size:13.5px;margin-top:20px">Na prática: a jornada de acompanhamento <span class="muted" style="font-weight:500;font-size:11px">· do plano ao encerramento</span></div>
         <div class="muted" style="font-size:11.5px;margin:6px 0 8px"><span class="wtag wtag-p">Gerente</span> ação da pessoa &nbsp;·&nbsp; <span class="wtag wtag-s">Sistema</span> automático</div>
         <div class="walk">
-          <div class="walk-item"><div class="wn">1</div><div><div class="wt">Plano do projeto <span class="aba">ESPAÇO DO PROJETO</span></div><div class="wd"><div class="who"><span class="wtag wtag-p">Gerente</span><span>Define os <b>marcos</b> (entregas com data, configuráveis) e as <b>atividades por mês</b>. A responsabilidade é do <b>dono do projeto</b>, sem atribuição por atividade.</span></div><div class="who"><span class="wtag wtag-s">Sistema</span><span>Congela a <b>baseline</b> e monta o cronograma macro (barra início→fim, losango = marco).</span></div></div></div></div>
+          <div class="walk-item"><div class="wn">1</div><div><div class="wt">Plano do projeto <span class="aba">ESPAÇO DO PROJETO</span></div><div class="wd"><div class="who"><span class="wtag wtag-p">Gerente</span><span>Define os <b>marcos</b> (entregas com data, configuráveis) e as <b>atividades por mês</b>. A responsabilidade é do <b>líder do projeto</b>, sem atribuição por atividade.</span></div><div class="who"><span class="wtag wtag-s">Sistema</span><span>Congela a <b>baseline</b> e monta o cronograma macro (barra início→fim, losango = marco).</span></div></div></div></div>
           <div class="walk-item"><div class="wn">2</div><div><div class="wt">Acompanhamento do mês <span class="aba">ESPAÇO DO PROJETO</span></div><div class="wd"><div class="who"><span class="wtag wtag-p">Gerente</span><span>Atualiza o <b>status</b> das atividades (Planejada / Em andamento / Concluída) e registra as <b>atualizações</b> no log, com data e autor.</span></div><div class="who"><span class="wtag wtag-s">Sistema</span><span>Recalcula o avanço real × planejado de cada projeto.</span></div></div></div></div>
           <div class="walk-item"><div class="wn">3</div><div><div class="wt">Remanejamento de prazo <span class="aba">ESPAÇO DO PROJETO</span></div><div class="wd"><div class="who"><span class="wtag wtag-p">Gerente</span><span>Move a data de um marco e <b>escreve a justificativa</b> (obrigatória).</span></div><div class="who"><span class="wtag wtag-s">Sistema</span><span>Bloqueia sem justificativa; com ela, registra na auditoria e marca o <b>vermelhinho</b> contra a baseline.</span></div></div></div></div>
           <div class="walk-item"><div class="wn">4</div><div><div class="wt">Status e alertas <span class="aba">PORTFÓLIO EEM</span></div><div class="wd"><div class="who"><span class="wtag wtag-s">Sistema</span><span>Calcula <b>on track × off track</b> e dispara os <b>alertas automáticos</b> ao responsável.</span></div><div class="who"><span class="wtag wtag-p">Gerente</span><span>Atua nos projetos sinalizados.</span></div></div></div></div>
@@ -1698,7 +1717,7 @@
           <thead><tr><th>Campo</th><th>Tipo</th><th>Observação</th></tr></thead>
           <tbody>
             <tr><td>plan.marcos[]</td><td>[mês, título, status]</td><td>Entregas gerenciais com data; status done/next/pend</td></tr>
-            <tr><td>tasks[] (atividades)</td><td>{título, prazo (data), status, marco, descrição, notas[], doc, remanejo}</td><td>Gestão madura no espaço do projeto; a responsabilidade é sempre do dono. Nos projetos do PSR, derivadas do plano na primeira abertura (documento anexado preservado)</td></tr>
+            <tr><td>tasks[] (atividades)</td><td>{título, prazo (data), status, marco, descrição, notas[], doc, remanejo}</td><td>Gestão madura no espaço do projeto; a responsabilidade é sempre do líder. Nos projetos do PSR, derivadas do plano na primeira abertura (documento anexado preservado)</td></tr>
             <tr><td>savType · sav (sem CAPEX)</td><td>Hard Save · Cost Avoidance · Virtual Saving + valor</td><td>Projetos simples cadastrados direto no módulo, sem A–E e sem gate documental</td></tr>
             <tr><td>plan.baseline</td><td>datas originais</td><td>Congelada no planejamento; nunca é sobrescrita</td></tr>
             <tr><td>plan.rep</td><td>{marco, de, para, justificativa, autor, data}</td><td>Cada remanejo registrado; alimenta o vermelhinho e a auditoria</td></tr>
@@ -1727,6 +1746,31 @@
       </div>
     </section>
 
+    <!-- VISÃO CONSOLIDADA (MÓDULO 3) -->
+    <section class="view hidden" id="view-cvhome">
+      <div class="toolbanner">
+        <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg></div>
+        <div><h3>Visão Consolidada · Módulo 3</h3><p>O retrato geral da fábrica em uma tela (revisão 03/08): quantos projetos, em que fase, <b>com CAPEX × sem CAPEX</b> com valores, atrasos e alertas. Clique nos cartões e filtros para descer ao detalhe.</p></div>
+        <button class="btn sm perm-w" style="margin-left:auto;background:#fff;color:var(--brand-deep)" onclick="cvAdd()">+ Novo projeto (sem CAPEX)</button>
+      </div>
+      <div class="kpi-grid" id="chKpis" style="grid-template-columns:repeat(6,1fr)"></div>
+      <div class="lc-grid">
+        <div class="card" style="padding:16px 20px">
+          <div class="section-title" style="font-size:13.5px">Com CAPEX × sem CAPEX</div>
+          <div id="chCapex" style="margin-top:12px"></div>
+        </div>
+        <div class="card" style="padding:16px 20px">
+          <div class="section-title" style="font-size:13.5px">Sem CAPEX por tipo de saving</div>
+          <div id="chSav" style="margin-top:12px"></div>
+        </div>
+      </div>
+      <div class="card" style="padding:16px 20px;margin-top:14px">
+        <div class="section-title" style="font-size:13.5px">Fases dos projetos <span class="muted" style="font-weight:500;font-size:11px">· clique para abrir a Gestão de Projetos já filtrada</span></div>
+        <div id="chFases" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"></div>
+      </div>
+      <div class="card" id="chAlerts" style="padding:16px 20px;margin-top:14px"></div>
+    </section>
+
     <!-- GESTÃO DE PROJETOS (MÓDULO 3) -->
     <section class="view hidden" id="view-cvgest">
       <div class="toolbanner">
@@ -1742,11 +1786,12 @@
           <button class="ctry" data-o="manual" onclick="cvgSet('manual')">Sem CAPEX · manual</button>
         </div></div>
         <div><label class="dra-lbl">Status</label><select id="cvgStatus" class="role-sel" onchange="buildCvGest()"><option value="all">Todos</option><option>On track</option><option>Off track</option><option>Adiantado</option></select></div>
-        <div style="flex:1;min-width:180px"><label class="dra-lbl">Busca</label><input id="cvgSearch" class="role-sel" style="width:100%" placeholder="Projeto, dono, categoria..." oninput="buildCvGest()"></div>
+        <div><label class="dra-lbl">Fase</label><select id="cvgFase" class="role-sel" onchange="buildCvGest()"><option value="all">Todas</option><option>Ideia</option><option>Estudo de viabilidade</option><option>Em andamento</option><option>Pausado</option><option>Cancelado</option></select></div>
+        <div style="flex:1;min-width:180px"><label class="dra-lbl">Busca</label><input id="cvgSearch" class="role-sel" style="width:100%" placeholder="Projeto, líder, categoria..." oninput="buildCvGest()"></div>
       </div>
       <div class="card" style="overflow:hidden">
         <div class="docs-head"><div><div class="st" id="cvgTitle">Projetos</div><div class="muted">Clique em um projeto para abrir o espaço (marcos e atividades) · ✎ os sem CAPEX nascem aqui, os do PSR entram sozinhos</div></div></div>
-        <div class="cvg-wrap"><table class="cvp-tbl"><thead><tr><th>Origem</th><th style="width:26%">Projeto</th><th>Dono</th><th>Período</th><th>Próximo marco</th><th>Atividades</th><th>Progresso</th><th>Status</th><th></th></tr></thead><tbody id="cvgBody"></tbody></table></div>
+        <div class="cvg-wrap"><table class="cvp-tbl"><thead><tr><th>Origem</th><th style="width:26%">Projeto</th><th>Líder</th><th>Período</th><th>Próximo marco</th><th>Atividades</th><th>Progresso</th><th>Status</th><th></th></tr></thead><tbody id="cvgBody"></tbody></table></div>
       </div>
     </section>
 
@@ -1755,14 +1800,37 @@
       <div id="cvpHead"></div>
       <div class="cvp-stat" id="cvpStats"></div>
       <div class="card" style="padding:16px 20px;margin-bottom:14px">
-        <div class="section-title" style="font-size:14.5px">Marcos do projeto <span class="muted" style="font-weight:500;font-size:11.5px">· configuráveis pelo dono; clique em um marco para remanejar (justificativa obrigatória)</span></div>
+        <div class="section-title" style="font-size:14.5px">Marcos do projeto <span class="muted" id="cvMarcoHint" style="font-weight:500;font-size:11.5px"></span></div>
         <div class="pm-marcos" id="cvpMarcos" style="margin-top:12px"></div>
-        <div style="margin:6px 0 2px"><button class="btn ghost sm perm-w" onclick="cvMarcoAdd()">+ Novo marco</button> <span class="muted" style="font-size:11px">· início e encerramento são obrigatórios</span></div>
+        <div style="margin:6px 0 2px" id="cvNmBtnWrap"><button class="btn ghost sm perm-w" onclick="cvMarcoAdd()">+ Novo marco</button> <span class="muted" style="font-size:11px">· início e encerramento são obrigatórios</span></div>
       </div>
       <div class="card" style="overflow:hidden">
-        <div class="docs-head"><div><div class="st">Gestão de atividades</div><div class="muted">Prazos, status, descrição e atualizações · a responsabilidade é do dono do projeto · clique na linha para abrir o detalhe</div></div><button class="btn sm perm-w" onclick="cvTaskModal()">+ Nova atividade</button></div>
+        <div class="docs-head"><div><div class="st">Gestão de atividades</div><div class="muted">Prazos, status, descrição e atualizações · somente o líder do projeto edita, os demais visualizam · clique na linha para abrir o detalhe</div></div><button class="btn sm perm-w" onclick="cvTaskModal()">+ Nova atividade</button></div>
         <div class="cvp-wrap"><table class="cvp-tbl"><thead><tr><th style="width:34%">Atividade</th><th>Marco</th><th>Prazo</th><th>Status</th><th>Última atualização</th><th></th></tr></thead><tbody id="cvpTasks"></tbody></table></div>
       </div>
+    </section>
+
+    <!-- CADASTROS DO CICLO DE VIDA -->
+    <section class="view hidden" id="view-cvconfig">
+      <div class="toolbanner">
+        <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><path d="M4 6h16M4 12h10M4 18h7"/><circle cx="18" cy="16" r="4"/><path d="M18 14.5v3M16.5 16h3"/></svg></div>
+        <div><h3>Cadastros do Ciclo de Vida</h3><p>Configuração do Módulo 3 sem tocar em código (revisão 03/08): <b>categorias</b> de projeto e <b>tipos de saving</b> cadastráveis pelo admin. O formulário de novo projeto usa estas listas na hora.</p></div>
+      </div>
+      <div class="lc-grid" style="margin-top:14px">
+        <div class="card" style="padding:16px 20px">
+          <div class="section-title" style="font-size:14px">Categorias de projeto</div>
+          <div class="muted" style="font-size:11.5px">Usadas no cadastro sem CAPEX. Cadastre quantas a fábrica precisar.</div>
+          <div id="ccCats" style="display:flex;gap:6px;flex-wrap:wrap;margin:12px 0"></div>
+          <div class="cvd-row perm-w"><input type="text" id="ccCatNew" placeholder="Nova categoria (ex.: Sustentabilidade)" style="flex:1;min-width:160px" onkeydown="if(event.key==='Enter')ccCatAdd()"><button class="btn sm" onclick="ccCatAdd()">+ Adicionar</button></div>
+        </div>
+        <div class="card" style="padding:16px 20px">
+          <div class="section-title" style="font-size:14px">Tipos de saving</div>
+          <div class="muted" style="font-size:11.5px">Tipos marcados com <b>NPP</b> exigem o nº do projeto no NPP ao cadastrar (ex.: Hard Save).</div>
+          <div id="ccSavs" style="display:flex;gap:6px;flex-wrap:wrap;margin:12px 0"></div>
+          <div class="cvd-row perm-w"><input type="text" id="ccSavNew" placeholder="Novo tipo de saving" style="flex:1;min-width:140px" onkeydown="if(event.key==='Enter')ccSavAdd()"><label style="font-size:11.5px;color:var(--ink-soft);display:flex;align-items:center;gap:4px"><input type="checkbox" id="ccSavNpp"> exige NPP</label><button class="btn sm" onclick="ccSavAdd()">+ Adicionar</button></div>
+        </div>
+      </div>
+      <div class="card flowcard" style="margin-top:14px;border-left:4px solid var(--brand);padding:13px 16px"><div style="font-size:12.5px;color:var(--ink-soft)"><b>Status de atividade não é configurável</b> (decisão da revisão de 03/08): permanecem Planejada, Em andamento e Concluída, para manter o padrão. A <b>fase do projeto</b> (Ideia, Estudo de viabilidade, Em andamento, Pausado, Cancelado) é fixa no cadastro.</div></div>
     </section>
 
     <!-- CATÁLOGO DE DOCUMENTOS -->
@@ -1915,19 +1983,21 @@
 
 <div id="cvAddModal" class="hidden" style="position:fixed;inset:0;z-index:170;background:rgba(8,20,34,.55);backdrop-filter:blur(3px);display:grid;place-items:center;padding:24px">
   <div style="background:#fff;border-radius:16px;width:min(600px,95vw);max-height:92vh;overflow:auto;box-shadow:0 40px 90px -30px rgba(0,0,0,.6)">
-    <div style="padding:16px 20px;border-bottom:1px solid var(--line)"><div style="font-family:Poppins;font-weight:700;font-size:15px">Novo projeto · sem CAPEX</div><div class="muted" style="font-size:12px">Fluxo simplificado: sem classificação A–E e sem gate documental. O projeto vai direto ao cronograma, com marcos configuráveis pelo dono.</div></div>
+    <div style="padding:16px 20px;border-bottom:1px solid var(--line)"><div style="font-family:Poppins;font-weight:700;font-size:15px">Novo projeto · sem CAPEX</div><div class="muted" style="font-size:12px">Fluxo simplificado: sem classificação A–E e sem gate documental. O projeto vai direto ao cronograma, com marcos configuráveis pelo líder.</div></div>
     <div class="ge-fields" style="padding:18px 20px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
       <div style="grid-column:span 2"><label class="dra-lbl">Nome do projeto</label><input id="cv_name" class="role-sel" style="width:100%" placeholder="Ex.: Automação do relatório diário de produção"></div>
-      <div><label class="dra-lbl">Categoria</label><select id="cv_cat" class="role-sel" style="width:100%"><option>Digitalização</option><option>Automação</option><option>Melhoria de processo</option><option>Qualidade</option><option>Outro</option></select></div>
+      <div><label class="dra-lbl">Categoria</label><select id="cv_cat" class="role-sel" style="width:100%"></select><div class="muted" style="font-size:10px;margin-top:2px">Configurável em Cadastros do Ciclo de Vida</div></div>
       <div><label class="dra-lbl">Site</label><select id="cv_site" class="role-sel" style="width:100%"><option>Pouso Alegre</option><option>Indaiatuba</option><option>Vinhedo</option></select></div>
-      <div><label class="dra-lbl">Dono do projeto</label><input id="cv_lead" class="role-sel" style="width:100%" placeholder="Responsável único pelo projeto"></div>
-      <div><label class="dra-lbl">Tipo de saving</label><select id="cv_savtype" class="role-sel" style="width:100%"><option>Hard Save</option><option>Cost Avoidance</option><option>Virtual Saving</option></select></div>
+      <div><label class="dra-lbl">Líder do projeto</label><div class="role-sel" style="width:100%;background:var(--surface-2);display:flex;align-items:center;gap:6px">👤 Maria Correa <span class="muted" style="font-size:10px">(você)</span></div><div class="muted" style="font-size:10px;margin-top:2px">Quem cria é o líder: preenchido com o usuário logado</div></div>
+      <div><label class="dra-lbl">Fase do projeto</label><select id="cv_fase" class="role-sel" style="width:100%"><option>Ideia</option><option>Estudo de viabilidade</option><option selected>Em andamento</option><option>Pausado</option><option>Cancelado</option></select></div>
+      <div><label class="dra-lbl">Tipo de saving</label><select id="cv_savtype" class="role-sel" style="width:100%" onchange="cvSavChange()"></select></div>
       <div><label class="dra-lbl">Saving estimado (R$ mil)</label><input id="cv_sav" type="number" step="1" class="role-sel" style="width:100%" placeholder="0"></div>
+      <div id="cv_nppWrap" style="grid-column:span 2;display:none;background:#e4f0fa;border-radius:10px;padding:10px 14px"><label class="dra-lbl">Número do projeto no NPP *</label><input id="cv_npp" class="role-sel" style="width:100%;margin-top:2px;background:#fff" placeholder="Ex.: NPP-2214"><div class="muted" style="font-size:10.5px;margin-top:3px">Hard Save exige o nº do NPP, a ferramenta de validação de saving.</div></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;grid-column:span 2">
         <div><label class="dra-lbl">Início</label><select id="cv_ini" class="role-sel" style="width:100%"></select></div>
         <div><label class="dra-lbl">Fim</label><select id="cv_fim" class="role-sel" style="width:100%"></select></div>
       </div>
-      <div style="grid-column:span 2"><label class="dra-lbl">Marcos do projeto (configuráveis pelo dono)</label>
+      <div style="grid-column:span 2"><label class="dra-lbl">Marcos do projeto (configuráveis pelo líder)</label>
         <div class="reprow" style="margin-top:4px">
           <select id="cvm_m" class="role-sel" style="flex:0 0 110px"></select>
           <input type="text" id="cvm_t" class="role-sel" style="flex:1;min-width:160px" placeholder="Título do marco (ex.: Go-live, Comissionamento)">
@@ -1974,7 +2044,7 @@
 <div id="cvTaskModal" class="hidden" style="position:fixed;inset:0;z-index:170;background:rgba(8,20,34,.55);backdrop-filter:blur(3px);display:grid;place-items:center;padding:24px" onclick="if(event.target===this)cvTkClose()">
   <div style="background:#fff;border-radius:16px;width:min(560px,95vw);max-height:92vh;overflow:auto;box-shadow:0 40px 90px -30px rgba(0,0,0,.6)">
     <div style="padding:16px 20px;border-bottom:1px solid var(--line);display:flex;align-items:flex-start;gap:12px">
-      <div style="flex:1"><div style="font-family:Poppins;font-weight:700;font-size:15px">Nova atividade</div><div class="muted" style="font-size:12px"><span id="cvTkProj"></span> · a responsabilidade é do dono do projeto</div></div>
+      <div style="flex:1"><div style="font-family:Poppins;font-weight:700;font-size:15px">Nova atividade</div><div class="muted" style="font-size:12px"><span id="cvTkProj"></span> · a responsabilidade é do líder do projeto</div></div>
       <button class="btn ghost sm" onclick="cvTkClose()" title="Fechar">✕</button>
     </div>
     <div style="padding:18px 20px;display:grid;gap:14px">
@@ -2824,7 +2894,7 @@ function renderTeam(){document.getElementById('teamBody').innerHTML=TEAM.map(u=>
   <td><span class="pill" style="background:var(--brand-soft);color:var(--brand)">${u.role}</span></td><td class="muted">${u.pj}</td>
   <td><span class="pill" style="background:${u.ok?'#e3f6ec':'#fdf2e1'};color:${u.ok?'var(--ok)':'var(--warn)'}">${u.ok?'Ativo':'Pendente'}</span></td></tr>`).join('');}
 renderTeam();
-const PERMS=[["Criar / editar projeto",1,1,0],["Classificar projeto",1,1,0],["Configurar catálogo de documentos",1,0,0],["Gerar / inserir documentos",1,1,0],["Aprovar documentos",1,1,0],["Editar dados financeiros (SAP)",1,0,0],["Gerenciar usuários e papéis",1,0,0],["Exportar auditoria",1,1,1]];
+const PERMS=[["Criar / editar projeto",1,1,0],["Classificar projeto",1,1,0],["Configurar catálogo de documentos",1,0,0],["Gerar / inserir documentos",1,1,0],["Aprovar documentos",1,1,0],["Editar dados financeiros (SAP)",1,0,0],["Gerenciar usuários e papéis",1,0,0],["Exportar auditoria",1,1,1],["M3 · Criar projeto sem CAPEX (vira o líder)",1,1,0],["M3 · Editar marcos e atividades (só o líder, no seu projeto)",1,1,0],["M3 · Visualizar todos os projetos (gerencial)",1,1,1],["M3 · Configurar categorias e tipos de saving",1,0,0]];
 document.getElementById('permBody').innerHTML=PERMS.map(p=>`<tr><td style="font-weight:600">${p[0]}</td>
   <td style="text-align:center" class="${p[1]?'perm-yes':'perm-no'}">${p[1]?'✓':', '}</td>
   <td style="text-align:center" class="${p[2]?'perm-yes':'perm-no'}">${p[2]?'✓':', '}</td>
@@ -3033,8 +3103,8 @@ function eemStatus(p){const e=eemOf(p);const d=(p.schP||0)-e.plan;const days=Mat
   return{cls:'tk-ontime',label:'On track',days,d};}
 function avColor(s){const c=['#0060A8','#1f9d57','#e8930c','#8250df','#d6336c','#0a9396'];let h=0;for(const ch of (s||'?'))h=(h*31+ch.charCodeAt(0))%c.length;return c[h];}
 const CV_PROJECTS=[
-  {id:"CV1",simple:true,type:"S",name:"Automação de Relatórios de Qualidade",loc:"Pouso Alegre · Digitalização · Sem CAPEX",cur:1,budP:0,budA:0,com:0,sav:120000,savType:"Hard Save",schP:35,lead:"Maria Correa",oi:"—",gs:5,gsp:5},
-  {id:"CV2",simple:true,type:"S",name:"Sensorização IoT da Linha 3",loc:"Pouso Alegre · Melhoria · Sem CAPEX",cur:1,budP:0,budA:0,com:0,sav:80000,savType:"Cost Avoidance",schP:60,lead:"Jean Ramos",oi:"—",gs:4,gsp:4},
+  {id:"CV1",simple:true,type:"S",name:"Automação de Relatórios de Qualidade",loc:"Pouso Alegre · Digitalização · Sem CAPEX",cur:1,budP:0,budA:0,com:0,sav:120000,savType:"Hard Save",npp:"NPP-2214",fase:"Em andamento",schP:35,lead:"Maria Correa",oi:"—",gs:5,gsp:5},
+  {id:"CV2",simple:true,type:"S",name:"Sensorização IoT da Linha 3",loc:"Pouso Alegre · Melhoria · Sem CAPEX",cur:1,budP:0,budA:0,com:0,sav:80000,savType:"Cost Avoidance",fase:"Em andamento",schP:60,lead:"Jean Ramos",oi:"—",gs:4,gsp:4},
 ];
 CV_PROJECTS[0]._plan={rep:null,marcos:[[5,'Início do projeto','done'],[6,'Mapeamento dos relatórios','done'],[7,'Desenvolvimento do fluxo','next'],[8,'Go-live e treinamento','pend'],[9,'Encerramento','pend']],acts:[]};
 CV_PROJECTS[0]._tasks=[
@@ -3052,6 +3122,10 @@ CV_PROJECTS[1]._tasks=[
   {id:4,t:'Instalação dos sensores',due:'2026-08-12',st:'pend',marco:2,desc:'',notes:[],rep:null},
   {id:5,t:'Comissionamento',due:'2026-08-18',st:'pend',marco:2,desc:'Teste ponta a ponta com a produção rodando.',notes:[],rep:null}];
 CV_PROJECTS[1].schP=20;
+const CURRENT_USER='Maria Correa';
+let CV_CATS=['Digitalização','Automação','Melhoria de processo','Qualidade'];
+let CV_SAVTYPES=[{n:'Hard Save',npp:true},{n:'Cost Avoidance',npp:false},{n:'Virtual Saving',npp:false}];
+const CV_FASES=['Ideia','Estudo de viabilidade','Em andamento','Pausado','Cancelado'];
 const eemAll=()=>PROJECTS.concat(CV_PROJECTS);
 /* ===== Gestão de Projetos (Módulo 3): hub com origem PSR × manual ===== */
 let cvgO='all';
@@ -3077,7 +3151,7 @@ function buildCvGest(){
     {k:'Ativ. atrasadas',v:lateT,c:lateT?'var(--danger)':'var(--ok)'}
   ].map(x=>`<div class="card kpi"><div class="lbl">${x.k}</div><div class="val" style="color:${x.c}">${x.v}</div></div>`).join('');
   const list=all.filter(p=>(cvgO==='all'||(cvgO==='manual'?p.simple:!p.simple))
-    &&(stF==='all'||eemStatus(p).label===stF)
+    &&(stF==='all'||eemStatus(p).label===stF)&&((document.getElementById('cvgFase').value||'all')==='all'||(p.fase||'Em andamento')===document.getElementById('cvgFase').value)
     &&(!q||(p.name+' '+p.lead+' '+(p.loc||'')).toLowerCase().includes(q)));
   document.getElementById('cvgTitle').textContent='Projetos · '+list.length+' de '+all.length;
   document.getElementById('cvgBody').innerHTML=list.map(p=>{
@@ -3088,7 +3162,7 @@ function buildCvGest(){
     const late=cvgLate(p);
     return `<tr class="cvp-row" onclick="cvOpen('${p.id}')">
       <td><span class="org-badge ${p.simple?'org-man':'org-psr'}">${p.simple?'MANUAL · S/ CAPEX':'PSR · AUTO'}</span></td>
-      <td style="font-weight:600">${p.name}${cvgRep(p)?' <span class="cvp-chip cvp-late" title="Prazo remanejado com justificativa">↦</span>':''}<br><span class="muted" style="font-size:10.5px;font-weight:500">${p.simple?(p.savType||'Saving')+' · '+eur(p.sav):'Tipo '+p.type+' · OI '+p.oi}</span></td>
+      <td style="font-weight:600">${p.name}${cvgRep(p)?' <span class="cvp-chip cvp-late" title="Prazo remanejado com justificativa">↦</span>':''}<br><span class="muted" style="font-size:10.5px;font-weight:500">${p.simple?(p.fase||'Em andamento')+' · '+(p.savType||'Saving')+' · '+eur(p.sav)+(p.npp?' · NPP '+p.npp:''):'Tipo '+p.type+' · OI '+p.oi}</span></td>
       <td>${p.lead}</td>
       <td class="muted">${MESES[p.gs]} → ${MESES[Math.min(11,p.gs+p.gsp-1)]}</td>
       <td class="muted" style="font-size:11.5px">${nx?nx[1]:'—'}</td>
@@ -3098,6 +3172,62 @@ function buildCvGest(){
       <td style="text-align:right;white-space:nowrap"><button class="btn ghost sm" onclick="event.stopPropagation();switchView('lifecycle');buildLifecycle('${p.id}')">Jornada</button> <button class="btn sm" onclick="event.stopPropagation();cvOpen('${p.id}')">Abrir</button></td></tr>`;
   }).join('')||'<tr><td colspan="9" class="muted" style="padding:18px">Nenhum projeto com esses filtros.</td></tr>';
 }
+/* ===== Visão Consolidada (Módulo 3): retrato geral da fábrica ===== */
+function chBar(lbl,n,tot,color,extra){const w=tot?Math.round(n/Math.max(1,tot)*100):0;
+  return '<div style="margin-bottom:11px"><div style="display:flex;justify-content:space-between;gap:8px;font-size:12px;flex-wrap:wrap"><b>'+lbl+'</b><span class="muted">'+n+' projeto'+(n===1?'':'s')+(extra?' · '+extra:'')+'</span></div><div class="cvg-bar" style="margin-top:4px;max-width:none"><i style="width:'+w+'%;background:'+color+'"></i></div></div>';}
+function cvHomeFase(f){switchView('cvgest');const sel=document.getElementById('cvgFase');sel.value=f;buildCvGest();}
+function buildCvHome(){
+  const all=eemAll();
+  const off=all.filter(p=>eemStatus(p).label==='Off track').length;
+  const lateT=all.reduce((a,p)=>a+cvgLate(p),0);
+  const reman=all.filter(cvgRep).length;
+  const capex=all.filter(p=>!p.simple),semc=all.filter(p=>p.simple);
+  const andamento=all.filter(p=>(p.fase||'Em andamento')==='Em andamento').length;
+  document.getElementById('chKpis').innerHTML=[
+    {k:'Projetos na fábrica',v:all.length,c:'var(--brand)'},
+    {k:'Em andamento',v:andamento,c:'var(--brand-2)'},
+    {k:'Com CAPEX (PSR)',v:capex.length,c:'var(--brand-deep)'},
+    {k:'Sem CAPEX',v:semc.length,c:'var(--warn)'},
+    {k:'Off track',v:off,c:off?'var(--danger)':'var(--ok)'},
+    {k:'Ativ. atrasadas',v:lateT,c:lateT?'var(--danger)':'var(--ok)'}
+  ].map(x=>'<div class="card kpi" style="cursor:pointer" title="Abrir a Gestão de Projetos" onclick="switchView(\'cvgest\')"><div class="lbl">'+x.k+'</div><div class="val" style="color:'+x.c+'">'+x.v+'</div></div>').join('');
+  const capT=capex.reduce((a,p)=>a+(p.budP||0),0),savT=semc.reduce((a,p)=>a+(p.sav||0),0);
+  document.getElementById('chCapex').innerHTML=
+    chBar('Com CAPEX · via PSR',capex.length,all.length,'var(--brand)',eur(capT)+' aprovados')+
+    chBar('Sem CAPEX · manual',semc.length,all.length,'var(--warn)',eur(savT)+' de saving estimado');
+  document.getElementById('chSav').innerHTML=CV_SAVTYPES.map(t=>{
+    const ps=semc.filter(p=>p.savType===t.n);
+    return chBar(t.n+(t.npp?' · NPP':''),ps.length,semc.length,'var(--brand-2)',eur(ps.reduce((a,p)=>a+(p.sav||0),0)));
+  }).join('')||'<div class="muted" style="font-size:12px">Nenhum tipo cadastrado.</div>';
+  document.getElementById('chFases').innerHTML=CV_FASES.map(f=>{
+    const n=all.filter(p=>(p.fase||'Em andamento')===f).length;
+    return '<button type="button" class="cvtk-chip'+(n?' on':'')+'" onclick="cvHomeFase(\''+f+'\')">'+f+' · '+n+'</button>';
+  }).join('');
+  const offs=all.filter(p=>eemStatus(p).label==='Off track');
+  document.getElementById('chAlerts').innerHTML='<div class="section-title" style="font-size:13.5px">Atenção agora</div>'+
+    ((offs.length||lateT||reman)?
+      offs.map(p=>'<div style="display:flex;gap:8px;font-size:12.5px;padding:8px 0;border-bottom:1px dashed var(--line);align-items:center;cursor:pointer" onclick="cvOpen(\''+p.id+'\')">🔴 <b>'+p.name+'</b><span class="muted">off track · '+(cvgLate(p)?cvgLate(p)+' atividade'+(cvgLate(p)>1?'s':'')+' atrasada'+(cvgLate(p)>1?'s':''):'atrás do plano')+'</span><span style="margin-left:auto;color:var(--ink-faint)">abrir ▸</span></div>').join('')+
+      (reman?'<div style="display:flex;gap:8px;font-size:12.5px;padding:8px 0;align-items:center">↦ <b>'+reman+' projeto'+(reman>1?'s':'')+'</b><span class="muted">com prazo remanejado e justificativa na auditoria</span></div>':'')
+    :'<div class="muted" style="font-size:12px;margin-top:8px">Nenhum alerta: todos os projetos dentro do previsto.</div>');
+}
+/* ===== Cadastros do Ciclo de Vida (Configuração) ===== */
+function buildCvConfig(){
+  document.getElementById('ccCats').innerHTML=CV_CATS.map((c,i)=>'<span class="cvtk-chip" style="cursor:default">'+c+' <a class="perm-w" style="cursor:pointer;color:var(--danger);font-weight:800;margin-left:2px" title="Remover" onclick="ccCatDel('+i+')">✕</a></span>').join('');
+  document.getElementById('ccSavs').innerHTML=CV_SAVTYPES.map((t,i)=>'<span class="cvtk-chip" style="cursor:default">'+t.n+(t.npp?' <b style="color:var(--brand)" title="Exige nº do projeto no NPP">· NPP</b>':'')+' <a class="perm-w" style="cursor:pointer;color:var(--danger);font-weight:800;margin-left:2px" title="Remover" onclick="ccSavDel('+i+')">✕</a></span>').join('');
+}
+function ccCatAdd(){const v=(document.getElementById('ccCatNew').value||'').trim();
+  if(v.length<3){toast('Dê um nome à categoria.');return;}
+  if(CV_CATS.includes(v)){toast('Essa categoria já existe.');return;}
+  CV_CATS.push(v);document.getElementById('ccCatNew').value='';buildCvConfig();
+  toast('Categoria "'+v+'" cadastrada. Já aparece no formulário de novo projeto.');}
+function ccCatDel(i){const c=CV_CATS.splice(i,1)[0];buildCvConfig();toast('Categoria "'+c+'" removida.');}
+function ccSavAdd(){const v=(document.getElementById('ccSavNew').value||'').trim();
+  if(v.length<3){toast('Dê um nome ao tipo de saving.');return;}
+  if(CV_SAVTYPES.some(t=>t.n===v)){toast('Esse tipo já existe.');return;}
+  CV_SAVTYPES.push({n:v,npp:document.getElementById('ccSavNpp').checked});
+  document.getElementById('ccSavNew').value='';document.getElementById('ccSavNpp').checked=false;buildCvConfig();
+  toast('Tipo "'+v+'" cadastrado.');}
+function ccSavDel(i){const t=CV_SAVTYPES.splice(i,1)[0];buildCvConfig();toast('Tipo "'+t.n+'" removido.');}
 /* ===== Espaço do projeto sem CAPEX: navegação e gestão madura de atividades ===== */
 let cvProj=null,cvOpenTask=-1,cvNewMarcos=[];
 const cvToday='2026-07-20';
@@ -3125,9 +3255,9 @@ function cvRender(){
   cvRecalc();
   document.getElementById('cvpHead').innerHTML=`<div class="card" style="padding:16px 20px;margin-bottom:14px;display:flex;gap:14px;align-items:center;flex-wrap:wrap">
     <button class="btn ghost sm" onclick="cvBack()">← Ciclo de Vida</button>
-    <div style="flex:1;min-width:220px"><div style="font-family:Poppins;font-weight:700;font-size:17px">${p.name}</div><div class="muted" style="font-size:12px">${p.loc} · dono <b>${p.lead}</b>${pl.rep?' · <b style="color:var(--danger)">prazo remanejado</b>':''}</div></div>
-    ${p.simple?`<span class="pill" style="background:#e7f4ee;color:#137a44">${p.savType||'Saving'} · ${eur(p.sav)}</span>`:`<span class="pill" style="background:#e4f0fa;color:#0060A8">Tipo ${p.type} · OI ${p.oi}</span><span class="pill" style="background:#e7f4ee;color:#137a44">Capex ${eur(p.budP)}</span><button class="btn ghost sm" onclick="openProject('${p.id}');switchView('project')">📄 Steps & documentos</button>`}
-    <span class="tk-status ${st.cls}"><span class="dot"></span>${st.label}</span></div>`;
+    <div style="flex:1;min-width:220px"><div style="font-family:Poppins;font-weight:700;font-size:17px">${p.name}</div><div class="muted" style="font-size:12px">${p.loc} · líder <b>${p.lead}</b>${pl.rep?' · <b style="color:var(--danger)">prazo remanejado</b>':''}</div></div>
+    ${p.simple?`<span class="pill" style="background:#ede7f6;color:#5e35b1">${p.fase||'Em andamento'}</span><span class="pill" style="background:#e7f4ee;color:#137a44">${p.savType||'Saving'} · ${eur(p.sav)}${p.npp?' · NPP '+p.npp:''}</span>`:`<span class="pill" style="background:#e4f0fa;color:#0060A8">Tipo ${p.type} · OI ${p.oi}</span><span class="pill" style="background:#e7f4ee;color:#137a44">Capex ${eur(p.budP)}</span><button class="btn ghost sm" onclick="openProject('${p.id}');switchView('project')">📄 Steps & documentos</button>`}
+    <span class="tk-status ${st.cls}"><span class="dot"></span>${st.label}</span><span class="pill" style="background:var(--surface-2);color:var(--ink-soft)" title="Criar e editar marcos, atividades e comentários é exclusivo do líder do projeto; os demais perfis visualizam">✎ edita: líder</span></div>`;
   const done=ts.filter(t=>t.st==='done').length,late=ts.filter(cvIsLate).length;
   const nx=pl.marcos.find(m=>m[2]==='next'||m[2]==='late');
   document.getElementById('cvpStats').innerHTML=[
@@ -3138,7 +3268,9 @@ function cvRender(){
   ].map(x=>`<div class="card kpi"><div class="lbl">${x.k}</div><div class="val" style="color:${x.c};font-size:${x.small?'15px':'27px'};line-height:1.2">${x.v}</div></div>`).join('');
   document.getElementById('cvpMarcos').innerHTML=pl.marcos.map((m,mi)=>{const lbl={done:'Concluído',next:'Próximo',late:'Atrasado',pend:'Planejado'}[m[2]];
     const mrep=m[3]?`<span class="mrep" title="Justificativa: ${m[3].just}">↦ era ${m[3].de}</span>`:'';
-    return `<div class="pm-marco ${m[2]} perm-w" onclick="cvMarcoForm(${mi})" title="Clique para remanejar (justificativa obrigatória)"><div class="dot"></div><div class="mm">${MESES[m[0]]}</div><div class="mt">${m[1]}</div><div class="ms">${lbl}</div>${mrep}</div>`;}).join('');
+    return `<div class="pm-marco ${m[2]}${p.simple?' perm-w':''}"${p.simple?` onclick="cvMarcoForm(${mi})" title="Clique para remanejar (justificativa obrigatória)"`:` title="Projeto do PSR: marcos definidos com a engenharia, somente leitura" style="cursor:default"`}><div class="dot"></div><div class="mm">${MESES[m[0]]}</div><div class="mt">${m[1]}</div><div class="ms">${lbl}</div>${mrep}</div>`;}).join('');
+  document.getElementById('cvNmBtnWrap').style.display=p.simple?'':'none';
+  document.getElementById('cvMarcoHint').textContent=p.simple?'· configuráveis pelo líder; clique em um marco para remanejar (justificativa obrigatória)':'· do PSR: definidos com a engenharia, somente leitura aqui';
   document.getElementById('cvpTasks').innerHTML=ts.map((t,i)=>{
     const late=cvIsLate(t);
     const stSel=`<select class="cvp-status" onclick="event.stopPropagation()" onchange="cvTaskStatus(${i},this.value)">
@@ -3218,7 +3350,7 @@ function cvTkSave(){
   const nx=(document.getElementById('cvTk_note').value||'').trim();
   if(nx)ts[ts.length-1].notes.push({d:cvFmt(cvToday),by:cvProj.lead,x:nx});
   cvTkClose();cvOpenTask=ts.length-1;cvRecalc();cvRender();buildTrack();
-  toast('Atividade "'+t+'" adicionada ao plano. A responsabilidade é do dono do projeto.');
+  toast('Atividade "'+t+'" adicionada ao plano. A responsabilidade é do líder do projeto.');
 }
 function cvTaskStatus(i,v){const t=cvTasksOf(cvProj)[i];t.st=v;cvRecalc();cvRender();buildTrack();
   if(v==='done')toast(cvProj.simple?('Atividade concluída, o avanço do projeto recalculou para '+cvProj.schP+'%.'):'Atividade concluída e registrada no plano do projeto.');}
@@ -3417,14 +3549,14 @@ function openPlan(id){
   h+=`<div class="pm-sec">Marcos do projeto <span style="font-weight:500;color:var(--ink-faint)">· visão gerencial, sem tarefas, só entregas</span></div><div class="pm-marcos">`+
     pl.marcos.map((m,mi)=>{const st=m[2];const lbl={done:'Concluído',next:'Próximo',late:'Atrasado',pend:'Planejado'}[st];
       const mrep=m[3]?`<span class="mrep" title="Justificativa: ${m[3].just}">↦ era ${m[3].de}</span>`:'';
-      return `<div class="pm-marco ${st} perm-w" onclick="pmMarcoForm(${mi})" title="Clique para remanejar este marco (justificativa obrigatória)"><div class="dot"></div><div class="mm">${MESES[m[0]]}</div><div class="mt">${m[1]}</div><div class="ms">${lbl}</div>${mrep}</div>`;}).join('')+`</div><div style="margin:6px 0 2px"><button class="btn ghost sm perm-w" onclick="pmMarcoAdd()">+ Novo marco</button> <span class="muted" style="font-size:11px">· configuráveis pelo dono do projeto; início e encerramento são obrigatórios</span></div><div id="pmMarcoFormWrap"></div>`;
+      return `<div class="pm-marco ${st} perm-w" onclick="pmMarcoForm(${mi})" title="Clique para remanejar este marco (justificativa obrigatória)"><div class="dot"></div><div class="mm">${MESES[m[0]]}</div><div class="mt">${m[1]}</div><div class="ms">${lbl}</div>${mrep}</div>`;}).join('')+`</div><div style="margin:6px 0 2px"><button class="btn ghost sm perm-w" onclick="pmMarcoAdd()">+ Novo marco</button> <span class="muted" style="font-size:11px">· configuráveis pelo líder do projeto; início e encerramento são obrigatórios</span></div><div id="pmMarcoFormWrap"></div>`;
   h+=`<div class="pm-sec" style="margin-top:20px">Atividades por mês <span style="font-weight:500;color:var(--ink-faint)">· documentos e ações do projeto, clique para abrir o card</span></div>`;
   h+=`<div id="pmAddForm" style="display:none;border:1.5px dashed var(--brand);border-radius:12px;padding:13px 16px;margin-bottom:12px;background:var(--brand-soft)">
     <div class="pm-sec" style="margin:0 0 8px;font-size:12px">Nova atividade</div>
     <div class="reprow" style="margin-top:0">
       <select id="addm" style="padding:8px 11px;border:1.5px solid var(--line);border-radius:9px;font-family:inherit;font-size:12.5px">${MESES.map((m,k)=>`<option value="${k}" ${k===Math.floor(EEM_TODAY)?'selected':''}>${m}</option>`).join('')}</select>
       <input type="text" id="addt" placeholder="Título da atividade (ex.: Instalação da rede industrial)">
-      <span class="muted" style="font-size:11px;align-self:center;white-space:nowrap">responsável: o dono do projeto</span>
+      <span class="muted" style="font-size:11px;align-self:center;white-space:nowrap">responsável: o líder do projeto</span>
       <button class="btn sm" onclick="addAct()">Adicionar</button>
     </div></div>`;
   let lastM=-1;
@@ -3457,10 +3589,18 @@ function openPlan(id){
 function cvAdd(){
   const ini=document.getElementById('cv_ini'),fim=document.getElementById('cv_fim');
   if(!ini.options.length){MESES.forEach((mn,i)=>{ini.innerHTML+='<option value="'+i+'">'+mn+' 26</option>';fim.innerHTML+='<option value="'+i+'">'+mn+' 26</option>';});ini.value='6';fim.value='10';}
-  document.getElementById('cv_name').value='';document.getElementById('cv_lead').value='';document.getElementById('cv_sav').value='';
+  document.getElementById('cv_name').value='';document.getElementById('cv_sav').value='';
+  document.getElementById('cv_cat').innerHTML=CV_CATS.map(c=>'<option>'+c+'</option>').join('');
+  document.getElementById('cv_savtype').innerHTML=CV_SAVTYPES.map(x=>'<option>'+x.n+'</option>').join('');
+  document.getElementById('cv_fase').value='Em andamento';
+  document.getElementById('cv_npp').value='';cvSavChange();
   const cm=document.getElementById('cvm_m');if(!cm.options.length)MESES.forEach((mn,i)=>{cm.innerHTML+='<option value="'+i+'">'+mn+' 26</option>';});cm.value='8';
   cvNewMarcos=[];cvNmRender();
   document.getElementById('cvAddModal').classList.remove('hidden');
+}
+function cvSavChange(){
+  const st=CV_SAVTYPES.find(x=>x.n===document.getElementById('cv_savtype').value);
+  document.getElementById('cv_nppWrap').style.display=st&&st.npp?'':'none';
 }
 function cvAddClose(){document.getElementById('cvAddModal').classList.add('hidden');}
 function cvAddSave(){
@@ -3468,11 +3608,15 @@ function cvAddSave(){
   if(!name){toast('Informe o nome do projeto.');return;}
   let gi=parseInt(document.getElementById('cv_ini').value),gf=parseInt(document.getElementById('cv_fim').value);
   if(gf<gi){const t=gi;gi=gf;gf=t;}
-  const lead=(document.getElementById('cv_lead').value||'').trim()||'Maria Correa';
+  const lead=CURRENT_USER;
+  const stype=document.getElementById('cv_savtype').value;
+  const sdef=CV_SAVTYPES.find(x=>x.n===stype);
+  const npp=(document.getElementById('cv_npp').value||'').trim();
+  if(sdef&&sdef.npp&&!npp){toast('O tipo "'+stype+'" exige o número do projeto no NPP.');return;}
   const p={id:'CV'+(CV_PROJECTS.length+1)+'-'+Math.floor(Math.random()*900+100),simple:true,type:'S',name,
     loc:document.getElementById('cv_site').value+' · '+document.getElementById('cv_cat').value+' · Sem CAPEX',
     cur:1,budP:0,budA:0,com:0,sav:(parseFloat(document.getElementById('cv_sav').value)||0)*1000,
-    savType:document.getElementById('cv_savtype').value,schP:0,lead,oi:'—',gs:gi,gsp:gf-gi+1};
+    savType:stype,npp:npp||null,fase:document.getElementById('cv_fase').value,schP:0,lead,oi:'—',gs:gi,gsp:gf-gi+1};
   const marcos=[[gi,'Início do projeto',gi<=Math.floor(EEM_TODAY)?'done':'pend']];
   cvNewMarcos.forEach(m=>{const mm=Math.max(gi,Math.min(gf,m.m));marcos.push([mm,m.t,mm<=Math.floor(EEM_TODAY)?'done':'pend']);});
   marcos.push([gf,'Encerramento','pend']);
@@ -3513,7 +3657,7 @@ function pmMarcoAddSave(){
   const pl=planOf(pmProj);
   pl.marcos.push([m,t,'pend']);pl.marcos.sort((a,b)=>a[0]-b[0]);
   openPlan(pmProj.id);buildTrack();
-  toast('Marco "'+t+'" adicionado em '+MESES[m]+'. Marcos são configuráveis pelo dono do projeto.');
+  toast('Marco "'+t+'" adicionado em '+MESES[m]+'. Marcos são configuráveis pelo líder do projeto.');
 }
 function pmMarcoSave(){
   const pl=planOf(pmProj);const m=pl.marcos[pmMarcoIdx];
@@ -3559,7 +3703,7 @@ function togglePmAdd(){const f=document.getElementById('pmAddForm');if(f){f.styl
 function addAct(){
   const m=+document.getElementById('addm').value;
   const t=document.getElementById('addt').value.trim();
-  const r=pmProj.lead; /* a responsabilidade é do dono do projeto (call 20/07) */
+  const r=pmProj.lead; /* a responsabilidade é do líder do projeto (call 20/07) */
   if(!t){toast('Dê um título para a atividade.');return;}
   const pl=planOf(pmProj);
   pl.acts.push([m,t,r,'pend',null,null]);
@@ -3573,30 +3717,33 @@ function lcDocs(p){if(p.simple)return{done:0,total:0};let total=totalActs(p.type
   ACT[p.type].forEach((arr,si)=>arr.forEach((d,di)=>{let st=docStatus(p,si,di);const k=`${p.id}-${si}-${di}`;if(genState[k])st=genState[k];if(st==="ger")done++;}));
   return{done,total};}
 function lcPhases(p){
-  const s=eemStatus(p);
+  const s=eemStatus(p),pl=planOf(p),e=eemOf(p);
+  const enc=pl.rep?('previsto '+pl.rep.para+' · era '+pl.rep.de):('previsto '+e.fim);
   if(p.simple)return [
-    {ic:'🚀',t:'Iniciação',d:'Cadastro direto no Ciclo de Vida',st:'done',x:'Sem CAPEX · '+(p.savType||'Saving')},
-    {ic:'🗓',t:'Planejamento',d:'Marcos definidos pelo dono',st:'done',x:planOf(p).marcos.length+' marcos configuráveis'},
-    {ic:'⚙️',t:'Implementação',d:'Cronograma e atividades',st:(p.schP||0)>=100?'done':'now',x:(p.schP||0)+'% executado'},
-    {ic:'📈',t:'Monitoramento',d:'Status, alertas e remanejos',st:s.label==='Off track'?'late':'now',x:s.label+(planOf(p).rep?' · remanejado':'')},
-    {ic:'🏁',t:'Encerramento',d:'Verificação dos resultados e savings',st:'pend',x:'Aguardando implementação'}
+    {ic:'🚀',t:'Iniciação',d:'Cadastro direto no Ciclo de Vida',st:'done',x:'Sem CAPEX · '+(p.savType||'Saving'),dt:e.ini},
+    {ic:'🗓',t:'Planejamento',d:'Marcos definidos pelo líder',st:'done',x:pl.marcos.length+' marcos configuráveis',dt:e.ini},
+    {ic:'⚙️',t:'Implementação',d:'Cronograma e atividades',st:(p.schP||0)>=100?'done':'now',x:(p.schP||0)+'% executado',dt:e.ini+' → '+e.fim},
+    {ic:'📈',t:'Monitoramento',d:'Status, alertas e remanejos',st:s.label==='Off track'?'late':'now',x:s.label+(pl.rep?' · remanejado':''),dt:'contínuo'},
+    {ic:'🏁',t:'Encerramento',d:'Verificação dos resultados e savings',st:'pend',x:'Aguardando implementação',dt:enc}
   ];
   return [
-    {ic:'🚀',t:'Iniciação',d:'Cadastro, OI e classificação',st:'done',x:`Tipo ${p.type} · ${TYPES[p.type].name}`},
-    {ic:'🗓',t:'Planejamento',d:'Cronograma, marcos e equipe',st:'done',x:`${planOf(p).marcos.length} marcos definidos`},
-    {ic:'⚙️',t:'Execução',d:'Steps, documentos e atividades',st:p.cur>=7?'done':'now',x:`Step ${p.cur}/7 · ${STEPS[p.cur-1].name}`},
-    {ic:'📈',t:'Monitoramento',d:'Status, alertas e remanejos',st:s.label==='Off track'?'late':'now',x:s.label+(planOf(p).rep?' · remanejado':'')},
-    {ic:'🏁',t:'Encerramento',d:'Capex closure, KPIs e lições',st:p.cur>=7?'now':'pend',x:p.cur>=7?'Em andamento':'Aguardando Step 7'}
+    {ic:'🚀',t:'Iniciação',d:'Cadastro, OI e classificação',st:'done',x:`Tipo ${p.type} · ${TYPES[p.type].name}`,dt:e.ini},
+    {ic:'🗓',t:'Planejamento',d:'Cronograma, marcos e equipe',st:'done',x:`${pl.marcos.length} marcos definidos`,dt:e.ini},
+    {ic:'⚙️',t:'Execução',d:'Steps, documentos e atividades',st:p.cur>=7?'done':'now',x:`Step ${p.cur}/7 · ${STEPS[p.cur-1].name}`,dt:e.ini+' → '+e.fim},
+    {ic:'📈',t:'Monitoramento',d:'Status, alertas e remanejos',st:s.label==='Off track'?'late':'now',x:s.label+(pl.rep?' · remanejado':''),dt:'contínuo'},
+    {ic:'🏁',t:'Encerramento',d:'Capex closure, KPIs e lições',st:p.cur>=7?'now':'pend',x:p.cur>=7?'Em andamento':'Aguardando Step 7',dt:enc}
   ];
 }
 function lcEvents(p){
   const pl=planOf(p),e=eemOf(p),ev=[];
   if(p.simple){
-    ev.push({m:p.gs,ic:'🚀',t:'Projeto sem CAPEX cadastrado no Ciclo de Vida',d:`${p.savType||'Saving'} · dono ${p.lead} · fluxo simplificado, sem classificação A–E`});
-    ev.push({m:p.gs,ic:'🗓',t:'Cronograma e marcos definidos pelo dono',d:`${e.ini} → ${e.fim} · ${pl.marcos.length} marcos configuráveis`});
+    ev.push({m:p.gs,ic:'🚀',t:'Projeto sem CAPEX cadastrado no Ciclo de Vida',d:`${p.savType||'Saving'} · líder ${p.lead} · fluxo simplificado, sem classificação A–E`});
+    ev.push({m:p.gs,ic:'🗓',t:'Cronograma e marcos definidos pelo líder',d:`${e.ini} → ${e.fim} · ${pl.marcos.length} marcos configuráveis`});
     (pl.acts||[]).forEach(a=>{if(a[5])ev.push({m:a[0],ic:'🔴',t:`Prazo remanejado: ${a[1]}`,d:`${a[5].de} → ${a[5].para} por ${a[5].por} · “${a[5].just}”`});});
     if(pl.rep)ev.push({m:Math.min(11,p.gs+p.gsp-1),ic:'🔴',t:'Prazo final remanejado',d:`${pl.rep.de} → ${pl.rep.para} · “${pl.rep.just}”`});
-    return ev.sort((a,b)=>a.m-b.m);
+    pl.marcos.forEach(mk=>{const lb=mk[2]==='done'?'concluído':(mk[2]==='late'?'atrasado':(mk[2]==='next'?'próximo':'planejado'));
+    ev.push({m:mk[0],ic:mk[2]==='done'?'✅':(mk[2]==='late'?'🔴':(mk[2]==='next'?'▶️':'◇')),t:'Marco: '+mk[1],d:(mk[3]?'planejado '+mk[3].de+' · remanejado para '+MESES[mk[0]]+' 26 (“'+mk[3].just+'”)':'planejado '+MESES[mk[0]]+' 26')+' · '+lb});});
+  return ev.sort((a,b)=>a.m-b.m);
   }
   ev.push({m:p.gs,ic:'🚀',t:'Projeto cadastrado e classificado',d:`Tipo ${p.type} (${TYPES[p.type].name}) · líder ${p.lead} · OI ${p.oi} vinculada ao SAP`});
   ev.push({m:p.gs,ic:'🗓',t:'Cronograma e marcos definidos',d:`${e.ini} → ${e.fim} · ${pl.marcos.length} marcos · equipe de ${e.team.length} pessoa${e.team.length===1?'':'s'}`});
@@ -3605,6 +3752,8 @@ function lcEvents(p){
   ev.push({m:Math.min(11,Math.round(p.gs+(p.cur-.5)*(p.gsp/7))),ic:'▶️',t:`Step ${p.cur} em andamento, ${STEPS[p.cur-1].name}`,d:`${stepInserted(p,p.cur-1)}/${stepRequired(p,p.cur-1)} documentos inseridos no gate`});
   (pl.acts||[]).forEach(a=>{if(a[5])ev.push({m:a[0],ic:'🔴',t:`Prazo remanejado: ${a[1]}`,d:`${a[5].de} → ${a[5].para} por ${a[5].por} · “${a[5].just}”`});});
   if(pl.rep)ev.push({m:Math.min(11,p.gs+p.gsp-1),ic:'🔴',t:'Prazo final do projeto remanejado',d:`${pl.rep.de} → ${pl.rep.para} por ${pl.rep.por} · “${pl.rep.just}”`});
+  pl.marcos.forEach(mk=>{const lb=mk[2]==='done'?'concluído':(mk[2]==='late'?'atrasado':(mk[2]==='next'?'próximo':'planejado'));
+    ev.push({m:mk[0],ic:mk[2]==='done'?'✅':(mk[2]==='late'?'🔴':(mk[2]==='next'?'▶️':'◇')),t:'Marco: '+mk[1],d:(mk[3]?'planejado '+mk[3].de+' · remanejado para '+MESES[mk[0]]+' 26 (“'+mk[3].just+'”)':'planejado '+MESES[mk[0]]+' 26')+' · '+lb});});
   return ev.sort((a,b)=>a.m-b.m);
 }
 function buildLifecycle(id){
@@ -3614,7 +3763,7 @@ function buildLifecycle(id){
   const s=eemStatus(p),e=eemOf(p),pl=planOf(p),docs=lcDocs(p);
   // fases da jornada
   const lbl={done:'Concluída',now:'Em andamento',late:'Atenção',pend:'Aguardando'};
-  document.getElementById('lcPhases').innerHTML=lcPhases(p).map((f,i)=>`<div class="lc-ph ${f.st}"><div class="ic">${i+1}</div><div class="pt">${f.t}</div><div class="pd">${f.d}</div><span class="ps">${lbl[f.st]} · ${f.x}</span></div>`).join('');
+  document.getElementById('lcPhases').innerHTML=lcPhases(p).map((f,i)=>`<div class="lc-ph ${f.st}"><div class="ic">${i+1}</div><div class="pt">${f.t}</div><div class="pd">${f.d}</div><div class="pdt">📅 ${f.dt}</div><span class="ps">${lbl[f.st]} · ${f.x}</span></div>`).join('');
   // saúde do projeto
   const nx=pl.marcos.find(m=>m[2]==='next'||m[2]==='late');
   document.getElementById('lcHealth').innerHTML=`
@@ -3804,11 +3953,15 @@ const HELP=[
 <ol><li><b>Clique em um projeto</b> para abrir o plano;</li>
 <li><b>Marcos</b>, a visão gerencial: só as entregas com data (sem microtarefas);</li>
 <li><b>Gestão de Projetos</b>, o hub do módulo: todos os projetos com o selo de origem (<b>PSR · automático</b> × <b>Manual · sem CAPEX</b>), filtros por origem/status, busca, progresso, atividades atrasadas e acesso direto ao espaço de cada projeto;</li>
-<li><b>Espaço do projeto</b>, clique em um projeto (do PSR ou sem CAPEX) para abrir a página do plano: marcos remanejáveis, e atividades com <b>prazo, status, descrição, documento anexado e log de atualizações</b>, tudo em nome do dono do projeto;</li>
+<li><b>Espaço do projeto</b>, clique em um projeto (do PSR ou sem CAPEX) para abrir a página do plano: marcos remanejáveis, e atividades com <b>prazo, status, descrição, documento anexado e log de atualizações</b>, tudo em nome do líder do projeto;</li>
 <li><b>Status da atividade</b>, mude entre Planejada, Em andamento e Concluída direto na tabela; nos projetos sem CAPEX o avanço recalcula na hora, e prazos vencidos ganham o selo <b>Atrasada</b> automaticamente;</li>
-<li><b>+ Nova atividade</b>, abre uma janela para criar a atividade completa: título, marco vinculado (clique no chip do marco e o sistema sugere o prazo pelo mês dele), prazo, status inicial, descrição e primeira atualização; a responsabilidade é sempre do <b>dono do projeto</b>, sem atribuição por atividade;</li>
+<li><b>+ Nova atividade</b>, abre uma janela para criar a atividade completa: título, marco vinculado (clique no chip do marco e o sistema sugere o prazo pelo mês dele), prazo, status inicial, descrição e primeira atualização; a responsabilidade é sempre do <b>líder do projeto</b>, sem atribuição por atividade;</li>
 <li><b>+ Novo projeto (sem CAPEX)</b>, projetos simples (digitalização, automação) são criados direto no Ciclo de Vida, com <b>tipo de saving</b> (Hard Save, Cost Avoidance, Virtual Saving) e sem classificação A–E, com os <b>marcos configurados já no cadastro</b>; o projeto abre no seu <b>espaço próprio</b>: marcos remanejáveis, atividades com prazo, status, descrição e atualizações; <b>todos os projetos da fábrica passam pelo módulo</b>, os do PSR entram automaticamente;</li>
-<li><b>Remanejar prazo</b>, clique no marco na régua para abrir a janela de remanejo (escolha o novo mês nos chips e escreva a justificativa) ou use o detalhe da atividade; a <b>justificativa é obrigatória</b>, vai para a auditoria e gera alerta no portfólio. O marco remanejado mostra “era mês X” e o desvio fica visível contra a baseline (o vermelhinho).</li></ol>
+<li><b>Remanejar prazo</b>, clique no marco na régua para abrir a janela de remanejo (escolha o novo mês nos chips e escreva a justificativa) ou use o detalhe da atividade; a <b>justificativa é obrigatória</b>, vai para a auditoria e gera alerta no portfólio. O marco remanejado mostra “era mês X” e o desvio fica visível contra a baseline (o vermelhinho).</li>
+<li><b>Visão Consolidada</b>, a porta de entrada do módulo (revisão 03/08): totais da fábrica, com CAPEX × sem CAPEX com valores, fases dos projetos e alertas, tudo clicável;</li>
+<li><b>Permissões</b>, criar e editar marcos, atividades e comentários é exclusivo do <b>líder do projeto</b>; os demais perfis visualizam. Projetos vindos do PSR têm <b>marcos somente leitura</b>, definidos com a engenharia;</li>
+<li><b>Cadastro sem CAPEX</b>, o líder é preenchido automaticamente (quem cria é o líder), o projeto ganha uma <b>fase</b> (Ideia, Estudo de viabilidade, Em andamento, Pausado, Cancelado) e, se o tipo de saving exigir, o sistema pede o <b>nº do projeto no NPP</b> (ex.: Hard Save);</li>
+<li><b>Cadastros do módulo</b>, categorias e tipos de saving são configuráveis em Configuração → Cadastros do Ciclo de Vida, sem tocar em código.</li></ol>
 <h5>Visão hierárquica</h5>
 <ol><li><b>Pilar Portfolio</b> vê o conjunto (overview gerencial da fábrica);</li><li><b>Líder</b> vê e refina somente os seus projetos, KPIs, alertas e cronograma se recalculam na hora.</li></ol>`},
 {ic:"🗓",t:"Cronograma (por steps)",d:"A linha do tempo do portfólio vista pela ótica dos steps.",b:`
@@ -3935,8 +4088,12 @@ const TOUR=[
    x:"Como as abas mensais da planilha: cada mês é uma <b>versão do DRA</b>. Aqui fica a <b>evolução do total do ano</b> (de 8.900 para 7.599 k€) e o <b>log de variações</b>: projetos incluídos, removidos e remanejos, com autor, a rastreabilidade que a diretoria olha."},
   {view:"draescopo",sel:'#scopeFlow1',c:"Módulo 2 · DRA",t:"O escopo explicado no próprio sistema",
    x:"A página Escopo do DRA documenta o módulo com <b>fluxogramas</b> (arquitetura de dados, ciclo mensal, workflow Marlin/AI), as <b>regras de ouro</b> e a <b>especificação técnica para o desenvolvedor</b>: modelo de dados, de-para SAP → planilha → sistema, fórmulas, permissões e a <b>camada Power BI</b> (o que fica no sistema × o que fica no BI, com as páginas propostas). Qualquer pessoa entende o DRA sem treinamento."},
+  {view:"cvhome",sel:'#chKpis',c:"Módulo 3 · Ciclo de Vida",t:"Visão Consolidada, a porta de entrada",
+   x:"O retrato da fábrica em uma tela (revisão 03/08): total de projetos, em andamento, <b>com CAPEX × sem CAPEX</b> com valores, off track e atividades atrasadas. Tudo clicável para descer ao detalhe."},
+  {view:"cvhome",sel:'#chFases',c:"Módulo 3 · Ciclo de Vida",t:"Fases dos projetos",
+   x:"Cada projeto tem uma <b>fase</b> definida no cadastro: Ideia, Estudo de viabilidade, Em andamento, Pausado ou Cancelado. Clique numa fase e a Gestão de Projetos abre já filtrada."},
   {view:"cvgest",sel:'#cvgBody',c:"Módulo 3 · Ciclo de Vida",t:"Gestão de Projetos, o hub do módulo",
-   x:"Todos os projetos da fábrica em um só lugar, com o <b>selo de origem</b>: <b>PSR · automático</b> (entram sozinhos, obrigatório) × <b>Manual · sem CAPEX</b> (nascem aqui). Filtros por origem e status, progresso, atividades atrasadas e o botão <b>Abrir</b> leva ao espaço do projeto."},
+   x:"Todos os projetos da fábrica em um só lugar, com o <b>selo de origem</b>: <b>PSR · automático</b> (entram sozinhos, obrigatório) × <b>Manual · sem CAPEX</b> (nascem aqui). Filtros por origem, status e <b>fase do projeto</b>; só o <b>líder</b> edita o que é dele, os demais visualizam. O botão <b>Abrir</b> leva ao espaço do projeto."},
   {view:"track",sel:'#trackKpis',c:"Módulo 3 · Ciclo de Vida",t:"On track ou off track?",
    x:"O Portfólio EEM compara o <b>avanço real × planejado</b> e classifica sozinho: <b>on track, off track ou adiantado</b>, a visão gerencial que a fábrica precisa, sem status reportado manualmente."},
   {view:"track",sel:'#trackAlerts',c:"Módulo 3 · Ciclo de Vida",t:"Alertas automáticos",
@@ -3948,15 +4105,17 @@ const TOUR=[
   {view:"track",sel:'#trackLead',c:"Módulo 3 · Ciclo de Vida",t:"Pilar Portfolio × Líder",
    x:"A visão hierárquica do EEM: o <b>pilar Portfolio</b> enxerga o conjunto de projetos; cada <b>líder</b> acompanha somente os seus. KPIs, alertas e cronograma se recalculam na hora."},
   {view:"lifecycle",sel:'#lcPhases',c:"Módulo 3 · Ciclo de Vida",t:"A jornada completa do projeto",
-   x:"O coração do Módulo 3: <b>Iniciação → Planejamento → Execução → Monitoramento → Encerramento</b>. Cada fase com status calculado pelo sistema."},
+   x:"O coração do Módulo 3: <b>Iniciação → Planejamento → Execução → Monitoramento → Encerramento</b>. Cada fase com status calculado e <b>datas</b>: início, período de execução e a <b>data prevista de encerramento</b> (revisão 03/08)."},
   {view:"lifecycle",sel:'#lcHealth',c:"Módulo 3 · Ciclo de Vida",t:"Saúde do projeto",
    x:"Quatro cartões respondem <b>como está o projeto</b>: status on/off track, documentos inseridos × exigidos, financeiro executado × aprovado e o <b>próximo marco</b>, com aviso se atrasado."},
   {view:"lifecycle",sel:'#lcEvents',c:"Módulo 3 · Ciclo de Vida",t:"Histórico de evolução",
-   x:"A linha do tempo do projeto: cadastro, cronograma, cada step concluído (gate 100%) e todos os <b>remanejamentos com autor e justificativa</b>. A rastreabilidade pedida para auditoria."},
+   x:"A linha do tempo do projeto, quebrada pelos <b>marcos</b>: cada um com o mês <b>planejado × realizado</b> (e o “era” quando remanejado), steps concluídos e remanejamentos com autor e justificativa. A rastreabilidade pedida para auditoria."},
   {view:"lifecycle",sel:'#lcLinks',c:"Módulo 3 · Ciclo de Vida",t:"Atalhos contextuais",
    x:"Saltos diretos para o <b>plano, os documentos, o PSR, o DRA e a auditoria</b>, já no contexto do projeto selecionado. Comece o dia por aqui."},
   {view:"lcescopo",sel:'#lcFlow1',c:"Módulo 3 · Ciclo de Vida",t:"O escopo do Módulo 3 no próprio sistema",
    x:"A página <b>Escopo do Ciclo de Vida</b> documenta a nova demanda com fluxogramas (as <b>5 fases</b> da jornada e o <b>remanejamento com justificativa obrigatória</b>, o vermelhinho contra a baseline), as regras de ouro e a especificação para o desenvolvedor. Refinado em 20/07: <b>todos os projetos passam pelo módulo</b> e os <b>sem CAPEX</b> nascem aqui, com tipo de saving. Em cotação complementar (Wave 2)."},
+  {view:"cvconfig",sel:'#ccCats',c:"Configuração",t:"Cadastros do Ciclo de Vida",
+   x:"<b>Categorias</b> e <b>tipos de saving</b> configuráveis pelo admin, sem código (revisão 03/08). Tipos marcados com <b>NPP</b>, como o Hard Save, exigem o nº do projeto no NPP ao cadastrar."},
   {view:"catalog",sel:'#catStats',c:"Configuração",t:"Catálogo, fonte única",
    x:"Define <b>quais documentos cada step exige</b> e a partir de qual tipo (A–E) são obrigatórios. Editável pelo admin: <b>mudou aqui, mudou no sistema inteiro</b>, sem tocar em código."},
   {view:"classify",sel:'#critList',c:"Configuração",t:"Como nasce o tipo A–E",
@@ -4061,7 +4220,7 @@ function propagateCatalog(){
 }
 
 const titles={dashboard:["Dashboard","Dashboard do Portfólio"],reports:["Relatórios","Relatórios & KPIs"],lifecycle:["Ciclo de Vida","Ciclo de Vida do Projeto"],track:["Portfólio EEM","Portfólio EEM · Acompanhamento Operacional (Módulo 3)"],project:["Steps & Documentos","Steps & Documentos do Projeto"],
-  cvgest:["Gestão de Projetos","Módulo 3 · todos os projetos, do PSR e sem CAPEX"],cvproj:["Plano do projeto","Espaço do projeto, marcos e atividades"],lcescopo:["Escopo do Ciclo de Vida","Escopo do Módulo 3, documentação viva"],psrescopo:["Escopo do PSR","Escopo do Módulo PSR, documentação viva"],draescopo:["Escopo do DRA","Escopo do Módulo DRA, documentação viva"],dra:["DRA Financeiro","Módulo 2 · DRA, Designação de Recursos e Autorização"],
+  cvhome:["Visão Consolidada","Módulo 3 · o retrato geral da fábrica"],cvconfig:["Cadastros","Cadastros do Ciclo de Vida (Módulo 3)"],cvgest:["Gestão de Projetos","Módulo 3 · todos os projetos, do PSR e sem CAPEX"],cvproj:["Plano do projeto","Espaço do projeto, marcos e atividades"],lcescopo:["Escopo do Ciclo de Vida","Escopo do Módulo 3, documentação viva"],psrescopo:["Escopo do PSR","Escopo do Módulo PSR, documentação viva"],draescopo:["Escopo do DRA","Escopo do Módulo DRA, documentação viva"],dra:["DRA Financeiro","Módulo 2 · DRA, Designação de Recursos e Autorização"],
   catalog:["Catálogo","Catálogo de Documentos por Step"],
   gantt:["Cronograma","Cronograma do Portfólio"],classify:["Classificação","Classificação Automática"],
   docs:["Documentos","Automação de Documentação"],audit:["Auditoria","Auditoria & Conformidade"],
@@ -4078,6 +4237,8 @@ function switchView(v){document.querySelectorAll('.view').forEach(s=>s.classList
   if(v==='lifecycle')buildLifecycle(document.getElementById('lcSel').value||'P1');
   if(v==='dra'){buildDRA();draTabsBuild();syncDraNav();}
   if(v==='cvgest'){buildCvGest();}
+  if(v==='cvhome'){buildCvHome();}
+  if(v==='cvconfig'){buildCvConfig();}
   window.scrollTo({top:0,behavior:'smooth'});}
 document.querySelectorAll('[data-view]').forEach(n=>n.addEventListener('click',()=>switchView(n.dataset.view)));
 function enterApp(){const l=document.getElementById('login');l.style.opacity='0';setTimeout(()=>{l.style.display='none';startOnb();},500);}
