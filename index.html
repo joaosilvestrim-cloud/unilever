@@ -747,6 +747,27 @@
 .cvtk-chip{border:1px solid var(--line);background:var(--surface-2);color:var(--ink-soft);border-radius:999px;padding:5px 12px;font-size:11.5px;font-weight:600;cursor:pointer;transition:all .15s}
 .cvtk-chip:hover{border-color:var(--brand);color:var(--brand)}
 .cvtk-chip.on{background:var(--brand);border-color:var(--brand);color:#fff}
+.cvtk-chip.cur{border-style:dashed;color:var(--danger);border-color:#f3c1d3}
+.cvd-grid{display:grid;grid-template-columns:1.15fr 1fr;gap:12px;align-items:start}
+@media(max-width:940px){.cvd-grid{grid-template-columns:1fr}}
+.cvd-box{background:#fff;border:1px solid var(--line);border-radius:12px;padding:13px 15px}
+.cvd-box .bt{font-size:10.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:8px}
+.cvd-meta{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px;align-items:center}
+.cvd-tag{font-size:11.5px;font-weight:600;background:var(--surface-2);border:1px solid var(--line);border-radius:999px;padding:4px 11px;color:var(--ink-soft)}
+.cvd-tag.late{background:#fdf0f4;border-color:#f3c1d3;color:var(--danger)}
+.cvd-rep{background:#fdf0f4;border:1px dashed #f3c1d3;border-radius:10px;padding:9px 12px;font-size:12px;margin-top:10px}
+.cvd-rep span{color:var(--ink-soft)}
+.cvd-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;align-items:center}
+.cvp-det input[type=text],.cvp-det input[type=date]{padding:8px 11px;border:1.5px solid var(--line);border-radius:9px;font-family:inherit;font-size:12.5px;outline:none;background:#fff}
+.cvp-det input:focus{border-color:var(--brand)}
+.cvd-tl{max-height:200px;overflow:auto;margin:2px 0 6px}
+.cvd-note{position:relative;padding:0 0 12px 16px;border-left:2px solid var(--line);margin-left:5px;font-size:12px}
+.cvd-note:last-child{border-left-color:transparent;padding-bottom:2px}
+.cvd-note::before{content:'';position:absolute;left:-6px;top:2px;width:8px;height:8px;border-radius:50%;background:var(--brand);border:2px solid #fff;box-shadow:0 0 0 1.5px var(--brand)}
+.cvd-note .nd{color:var(--ink-faint);font-size:10.5px}
+.cvd-note .nd b{color:var(--brand-deep);font-size:11px}
+.cvd-note .nx{margin-top:1px}
+.cvd-count{display:inline-block;background:var(--brand);color:#fff;border-radius:99px;font-size:10px;padding:1px 7px;margin-left:2px}
 </style>
 </head>
 <body>
@@ -1737,7 +1758,6 @@
         <div class="section-title" style="font-size:14.5px">Marcos do projeto <span class="muted" style="font-weight:500;font-size:11.5px">· configuráveis pelo dono; clique em um marco para remanejar (justificativa obrigatória)</span></div>
         <div class="pm-marcos" id="cvpMarcos" style="margin-top:12px"></div>
         <div style="margin:6px 0 2px"><button class="btn ghost sm perm-w" onclick="cvMarcoAdd()">+ Novo marco</button> <span class="muted" style="font-size:11px">· início e encerramento são obrigatórios</span></div>
-        <div id="cvMarcoWrap"></div>
       </div>
       <div class="card" style="overflow:hidden">
         <div class="docs-head"><div><div class="st">Gestão de atividades</div><div class="muted">Prazos, status, descrição e atualizações · a responsabilidade é do dono do projeto · clique na linha para abrir o detalhe</div></div><button class="btn sm perm-w" onclick="cvTaskModal()">+ Nova atividade</button></div>
@@ -1918,6 +1938,36 @@
       <div style="grid-column:span 2;background:var(--surface-2);border-radius:10px;padding:10px 14px;font-size:12px;color:var(--ink-soft)"><b>Início</b> e <b>Encerramento</b> são criados automaticamente (obrigatórios). Ao criar, o projeto abre no seu <b>espaço próprio</b>: marcos, atividades com prazo/status/notas, sem aprovação nem gate documental.</div>
     </div>
     <div class="wz-foot"><button class="btn ghost sm" onclick="cvAddClose()">Cancelar</button><button class="btn sm" onclick="cvAddSave()">Criar projeto</button></div>
+  </div>
+</div>
+
+<div id="cvMarcoModal" class="hidden" style="position:fixed;inset:0;z-index:170;background:rgba(8,20,34,.55);backdrop-filter:blur(3px);display:grid;place-items:center;padding:24px" onclick="if(event.target===this)cvMkClose()">
+  <div style="background:#fff;border-radius:16px;width:min(540px,95vw);max-height:92vh;overflow:auto;box-shadow:0 40px 90px -30px rgba(0,0,0,.6)">
+    <div style="padding:16px 20px;border-bottom:1px solid var(--line);display:flex;align-items:flex-start;gap:12px">
+      <div style="flex:1"><div style="font-family:Poppins;font-weight:700;font-size:15px">Novo marco</div><div class="muted" style="font-size:12px"><span id="cvMkProj"></span> · entrega gerencial com data</div></div>
+      <button class="btn ghost sm" onclick="cvMkClose()" title="Fechar">✕</button>
+    </div>
+    <div style="padding:18px 20px;display:grid;gap:14px">
+      <div><label class="dra-lbl">Título do marco *</label><input id="cvMk_t" class="role-sel" style="width:100%" placeholder="Ex.: Go-live, Comissionamento, FAT & aceite" oninput="cvMkCheck()" onkeydown="if(event.key==='Enter')cvMkSave()"></div>
+      <div><label class="dra-lbl">Mês do marco (2026)</label><div id="cvMkMeses" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px"></div><div class="muted" style="font-size:11px;margin-top:5px">Meses com • já têm marco, pode haver mais de um.</div></div>
+      <div style="background:var(--surface-2);border-radius:10px;padding:10px 14px;font-size:12px;color:var(--ink-soft)"><b>Início</b> e <b>Encerramento</b> são obrigatórios e já existem. O novo marco entra na régua ordenado pelo mês.</div>
+    </div>
+    <div class="wz-foot"><button class="btn ghost sm" onclick="cvMkClose()">Cancelar</button><button class="btn sm" id="cvMkSaveB" onclick="cvMkSave()" disabled style="opacity:.45;cursor:not-allowed">Adicionar marco</button></div>
+  </div>
+</div>
+
+<div id="cvRmModal" class="hidden" style="position:fixed;inset:0;z-index:170;background:rgba(8,20,34,.55);backdrop-filter:blur(3px);display:grid;place-items:center;padding:24px" onclick="if(event.target===this)cvRmClose()">
+  <div style="background:#fff;border-radius:16px;width:min(560px,95vw);max-height:92vh;overflow:auto;box-shadow:0 40px 90px -30px rgba(0,0,0,.6)">
+    <div style="padding:16px 20px;border-bottom:1px solid var(--line);display:flex;align-items:flex-start;gap:12px">
+      <div style="flex:1"><div style="font-family:Poppins;font-weight:700;font-size:15px;color:var(--danger)">Remanejar marco</div><div class="muted" style="font-size:12px" id="cvRmSub"></div></div>
+      <button class="btn ghost sm" onclick="cvRmClose()" title="Fechar">✕</button>
+    </div>
+    <div style="padding:18px 20px;display:grid;gap:14px">
+      <div><label class="dra-lbl">Novo mês (2026)</label><div id="cvRmMeses" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px"></div><div class="muted" id="cvRmHint" style="font-size:11px;margin-top:5px">O mês atual está tracejado, escolha um mês diferente.</div></div>
+      <div><label class="dra-lbl">Justificativa *</label><textarea id="cvRm_j" class="role-sel" style="width:100%;min-height:64px;resize:vertical;font-family:inherit" placeholder="Obrigatória: por que o marco precisa mudar de mês" oninput="cvRmCheck()"></textarea></div>
+      <div style="background:#fdf0f4;border-radius:10px;padding:10px 14px;font-size:12px;color:var(--ink-soft)">O remanejo fica <b>registrado na auditoria</b> e gera alerta no portfólio. O desvio permanece visível contra a baseline: a régua mostra o “era mês X”.</div>
+    </div>
+    <div class="wz-foot"><button class="btn ghost sm" onclick="cvRmClose()">Cancelar</button><button class="btn sm" id="cvRmSaveB" onclick="cvRmSave()" disabled style="opacity:.45;cursor:not-allowed;background:var(--danger);border-color:var(--danger)">Registrar remanejo</button></div>
   </div>
 </div>
 
@@ -3104,16 +3154,27 @@ function cvRender(){
       <td class="muted" style="font-size:11.5px">${lastNote?lastNote.d+' · '+lastNote.x.slice(0,42)+(lastNote.x.length>42?'…':''):'—'}</td>
       <td style="text-align:right;color:var(--ink-faint)">${cvOpenTask===i?'▲':'▼'}</td></tr>`;
     if(cvOpenTask===i){
+      const mtag=t.marco!=null&&pl.marcos[t.marco]?MESES[pl.marcos[t.marco][0]]+' · '+pl.marcos[t.marco][1]:'Sem marco';
       row+=`<tr class="cvp-det"><td colspan="6">
-        <div class="dra-lbl" style="margin-bottom:4px">Descrição</div>
-        <textarea onclick="event.stopPropagation()" onchange="cvSaveDesc(${i},this.value)" placeholder="O que precisa acontecer para esta atividade estar pronta">${t.desc||''}</textarea>
-        ${t.doc?`<div style="margin-top:8px"><button class="btn ghost sm" onclick="event.stopPropagation();dlActDoc('${t.doc}','${p.name}')">⬇ Documento, ${t.doc}</button></div>`:''}
-        ${t.rep?`<div class="hist" style="margin-top:8px"><b>↦ Prazo remanejado:</b> ${t.rep.de} → ${t.rep.para}<br>Justificativa: ${t.rep.just}</div>`:''}
-        <div class="dra-lbl" style="margin:12px 0 2px">Atualizações</div>
-        ${(t.notes||[]).map(n=>`<div class="cvp-note"><span class="nd">${n.d}</span><span><b>${n.by}</b> · ${n.x}</span></div>`).join('')||'<div class="muted" style="font-size:11.5px">Sem atualizações ainda.</div>'}
-        <div class="reprow" style="margin-top:8px"><input type="text" id="cvNote${i}" placeholder="Registrar uma atualização (visível ao portfólio)" onclick="event.stopPropagation()"><button class="btn ghost sm" onclick="event.stopPropagation();cvAddNote(${i})">Registrar</button></div>
-        <div class="dra-lbl" style="margin:12px 0 2px">Remanejar prazo desta atividade</div>
-        <div class="reprow"><input type="date" id="cvRepD${i}" onclick="event.stopPropagation()"><input type="text" id="cvRepJ${i}" placeholder="Justificativa obrigatória, vai para a auditoria" onclick="event.stopPropagation()"><button class="btn sm perm-w" onclick="event.stopPropagation();cvTaskRep(${i})">Registrar remanejo</button></div>
+        <div class="cvd-grid">
+          <div class="cvd-box">
+            <div class="bt">Descrição e prazo</div>
+            <textarea onclick="event.stopPropagation()" onchange="cvSaveDesc(${i},this.value)" placeholder="O que precisa acontecer para esta atividade estar pronta">${t.desc||''}</textarea>
+            <div class="cvd-meta">
+              <span class="cvd-tag">🎯 ${mtag}</span>
+              <span class="cvd-tag ${late?'late':''}">📅 ${cvFmt(t.due)}${late?' · atrasada':''}</span>
+              ${t.doc?`<button class="btn ghost sm" onclick="event.stopPropagation();dlActDoc('${t.doc}','${p.name}')">⬇ ${t.doc}</button>`:''}
+            </div>
+            ${t.rep?`<div class="cvd-rep"><b>↦ Prazo remanejado:</b> ${t.rep.de} → ${t.rep.para}<br><span>Justificativa: ${t.rep.just}</span></div>`:''}
+            <div class="bt" style="margin-top:16px">Remanejar prazo desta atividade</div>
+            <div class="cvd-row"><input type="date" id="cvRepD${i}" onclick="event.stopPropagation()"><input type="text" id="cvRepJ${i}" placeholder="Justificativa obrigatória, vai para a auditoria" onclick="event.stopPropagation()" style="flex:1;min-width:170px"><button class="btn sm perm-w" onclick="event.stopPropagation();cvTaskRep(${i})">Registrar</button></div>
+          </div>
+          <div class="cvd-box">
+            <div class="bt">Atualizações <span class="cvd-count">${(t.notes||[]).length}</span></div>
+            <div class="cvd-tl">${(t.notes||[]).slice().reverse().map(n=>`<div class="cvd-note"><div class="nd">${n.d} · <b>${n.by}</b></div><div class="nx">${n.x}</div></div>`).join('')||'<div class="muted" style="font-size:12px;padding:2px 0 8px">Sem atualizações ainda. Registre a primeira abaixo.</div>'}</div>
+            <div class="cvd-row"><input type="text" id="cvNote${i}" placeholder="Registrar uma atualização (visível ao portfólio)" onclick="event.stopPropagation()" onkeydown="if(event.key==='Enter'){event.stopPropagation();cvAddNote(${i})}" style="flex:1;min-width:160px"><button class="btn sm" onclick="event.stopPropagation();cvAddNote(${i})">Registrar</button></div>
+          </div>
+        </div>
       </td></tr>`;}
     return row;}).join('')||'<tr><td colspan="6" class="muted" style="padding:18px">Nenhuma atividade ainda. Use "+ Nova atividade".</td></tr>';
 }
@@ -3174,39 +3235,61 @@ function cvTaskRep(i){
   cvRender();buildTrack();
   toast('Remanejo registrado com justificativa na trilha de auditoria.');
 }
+let cvMkMonth=6,cvRmIdx=0,cvRmMonth=0;
 function cvMarcoAdd(){
-  const w=document.getElementById('cvMarcoWrap');
-  w.innerHTML=`<div id="pmMarcoFormCv" style="border:1.5px dashed var(--brand);border-radius:12px;padding:12px 15px;margin:10px 0 4px;background:var(--brand-soft)"><div class="pm-sec" style="margin:0 0 8px;font-size:12px">Novo marco (entrega gerencial com data)</div>
-    <div class="reprow" style="margin-top:0">
-      <select id="cvnmm" class="role-sel">${MESES.map((mm,k)=>`<option value="${k}">${mm} 26</option>`).join('')}</select>
-      <input type="text" id="cvnmt" placeholder="Título do marco">
-      <button class="btn sm perm-w" onclick="cvMarcoAddSave()">Adicionar</button>
-      <button class="btn ghost sm" onclick="document.getElementById('cvMarcoWrap').innerHTML=''">Cancelar</button>
-    </div></div>`;
+  if(!cvProj)return;
+  cvMkMonth=parseInt(cvToday.slice(5,7),10)-1;
+  document.getElementById('cvMkProj').textContent=cvProj.name;
+  document.getElementById('cvMk_t').value='';
+  cvMkChips();cvMkCheck();
+  document.getElementById('cvMarcoModal').classList.remove('hidden');
+  setTimeout(()=>document.getElementById('cvMk_t').focus(),80);
 }
-function cvMarcoAddSave(){
-  const m=parseInt(document.getElementById('cvnmm').value);
-  const t=(document.getElementById('cvnmt').value||'').trim();
-  if(!t){toast('Dê um título ao marco.');return;}
-  const pl=planOf(cvProj);pl.marcos.push([m,t,'pend']);pl.marcos.sort((a,b)=>a[0]-b[0]);
-  document.getElementById('cvMarcoWrap').innerHTML='';
-  cvRender();buildTrack();toast('Marco "'+t+'" adicionado em '+MESES[m]+'.');
+function cvMkClose(){document.getElementById('cvMarcoModal').classList.add('hidden');}
+function cvMkChips(){
+  const used=planOf(cvProj).marcos.map(m=>m[0]);
+  document.getElementById('cvMkMeses').innerHTML=MESES.map((mm,k)=>'<button type="button" class="cvtk-chip'+(cvMkMonth===k?' on':'')+'"'+(used.includes(k)?' title="Já existe marco neste mês"':'')+' onclick="cvMkPick('+k+')">'+mm+(used.includes(k)?' •':'')+'</button>').join('');
+}
+function cvMkPick(k){cvMkMonth=k;cvMkChips();}
+function cvMkCheck(){
+  const okk=(document.getElementById('cvMk_t').value||'').trim().length>=3;
+  const b=document.getElementById('cvMkSaveB');b.disabled=!okk;b.style.opacity=okk?'1':'.45';b.style.cursor=okk?'pointer':'not-allowed';
+}
+function cvMkSave(){
+  const t=(document.getElementById('cvMk_t').value||'').trim();
+  if(t.length<3){toast('Dê um título ao marco.');return;}
+  const pl=planOf(cvProj);pl.marcos.push([cvMkMonth,t,'pend']);pl.marcos.sort((a,b)=>a[0]-b[0]);
+  cvMkClose();cvRender();buildTrack();
+  toast('Marco "'+t+'" adicionado em '+MESES[cvMkMonth]+'. A régua reordenou pelo mês.');
 }
 function cvMarcoForm(i){
-  const pl=planOf(cvProj);const m=pl.marcos[i];
-  const w=document.getElementById('cvMarcoWrap');
-  w.innerHTML=`<div style="border:1.5px dashed var(--danger);border-radius:12px;padding:12px 15px;margin:10px 0 4px;background:#fdf0f4"><div class="pm-sec" style="margin:0 0 8px;font-size:12px">Remanejar o marco “${m[1]}” (hoje em ${MESES[m[0]]})</div>
-    <div class="reprow" style="margin-top:0">
-      <select id="cvrm" class="role-sel">${MESES.map((mm,k)=>`<option value="${k}" ${k===m[0]?'selected':''}>${mm} 26</option>`).join('')}</select>
-      <input type="text" id="cvrj" placeholder="Justificativa obrigatória, vai para a auditoria">
-      <button class="btn sm perm-w" onclick="cvMarcoSave(${i})">Registrar remanejo</button>
-      <button class="btn ghost sm" onclick="document.getElementById('cvMarcoWrap').innerHTML=''">Cancelar</button>
-    </div></div>`;
+  const m=planOf(cvProj).marcos[i];
+  cvRmIdx=i;cvRmMonth=m[0];
+  document.getElementById('cvRmSub').innerHTML='“'+m[1]+'” · hoje em <b>'+MESES[m[0]]+' 26</b> · '+cvProj.name;
+  document.getElementById('cvRm_j').value='';
+  document.getElementById('cvRmHint').textContent='O mês atual está tracejado, escolha um mês diferente.';
+  cvRmChips();cvRmCheck();
+  document.getElementById('cvRmModal').classList.remove('hidden');
 }
-function cvMarcoSave(i){
-  const pl=planOf(cvProj);const m=pl.marcos[i];
-  const nm=parseInt(document.getElementById('cvrm').value);
-  const j=(document.getElementById('cvrj').value||'').trim();
+function cvRmClose(){document.getElementById('cvRmModal').classList.add('hidden');}
+function cvRmChips(){
+  const cur=planOf(cvProj).marcos[cvRmIdx][0];
+  document.getElementById('cvRmMeses').innerHTML=MESES.map((mm,k)=>'<button type="button" class="cvtk-chip'+(cvRmMonth===k&&k!==cur?' on':'')+(k===cur?' cur':'')+'" onclick="cvRmPick('+k+')">'+mm+(k===cur?' · atual':'')+'</button>').join('');
+}
+function cvRmPick(k){
+  cvRmMonth=k;cvRmChips();cvRmCheck();
+  const cur=planOf(cvProj).marcos[cvRmIdx][0];
+  document.getElementById('cvRmHint').textContent=k===cur?'O marco já está neste mês, escolha um mês diferente.':'Novo mês: '+MESES[k]+' 26. Escreva a justificativa para liberar o registro.';
+}
+function cvRmCheck(){
+  const cur=planOf(cvProj).marcos[cvRmIdx][0];
+  const okk=cvRmMonth!==cur&&(document.getElementById('cvRm_j').value||'').trim().length>=5;
+  const b=document.getElementById('cvRmSaveB');b.disabled=!okk;b.style.opacity=okk?'1':'.45';b.style.cursor=okk?'pointer':'not-allowed';
+}
+function cvRmSave(){
+  const pl=planOf(cvProj);const m=pl.marcos[cvRmIdx];
+  const nm=cvRmMonth;
+  const j=(document.getElementById('cvRm_j').value||'').trim();
   if(!j){toast('Informe a justificativa, ela é obrigatória para remanejar prazos.');return;}
   if(nm===m[0]){toast('Escolha um mês diferente do atual.');return;}
   const de=MESES[m[0]];
@@ -3214,9 +3297,8 @@ function cvMarcoSave(i){
   pl.marcos.sort((a,b)=>a[0]-b[0]);
   const fimIdx=cvProj.gs+cvProj.gsp-1;
   if(nm>fimIdx){const e=eemOf(cvProj);pl.rep={de:e.fim,para:MESES[nm]+' 26',por:cvProj.lead,just:j,ext:Math.min(12-(cvProj.gs+cvProj.gsp),nm-fimIdx)};}
-  EXTRA_ALERTS.push({ic:'🔴',t:`Marco “${m[1]}” (${cvProj.name}) remanejado de ${de} para ${MESES[nm]}`,d:'Justificativa: '+j+' · registrado na trilha de auditoria'});
-  document.getElementById('cvMarcoWrap').innerHTML='';
-  cvRender();buildTrack();
+  EXTRA_ALERTS.push({ic:'🔴',t:'Marco “'+m[1]+'” ('+cvProj.name+') remanejado de '+de+' para '+MESES[nm],d:'Justificativa: '+j+' · registrado na trilha de auditoria'});
+  cvRmClose();cvRender();buildTrack();
   toast('Marco remanejado de '+de+' para '+MESES[nm]+'. O desvio fica visível contra a baseline.');
 }
 function buildTrack(){
@@ -3726,7 +3808,7 @@ const HELP=[
 <li><b>Status da atividade</b>, mude entre Planejada, Em andamento e Concluída direto na tabela; nos projetos sem CAPEX o avanço recalcula na hora, e prazos vencidos ganham o selo <b>Atrasada</b> automaticamente;</li>
 <li><b>+ Nova atividade</b>, abre uma janela para criar a atividade completa: título, marco vinculado (clique no chip do marco e o sistema sugere o prazo pelo mês dele), prazo, status inicial, descrição e primeira atualização; a responsabilidade é sempre do <b>dono do projeto</b>, sem atribuição por atividade;</li>
 <li><b>+ Novo projeto (sem CAPEX)</b>, projetos simples (digitalização, automação) são criados direto no Ciclo de Vida, com <b>tipo de saving</b> (Hard Save, Cost Avoidance, Virtual Saving) e sem classificação A–E, com os <b>marcos configurados já no cadastro</b>; o projeto abre no seu <b>espaço próprio</b>: marcos remanejáveis, atividades com prazo, status, descrição e atualizações; <b>todos os projetos da fábrica passam pelo módulo</b>, os do PSR entram automaticamente;</li>
-<li><b>Remanejar prazo</b>, mudar a data de um <b>marco</b> (clique nele na linha de marcos) ou de uma atividade <b>exige justificativa</b>, que vai para a auditoria e gera alerta no portfólio. O marco remanejado mostra “era mês X” e o desvio fica visível contra a baseline (o vermelhinho).</li></ol>
+<li><b>Remanejar prazo</b>, clique no marco na régua para abrir a janela de remanejo (escolha o novo mês nos chips e escreva a justificativa) ou use o detalhe da atividade; a <b>justificativa é obrigatória</b>, vai para a auditoria e gera alerta no portfólio. O marco remanejado mostra “era mês X” e o desvio fica visível contra a baseline (o vermelhinho).</li></ol>
 <h5>Visão hierárquica</h5>
 <ol><li><b>Pilar Portfolio</b> vê o conjunto (overview gerencial da fábrica);</li><li><b>Líder</b> vê e refina somente os seus projetos, KPIs, alertas e cronograma se recalculam na hora.</li></ol>`},
 {ic:"🗓",t:"Cronograma (por steps)",d:"A linha do tempo do portfólio vista pela ótica dos steps.",b:`
