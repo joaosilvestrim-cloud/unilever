@@ -1604,7 +1604,7 @@
           <b>3.</b> Permissões por papel: <b>criar e editar é exclusivo do líder do projeto</b>; os demais perfis visualizam, inclusive o detalhe, sem editar.<br>
           <b>4.</b> "Dono" vira <b>líder do projeto</b>, preenchido automaticamente com o usuário logado (quem cria é o líder).<br>
           <b>5.</b> O cadastro ganha a <b>fase do projeto</b>: Ideia, Estudo de viabilidade, Em andamento, Pausado, Cancelado (sem tela de backlog separada).<br>
-          <b>6.</b> <b>Categorias e tipos de saving configuráveis</b> em Configuração → Cadastros do Ciclo de Vida; <b>Hard Save exige o nº do projeto no NPP</b>, a ferramenta de validação de saving.<br>
+          <b>6.</b> <b>Categorias e tipos de saving configuráveis</b> em Configuração → Cadastros do Ciclo de Vida; <b>Hard Saving exige o nº do projeto no NPP e o tipo de CRG</b> (Raw Material Waste, Pack Material Waste, Labor, Other Production Cost, R&M, Utility). O cadastro também tem uma <b>descrição do projeto</b>.<br>
           <b>7.</b> Ciclo de Vida com <b>datas nas fases</b> (início, execução, encerramento previsto) e histórico de evolução quebrado pelos <b>marcos</b>, planejado × realizado.<br>
           <b>8.</b> Status de atividade permanece fixo (Planejada, Em andamento, Concluída) para preservar o padrão. Plataforma confirmada em <b>Power Apps</b>, no mesmo ambiente da engenharia.
         </div>
@@ -1617,7 +1617,7 @@
           <thead><tr><th>Forma de entrada</th><th>Quando</th><th>Como funciona</th></tr></thead>
           <tbody>
             <tr><td style="font-weight:600">Automática (obrigatória)</td><td>Todos os projetos do Módulo 1 · PSR</td><td>Entram sem ação do usuário; os documentos dos steps funcionam como marcos, dão a saúde do projeto e abrem no <b>mesmo espaço do projeto</b> (marcos e atividades)</td></tr>
-            <tr><td style="font-weight:600">Cadastro direto (sem CAPEX)</td><td>Projetos simples: digitalização, automação, melhorias</td><td>Botão "+ Novo projeto": sem classificação A–E e sem gate documental, com <b>tipo de saving</b> (Hard Save · Cost Avoidance · Virtual Saving) e saving estimado; abre direto no <b>espaço do projeto</b> (marcos configuráveis e gestão de atividades)</td></tr>
+            <tr><td style="font-weight:600">Cadastro direto (sem CAPEX)</td><td>Projetos simples: digitalização, automação, melhorias</td><td>Botão "+ Novo projeto": sem classificação A–E e sem gate documental, com <b>tipo de saving</b> (Hard Saving · Cost Avoidance · Virtual Saving) e saving estimado; abre direto no <b>espaço do projeto</b> (marcos configuráveis e gestão de atividades)</td></tr>
           </tbody>
         </table></div>
         <div class="muted" style="font-size:11.5px;margin-top:8px;background:#e7f4ee;border-radius:8px;padding:9px 13px;color:#0c5c33"><b>Regra da call de 20/07:</b> se esta é a ferramenta de gestão de projetos da fábrica, <b>todos os projetos passam pelo Ciclo de Vida</b>, com ou sem CAPEX. O módulo age como um auditor do andamento; a operação (documentos, aprovações, finanças) permanece nos módulos 1 e 2.</div>
@@ -1728,7 +1728,7 @@
           <tbody>
             <tr><td>plan.marcos[]</td><td>[mês, título, status]</td><td>Entregas gerenciais com data; status done/next/pend</td></tr>
             <tr><td>tasks[] (atividades)</td><td>{título, prazo (data), status, marco, descrição, notas[], doc, remanejo}</td><td>Gestão madura no espaço do projeto; a responsabilidade é sempre do líder. Nos projetos do PSR, derivadas do plano na primeira abertura (documento anexado preservado)</td></tr>
-            <tr><td>savType · sav (sem CAPEX)</td><td>Hard Save · Cost Avoidance · Virtual Saving + valor</td><td>Projetos simples cadastrados direto no módulo, sem A–E e sem gate documental</td></tr>
+            <tr><td>savType · sav (sem CAPEX)</td><td>Hard Saving · Cost Avoidance · Virtual Saving + valor</td><td>Projetos simples cadastrados direto no módulo, sem A–E e sem gate documental</td></tr>
             <tr><td>plan.baseline</td><td>datas originais</td><td>Congelada no planejamento; nunca é sobrescrita</td></tr>
             <tr><td>plan.rep</td><td>{marco, de, para, justificativa, autor, data}</td><td>Cada remanejo registrado; alimenta o vermelhinho e a auditoria</td></tr>
             <tr><td>status (on/off track)</td><td>calculado</td><td>Desvio entre avanço real e planejado</td></tr>
@@ -1861,7 +1861,7 @@
         </div>
         <div class="card" style="padding:16px 20px">
           <div class="section-title" style="font-size:14px">Tipos de saving</div>
-          <div class="muted" style="font-size:11.5px">Tipos marcados com <b>NPP</b> exigem o nº do projeto no NPP ao cadastrar (ex.: Hard Save).</div>
+          <div class="muted" style="font-size:11.5px">Tipos marcados com <b>NPP</b> exigem o nº do projeto no NPP e o <b>tipo de CRG</b> ao cadastrar (ex.: Hard Saving).</div>
           <div id="ccSavs" style="display:flex;gap:6px;flex-wrap:wrap;margin:12px 0"></div>
           <div class="cvd-row perm-w"><input type="text" id="ccSavNew" placeholder="Novo tipo de saving" style="flex:1;min-width:140px" onkeydown="if(event.key==='Enter')ccSavAdd()"><label style="font-size:11.5px;color:var(--ink-soft);display:flex;align-items:center;gap:4px"><input type="checkbox" id="ccSavNpp"> exige NPP</label><button class="btn sm" onclick="ccSavAdd()">+ Adicionar</button></div>
         </div>
@@ -2022,13 +2022,20 @@
     <div style="padding:16px 20px;border-bottom:1px solid var(--line)"><div style="font-family:Poppins;font-weight:700;font-size:15px">Novo projeto · sem CAPEX</div><div class="muted" style="font-size:12px">Fluxo simplificado: sem classificação A–E e sem gate documental. O projeto vai direto ao cronograma, com marcos configuráveis pelo líder.</div></div>
     <div class="ge-fields" style="padding:18px 20px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
       <div style="grid-column:span 2"><label class="dra-lbl">Nome do projeto</label><input id="cv_name" class="role-sel" style="width:100%" placeholder="Ex.: Automação do relatório diário de produção"></div>
+      <div style="grid-column:span 2"><label class="dra-lbl">Descrição do projeto</label><textarea id="cv_desc" class="role-sel" style="width:100%;min-height:52px;resize:vertical;font-family:inherit" placeholder="Uma breve descrição: o que é o projeto e o objetivo"></textarea></div>
       <div><label class="dra-lbl">Categoria</label><select id="cv_cat" class="role-sel" style="width:100%"></select><div class="muted" style="font-size:10px;margin-top:2px">Configurável em Cadastros do Ciclo de Vida</div></div>
       <div><label class="dra-lbl">Site</label><select id="cv_site" class="role-sel" style="width:100%"><option>Pouso Alegre</option><option>Indaiatuba</option><option>Vinhedo</option></select></div>
       <div><label class="dra-lbl">Líder do projeto</label><div class="role-sel" style="width:100%;background:var(--surface-2);display:flex;align-items:center;gap:6px">👤 Maria Correa <span class="muted" style="font-size:10px">(você)</span></div><div class="muted" style="font-size:10px;margin-top:2px">Quem cria é o líder: preenchido com o usuário logado</div></div>
       <div><label class="dra-lbl">Fase do projeto</label><select id="cv_fase" class="role-sel" style="width:100%"><option>Ideia</option><option>Estudo de viabilidade</option><option selected>Em andamento</option><option>Pausado</option><option>Cancelado</option></select></div>
       <div><label class="dra-lbl">Tipo de saving</label><select id="cv_savtype" class="role-sel" style="width:100%" onchange="cvSavChange()"></select></div>
       <div><label class="dra-lbl">Saving estimado (R$ mil)</label><input id="cv_sav" type="number" step="1" class="role-sel" style="width:100%" placeholder="0"></div>
-      <div id="cv_nppWrap" style="grid-column:span 2;display:none;background:#e4f0fa;border-radius:10px;padding:10px 14px"><label class="dra-lbl">Número do projeto no NPP *</label><input id="cv_npp" class="role-sel" style="width:100%;margin-top:2px;background:#fff" placeholder="Ex.: NPP-2214"><div class="muted" style="font-size:10.5px;margin-top:3px">Hard Save exige o nº do NPP, a ferramenta de validação de saving.</div></div>
+      <div id="cv_nppWrap" style="grid-column:span 2;display:none;background:#e4f0fa;border-radius:10px;padding:10px 14px;display:none">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div><label class="dra-lbl">Número do projeto no NPP *</label><input id="cv_npp" class="role-sel" style="width:100%;margin-top:2px;background:#fff" placeholder="Ex.: NPP-2214"></div>
+          <div><label class="dra-lbl">Tipo de Hard Saving (CRG) *</label><select id="cv_crg" class="role-sel" style="width:100%;margin-top:2px;background:#fff"></select></div>
+        </div>
+        <div class="muted" style="font-size:10.5px;margin-top:6px">Hard Saving exige o <b>nº do NPP</b> (ferramenta de validação de saving) e o <b>tipo de CRG</b> do saving.</div>
+      </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;grid-column:span 2">
         <div><label class="dra-lbl">Início</label><select id="cv_ini" class="role-sel" style="width:100%"></select></div>
         <div><label class="dra-lbl">Fim</label><select id="cv_fim" class="role-sel" style="width:100%"></select></div>
@@ -3139,7 +3146,7 @@ function eemStatus(p){const e=eemOf(p);const d=(p.schP||0)-e.plan;const days=Mat
   return{cls:'tk-ontime',label:'On track',days,d};}
 function avColor(s){const c=['#0060A8','#1f9d57','#e8930c','#8250df','#d6336c','#0a9396'];let h=0;for(const ch of (s||'?'))h=(h*31+ch.charCodeAt(0))%c.length;return c[h];}
 const CV_PROJECTS=[
-  {id:"CV1",simple:true,type:"S",name:"Automação de Relatórios de Qualidade",loc:"Pouso Alegre · Digitalização · Sem CAPEX",cur:1,budP:0,budA:0,com:0,sav:120000,savType:"Hard Save",npp:"NPP-2214",fase:"Em andamento",schP:35,lead:"Maria Correa",oi:"—",gs:5,gsp:5},
+  {id:"CV1",simple:true,type:"S",name:"Automação de Relatórios de Qualidade",loc:"Pouso Alegre · Digitalização · Sem CAPEX",cur:1,budP:0,budA:0,com:0,sav:120000,savType:"Hard Saving",npp:"NPP-2214",crg:"Other Production Cost CRG 25",desc:"Automatizar a coleta e consolidação dos relatórios de qualidade do laboratório, hoje preenchidos à mão.",fase:"Em andamento",schP:35,lead:"Maria Correa",oi:"—",gs:5,gsp:5},
   {id:"CV2",simple:true,type:"S",name:"Sensorização IoT da Linha 3",loc:"Pouso Alegre · Melhoria de processo · Sem CAPEX",cur:1,budP:0,budA:0,com:0,sav:80000,savType:"Cost Avoidance",fase:"Em andamento",schP:60,lead:"Jean Ramos",oi:"—",gs:4,gsp:4},
 ];
 CV_PROJECTS[0]._plan={rep:null,marcos:[[5,'Início do projeto','done'],[6,'Mapeamento dos relatórios','done'],[7,'Desenvolvimento do fluxo','next'],[8,'Go-live e treinamento','pend'],[9,'Encerramento','pend']],acts:[]};
@@ -3160,11 +3167,12 @@ CV_PROJECTS[1]._tasks=[
 CV_PROJECTS[1].schP=20;
 const CURRENT_USER='Maria Correa';
 let CV_CATS=['Digitalização','Automação','Melhoria de processo','Qualidade'];
-let CV_SAVTYPES=[{n:'Hard Save',npp:true},{n:'Cost Avoidance',npp:false},{n:'Virtual Saving',npp:false}];
+let CV_SAVTYPES=[{n:'Hard Saving',npp:true},{n:'Cost Avoidance',npp:false},{n:'Virtual Saving',npp:false}];
+const CV_CRG=[{g:'CRG 21',items:['Raw Material Waste CRG 21']},{g:'CRG 22',items:['Pack Material Waste CRG 22']},{g:'CRG 25',items:['Labor CRG 25','Other Production Cost CRG 25','R&M CRG 25','Utility CRG 25']}];
 const CV_FASES=['Ideia','Estudo de viabilidade','Em andamento','Pausado','Cancelado'];
 CV_PROJECTS.push({id:'CV3',simple:true,type:'S',name:'Padronização de Etiquetas do Almoxarifado',loc:'Pouso Alegre · Digitalização · Sem CAPEX',cur:1,budP:0,budA:0,com:0,sav:15000,savType:'Cost Avoidance',fase:'Ideia',schP:0,lead:'Thiago Benati',oi:'—',gs:9,gsp:3});
 CV_PROJECTS[2]._plan={rep:null,marcos:[[9,'Início do projeto','pend'],[11,'Encerramento','pend']],acts:[]};CV_PROJECTS[2]._tasks=[];
-CV_PROJECTS.push({id:'CV4',simple:true,type:'S',name:'Automação do Controle de Ponto do Turno',loc:'Pouso Alegre · Automação · Sem CAPEX',cur:1,budP:0,budA:0,com:0,sav:45000,savType:'Hard Save',npp:'NPP-1980',fase:'Em andamento',schP:100,lead:'Gisela Fagnani',oi:'—',gs:1,gsp:4});
+CV_PROJECTS.push({id:'CV4',simple:true,type:'S',name:'Automação do Controle de Ponto do Turno',loc:'Pouso Alegre · Automação · Sem CAPEX',cur:1,budP:0,budA:0,com:0,sav:45000,savType:'Hard Saving',npp:'NPP-1980',crg:'Labor CRG 25',desc:'Registro eletrônico de ponto do turno, eliminando o controle manual.',fase:'Em andamento',schP:100,lead:'Gisela Fagnani',oi:'—',gs:1,gsp:4});
 CV_PROJECTS[3]._plan={rep:null,marcos:[[1,'Início do projeto','done'],[3,'Go-live','done'],[4,'Encerramento','done']],acts:[]};
 CV_PROJECTS[3]._tasks=[{id:1,t:'Mapear o processo de ponto',due:'2026-03-10',st:'done',marco:1,desc:'',notes:[],rep:null},{id:2,t:'Go-live e treinamento do turno',due:'2026-04-25',st:'done',marco:2,desc:'',notes:[{d:'25/04',by:'Gisela Fagnani',x:'Encerrado com o saving validado no NPP.'}],rep:null}];
 const eemAll=()=>PROJECTS.concat(CV_PROJECTS);
@@ -3208,7 +3216,7 @@ function buildCvGest(){
     const late=cvgLate(p);
     return `<tr class="cvp-row" onclick="cvOpen('${p.id}')">
       <td><span class="org-badge ${p.simple?'org-man':'org-psr'}">${p.simple?'MANUAL · S/ CAPEX':'PSR · AUTO'}</span></td>
-      <td style="font-weight:600">${p.name}${cvgRep(p)?' <span class="cvp-chip cvp-late" title="Prazo remanejado com justificativa">↦</span>':''}<br><span class="muted" style="font-size:10.5px;font-weight:500">${p.simple?(p.fase||'Em andamento')+' · '+(p.savType||'Saving')+' · '+eur(p.sav)+(p.npp?' · NPP '+p.npp:''):'Tipo '+p.type+' · OI '+p.oi}</span></td>
+      <td style="font-weight:600">${p.name}${cvgRep(p)?' <span class="cvp-chip cvp-late" title="Prazo remanejado com justificativa">↦</span>':''}<br><span class="muted" style="font-size:10.5px;font-weight:500">${p.simple?(p.fase||'Em andamento')+' · '+(p.savType||'Saving')+' · '+eur(p.sav)+(p.npp?' · NPP '+p.npp:'')+(p.crg?' · '+p.crg:''):'Tipo '+p.type+' · OI '+p.oi}</span></td>
       <td>${p.lead}</td>
       <td class="muted">${MESES[p.gs]} → ${MESES[Math.min(11,p.gs+p.gsp-1)]}</td>
       <td class="muted" style="font-size:11.5px">${nx?nx[1]:'—'}</td>
@@ -3318,8 +3326,8 @@ function cvRender(){
   cvRecalc();
   document.getElementById('cvpHead').innerHTML=`<div class="card" style="padding:16px 20px;margin-bottom:14px;display:flex;gap:14px;align-items:center;flex-wrap:wrap">
     <button class="btn ghost sm" onclick="cvBack()">← Ciclo de Vida</button>
-    <div style="flex:1;min-width:220px"><div style="font-family:Poppins;font-weight:700;font-size:17px">${p.name}</div><div class="muted" style="font-size:12px">${p.loc} · líder <b>${p.lead}</b>${pl.rep?' · <b style="color:var(--danger)">prazo remanejado</b>':''}</div></div>
-    ${p.simple?`<span class="pill" style="background:#ede7f6;color:#5e35b1">${p.fase||'Em andamento'}</span><span class="pill" style="background:#e7f4ee;color:#137a44">${p.savType||'Saving'} · ${eur(p.sav)}${p.npp?' · NPP '+p.npp:''}</span>`:`<span class="pill" style="background:#e4f0fa;color:#0060A8">Tipo ${p.type} · OI ${p.oi}</span><span class="pill" style="background:#e7f4ee;color:#137a44">Capex ${eur(p.budP)}</span><button class="btn ghost sm" onclick="openProject('${p.id}');switchView('project')">📄 Steps & documentos</button>`}
+    <div style="flex:1;min-width:220px"><div style="font-family:Poppins;font-weight:700;font-size:17px">${p.name}</div><div class="muted" style="font-size:12px">${p.loc} · líder <b>${p.lead}</b>${pl.rep?' · <b style="color:var(--danger)">prazo remanejado</b>':''}</div>${p.desc?`<div class="muted" style="font-size:11.5px;margin-top:3px;max-width:640px">${p.desc}</div>`:''}</div>
+    ${p.simple?`<span class="pill" style="background:#ede7f6;color:#5e35b1">${p.fase||'Em andamento'}</span><span class="pill" style="background:#e7f4ee;color:#137a44">${p.savType||'Saving'} · ${eur(p.sav)}${p.npp?' · NPP '+p.npp:''}</span>${p.crg?`<span class="pill" style="background:#e4f0fa;color:#0060A8">${p.crg}</span>`:''}`:`<span class="pill" style="background:#e4f0fa;color:#0060A8">Tipo ${p.type} · OI ${p.oi}</span><span class="pill" style="background:#e7f4ee;color:#137a44">Capex ${eur(p.budP)}</span><button class="btn ghost sm" onclick="openProject('${p.id}');switchView('project')">📄 Steps & documentos</button>`}
     <span class="tk-status ${st.cls}"><span class="dot"></span>${st.label}</span><span class="pill" style="background:var(--surface-2);color:var(--ink-soft)" title="Criar e editar marcos, atividades e comentários é exclusivo do líder do projeto; os demais perfis visualizam">✎ edita: líder</span></div>`;
   const done=ts.filter(t=>t.st==='done').length,late=ts.filter(cvIsLate).length;
   const nx=pl.marcos.find(m=>m[2]==='next'||m[2]==='late');
@@ -3656,14 +3664,16 @@ function cvAdd(){
   document.getElementById('cv_cat').innerHTML=CV_CATS.map(c=>'<option>'+c+'</option>').join('');
   document.getElementById('cv_savtype').innerHTML=CV_SAVTYPES.map(x=>'<option>'+x.n+'</option>').join('');
   document.getElementById('cv_fase').value='Em andamento';
-  document.getElementById('cv_npp').value='';cvSavChange();
+  document.getElementById('cv_npp').value='';document.getElementById('cv_desc').value='';
+  document.getElementById('cv_crg').innerHTML=CV_CRG.map(g=>'<optgroup label="'+g.g+'">'+g.items.map(it=>'<option>'+it+'</option>').join('')+'</optgroup>').join('');
+  cvSavChange();
   const cm=document.getElementById('cvm_m');if(!cm.options.length)MESES.forEach((mn,i)=>{cm.innerHTML+='<option value="'+i+'">'+mn+' 26</option>';});cm.value='8';
   cvNewMarcos=[];cvNmRender();
   document.getElementById('cvAddModal').classList.remove('hidden');
 }
 function cvSavChange(){
   const st=CV_SAVTYPES.find(x=>x.n===document.getElementById('cv_savtype').value);
-  document.getElementById('cv_nppWrap').style.display=st&&st.npp?'':'none';
+  document.getElementById('cv_nppWrap').style.display=st&&st.npp?'block':'none';
 }
 function cvAddClose(){document.getElementById('cvAddModal').classList.add('hidden');}
 function cvAddSave(){
@@ -3675,11 +3685,12 @@ function cvAddSave(){
   const stype=document.getElementById('cv_savtype').value;
   const sdef=CV_SAVTYPES.find(x=>x.n===stype);
   const npp=(document.getElementById('cv_npp').value||'').trim();
+  const crg=document.getElementById('cv_crg').value;
   if(sdef&&sdef.npp&&!npp){toast('O tipo "'+stype+'" exige o número do projeto no NPP.');return;}
   const p={id:'CV'+(CV_PROJECTS.length+1)+'-'+Math.floor(Math.random()*900+100),simple:true,type:'S',name,
     loc:document.getElementById('cv_site').value+' · '+document.getElementById('cv_cat').value+' · Sem CAPEX',
     cur:1,budP:0,budA:0,com:0,sav:(parseFloat(document.getElementById('cv_sav').value)||0)*1000,
-    savType:stype,npp:npp||null,fase:document.getElementById('cv_fase').value,schP:0,lead,oi:'—',gs:gi,gsp:gf-gi+1};
+    savType:stype,npp:npp||null,crg:(sdef&&sdef.npp)?crg:null,desc:(document.getElementById('cv_desc').value||'').trim(),fase:document.getElementById('cv_fase').value,schP:0,lead,oi:'—',gs:gi,gsp:gf-gi+1};
   const marcos=[[gi,'Início do projeto',gi<=Math.floor(EEM_TODAY)?'done':'pend']];
   cvNewMarcos.forEach(m=>{const mm=Math.max(gi,Math.min(gf,m.m));marcos.push([mm,m.t,mm<=Math.floor(EEM_TODAY)?'done':'pend']);});
   marcos.push([gf,'Encerramento','pend']);
@@ -3883,7 +3894,7 @@ function buildLifecycle(id){
     `<span class="lc-sm">${p.simple?'<b style="color:#5e35b1">'+(p.fase||'Em andamento')+'</b>':'Tipo '+p.type}</span>`+
     `<span class="lc-sm">👤 líder <b>${p.lead}</b></span>`+
     `<span class="lc-sm">📅 ${MESES[p.gs]}–${MESES[fimM]} 26</span>`+
-    `<span class="lc-sm" style="color:var(--danger)">🏁 encerramento previsto ${encLabel}</span>`;
+    `<span class="lc-sm" style="color:var(--danger)">🏁 encerramento previsto ${encLabel}</span>`+(p.desc?`<div class="muted" style="font-size:12px;width:100%;margin-top:2px">${p.desc}</div>`:'');
   // fases da jornada, com data e "você está aqui"
   const lbl={done:'Concluída',now:'Em andamento',late:'Atenção',pend:'Aguardando'};
   document.getElementById('lcPhases').innerHTML=lcPhases(p).map((f,i)=>`<div class="lc-ph ${f.st}"><div class="ic">${i+1}</div><div class="pt">${f.t}${f.cur?' <span class="lc-now">você está aqui</span>':''}</div><div class="pd">${f.d}</div><div class="pdt">📅 ${f.dt}</div><span class="ps">${lbl[f.st]} · ${f.x}</span></div>`).join('');
@@ -3892,7 +3903,7 @@ function buildLifecycle(id){
   // saúde do projeto
   const nx=pl.marcos.find(m=>m[2]==='next'||m[2]==='late');
   const finCard=p.simple
-    ?`<div class="stat card"><div class="glow" style="background:var(--brand-2)"></div><div class="k">Saving estimado</div><div class="v" style="font-size:23px">${eur(p.sav)}</div><div class="d">${p.savType||'Saving'}${p.npp?' · NPP '+p.npp:''}</div></div>`
+    ?`<div class="stat card"><div class="glow" style="background:var(--brand-2)"></div><div class="k">Saving estimado</div><div class="v" style="font-size:23px">${eur(p.sav)}</div><div class="d">${p.savType||'Saving'}${p.npp?' · NPP '+p.npp:''}${p.crg?' · '+p.crg:''}</div></div>`
     :`<div class="stat card"><div class="glow" style="background:var(--brand-2)"></div><div class="k">Financeiro</div><div class="v" style="font-size:23px">${eur(p.budA)}</div><div class="d">de ${eur(p.budP)} aprovados (${p.budP?Math.round(p.budA/p.budP*100):0}%)</div></div>`;
   document.getElementById('lcHealth').innerHTML=`
     <div class="stat card"><div class="glow" style="background:${s.cls==='tk-late'?'var(--danger)':'var(--ok)'}"></div><div class="k">Status</div><div class="v" style="font-size:23px">${s.label}</div><div class="d">real ${p.schP||0}% vs plano ${e.plan}%</div></div>
@@ -4088,11 +4099,11 @@ const HELP=[
 <li><b>Espaço do projeto</b>, clique em um projeto (do PSR ou sem CAPEX) para abrir a página do plano: marcos remanejáveis, e atividades com <b>prazo, status, descrição, documento anexado e log de atualizações</b>, tudo em nome do líder do projeto;</li>
 <li><b>Status da atividade</b>, mude entre Planejada, Em andamento e Concluída direto na tabela; nos projetos sem CAPEX o avanço recalcula na hora, e prazos vencidos ganham o selo <b>Atrasada</b> automaticamente;</li>
 <li><b>+ Nova atividade</b>, abre uma janela para criar a atividade completa: título, marco vinculado (clique no chip do marco e o sistema sugere o prazo pelo mês dele), prazo, status inicial, descrição e primeira atualização; a responsabilidade é sempre do <b>líder do projeto</b>, sem atribuição por atividade;</li>
-<li><b>+ Novo projeto (sem CAPEX)</b>, projetos simples (digitalização, automação) são criados direto no Ciclo de Vida, com <b>tipo de saving</b> (Hard Save, Cost Avoidance, Virtual Saving) e sem classificação A–E, com os <b>marcos configurados já no cadastro</b>; o projeto abre no seu <b>espaço próprio</b>: marcos remanejáveis, atividades com prazo, status, descrição e atualizações; <b>todos os projetos da fábrica passam pelo módulo</b>, os do PSR entram automaticamente;</li>
+<li><b>+ Novo projeto (sem CAPEX)</b>, projetos simples (digitalização, automação) são criados direto no Ciclo de Vida, com <b>tipo de saving</b> (Hard Saving, Cost Avoidance, Virtual Saving) e sem classificação A–E, com os <b>marcos configurados já no cadastro</b>; o projeto abre no seu <b>espaço próprio</b>: marcos remanejáveis, atividades com prazo, status, descrição e atualizações; <b>todos os projetos da fábrica passam pelo módulo</b>, os do PSR entram automaticamente;</li>
 <li><b>Remanejar prazo</b>, clique no marco na régua para abrir a janela de remanejo (escolha o novo mês nos chips e escreva a justificativa) ou use o detalhe da atividade; a <b>justificativa é obrigatória</b>, vai para a auditoria e gera alerta no portfólio. O marco remanejado mostra “era mês X” e o desvio fica visível contra a baseline (o vermelhinho).</li>
 <li><b>Painel da Fábrica</b>, a porta de entrada do módulo (revisão 03/08): totais, concluídos e não iniciados, com CAPEX × sem CAPEX com valores, fases e áreas, <b>entregas próximas</b>, alertas com o drill das atividades atrasadas e o <b>acompanhamento EEM</b> (cronograma macro) na mesma tela;</li>
 <li><b>Permissões</b>, criar e editar marcos, atividades e comentários é exclusivo do <b>líder do projeto</b>; os demais perfis visualizam. Projetos vindos do PSR têm <b>marcos somente leitura</b>, definidos com a engenharia;</li>
-<li><b>Cadastro sem CAPEX</b>, o líder é preenchido automaticamente (quem cria é o líder), o projeto ganha uma <b>fase</b> (Ideia, Estudo de viabilidade, Em andamento, Pausado, Cancelado) e, se o tipo de saving exigir, o sistema pede o <b>nº do projeto no NPP</b> (ex.: Hard Save);</li>
+<li><b>Cadastro sem CAPEX</b>, o líder é preenchido automaticamente (quem cria é o líder), o projeto ganha uma <b>fase</b> (Ideia, Estudo de viabilidade, Em andamento, Pausado, Cancelado) uma <b>descrição</b> e, quando o tipo é <b>Hard Saving</b>, o sistema pede o <b>nº do projeto no NPP</b> e o <b>tipo de CRG</b> do saving;</li>
 <li><b>Cadastros do módulo</b>, categorias e tipos de saving são configuráveis em Configuração → Cadastros do Ciclo de Vida, sem tocar em código.</li></ol>
 <h5>Visão hierárquica</h5>
 <ol><li><b>Pilar Portfolio</b> vê o conjunto (overview gerencial da fábrica);</li><li><b>Líder</b> vê e refina somente os seus projetos, KPIs, alertas e cronograma se recalculam na hora.</li></ol>`},
@@ -4249,7 +4260,7 @@ const TOUR=[
   {view:"lcescopo",sel:'#lcFlow1',c:"Módulo 3 · Ciclo de Vida",t:"O escopo do Módulo 3 no próprio sistema",
    x:"A página <b>Escopo do Ciclo de Vida</b> documenta a nova demanda com fluxogramas (as <b>5 fases</b> da jornada e o <b>remanejamento com justificativa obrigatória</b>, o vermelhinho contra a baseline), as regras de ouro e a especificação para o desenvolvedor. Refinado em 20/07: <b>todos os projetos passam pelo módulo</b> e os <b>sem CAPEX</b> nascem aqui, com tipo de saving. Em cotação complementar (Wave 2)."},
   {view:"cvconfig",sel:'#ccCats',c:"Configuração",t:"Cadastros do Ciclo de Vida",
-   x:"<b>Categorias</b> e <b>tipos de saving</b> configuráveis pelo admin, sem código (revisão 03/08). Tipos marcados com <b>NPP</b>, como o Hard Save, exigem o nº do projeto no NPP ao cadastrar."},
+   x:"<b>Categorias</b> e <b>tipos de saving</b> configuráveis pelo admin, sem código (revisão 03/08). Tipos marcados com <b>NPP</b>, como o Hard Saving, exigem o nº do projeto no NPP ao cadastrar."},
   {view:"catalog",sel:'#catStats',c:"Configuração",t:"Catálogo, fonte única",
    x:"Define <b>quais documentos cada step exige</b> e a partir de qual tipo (A–E) são obrigatórios. Editável pelo admin: <b>mudou aqui, mudou no sistema inteiro</b>, sem tocar em código."},
   {view:"classify",sel:'#critList',c:"Configuração",t:"Como nasce o tipo A–E",
