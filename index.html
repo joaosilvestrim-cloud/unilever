@@ -1700,7 +1700,7 @@
         <div class="tblwrap" style="border:0;margin-top:6px"><table class="tbl">
           <thead><tr><th style="text-align:center">#</th><th>Tela</th><th>Pergunta que responde</th><th>Origem do dado</th></tr></thead>
           <tbody>
-            <tr><td style="text-align:center;color:var(--brand);font-weight:800">1</td><td style="font-weight:600">Painel da Fábrica <span class="pill" style="background:#e4f0fa;color:#0060A8;font-size:9px;vertical-align:middle">novo 03/08</span></td><td>Como está a fábrica como um todo? (totais, fases e áreas, com × sem CAPEX com valores, entregas próximas, alertas com drill e o cronograma macro EEM)</td><td>Todos os projetos</td></tr>
+            <tr><td style="text-align:center;color:var(--brand);font-weight:800">1</td><td style="font-weight:600">Painel da Fábrica <span class="pill" style="background:#e4f0fa;color:#0060A8;font-size:9px;vertical-align:middle">novo 03/08</span></td><td>Como está a fábrica como um todo? (totais, fases e áreas, com × sem CAPEX com valores, OTIF de entregas, entregas próximas, alertas com drill e o cronograma macro EEM)</td><td>Todos os projetos</td></tr>
             <tr><td style="text-align:center;color:var(--ink-faint);font-weight:700">·</td><td style="font-weight:600;padding-left:26px">↳ Acompanhamento EEM <span class="muted" style="font-size:10px">(seção do Painel da Fábrica)</span></td><td>Como está o andamento de todos? (cronograma macro com o vermelhinho, marcos, on/off track)</td><td>Planos + baseline</td></tr>
             <tr><td style="text-align:center;color:var(--ink-faint);font-weight:700">2</td><td style="font-weight:600">Gestão de Projetos</td><td>Quais projetos existem e de onde vieram? (PSR automático × sem CAPEX manual, filtros, saúde e acesso ao espaço de cada um)</td><td>Todos os projetos</td></tr>
             <tr><td style="text-align:center;color:var(--ink-faint);font-weight:700">3</td><td style="font-weight:600">Ciclo de Vida</td><td>Como está a jornada deste projeto? (cockpit: 5 fases datadas com “você está aqui”, cronograma dos marcos com a linha de hoje, saúde e histórico por marco: planejado × realizado)</td><td>Projeto + plano</td></tr>
@@ -1764,6 +1764,10 @@
         <button class="btn sm perm-w" style="margin-left:auto;background:#fff;color:var(--brand-deep)" onclick="cvAdd()">+ Novo projeto (sem CAPEX)</button>
       </div>
       <div class="kpi-grid" id="chKpis" style="grid-template-columns:repeat(6,1fr)"></div>
+      <div class="card" style="padding:16px 20px;margin-top:14px">
+        <div class="section-title" style="font-size:13.5px">OTIF de entregas <span class="muted" style="font-weight:500;font-size:11px">· On Time In Full: marcos entregues na data planejada e completos (sem remanejamento), sobre os que já venceram</span></div>
+        <div id="chOtif" style="margin-top:12px"></div>
+      </div>
       <div class="lc-grid">
         <div class="card" style="padding:16px 20px">
           <div class="section-title" style="font-size:13.5px">Com CAPEX × sem CAPEX</div>
@@ -3230,6 +3234,16 @@ function buildCvGest(){
 function chBar(lbl,n,tot,color,extra){const w=tot?Math.round(n/Math.max(1,tot)*100):0;
   return '<div style="margin-bottom:11px"><div style="display:flex;justify-content:space-between;gap:8px;font-size:12px;flex-wrap:wrap"><b>'+lbl+'</b><span class="muted">'+n+' projeto'+(n===1?'':'s')+(extra?' · '+extra:'')+'</span></div><div class="cvg-bar" style="margin-top:4px;max-width:none"><i style="width:'+w+'%;background:'+color+'"></i></div></div>';}
 function cvHomeFase(f){switchView('cvgest');const sel=document.getElementById('cvgFase');sel.value=f;buildCvGest();}
+function otifStats(){
+  let onTime=0,resch=0,late=0;const today=Math.floor(EEM_TODAY);
+  eemAll().forEach(p=>{planOf(p).marcos.forEach(m=>{
+    const expected=m[2]==='done'||m[2]==='late'||m[0]<=today;
+    if(!expected)return;
+    if(m[3])resch++;else if(m[2]==='done')onTime++;else late++;
+  });});
+  const tot=onTime+resch+late;
+  return {onTime,resch,late,tot,pct:tot?Math.round(onTime/tot*100):0};
+}
 function buildCvHome(){
   const all=eemAll();
   const off=all.filter(p=>eemStatus(p).label==='Off track');
@@ -3247,6 +3261,25 @@ function buildCvHome(){
     {k:'Off track',v:off.length,c:off.length?'var(--danger)':'var(--ok)'},
     {k:'Ativ. atrasadas',v:lateT,c:lateT?'var(--danger)':'var(--ok)'}
   ].map(x=>'<div class="card kpi" style="cursor:pointer" title="Abrir a Gestão de Projetos" onclick="switchView(\'cvgest\')"><div class="lbl">'+x.k+'</div><div class="val" style="color:'+x.c+'">'+x.v+'</div></div>').join('');
+  const ot=otifStats();const pc=(n,t)=>t?Math.round(n/t*100):0;
+  const otColor=ot.pct>=80?'var(--ok)':ot.pct>=50?'var(--warn)':'var(--danger)';
+  document.getElementById('chOtif').innerHTML=ot.tot?
+    '<div style="display:flex;gap:22px;align-items:center;flex-wrap:wrap">'+
+      '<div style="flex:none;text-align:center;min-width:96px"><div style="font-family:Poppins;font-weight:800;font-size:34px;line-height:1;color:'+otColor+'">'+ot.pct+'%</div><div class="muted" style="font-size:10.5px;margin-top:2px">'+ot.onTime+' de '+ot.tot+' entregas</div></div>'+
+      '<div style="flex:1;min-width:240px">'+
+        '<div style="display:flex;height:16px;border-radius:8px;overflow:hidden;background:var(--surface-2)">'+
+          '<div style="width:'+pc(ot.onTime,ot.tot)+'%;background:var(--ok)" title="No prazo e completo"></div>'+
+          '<div style="width:'+pc(ot.resch,ot.tot)+'%;background:var(--warn)" title="Remanejado"></div>'+
+          '<div style="width:'+pc(ot.late,ot.tot)+'%;background:var(--danger)" title="Atrasado"></div>'+
+        '</div>'+
+        '<div class="lc-cron-lg" style="margin-top:9px">'+
+          '<span><i style="background:var(--ok)"></i>No prazo e completo · '+ot.onTime+'</span>'+
+          '<span><i style="background:var(--warn)"></i>Remanejado · '+ot.resch+'</span>'+
+          '<span><i style="background:var(--danger)"></i>Atrasado · '+ot.late+'</span>'+
+        '</div>'+
+      '</div>'+
+    '</div>'
+    :'<div class="muted" style="font-size:12px">Sem marcos vencidos para medir OTIF ainda.</div>';
   const capT=capex.reduce((a,p)=>a+(p.budP||0),0),savT=semc.reduce((a,p)=>a+(p.sav||0),0);
   document.getElementById('chCapex').innerHTML=
     chBar('Com CAPEX · via PSR',capex.length,all.length,'var(--brand)',eur(capT)+' aprovados')+
@@ -4101,6 +4134,7 @@ const HELP=[
 <li><b>+ Nova atividade</b>, abre uma janela para criar a atividade completa: título, marco vinculado (clique no chip do marco e o sistema sugere o prazo pelo mês dele), prazo, status inicial, descrição e primeira atualização; a responsabilidade é sempre do <b>líder do projeto</b>, sem atribuição por atividade;</li>
 <li><b>+ Novo projeto (sem CAPEX)</b>, projetos simples (digitalização, automação) são criados direto no Ciclo de Vida, com <b>tipo de saving</b> (Hard Saving, Cost Avoidance, Virtual Saving) e sem classificação A–E, com os <b>marcos configurados já no cadastro</b>; o projeto abre no seu <b>espaço próprio</b>: marcos remanejáveis, atividades com prazo, status, descrição e atualizações; <b>todos os projetos da fábrica passam pelo módulo</b>, os do PSR entram automaticamente;</li>
 <li><b>Remanejar prazo</b>, clique no marco na régua para abrir a janela de remanejo (escolha o novo mês nos chips e escreva a justificativa) ou use o detalhe da atividade; a <b>justificativa é obrigatória</b>, vai para a auditoria e gera alerta no portfólio. O marco remanejado mostra “era mês X” e o desvio fica visível contra a baseline (o vermelhinho).</li>
+<li><b>OTIF de entregas</b>, no Painel da Fábrica: o percentual de marcos entregues na data planejada e completos (On Time In Full), com a quebra no prazo × remanejado × atrasado, a saúde de pontualidade da fábrica em um número;</li>
 <li><b>Painel da Fábrica</b>, a porta de entrada do módulo (revisão 03/08): totais, concluídos e não iniciados, com CAPEX × sem CAPEX com valores, fases e áreas, <b>entregas próximas</b>, alertas com o drill das atividades atrasadas e o <b>acompanhamento EEM</b> (cronograma macro) na mesma tela;</li>
 <li><b>Permissões</b>, criar e editar marcos, atividades e comentários é exclusivo do <b>líder do projeto</b>; os demais perfis visualizam. Projetos vindos do PSR têm <b>marcos somente leitura</b>, definidos com a engenharia;</li>
 <li><b>Cadastro sem CAPEX</b>, o líder é preenchido automaticamente (quem cria é o líder), o projeto ganha uma <b>fase</b> (Ideia, Estudo de viabilidade, Em andamento, Pausado, Cancelado) uma <b>descrição</b> e, quando o tipo é <b>Hard Saving</b>, o sistema pede o <b>nº do projeto no NPP</b> e o <b>tipo de CRG</b> do saving;</li>
@@ -4233,6 +4267,8 @@ const TOUR=[
    x:"A página Escopo do DRA documenta o módulo com <b>fluxogramas</b> (arquitetura de dados, ciclo mensal, workflow Marlin/AI), as <b>regras de ouro</b> e a <b>especificação técnica para o desenvolvedor</b>: modelo de dados, de-para SAP → planilha → sistema, fórmulas, permissões e a <b>camada Power BI</b> (o que fica no sistema × o que fica no BI, com as páginas propostas). Qualquer pessoa entende o DRA sem treinamento."},
   {view:"cvhome",sel:'#chKpis',c:"Módulo 3 · Ciclo de Vida",t:"Painel da Fábrica, a porta de entrada",
    x:"O consolidado gerencial em uma tela (revisão 03/08): totais, em andamento, <b>concluídos e não iniciados</b>, com CAPEX × sem CAPEX com valores, off track e atividades atrasadas. Tudo clicável para descer ao detalhe."},
+  {view:"cvhome",sel:'#chOtif',c:"Módulo 3 · Ciclo de Vida",t:"OTIF de entregas",
+   x:"O indicador <b>OTIF (On Time In Full)</b> pedido pela gestão: o percentual de <b>marcos entregues na data planejada e completos</b>, sem remanejamento, sobre os que já venceram. A barra abre em <b>no prazo × remanejado × atrasado</b>, dando a saúde de pontualidade da fábrica em um número."},
   {view:"cvhome",sel:'#chFases',c:"Módulo 3 · Ciclo de Vida",t:"Fases, áreas e entregas próximas",
    x:"Cada projeto tem uma <b>fase</b> (Ideia, Estudo de viabilidade, Em andamento, Pausado, Cancelado) e uma <b>área/categoria</b>; clique e a Gestão de Projetos abre filtrada. Logo abaixo, as <b>entregas próximas</b>: quem encerra neste mês ou no próximo, com a data."},
   {view:"cvhome",sel:'#trackKpis',c:"Módulo 3 · Ciclo de Vida",t:"On track ou off track?",
