@@ -3234,6 +3234,7 @@ function buildCvGest(){
 function chBar(lbl,n,tot,color,extra){const w=tot?Math.round(n/Math.max(1,tot)*100):0;
   return '<div style="margin-bottom:11px"><div style="display:flex;justify-content:space-between;gap:8px;font-size:12px;flex-wrap:wrap"><b>'+lbl+'</b><span class="muted">'+n+' projeto'+(n===1?'':'s')+(extra?' · '+extra:'')+'</span></div><div class="cvg-bar" style="margin-top:4px;max-width:none"><i style="width:'+w+'%;background:'+color+'"></i></div></div>';}
 function cvHomeFase(f){switchView('cvgest');const sel=document.getElementById('cvgFase');sel.value=f;buildCvGest();}
+const OTIF_META=90;
 function otifStats(list){
   list=list||eemAll();
   let onTime=0,resch=0,late=0;const today=Math.floor(EEM_TODAY);
@@ -3263,23 +3264,38 @@ function buildCvHome(){
     {k:'Ativ. atrasadas',v:lateT,c:lateT?'var(--danger)':'var(--ok)'}
   ].map(x=>'<div class="card kpi" style="cursor:pointer" title="Abrir a Gestão de Projetos" onclick="switchView(\'cvgest\')"><div class="lbl">'+x.k+'</div><div class="val" style="color:'+x.c+'">'+x.v+'</div></div>').join('');
   const ot=otifStats();const pc=(n,t)=>t?Math.round(n/t*100):0;
-  const otColor=ot.pct>=80?'var(--ok)':ot.pct>=50?'var(--warn)':'var(--danger)';
+  const otCor=v=>v>=OTIF_META?'var(--ok)':v>=70?'var(--warn)':'var(--danger)';
+  const metaOk=ot.pct>=OTIF_META;
+  const perProj=eemAll().map(p=>({p,o:otifStats([p])})).filter(x=>x.o.tot>0).sort((a,b)=>a.o.pct-b.o.pct);
+  const rank=perProj.map(x=>'<div onclick="switchView(\'lifecycle\');buildLifecycle(\''+x.p.id+'\')" title="Abrir o Ciclo de Vida do projeto" style="display:flex;gap:10px;align-items:center;padding:7px 0;border-top:1px dashed var(--line);cursor:pointer;font-size:12px">'+
+      '<span style="flex:1;min-width:150px;font-weight:600">'+x.p.name+'<span class="org-badge '+(x.p.simple?'org-man':'org-psr')+'" style="margin-left:6px;transform:scale(.82)">'+(x.p.simple?'S/CAPEX':'PSR')+'</span></span>'+
+      '<div class="cvg-bar" style="flex:1;max-width:150px"><i style="width:'+x.o.pct+'%;background:'+otCor(x.o.pct)+'"></i></div>'+
+      '<span style="flex:none;width:38px;text-align:right;font-weight:800;color:'+otCor(x.o.pct)+'">'+x.o.pct+'%</span>'+
+      '<span class="muted" style="flex:none;width:96px;text-align:right;font-size:10.5px">'+x.o.onTime+'/'+x.o.tot+' no prazo'+(x.o.late?' · '+x.o.late+' atras.':'')+'</span>'+
+    '</div>').join('');
   document.getElementById('chOtif').innerHTML=ot.tot?
     '<div style="display:flex;gap:22px;align-items:center;flex-wrap:wrap">'+
-      '<div style="flex:none;text-align:center;min-width:96px"><div style="font-family:Poppins;font-weight:800;font-size:34px;line-height:1;color:'+otColor+'">'+ot.pct+'%</div><div class="muted" style="font-size:10.5px;margin-top:2px">'+ot.onTime+' de '+ot.tot+' entregas</div></div>'+
+      '<div style="flex:none;text-align:center;min-width:104px">'+
+        '<div style="font-family:Poppins;font-weight:800;font-size:36px;line-height:1;color:'+otCor(ot.pct)+'">'+ot.pct+'%</div>'+
+        '<div class="muted" style="font-size:10.5px;margin-top:2px">'+ot.onTime+' de '+ot.tot+' entregas</div>'+
+        '<div style="font-size:9.5px;font-weight:800;margin-top:5px;padding:2px 8px;border-radius:99px;display:inline-block;background:'+(metaOk?'#e7f4ee':'#fdf3e3')+';color:'+(metaOk?'#137a44':'#8a5b00')+'">meta '+OTIF_META+'% · '+(metaOk?'atingida':'abaixo')+'</div>'+
+      '</div>'+
       '<div style="flex:1;min-width:240px">'+
-        '<div style="display:flex;height:16px;border-radius:8px;overflow:hidden;background:var(--surface-2)">'+
+        '<div style="position:relative;display:flex;height:16px;border-radius:8px;overflow:hidden;background:var(--surface-2)">'+
           '<div style="width:'+pc(ot.onTime,ot.tot)+'%;background:var(--ok)" title="No prazo e completo"></div>'+
           '<div style="width:'+pc(ot.resch,ot.tot)+'%;background:var(--warn)" title="Remanejado"></div>'+
           '<div style="width:'+pc(ot.late,ot.tot)+'%;background:var(--danger)" title="Atrasado"></div>'+
+          '<div title="Meta '+OTIF_META+'%" style="position:absolute;top:-3px;bottom:-3px;left:'+OTIF_META+'%;width:2px;background:#111;opacity:.55"></div>'+
         '</div>'+
         '<div class="lc-cron-lg" style="margin-top:9px">'+
           '<span><i style="background:var(--ok)"></i>No prazo e completo · '+ot.onTime+'</span>'+
           '<span><i style="background:var(--warn)"></i>Remanejado · '+ot.resch+'</span>'+
           '<span><i style="background:var(--danger)"></i>Atrasado · '+ot.late+'</span>'+
+          '<span style="color:#111">▏ meta '+OTIF_META+'%</span>'+
         '</div>'+
       '</div>'+
-    '</div>'
+    '</div>'+
+    (rank?'<div class="dra-lbl" style="margin-top:16px">OTIF por projeto <span class="muted" style="font-weight:500;text-transform:none;letter-spacing:0">· pior primeiro; clique para abrir</span></div>'+rank:'')
     :'<div class="muted" style="font-size:12px">Sem marcos vencidos para medir OTIF ainda.</div>';
   const capT=capex.reduce((a,p)=>a+(p.budP||0),0),savT=semc.reduce((a,p)=>a+(p.sav||0),0);
   document.getElementById('chCapex').innerHTML=
@@ -3939,7 +3955,7 @@ function buildLifecycle(id){
   const finCard=p.simple
     ?`<div class="stat card"><div class="glow" style="background:var(--brand-2)"></div><div class="k">Saving estimado</div><div class="v" style="font-size:23px">${eur(p.sav)}</div><div class="d">${p.savType||'Saving'}${p.npp?' · NPP '+p.npp:''}${p.crg?' · '+p.crg:''}</div></div>`
     :`<div class="stat card"><div class="glow" style="background:var(--brand-2)"></div><div class="k">Financeiro</div><div class="v" style="font-size:23px">${eur(p.budA)}</div><div class="d">de ${eur(p.budP)} aprovados (${p.budP?Math.round(p.budA/p.budP*100):0}%)</div></div>`;
-  const otL=otifStats([p]);const otc=otL.pct>=80?'var(--ok)':otL.pct>=50?'var(--warn)':'var(--danger)';
+  const otL=otifStats([p]);const otc=otL.pct>=OTIF_META?'var(--ok)':otL.pct>=70?'var(--warn)':'var(--danger)';
   document.getElementById('lcHealth').innerHTML=`
     <div class="stat card"><div class="glow" style="background:${s.cls==='tk-late'?'var(--danger)':'var(--ok)'}"></div><div class="k">Status</div><div class="v" style="font-size:23px">${s.label}</div><div class="d">real ${p.schP||0}% vs plano ${e.plan}%</div></div>
     <div class="stat card" title="On Time In Full: marcos entregues na data planejada e completos, sobre os que já venceram"><div class="glow" style="background:${otc}"></div><div class="k">OTIF</div><div class="v" style="font-size:23px">${otL.tot?otL.pct+'%':'—'}</div><div class="d">${otL.tot?otL.onTime+'/'+otL.tot+' marcos no prazo'+(otL.resch?' · '+otL.resch+' remanej.':'')+(otL.late?' · '+otL.late+' atras.':''):'sem marcos vencidos'}</div></div>
@@ -4272,7 +4288,7 @@ const TOUR=[
   {view:"cvhome",sel:'#chKpis',c:"Módulo 3 · Ciclo de Vida",t:"Painel da Fábrica, a porta de entrada",
    x:"O consolidado gerencial em uma tela (revisão 03/08): totais, em andamento, <b>concluídos e não iniciados</b>, com CAPEX × sem CAPEX com valores, off track e atividades atrasadas. Tudo clicável para descer ao detalhe."},
   {view:"cvhome",sel:'#chOtif',c:"Módulo 3 · Ciclo de Vida",t:"OTIF de entregas",
-   x:"O indicador <b>OTIF (On Time In Full)</b> pedido pela gestão: o percentual de <b>marcos entregues na data planejada e completos</b>, sem remanejamento, sobre os que já venceram. A barra abre em <b>no prazo × remanejado × atrasado</b>, dando a saúde de pontualidade da fábrica em um número."},
+   x:"O indicador <b>OTIF (On Time In Full)</b> pedido pela gestão: o percentual de <b>marcos entregues na data planejada e completos</b>, sem remanejamento, sobre os que já venceram, comparado com a <b>meta de 90%</b>. A barra abre em <b>no prazo × remanejado × atrasado</b> e, abaixo, o <b>OTIF por projeto</b> (pior primeiro, clicável) mostra quem puxa o número para baixo."},
   {view:"cvhome",sel:'#chFases',c:"Módulo 3 · Ciclo de Vida",t:"Fases, áreas e entregas próximas",
    x:"Cada projeto tem uma <b>fase</b> (Ideia, Estudo de viabilidade, Em andamento, Pausado, Cancelado) e uma <b>área/categoria</b>; clique e a Gestão de Projetos abre filtrada. Logo abaixo, as <b>entregas próximas</b>: quem encerra neste mês ou no próximo, com a data."},
   {view:"cvhome",sel:'#trackKpis',c:"Módulo 3 · Ciclo de Vida",t:"On track ou off track?",
