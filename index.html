@@ -890,7 +890,7 @@
       <div class="lc-summary" id="lcSummary"></div>
       <div class="card lc-journey"><div class="pm-sec" style="margin:0 0 16px">Fases do ciclo de vida <span style="font-weight:500;color:var(--ink-faint)">· status calculado pelo sistema</span></div><div class="lc-phases" id="lcPhases"></div></div>
       <div class="card lc-cron"><div class="pm-sec" style="margin:0 0 12px">Cronograma do projeto <span style="font-weight:500;color:var(--ink-faint);font-size:11px">· marcos no calendário, com a linha de hoje; o hachurado vermelho é prazo remanejado além da linha de base</span></div><div id="lcTimeline"></div></div>
-      <div class="stat-grid" id="lcHealth"></div>
+      <div class="stat-grid" id="lcHealth" style="grid-template-columns:repeat(5,1fr)"></div>
       <div class="lc-grid">
         <div class="card lc-hist"><div class="pm-sec" style="margin:0 0 10px">Histórico por marco <span style="font-weight:500;color:var(--ink-faint);font-size:11px">· planejado × realizado: o que foi feito e o que ficou pendente</span></div><div id="lcEvents"></div></div>
         <div class="card lc-links"><div class="pm-sec" style="margin:0 0 10px">Navegar pelo projeto</div><div id="lcLinks"></div></div>
@@ -3234,9 +3234,10 @@ function buildCvGest(){
 function chBar(lbl,n,tot,color,extra){const w=tot?Math.round(n/Math.max(1,tot)*100):0;
   return '<div style="margin-bottom:11px"><div style="display:flex;justify-content:space-between;gap:8px;font-size:12px;flex-wrap:wrap"><b>'+lbl+'</b><span class="muted">'+n+' projeto'+(n===1?'':'s')+(extra?' · '+extra:'')+'</span></div><div class="cvg-bar" style="margin-top:4px;max-width:none"><i style="width:'+w+'%;background:'+color+'"></i></div></div>';}
 function cvHomeFase(f){switchView('cvgest');const sel=document.getElementById('cvgFase');sel.value=f;buildCvGest();}
-function otifStats(){
+function otifStats(list){
+  list=list||eemAll();
   let onTime=0,resch=0,late=0;const today=Math.floor(EEM_TODAY);
-  eemAll().forEach(p=>{planOf(p).marcos.forEach(m=>{
+  list.forEach(p=>{planOf(p).marcos.forEach(m=>{
     const expected=m[2]==='done'||m[2]==='late'||m[0]<=today;
     if(!expected)return;
     if(m[3])resch++;else if(m[2]==='done')onTime++;else late++;
@@ -3938,8 +3939,10 @@ function buildLifecycle(id){
   const finCard=p.simple
     ?`<div class="stat card"><div class="glow" style="background:var(--brand-2)"></div><div class="k">Saving estimado</div><div class="v" style="font-size:23px">${eur(p.sav)}</div><div class="d">${p.savType||'Saving'}${p.npp?' · NPP '+p.npp:''}${p.crg?' · '+p.crg:''}</div></div>`
     :`<div class="stat card"><div class="glow" style="background:var(--brand-2)"></div><div class="k">Financeiro</div><div class="v" style="font-size:23px">${eur(p.budA)}</div><div class="d">de ${eur(p.budP)} aprovados (${p.budP?Math.round(p.budA/p.budP*100):0}%)</div></div>`;
+  const otL=otifStats([p]);const otc=otL.pct>=80?'var(--ok)':otL.pct>=50?'var(--warn)':'var(--danger)';
   document.getElementById('lcHealth').innerHTML=`
     <div class="stat card"><div class="glow" style="background:${s.cls==='tk-late'?'var(--danger)':'var(--ok)'}"></div><div class="k">Status</div><div class="v" style="font-size:23px">${s.label}</div><div class="d">real ${p.schP||0}% vs plano ${e.plan}%</div></div>
+    <div class="stat card" title="On Time In Full: marcos entregues na data planejada e completos, sobre os que já venceram"><div class="glow" style="background:${otc}"></div><div class="k">OTIF</div><div class="v" style="font-size:23px">${otL.tot?otL.pct+'%':'—'}</div><div class="d">${otL.tot?otL.onTime+'/'+otL.tot+' marcos no prazo'+(otL.resch?' · '+otL.resch+' remanej.':'')+(otL.late?' · '+otL.late+' atras.':''):'sem marcos vencidos'}</div></div>
     <div class="stat card"><div class="glow" style="background:var(--brand)"></div><div class="k">Documentos</div><div class="v">${p.simple?"—":docs.done+"/"+docs.total}</div><div class="d">${p.simple?"sem gate documental":Math.round(docs.done/Math.max(1,docs.total)*100)+"% do exigido pelo Tipo "+p.type}</div></div>
     ${finCard}
     <div class="stat card"><div class="glow" style="background:var(--warn)"></div><div class="k">Próximo Marco</div><div class="v" style="font-size:19px;line-height:1.2">${nx?nx[1]:'—'}</div><div class="d">${nx?MESES[nx[0]]+' 26 · '+(nx[2]==='late'?'⚠ atrasado':'planejado'):'todos concluídos'}</div></div>`;
@@ -4087,6 +4090,7 @@ const HELP=[
 <li><b>🏁 Encerramento</b>, capex closure, KPIs e lições aprendidas.</li></ol>
 <p>O status de cada fase é <b>calculado pelo sistema</b> a partir do step atual, do avanço real × plano e dos remanejamentos. Cada fase mostra a <b>data</b> (mês de início, janela de execução e o encerramento previsto) e a fase atual fica marcada com <b>“você está aqui”</b>, ficando vermelha quando o projeto está atrasado.</p>
 <h5>Saúde do projeto</h5>
+<p>Inclui o <b>OTIF do projeto</b> (On Time In Full): o percentual dos marcos já vencidos que foram entregues na data planejada e completos. O indicador geral da fábrica fica no Painel; no cockpit é o de cada projeto.</p>
 <ul><li><b>Status</b>, on track / off track / adiantado;</li><li><b>Documentos</b>, inseridos vs exigidos pelo tipo;</li><li><b>Financeiro</b>, executado vs aprovado (nos projetos <b>sem CAPEX</b> vira <b>Saving estimado</b>);</li><li><b>Próximo marco</b>, a entrega que vem aí (com aviso se atrasada).</li></ul>
 <h5>Cronograma do projeto</h5>
 <p>Os <b>marcos no calendário</b> do ano, cada losango na cor do status, com a <b>linha vermelha de hoje</b>. Quando um prazo é empurrado além da linha de base, o trecho extra aparece <b>hachurado em vermelho</b>. É o cronograma visual que a Maria pediu na visão gerencial.</p>
@@ -4288,7 +4292,7 @@ const TOUR=[
   {view:"lifecycle",sel:'#lcTimeline',c:"Módulo 3 · Ciclo de Vida",t:"Cronograma do projeto",
    x:"Os <b>marcos no calendário</b> do ano, cada losango na cor do seu status, com a <b>linha vermelha de hoje</b>. Quando um prazo é empurrado além da linha de base, o trecho extra aparece <b>hachurado em vermelho</b>. É o cronograma visual que faltava na visão gerencial."},
   {view:"lifecycle",sel:'#lcHealth',c:"Módulo 3 · Ciclo de Vida",t:"Saúde do projeto",
-   x:"Quatro cartões respondem <b>como está o projeto</b>: status on/off track, documentos inseridos × exigidos, financeiro executado × aprovado e o <b>próximo marco</b>, com aviso se atrasado."},
+   x:"Cinco cartões respondem <b>como está o projeto</b>: status on/off track, o <b>OTIF do projeto</b> (entregas no prazo e completas), documentos inseridos × exigidos, financeiro/saving e o <b>próximo marco</b>. O OTIF geral fica no Painel; aqui é o de cada projeto, como a Maria pediu."},
   {view:"lifecycle",sel:'#lcEvents',c:"Módulo 3 · Ciclo de Vida",t:"Histórico por marco: o que fez × o que faltou",
    x:"O histórico <b>quebrado pelos marcos</b>: cada marco lista suas atividades com a data <b>planejada × realizada</b>, marcando o que foi <b>concluído</b> e, principalmente, o que <b>deveria ter sido feito e não foi</b>. É exatamente a leitura gerencial que a Maria pediu (03/08)."},
   {view:"lifecycle",sel:'#lcLinks',c:"Módulo 3 · Ciclo de Vida",t:"Atalhos contextuais",
