@@ -1829,7 +1829,7 @@
         <div><label class="dra-lbl">Área / categoria</label><select id="cvgCat" class="role-sel" onchange="buildCvGest()"><option value="all">Todas</option></select></div>
         <div><label class="dra-lbl">Tipo de saving</label><select id="cvgSav" class="role-sel" onchange="buildCvGest()"><option value="all">Todos</option></select></div>
         <div><label class="dra-lbl">Situação (prazo)</label><select id="cvgStatus" class="role-sel" onchange="buildCvGest()"><option value="all">Todas</option><option>On track</option><option>Off track</option><option>Adiantado</option></select></div>
-        <div style="flex:1;min-width:180px"><label class="dra-lbl">Busca</label><input id="cvgSearch" class="role-sel" style="width:100%" placeholder="Projeto, líder, categoria..." oninput="buildCvGest()"></div>
+        <div style="flex:1;min-width:180px"><label class="dra-lbl">Busca</label><input id="cvgSearch" class="role-sel" style="width:100%" list="cvgSearchList" placeholder="Projeto, líder ou OI..." oninput="buildCvGest()"><datalist id="cvgSearchList"></datalist></div>
       </div>
       <div class="card" style="overflow:hidden">
         <div class="docs-head"><div><div class="st" id="cvgTitle">Projetos</div><div class="muted">Clique em um projeto para abrir o espaço (marcos e atividades) · ✎ os sem CAPEX nascem aqui, os do PSR entram sozinhos</div></div></div>
@@ -1841,6 +1841,7 @@
     <section class="view hidden" id="view-cvproj">
       <div id="cvpHead"></div>
       <div class="cvp-stat" id="cvpStats"></div>
+      <div id="cvpDocs"></div>
       <div class="card" style="padding:16px 20px;margin-bottom:14px">
         <div class="section-title" style="font-size:14.5px">Marcos do projeto <span class="muted" id="cvMarcoHint" style="font-weight:500;font-size:11.5px"></span></div>
         <div class="pm-marcos" id="cvpMarcos" style="margin-top:12px"></div>
@@ -2023,6 +2024,19 @@
   </div>
 </div>
 
+<div id="cvSavModal" class="hidden" style="position:fixed;inset:0;z-index:170;background:rgba(8,20,34,.55);backdrop-filter:blur(3px);display:grid;place-items:center;padding:24px" onclick="if(event.target===this)cvSavClose()">
+  <div style="background:#fff;border-radius:16px;width:min(470px,95vw);box-shadow:0 40px 90px -30px rgba(0,0,0,.6)">
+    <div style="padding:16px 20px;border-bottom:1px solid var(--line)"><div style="font-family:Poppins;font-weight:700;font-size:15px">Saving do projeto</div><div class="muted" style="font-size:12px" id="cvSavSub"></div></div>
+    <div style="padding:18px 20px;display:grid;gap:14px">
+      <div><label class="dra-lbl">Saving anual estimado (€ mil)</label><input id="cvSav_v" type="number" step="1" class="role-sel" style="width:100%" placeholder="0"><div class="muted" style="font-size:10.5px;margin-top:3px">Valor de um ano, não o total de vários anos. A fábrica trabalha o saving anual.</div></div>
+      <div><label class="dra-lbl">Previsão de início do saving</label><select id="cvSav_start" class="role-sel" style="width:100%"></select><div class="muted" style="font-size:10.5px;margin-top:3px">O mês em que o projeto começa a capturar o saving (pode ser depois do início do projeto).</div></div>
+      <div id="cvSav_log" class="muted" style="font-size:11px"></div>
+      <div style="background:var(--surface-2);border-radius:10px;padding:10px 14px;font-size:11.5px;color:var(--ink-soft)">Projetos com CAPEX também têm saving. Informe uma vez; toda alteração fica registrada na auditoria (quem e quando).</div>
+    </div>
+    <div class="wz-foot"><button class="btn ghost sm" onclick="cvSavClose()">Cancelar</button><button class="btn sm perm-w" onclick="cvSavSave()">Salvar saving</button></div>
+  </div>
+</div>
+
 <div id="cvAddModal" class="hidden" style="position:fixed;inset:0;z-index:170;background:rgba(8,20,34,.55);backdrop-filter:blur(3px);display:grid;place-items:center;padding:24px">
   <div style="background:#fff;border-radius:16px;width:min(600px,95vw);max-height:92vh;overflow:auto;box-shadow:0 40px 90px -30px rgba(0,0,0,.6)">
     <div style="padding:16px 20px;border-bottom:1px solid var(--line)"><div style="font-family:Poppins;font-weight:700;font-size:15px">Novo projeto · sem CAPEX</div><div class="muted" style="font-size:12px">Fluxo simplificado: sem classificação A–E e sem gate documental. O projeto vai direto ao cronograma, com marcos configuráveis pelo líder.</div></div>
@@ -2034,7 +2048,8 @@
       <div><label class="dra-lbl">Líder do projeto</label><div class="role-sel" style="width:100%;background:var(--surface-2);display:flex;align-items:center;gap:6px">👤 Maria Correa <span class="muted" style="font-size:10px">(você)</span></div><div class="muted" style="font-size:10px;margin-top:2px">Quem cria é o líder: preenchido com o usuário logado</div></div>
       <div><label class="dra-lbl">Fase do projeto</label><select id="cv_fase" class="role-sel" style="width:100%"><option>Ideia</option><option>Estudo de viabilidade</option><option selected>Em andamento</option><option>Pausado</option><option>Cancelado</option></select></div>
       <div><label class="dra-lbl">Tipo de saving</label><select id="cv_savtype" class="role-sel" style="width:100%" onchange="cvSavChange()"></select></div>
-      <div><label class="dra-lbl">Saving estimado (R$ mil)</label><input id="cv_sav" type="number" step="1" class="role-sel" style="width:100%" placeholder="0"></div>
+      <div><label class="dra-lbl">Saving anual estimado (€ mil)</label><input id="cv_sav" type="number" step="1" class="role-sel" style="width:100%" placeholder="0"><div class="muted" style="font-size:10px;margin-top:2px">Valor de um ano (a fábrica trabalha o saving anual)</div></div>
+      <div><label class="dra-lbl">Início do saving</label><select id="cv_savStart" class="role-sel" style="width:100%"></select><div class="muted" style="font-size:10px;margin-top:2px">Mês em que começa a capturar o saving</div></div>
       <div id="cv_nppWrap" style="grid-column:span 2;display:none;background:#e4f0fa;border-radius:10px;padding:10px 14px;display:none">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
           <div><label class="dra-lbl">Número do projeto no NPP *</label><input id="cv_npp" class="role-sel" style="width:100%;margin-top:2px;background:#fff" placeholder="Ex.: NPP-2214"></div>
@@ -3212,7 +3227,8 @@ function buildCvGest(){
     &&(stF==='all'||eemStatus(p).label===stF)&&((document.getElementById('cvgFase').value||'all')==='all'||(p.fase||'Em andamento')===document.getElementById('cvgFase').value)
     &&(catF==='all'||(p.loc||'').includes(catF))
     &&(savF==='all'||(p.savType||'')===savF)
-    &&(!q||(p.name+' '+p.lead+' '+(p.loc||'')).toLowerCase().includes(q)));
+    &&(!q||(p.name+' '+p.lead+' '+(p.loc||'')+' '+(p.oi||'')).toLowerCase().includes(q)));
+  const dl=document.getElementById('cvgSearchList');if(dl)dl.innerHTML=all.map(p=>'<option value="'+p.name.replace(/"/g,'')+'">').join('')+all.filter(p=>p.oi&&p.oi!=='—').map(p=>'<option value="'+p.oi+'">'+p.name.replace(/"/g,'')+'</option>').join('');
   document.getElementById('cvgTitle').textContent='Projetos · '+list.length+' de '+all.length;
   document.getElementById('cvgBody').innerHTML=list.map(p=>{
     const st=eemStatus(p),pl=planOf(p);
@@ -3300,8 +3316,9 @@ function buildCvHome(){
     (rank?'<div class="dra-lbl" style="margin-top:16px">OTIF por projeto <span class="muted" style="font-weight:500;text-transform:none;letter-spacing:0">· pior primeiro; clique para abrir</span></div>'+rank:'')
     :'<div class="muted" style="font-size:12px">Sem marcos vencidos para medir OTIF ainda.</div>';
   const capT=capex.reduce((a,p)=>a+(p.budP||0),0),savT=semc.reduce((a,p)=>a+(p.sav||0),0);
+  const savCapex=capex.reduce((a,p)=>a+(p.sav||0),0);
   document.getElementById('chCapex').innerHTML=
-    chBar('Com CAPEX · via PSR',capex.length,all.length,'var(--brand)',eur(capT)+' aprovados')+
+    chBar('Com CAPEX · via PSR',capex.length,all.length,'var(--brand)',eur(capT)+' aprovados'+(savCapex?' · '+eur(savCapex)+' de saving':''))+
     chBar('Sem CAPEX · manual',semc.length,all.length,'var(--warn)',eur(savT)+' de saving estimado');
   document.getElementById('chSav').innerHTML=CV_SAVTYPES.map(t=>{
     const ps=semc.filter(p=>p.savType===t.n);
@@ -3375,11 +3392,12 @@ function cvOpen(id){const p=eemAll().find(x=>x.id===id);if(!p)return;
 function cvBack(){switchView('lifecycle');if(cvProj)buildLifecycle(cvProj.id);}
 function cvRender(){
   const p=cvProj;if(!p)return;const pl=planOf(p),ts=cvTasksOf(p),st=eemStatus(p);
+  cvpDocsRender(p);
   cvRecalc();
   document.getElementById('cvpHead').innerHTML=`<div class="card" style="padding:16px 20px;margin-bottom:14px;display:flex;gap:14px;align-items:center;flex-wrap:wrap">
     <button class="btn ghost sm" onclick="cvBack()">← Ciclo de Vida</button>
     <div style="flex:1;min-width:220px"><div style="font-family:Poppins;font-weight:700;font-size:17px">${p.name}</div><div class="muted" style="font-size:12px">${p.loc} · líder <b>${p.lead}</b>${pl.rep?' · <b style="color:var(--danger)">prazo remanejado</b>':''}</div>${p.desc?`<div class="muted" style="font-size:11.5px;margin-top:3px;max-width:640px">${p.desc}</div>`:''}</div>
-    ${p.simple?`<span class="pill" style="background:#ede7f6;color:#5e35b1">${p.fase||'Em andamento'}</span><span class="pill" style="background:#e7f4ee;color:#137a44">${p.savType||'Saving'} · ${eur(p.sav)}${p.npp?' · NPP '+p.npp:''}</span>${p.crg?`<span class="pill" style="background:#e4f0fa;color:#0060A8">${p.crg}</span>`:''}`:`<span class="pill" style="background:#e4f0fa;color:#0060A8">Tipo ${p.type} · OI ${p.oi}</span><span class="pill" style="background:#e7f4ee;color:#137a44">Capex ${eur(p.budP)}</span><button class="btn ghost sm" onclick="openProject('${p.id}');switchView('project')">📄 Steps & documentos</button>`}
+    ${p.simple?`<span class="pill" style="background:#ede7f6;color:#5e35b1">${p.fase||'Em andamento'}</span><span class="pill" style="background:#e7f4ee;color:#137a44">${p.savType||'Saving'} · ${eur(p.sav)}${p.npp?' · NPP '+p.npp:''}</span>${p.crg?`<span class="pill" style="background:#e4f0fa;color:#0060A8">${p.crg}</span>`:''}`:`<span class="pill" style="background:#e4f0fa;color:#0060A8">Tipo ${p.type} · OI ${p.oi}</span><span class="pill" style="background:#e7f4ee;color:#137a44">Capex ${eur(p.budP)}</span>${p.sav?`<span class="pill" style="background:#e7f4ee;color:#137a44" title="Saving anual${p.savStart!=null?', início '+MESES[p.savStart]:''}">Saving ${eur(p.sav)}/ano</span>`:''}<button class="btn ghost sm perm-w" onclick="cvSavOpen('${p.id}')">${p.sav?'✎ Saving':'+ Saving'}</button><button class="btn ghost sm" onclick="openProject('${p.id}');switchView('project')">📄 Steps & documentos</button>`}
     <span class="tk-status ${st.cls}"><span class="dot"></span>${st.label}</span><span class="pill" style="background:var(--surface-2);color:var(--ink-soft)" title="Criar e editar marcos, atividades e comentários é exclusivo do líder do projeto; os demais perfis visualizam">✎ edita: líder</span></div>`;
   const done=ts.filter(t=>t.st==='done').length,late=ts.filter(cvIsLate).length;
   const nx=pl.marcos.find(m=>m[2]==='next'||m[2]==='late');
@@ -3717,6 +3735,7 @@ function cvAdd(){
   document.getElementById('cv_savtype').innerHTML=CV_SAVTYPES.map(x=>'<option>'+x.n+'</option>').join('');
   document.getElementById('cv_fase').value='Em andamento';
   document.getElementById('cv_npp').value='';document.getElementById('cv_desc').value='';
+  document.getElementById('cv_savStart').innerHTML='<option value="">Sem previsão</option>'+MESES.map((m,i)=>'<option value="'+i+'">'+m+' 26</option>').join('');
   document.getElementById('cv_crg').innerHTML=CV_CRG.map(g=>'<optgroup label="'+g.g+'">'+g.items.map(it=>'<option>'+it+'</option>').join('')+'</optgroup>').join('');
   cvSavChange();
   const cm=document.getElementById('cvm_m');if(!cm.options.length)MESES.forEach((mn,i)=>{cm.innerHTML+='<option value="'+i+'">'+mn+' 26</option>';});cm.value='8';
@@ -3728,7 +3747,47 @@ function cvSavChange(){
   document.getElementById('cv_nppWrap').style.display=st&&st.npp?'block':'none';
 }
 function cvAddClose(){document.getElementById('cvAddModal').classList.add('hidden');}
+let cvSavProj=null;
+function cvSavOpen(id){
+  cvSavProj=eemAll().find(p=>p.id===id);if(!cvSavProj)return;
+  document.getElementById('cvSavSub').textContent=cvSavProj.name+(cvSavProj.oi&&cvSavProj.oi!=='—'?' · OI '+cvSavProj.oi:'');
+  document.getElementById('cvSav_v').value=cvSavProj.sav?Math.round(cvSavProj.sav/1000):'';
+  const sel=document.getElementById('cvSav_start');
+  sel.innerHTML='<option value="">Sem previsão definida</option>'+MESES.map((m,i)=>'<option value="'+i+'">'+m+' 26</option>').join('');
+  sel.value=(cvSavProj.savStart!=null?String(cvSavProj.savStart):'');
+  document.getElementById('cvSav_log').innerHTML=cvSavProj.savLog?('↻ última alteração por <b>'+cvSavProj.savLog.by+'</b> em '+cvSavProj.savLog.at):'';
+  document.getElementById('cvSavModal').classList.remove('hidden');
+}
+function cvSavClose(){document.getElementById('cvSavModal').classList.add('hidden');}
+function cvSavSave(){
+  if(!cvSavProj)return;
+  cvSavProj.sav=(parseFloat(document.getElementById('cvSav_v').value)||0)*1000;
+  const st=document.getElementById('cvSav_start').value;
+  cvSavProj.savStart=st===''?null:parseInt(st);
+  cvSavProj.savLog={by:CURRENT_USER,at:cvFmt(cvToday)};
+  cvSavClose();
+  if(typeof cvProj!=='undefined'&&cvProj&&cvProj.id===cvSavProj.id)cvRender();
+  try{buildCvGest();}catch(e){}
+  toast('Saving anual salvo ('+eur(cvSavProj.sav)+'/ano'+(cvSavProj.savStart!=null?', início '+MESES[cvSavProj.savStart]:'')+'). Alteração registrada na auditoria.');
+}
+/* Documentos, visão macro (resumo dos steps do PSR dentro do módulo) */
+function cvpDocsRender(p){
+  const el=document.getElementById('cvpDocs');if(!el)return;
+  if(p.simple){el.innerHTML='';return;}
+  const rows=STEPS.map((s,si)=>{
+    const req=stepRequired(p,si),ins=stepInserted(p,si);
+    const done=req>0&&ins>=req,cur=(si+1)===p.cur;
+    const ic=done?'✅':(ins>0?'▶️':'○');
+    return '<div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-top:1px dashed var(--line);font-size:12px"><span style="flex:none;width:18px;text-align:center">'+ic+'</span><span style="flex:1"><b>Step '+s.step+'</b> · '+s.name+(cur?' <span class="cvp-chip" style="background:var(--brand-soft);color:var(--brand-deep)">atual</span>':'')+'</span><span class="muted" style="'+(done?'color:var(--ok)':(req&&ins<req&&si+1<p.cur?'color:var(--danger)':''))+'">'+ins+'/'+req+' docs</span></div>';
+  }).join('');
+  const d=lcDocs(p);
+  el.innerHTML='<div class="card" style="padding:16px 20px;margin-bottom:14px">'+
+    '<div class="section-title" style="font-size:14px">Documentos, visão macro <span class="muted" style="font-weight:500;font-size:11px">· '+d.done+'/'+d.total+' do exigido pelo Tipo '+p.type+', lido do Módulo 1 (PSR)</span></div>'+
+    '<div style="margin-top:8px">'+rows+'</div>'+
+    '<div class="muted" style="font-size:10.5px;margin-top:8px">Resumo do que já foi feito e do que falta, sem sair do módulo. O detalhe completo fica no Módulo 1 (Steps & Documentos). Enquanto o PSR não estiver populado, esta visão pode aparecer vazia.</div></div>';
+}
 function cvAddSave(){
+
   const name=(document.getElementById('cv_name').value||'').trim();
   if(!name){toast('Informe o nome do projeto.');return;}
   let gi=parseInt(document.getElementById('cv_ini').value),gf=parseInt(document.getElementById('cv_fim').value);
@@ -3742,7 +3801,7 @@ function cvAddSave(){
   const p={id:'CV'+(CV_PROJECTS.length+1)+'-'+Math.floor(Math.random()*900+100),simple:true,type:'S',name,
     loc:document.getElementById('cv_site').value+' · '+document.getElementById('cv_cat').value+' · Sem CAPEX',
     cur:1,budP:0,budA:0,com:0,sav:(parseFloat(document.getElementById('cv_sav').value)||0)*1000,
-    savType:stype,npp:npp||null,crg:(sdef&&sdef.npp)?crg:null,desc:(document.getElementById('cv_desc').value||'').trim(),fase:document.getElementById('cv_fase').value,schP:0,lead,oi:'—',gs:gi,gsp:gf-gi+1};
+    savType:stype,npp:npp||null,crg:(sdef&&sdef.npp)?crg:null,savStart:(document.getElementById('cv_savStart').value===''?null:parseInt(document.getElementById('cv_savStart').value)),desc:(document.getElementById('cv_desc').value||'').trim(),fase:document.getElementById('cv_fase').value,schP:0,lead,oi:'—',gs:gi,gsp:gf-gi+1};
   const marcos=[[gi,'Início do projeto',gi<=Math.floor(EEM_TODAY)?'done':'pend']];
   cvNewMarcos.forEach(m=>{const mm=Math.max(gi,Math.min(gf,m.m));marcos.push([mm,m.t,mm<=Math.floor(EEM_TODAY)?'done':'pend']);});
   marcos.push([gf,'Encerramento','pend']);
@@ -4109,7 +4168,7 @@ const HELP=[
 <p>O status de cada fase é <b>calculado pelo sistema</b> a partir do step atual, do avanço real × plano e dos remanejamentos. Cada fase mostra a <b>data</b> (mês de início, janela de execução e o encerramento previsto) e a fase atual fica marcada com <b>“você está aqui”</b>, ficando vermelha quando o projeto está atrasado.</p>
 <h5>Saúde do projeto</h5>
 <p>Inclui o <b>OTIF do projeto</b> (On Time In Full): o percentual dos marcos já vencidos que foram entregues na data planejada e completos. O indicador geral da fábrica fica no Painel; no cockpit é o de cada projeto.</p>
-<ul><li><b>Status</b>, on track / off track / adiantado;</li><li><b>Documentos</b>, inseridos vs exigidos pelo tipo;</li><li><b>Financeiro</b>, executado vs aprovado (nos projetos <b>sem CAPEX</b> vira <b>Saving estimado</b>);</li><li><b>Próximo marco</b>, a entrega que vem aí (com aviso se atrasada).</li></ul>
+<ul><li><b>Status</b>, on track / off track / adiantado;</li><li><b>Documentos</b>, inseridos vs exigidos pelo tipo;</li><li><b>Financeiro / Saving</b>, executado vs aprovado; nos projetos <b>sem CAPEX</b> vira o <b>Saving anual estimado</b>. Projetos <b>com CAPEX</b> também têm saving: informe pelo botão <b>Saving</b> no cabeçalho do projeto (valor anual, com previsão de início; a alteração fica auditada);</li><li><b>Próximo marco</b>, a entrega que vem aí (com aviso se atrasada).</li></ul>
 <h5>Cronograma do projeto</h5>
 <p>Os <b>marcos no calendário</b> do ano, cada losango na cor do status, com a <b>linha vermelha de hoje</b>. Quando um prazo é empurrado além da linha de base, o trecho extra aparece <b>hachurado em vermelho</b>. É o cronograma visual que a Maria pediu na visão gerencial.</p>
 <h5>Histórico por marco</h5>
