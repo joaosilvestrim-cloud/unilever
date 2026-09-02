@@ -875,7 +875,7 @@
         <div class="stat card"><div class="glow" style="background:var(--ok)"></div><div class="k">Conformidade Docs</div><div class="v">87%</div><div class="d">187 de 214</div></div>
         <div class="stat card"><div class="glow" style="background:var(--warn)"></div><div class="k">Riscos Abertos</div><div class="v">7</div><div class="d">2 críticos</div></div>
       </div>
-      <div class="panel-head"><div><div class="section-title">Projetos em andamento</div><div class="muted">Classificados (A–E) · clique para abrir os steps e a documentação</div></div><button class="btn perm-w" onclick="openWizard()">+ Cadastrar Projeto</button></div>
+      <div class="panel-head"><div><div class="section-title">Projetos em andamento</div><div class="muted">Classificados (A–E) · clique para abrir os steps e a documentação · cadastre pelo botão na tela Steps & Documentos</div></div></div>
       <div class="proj-grid" id="projGrid"></div>
     </section>
 
@@ -1779,16 +1779,14 @@
         <div class="section-title" style="font-size:13.5px">OTIF de entregas <span class="muted" style="font-weight:500;font-size:11px">· On Time In Full: marcos entregues na data planejada e completos (sem remanejamento), sobre os que já venceram</span></div>
         <div id="chOtif" style="margin-top:12px"></div>
       </div>
-      <div class="lc-grid">
-        <div class="card" style="padding:16px 20px">
-          <div class="section-title" style="font-size:13.5px">Com CAPEX × sem CAPEX</div>
-          <div id="chCapex" style="margin-top:12px"></div>
-        </div>
-        <div class="card" style="padding:16px 20px">
-          <div class="section-title" style="font-size:13.5px">Saving da fábrica <span class="muted" style="font-weight:500;font-size:11px">· com CAPEX (via PSR) × sem CAPEX (100% saving)</span></div>
-          <div id="chSavFilter" style="display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 4px"></div>
-          <div id="chSav" style="margin-top:8px"></div>
-        </div>
+      <div class="card" style="padding:16px 20px">
+        <div class="section-title" style="font-size:13.5px">Com CAPEX × sem CAPEX <span class="muted" style="font-weight:500;font-size:11px">· quantos projetos e quanto de investimento</span></div>
+        <div id="chCapex" style="margin-top:12px"></div>
+      </div>
+      <div class="card" style="padding:16px 20px;margin-top:14px">
+        <div class="section-title" style="font-size:13.5px">Saving da fábrica <span class="muted" style="font-weight:500;font-size:11px">· com CAPEX (via PSR) × sem CAPEX (100% saving)</span></div>
+        <div id="chSavFilter" style="display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 6px"></div>
+        <div id="chSav" style="margin-top:6px"></div>
       </div>
       <div class="card" style="padding:16px 20px;margin-top:14px">
         <div class="section-title" style="font-size:13.5px">Fases e áreas <span class="muted" style="font-weight:500;font-size:11px">· clique para abrir a Gestão de Projetos já filtrada</span></div>
@@ -3409,16 +3407,15 @@ function cvHomeSavChips(capex,semc){
   });
 }
 function cvHomeSavRender(capex,semc){
-  const f=cvHomeSavFilter;let html='';
-  if(f==='semc'||f==='all'){
-    html+='<div class="dra-lbl" style="margin-top:2px;text-transform:none;letter-spacing:0;font-size:11px;color:var(--ink-faint)">Sem CAPEX · por tipo de saving (100% saving)</div>';
-    html+=CV_SAVTYPES.map(function(t){const ps=semc.filter(p=>p.savType===t.n);return '<div style="cursor:pointer" title="Filtrar por '+t.n+' na Gestão de Projetos" onclick="cvHomeSav(\''+t.n+'\')">'+chBar(t.n+(t.npp?' · NPP':''),ps.length,semc.length,'var(--brand-2)',eur(ps.reduce((a,p)=>a+(p.sav||0),0)))+'</div>';}).join('')||'<div class="muted" style="font-size:12px">Nenhum tipo cadastrado.</div>';
-  }
-  if(f==='capex'||f==='all'){
-    const cw=capex.filter(p=>(p.sav||0)>0),savCapex=cw.reduce((a,p)=>a+(p.sav||0),0);
-    html+='<div class="dra-lbl" style="margin-top:'+(f==='all'?'14px':'2px')+';text-transform:none;letter-spacing:0;font-size:11px;color:var(--ink-faint)">Com CAPEX · projetos (via PSR) que têm saving</div>';
-    html+=cw.length?cw.map(function(p){return '<div style="cursor:pointer" title="Abrir o projeto" onclick="cvOpen(\''+p.id+'\')">'+chBar(p.name,p.sav,savCapex||1,'var(--brand)',eur(p.sav)+'/ano')+'</div>';}).join(''):'<div class="muted" style="font-size:12px">Nenhum projeto com CAPEX tem saving lançado.</div>';
-  }
+  const f=cvHomeSavFilter;
+  const semcHtml='<div class="dra-lbl" style="margin-top:2px;text-transform:none;letter-spacing:0;font-size:11px;color:var(--ink-faint)">Sem CAPEX · por tipo de saving (100% saving)</div>'+
+    (CV_SAVTYPES.map(function(t){var ps=semc.filter(p=>p.savType===t.n);return '<div style="cursor:pointer" title="Filtrar por '+t.n+' na Gestão de Projetos" onclick="cvHomeSav(\''+t.n+'\')">'+chBar(t.n+(t.npp?' · NPP':''),ps.length,semc.length,'var(--brand-2)',eur(ps.reduce((a,p)=>a+(p.sav||0),0)))+'</div>';}).join('')||'<div class="muted" style="font-size:12px">Nenhum tipo cadastrado.</div>');
+  var cw=capex.filter(p=>(p.sav||0)>0);var maxS=cw.reduce((m,p)=>Math.max(m,p.sav||0),1);
+  var capHtml='<div class="dra-lbl" style="margin-top:2px;text-transform:none;letter-spacing:0;font-size:11px;color:var(--ink-faint)">Com CAPEX · projetos (via PSR) que têm saving</div>'+
+    (cw.length?cw.map(function(p){var pct=Math.round((p.sav||0)/maxS*100);return '<div onclick="cvOpen(\''+p.id+'\')" title="Abrir o projeto" style="cursor:pointer;padding:7px 0;border-bottom:1px dashed var(--line)"><div style="display:flex;justify-content:space-between;gap:10px;font-size:12.5px;align-items:baseline"><b>'+p.name+'</b><span style="color:var(--brand);font-weight:700;white-space:nowrap">'+eur(p.sav)+'/ano</span></div><div style="height:6px;border-radius:4px;background:var(--surface-2);margin-top:5px;overflow:hidden"><i style="display:block;height:100%;width:'+pct+'%;background:var(--brand)"></i></div></div>';}).join(''):'<div class="muted" style="font-size:12px">Nenhum projeto com CAPEX tem saving lançado.</div>');
+  var html;
+  if(f==='all')html='<div class="sav-2col" style="display:grid;grid-template-columns:1fr 1fr;gap:22px">'+'<div>'+semcHtml+'</div><div>'+capHtml+'</div></div>';
+  else if(f==='semc')html=semcHtml;else html=capHtml;
   document.getElementById('chSav').innerHTML=html;
 }
 function buildCvHome(){
