@@ -854,7 +854,7 @@
       <div class="spacer"></div>
       <button class="tour-btn" onclick="startTour()" title="Conheça cada função da plataforma"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/></svg>Tour guiado</button>
       <button class="tour-btn" onclick="openHelp()" title="Manual de utilização do sistema"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.8 2.1c-.8.5-1.3 1-1.3 1.9"/><circle cx="12" cy="17" r=".6" fill="currentColor"/></svg>Ajuda</button>
-      <select class="role-sel" id="roleSel" onchange="applyRole(this.value)"><option>Gerente de Projeto</option><option>Auditor</option><option>Admin</option></select>
+      <select class="role-sel" id="roleSel" onchange="applyRole(this.value)"><option>Gerente de Projeto</option><option>Visualizador</option><option>Auditor</option><option>Admin</option></select>
       <div class="search"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4-4"/></svg><input id="topSearch" placeholder="Buscar projeto, OI, líder..." autocomplete="off"><div id="searchDrop"></div></div>
       <div class="avatar" onclick="toggleUserMenu(event)">AL</div>
       <div id="userMenu">
@@ -1785,8 +1785,9 @@
           <div id="chCapex" style="margin-top:12px"></div>
         </div>
         <div class="card" style="padding:16px 20px">
-          <div class="section-title" style="font-size:13.5px">Sem CAPEX por tipo de saving</div>
-          <div id="chSav" style="margin-top:12px"></div>
+          <div class="section-title" style="font-size:13.5px">Saving da fábrica <span class="muted" style="font-weight:500;font-size:11px">· com CAPEX (via PSR) × sem CAPEX (100% saving)</span></div>
+          <div id="chSavFilter" style="display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 4px"></div>
+          <div id="chSav" style="margin-top:8px"></div>
         </div>
       </div>
       <div class="card" style="padding:16px 20px;margin-top:14px">
@@ -1909,10 +1910,16 @@
 
     <!-- TEAM -->
     <section class="view hidden" id="view-team">
-      <div class="panel-head"><div><div class="section-title">Equipe & Papéis</div><div class="muted">Controle de acesso baseado em papéis (RBAC)</div></div><button class="btn perm-w" onclick="openInvite()">+ Convidar usuário</button></div>
-      <div class="card" style="overflow:hidden;margin-bottom:18px"><table class="tbl"><thead><tr><th>Usuário</th><th>Papel</th><th>Projetos</th><th>Status</th></tr></thead><tbody id="teamBody"></tbody></table></div>
+      <div class="panel-head"><div><div class="section-title">Equipe & Papéis</div><div class="muted">Controle de acesso por perfil (RBAC) · o líder edita só o próprio projeto; os demais visualizam</div></div><button class="btn perm-w" onclick="openInvite()">+ Convidar usuário</button></div>
+      <div class="lc-grid" style="margin-bottom:18px">
+        <div class="card" style="padding:14px 16px;border-top:3px solid var(--brand)"><div style="font-weight:700;font-size:13px">Administrador</div><div class="muted" style="font-size:11.5px;margin-top:4px">Faz tudo: cria e edita qualquer projeto, configura catálogos e gerencia usuários e perfis.</div></div>
+        <div class="card" style="padding:14px 16px;border-top:3px solid var(--brand-2)"><div style="font-weight:700;font-size:13px">Gerente de Projeto (líder)</div><div class="muted" style="font-size:11.5px;margin-top:4px">Cria e edita <b>apenas os projetos em que é líder</b> (marcos, atividades, documentos). Visualiza os demais.</div></div>
+        <div class="card" style="padding:14px 16px;border-top:3px solid var(--ink-soft)"><div style="font-weight:700;font-size:13px">Visualizador</div><div class="muted" style="font-size:11.5px;margin-top:4px">Somente leitura. Vê os projetos e os painéis, sem editar. Para acompanhamento gerencial.</div></div>
+      </div>
+      <div class="card" style="overflow:hidden;margin-bottom:8px"><table class="tbl"><thead><tr><th>Usuário</th><th>Perfil de acesso</th><th>Projetos</th><th>Status</th><th style="text-align:right">Ações</th></tr></thead><tbody id="teamBody"></tbody></table></div>
+      <div class="muted" style="font-size:11.5px;margin:0 0 18px">Usuários são criados conforme a demanda da fábrica (cerca de 80 pessoas, a maioria só líder do próprio projeto). Quem sai é <b>desativado</b>, não excluído, preservando o histórico.</div>
       <div class="panel-head"><div class="section-title">Matriz de Permissões</div></div>
-      <div class="card" style="overflow:hidden"><table class="tbl"><thead><tr><th>Ação</th><th style="text-align:center">Admin</th><th style="text-align:center">Gerente</th><th style="text-align:center">Auditor</th></tr></thead><tbody id="permBody"></tbody></table></div>
+      <div class="card" style="overflow:hidden"><table class="tbl"><thead><tr><th>Ação</th><th style="text-align:center">Admin</th><th style="text-align:center">Gerente / Líder</th><th style="text-align:center">Visualizador</th></tr></thead><tbody id="permBody"></tbody></table></div>
     </section>
   </main>
 </div>
@@ -2163,7 +2170,7 @@
     <div class="im-b">
       <div><label>Nome completo</label><input id="inv_name" placeholder="ex.: Paula Nogueira"></div>
       <div><label>E-mail corporativo</label><input id="inv_mail" placeholder="nome.sobrenome@unilever.com"></div>
-      <div><label>Papel (RBAC)</label><select id="inv_role"><option>Gerente de Projeto</option><option>Auditor</option><option>Admin</option></select></div>
+      <div><label>Papel (RBAC)</label><select id="inv_role"><option>Gerente de Projeto</option><option>Visualizador</option><option>Administrador</option></select></div>
     </div>
     <div class="wz-foot"><button class="btn ghost sm" onclick="closeInvite()">Cancelar</button><button class="btn sm" onclick="sendInvite()">Enviar convite</button></div>
   </div>
@@ -3067,16 +3074,21 @@ document.getElementById('integGrid').innerHTML=INTEG.map((g,i)=>`<div class="car
 
 /* ============ TEAM ============ */
 const TEAM=[
-  {n:"Alan Silva",in:"AL",role:"Admin",pj:"Todos",ok:true},
+  {n:"Alan Silva",in:"AL",role:"Administrador",pj:"Todos",ok:true},
   {n:"Thiago Almeida",in:"TA",role:"Gerente de Projeto",pj:"3 projetos",ok:true},
   {n:"Adriana Costa",in:"AC",role:"Gerente de Projeto",pj:"2 projetos",ok:true},
-  {n:"Reginaldo Lima",in:"RL",role:"Auditor",pj:"Leitura total",ok:true},
+  {n:"Reginaldo Lima",in:"RL",role:"Visualizador",pj:"Leitura total",ok:true},
   {n:"Jean Pereira",in:"JP",role:"Gerente de Projeto",pj:"1 projeto",ok:false}
 ];
-function renderTeam(){document.getElementById('teamBody').innerHTML=TEAM.map(u=>`<tr><td><span class="uav">${u.in}</span>${u.n}</td>
+function teamRoleEq(a,b){return a===b||(a==='Admin'&&b==='Administrador')||(a==='Auditor'&&b==='Visualizador');}
+function renderTeam(){document.getElementById('teamBody').innerHTML=TEAM.map((u,i)=>`<tr${u.inactive?' style="opacity:.55"':''}><td><span class="uav">${u.in}</span>${u.n}</td>
   <td><span class="pill" style="background:var(--brand-soft);color:var(--brand)">${u.role}</span></td><td class="muted">${u.pj}</td>
-  <td><span class="pill" style="background:${u.ok?'#e3f6ec':'#fdf2e1'};color:${u.ok?'var(--ok)':'var(--warn)'}">${u.ok?'Ativo':'Pendente'}</span></td></tr>`).join('');}
+  <td><span class="pill" style="background:${u.inactive?'#f0f1f3':(u.ok?'#e3f6ec':'#fdf2e1')};color:${u.inactive?'var(--ink-faint)':(u.ok?'var(--ok)':'var(--warn)')}">${u.inactive?'Inativo':(u.ok?'Ativo':'Pendente')}</span></td>
+  <td style="text-align:right;white-space:nowrap"><select class="role-sel perm-w" style="font-size:11.5px;padding:3px 6px;margin-right:6px" onchange="teamRole(${i},this.value)">${['Administrador','Gerente de Projeto','Visualizador'].map(r=>`<option${teamRoleEq(u.role,r)?' selected':''}>${r}</option>`).join('')}</select><button class="btn ghost sm perm-w" onclick="teamToggle(${i})">${u.inactive?'Reativar':'Desativar'}</button></td></tr>`).join('');}
+function teamRole(i,v){TEAM[i].role=v;renderTeam();toast('Perfil de '+TEAM[i].n+' alterado para '+v+'.');}
+function teamToggle(i){TEAM[i].inactive=!TEAM[i].inactive;TEAM[i].ok=!TEAM[i].inactive;renderTeam();toast(TEAM[i].n+(TEAM[i].inactive?' desativado. Histórico preservado, sem exclusão.':' reativado.'));}
 renderTeam();
+
 const PERMS=[["Criar / editar projeto",1,1,0],["Classificar projeto",1,1,0],["Configurar catálogo de documentos",1,0,0],["Gerar / inserir documentos",1,1,0],["Aprovar documentos",1,1,0],["Editar dados financeiros (SAP)",1,0,0],["Gerenciar usuários e papéis",1,0,0],["Exportar auditoria",1,1,1],["M3 · Criar projeto sem CAPEX (vira o líder)",1,1,0],["M3 · Editar marcos e atividades (só o líder, no seu projeto)",1,1,0],["M3 · Visualizar todos os projetos (gerencial)",1,1,1],["M3 · Configurar categorias e tipos de saving",1,0,0]];
 document.getElementById('permBody').innerHTML=PERMS.map(p=>`<tr><td style="font-weight:600">${p[0]}</td>
   <td style="text-align:center" class="${p[1]?'perm-yes':'perm-no'}">${p[1]?'✓':', '}</td>
@@ -3383,6 +3395,32 @@ function otifStats(list){
   const tot=onTime+resch+late;
   return {onTime,resch,late,tot,pct:tot?Math.round(onTime/tot*100):0};
 }
+let cvHomeSavFilter='all';
+function cvHomeSavSet(f){cvHomeSavFilter=f;const all=eemAll();const capex=all.filter(p=>!p.simple),semc=all.filter(p=>p.simple);cvHomeSavChips(capex,semc);cvHomeSavRender(capex,semc);}
+function cvHomeSavChips(capex,semc){
+  const el=document.getElementById('chSavFilter');if(!el)return;
+  const savCapex=capex.reduce((a,p)=>a+(p.sav||0),0),savT=semc.reduce((a,p)=>a+(p.sav||0),0);
+  const cw=capex.filter(p=>(p.sav||0)>0).length;
+  el.innerHTML='';
+  [['all','Todos',savCapex+savT,cw+semc.length],['capex','Com CAPEX',savCapex,cw],['semc','Sem CAPEX',savT,semc.length]].forEach(function(r){
+    const b=document.createElement('button');b.type='button';b.className='cvtk-chip'+(cvHomeSavFilter===r[0]?' on':'');
+    b.innerHTML=r[1]+' · '+eur(r[2])+' <span style="opacity:.6">('+r[3]+')</span>';
+    b.onclick=function(){cvHomeSavSet(r[0]);};el.appendChild(b);
+  });
+}
+function cvHomeSavRender(capex,semc){
+  const f=cvHomeSavFilter;let html='';
+  if(f==='semc'||f==='all'){
+    html+='<div class="dra-lbl" style="margin-top:2px;text-transform:none;letter-spacing:0;font-size:11px;color:var(--ink-faint)">Sem CAPEX · por tipo de saving (100% saving)</div>';
+    html+=CV_SAVTYPES.map(function(t){const ps=semc.filter(p=>p.savType===t.n);return '<div style="cursor:pointer" title="Filtrar por '+t.n+' na Gestão de Projetos" onclick="cvHomeSav(\''+t.n+'\')">'+chBar(t.n+(t.npp?' · NPP':''),ps.length,semc.length,'var(--brand-2)',eur(ps.reduce((a,p)=>a+(p.sav||0),0)))+'</div>';}).join('')||'<div class="muted" style="font-size:12px">Nenhum tipo cadastrado.</div>';
+  }
+  if(f==='capex'||f==='all'){
+    const cw=capex.filter(p=>(p.sav||0)>0),savCapex=cw.reduce((a,p)=>a+(p.sav||0),0);
+    html+='<div class="dra-lbl" style="margin-top:'+(f==='all'?'14px':'2px')+';text-transform:none;letter-spacing:0;font-size:11px;color:var(--ink-faint)">Com CAPEX · projetos (via PSR) que têm saving</div>';
+    html+=cw.length?cw.map(function(p){return '<div style="cursor:pointer" title="Abrir o projeto" onclick="cvOpen(\''+p.id+'\')">'+chBar(p.name,p.sav,savCapex||1,'var(--brand)',eur(p.sav)+'/ano')+'</div>';}).join(''):'<div class="muted" style="font-size:12px">Nenhum projeto com CAPEX tem saving lançado.</div>';
+  }
+  document.getElementById('chSav').innerHTML=html;
+}
 function buildCvHome(){
   const all=eemAll();
   const off=all.filter(p=>eemStatus(p).label==='Off track');
@@ -3439,10 +3477,8 @@ function buildCvHome(){
   document.getElementById('chCapex').innerHTML=
     chBar('Com CAPEX · via PSR',capex.length,all.length,'var(--brand)',eur(capT)+' aprovados'+(savCapex?' · '+eur(savCapex)+' de saving':''))+
     chBar('Sem CAPEX · manual',semc.length,all.length,'var(--warn)',eur(savT)+' de saving estimado');
-  document.getElementById('chSav').innerHTML=CV_SAVTYPES.map(t=>{
-    const ps=semc.filter(p=>p.savType===t.n);
-    return '<div style="cursor:pointer" title="Filtrar por '+t.n+' na Gestão de Projetos" onclick="cvHomeSav(\''+t.n+'\')">'+chBar(t.n+(t.npp?' · NPP':''),ps.length,semc.length,'var(--brand-2)',eur(ps.reduce((a,p)=>a+(p.sav||0),0)))+'</div>';
-  }).join('')||'<div class="muted" style="font-size:12px">Nenhum tipo cadastrado.</div>';
+  cvHomeSavChips(capex,semc);
+  cvHomeSavRender(capex,semc);
   document.getElementById('chFases').innerHTML=CV_FASES.map(f=>{
     const n=all.filter(p=>(p.fase||'Em andamento')===f).length;
     return '<button type="button" class="cvtk-chip'+(n?' on':'')+'" onclick="cvHomeFase(\''+f+'\')">'+f+' · '+n+'</button>';
@@ -4197,16 +4233,16 @@ function sendInvite(){
   const mail=document.getElementById('inv_mail').value.trim();
   const role=document.getElementById('inv_role').value;
   const ins=n.split(/\s+/).map(w=>w[0]).join('').replace(/\W/g,'').slice(0,2).toUpperCase()||'NU';
-  TEAM.push({n,in:ins,role,pj:role==='Auditor'?'Leitura total':'0 projetos',ok:false});
+  TEAM.push({n,in:ins,role,pj:(role==='Auditor'||role==='Visualizador')?'Leitura total':'0 projetos',ok:false});
   renderTeam();closeInvite();
   toast('Convite enviado'+(mail?' para '+mail:'')+' · papel: '+role);
   document.getElementById('inv_name').value='';document.getElementById('inv_mail').value='';
 }
 /* Simulação de perfil (RBAC): Auditor = somente leitura */
 function applyRole(v){
-  const aud=v.includes('Auditor');
+  const aud=v.includes('Auditor')||v.includes('Visualizador');
   document.body.classList.toggle('role-aud',aud);
-  if(aud)toast('Perfil Auditor ativado: modo somente leitura, ações de criação/edição ocultas.');
+  if(aud)toast('Perfil somente leitura ('+v+') ativado: ações de criação/edição ocultas.');
   else if(v.includes('Admin'))toast('Perfil Admin: acesso total, incluindo configurações do sistema.');
   else toast('Perfil Gerente de Projeto: gestão de projetos, documentos e cronogramas.');
 }
