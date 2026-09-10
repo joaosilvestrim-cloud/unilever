@@ -1853,8 +1853,9 @@
       <div class="card" style="padding:16px 20px;margin-bottom:14px">
         <div class="section-title" style="font-size:14.5px">Marcos do projeto <span class="muted" id="cvMarcoHint" style="font-weight:500;font-size:11.5px"></span></div>
         <div class="pm-marcos" id="cvpMarcos" style="margin-top:12px"></div>
-        <div style="margin:6px 0 2px" id="cvNmBtnWrap"><button class="btn ghost sm perm-w" onclick="cvMarcoAdd()">+ Novo marco</button> <span class="muted" style="font-size:11px">· início e encerramento são obrigatórios</span></div>
+        <div style="margin:6px 0 2px" id="cvNmBtnWrap"><button class="btn ghost sm perm-w" onclick="cvMarcoAdd()">+ Novo marco</button> <span class="muted" style="font-size:11px">· nos projetos sem CAPEX os 7 marcos obrigatórios já entram no cadastro; aqui você adiciona marcos extras</span></div>
       </div>
+      <div id="cvpMoc"></div>
       <div class="card" style="overflow:hidden">
         <div class="docs-head"><div><div class="st">Gestão de atividades</div><div class="muted">Prazos, status, descrição e atualizações · somente o líder do projeto edita, os demais visualizam · clique na linha para abrir o detalhe. As <b>ações do MOC</b> (gestão de mudanças) entram aqui automaticamente, com a tag de origem.</div></div><button class="btn sm perm-w" onclick="cvTaskModal()">+ Nova atividade</button></div>
         <div id="cvOrigChips" style="display:flex;gap:6px;flex-wrap:wrap;margin:2px 0 10px"></div>
@@ -2076,10 +2077,12 @@
         <div><label class="dra-lbl">Início</label><select id="cv_ini" class="role-sel" style="width:100%"></select></div>
         <div><label class="dra-lbl">Fim</label><select id="cv_fim" class="role-sel" style="width:100%"></select></div>
       </div>
-      <div style="grid-column:span 2"><label class="dra-lbl">Marcos do projeto (configuráveis pelo líder)</label>
+      <div style="grid-column:span 2"><label class="dra-lbl">Marcos do projeto</label>
+        <div class="muted" style="font-size:11.5px;margin:2px 0 8px">Os <b>7 marcos obrigatórios</b> dos projetos sem CAPEX entram automaticamente, distribuídos no período: Início, Validação de conceito, Gestão de mudança, Instalação, Comissionamento, Aceite, Encerramento.</div>
+        <label class="dra-lbl" style="font-size:10px">Marcos extras (opcional)</label>
         <div class="reprow" style="margin-top:4px">
           <select id="cvm_m" class="role-sel" style="flex:0 0 110px"></select>
-          <input type="text" id="cvm_t" class="role-sel" style="flex:1;min-width:160px" placeholder="Título do marco (ex.: Go-live, Comissionamento)">
+          <input type="text" id="cvm_t" class="role-sel" style="flex:1;min-width:160px" placeholder="Título de um marco extra (opcional)">
           <button class="btn ghost sm" onclick="cvNmAdd()">+ Adicionar</button>
         </div>
         <div id="cvNmList" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px"></div>
@@ -2400,7 +2403,8 @@ function psrActsRender(p){
   const rows=ts.map((t,i)=>{
     const late=cvIsLate(t);
     const _o=origInfo(t.area);const areaCls='background:'+_o.bg+';color:'+_o.fg;
-    const stSel='<select class="cvp-status" onchange="psrActStatus('+i+',this.value)">'+
+    const _isMoc=t.area==='MOC';const _stTxt={pend:'Planejada',now:'Em andamento',done:'Concluída'}[t.st];
+    const stSel=_isMoc?'<span class="cvp-chip" style="background:#d7efe9;color:#0f766e" title="Ação do MOC, editável só na plataforma do MOC">🔒 '+_stTxt+'</span>':'<select class="cvp-status" onchange="psrActStatus('+i+',this.value)">'+
       '<option value="pend"'+(t.st==='pend'?' selected':'')+'>Planejada</option>'+
       '<option value="now"'+(t.st==='now'?' selected':'')+'>Em andamento</option>'+
       '<option value="done"'+(t.st==='done'?' selected':'')+'>Concluída</option></select>';
@@ -2409,7 +2413,7 @@ function psrActsRender(p){
       '<td class="muted">'+(t.marco!=null&&pl.marcos[t.marco]?pl.marcos[t.marco][1]:'—')+'</td>'+
       '<td style="'+(late?'color:var(--danger);font-weight:700':'')+'">'+cvFmt(t.due)+(late?' <span class="cvp-chip cvp-late">Atrasada</span>':'')+'</td>'+
       '<td>'+stSel+'</td>'+
-      '<td style="text-align:right"><a class="perm-w" style="cursor:pointer;color:var(--danger);font-weight:800" title="Remover" onclick="psrActDel('+i+')">✕</a></td></tr>';
+      '<td style="text-align:right">'+(_isMoc?'<span class="muted" style="font-size:10px" title="Ação do MOC, gerida no MOC">MOC</span>':'<a class="perm-w" style="cursor:pointer;color:var(--danger);font-weight:800" title="Remover" onclick="psrActDel('+i+')">✕</a>')+'</td></tr>';
   }).join('')||'<tr><td colspan="6" class="muted" style="padding:14px">Nenhuma atividade ainda. Adicione a primeira acima.</td></tr>';
   host.innerHTML=
     '<div class="docs-head" style="margin-bottom:2px"><div><div class="st">Gestão de atividades do projeto <span class="muted" style="font-weight:500;font-size:11px">· cronograma de execução, separado da documentação</span></div></div></div>'+
@@ -3320,6 +3324,8 @@ let CV_CATS=['Digitalização','Automação','Melhoria de processo','Qualidade']
 let CV_SAVTYPES=[{n:'Hard Saving',npp:true},{n:'Cost Avoidance',npp:false},{n:'Virtual Saving',npp:false}];
 const CV_CRG=[{g:'CRG 21',items:['Raw Material Waste CRG 21']},{g:'CRG 22',items:['Pack Material Waste CRG 22']},{g:'CRG 25',items:['Labor CRG 25','Other Production Cost CRG 25','R&M CRG 25','Utility CRG 25']}];
 const CV_FASES=['Ideia','Estudo de viabilidade','Em andamento','Pausado','Cancelado'];
+const CV_MARCOS_OBRIG=['Início','Validação de conceito','Gestão de mudança','Instalação','Comissionamento','Aceite','Encerramento'];
+const CV_MOC_FASES=[{t:'Início'},{t:'Avaliação de impacto'},{t:'Aprovações'},{t:'Pre Start up Review',opt:true},{t:'Pós Start up Review',opt:true},{t:'Close'}];
 CV_PROJECTS.push({id:'CV3',simple:true,type:'S',name:'Padronização de Etiquetas do Almoxarifado',loc:'Pouso Alegre · Digitalização · Sem CAPEX',cur:1,budP:0,budA:0,com:0,sav:15000,savType:'Cost Avoidance',fase:'Ideia',schP:0,lead:'Thiago Benati',oi:'—',gs:9,gsp:3});
 CV_PROJECTS[2]._plan={rep:null,marcos:[[9,'Início do projeto','pend'],[11,'Encerramento','pend']],acts:[]};CV_PROJECTS[2]._tasks=[];
 CV_PROJECTS.push({id:'CV4',simple:true,type:'S',name:'Automação do Controle de Ponto do Turno',loc:'Pouso Alegre · Automação · Sem CAPEX',cur:1,budP:0,budA:0,com:0,sav:45000,savType:'Hard Saving',npp:'NPP-1980',crg:'Labor CRG 25',desc:'Registro eletrônico de ponto do turno, eliminando o controle manual.',fase:'Em andamento',schP:100,lead:'Gisela Fagnani',oi:'—',gs:1,gsp:4});
@@ -3525,7 +3531,7 @@ let cvProj=null,cvOpenTask=-1,cvNewMarcos=[];
 const cvToday='2026-07-20';
 function cvNmAdd(){const t=(document.getElementById('cvm_t').value||'').trim();if(!t){toast('Dê um título ao marco.');return;}cvNewMarcos.push({m:parseInt(document.getElementById('cvm_m').value),t});document.getElementById('cvm_t').value='';cvNmRender();}
 function cvNmDel(i){cvNewMarcos.splice(i,1);cvNmRender();}
-function cvNmRender(){const el=document.getElementById('cvNmList');if(!el)return;el.innerHTML=cvNewMarcos.length?cvNewMarcos.map((m,i)=>`<span class="nm-chip">${MESES[m.m]} · ${m.t}<i onclick="cvNmDel(${i})">✕</i></span>`).join(''):'<span class="muted" style="font-size:11px">Nenhum marco do meio ainda; Início e Encerramento entram automaticamente.</span>';}
+function cvNmRender(){const el=document.getElementById('cvNmList');if(!el)return;el.innerHTML=cvNewMarcos.length?cvNewMarcos.map((m,i)=>`<span class="nm-chip">${MESES[m.m]} · ${m.t}<i onclick="cvNmDel(${i})">✕</i></span>`).join(''):'<span class="muted" style="font-size:11px">Sem marcos extras; os 7 obrigatórios entram automaticamente.</span>';}
 function cvTasksOf(p){return p._tasks||(p._tasks=[]);}
 function cvFmt(d){return d?d.slice(8,10)+'/'+d.slice(5,7):'—';}
 function cvIsLate(t){return t.st!=='done'&&t.due&&t.due<cvToday;}
@@ -3536,6 +3542,25 @@ function cvOpen(id){const p=eemAll().find(x=>x.id===id);if(!p)return;
 function cvBack(){switchView('lifecycle');if(cvProj)buildLifecycle(cvProj.id);}
 let cvOrigFilter='all';
 function cvSetOrig(v){cvOrigFilter=v;cvRender();}
+function cvMocFases(p){
+  if(p._mocFases!==undefined)return p._mocFases;
+  const hasMoc=(p._tasks||[]).some(t=>t.area==='MOC');
+  p._mocFases=hasMoc?['done','done','done','now','pend','pend']:null;
+  return p._mocFases;
+}
+function mocGateClosed(p){const st=cvMocFases(p);return st?st[3]!=='done':false;}
+function cvMocRender(p){
+  const el=document.getElementById('cvpMoc');if(!el)return;
+  const st=cvMocFases(p);
+  if(!st){el.innerHTML='';return;}
+  const steps=CV_MOC_FASES.map(function(f,i){const s=st[i];const lbl={done:'Concluída',now:'Em andamento',pend:'Pendente'}[s];const cls={done:'done',now:'next',pend:'pend'}[s];return '<div class="pm-marco '+cls+'" style="cursor:default" title="Fase do MOC, somente leitura"><div class="dot"></div><div class="mt">'+f.t+(f.opt?' <span style="font-weight:500;color:var(--ink-faint);font-size:9px">(qd. necessário)</span>':'')+'</div><div class="ms">'+lbl+'</div></div>';}).join('');
+  const ok=st[3]==='done';
+  el.innerHTML='<div class="card" style="padding:16px 20px;margin-bottom:14px">'+
+    '<div class="section-title" style="font-size:14.5px">Fases do MOC <span class="muted" style="font-weight:500;font-size:11.5px">· gestão de mudanças, somente leitura (a edição é na plataforma do MOC)</span></div>'+
+    '<div class="pm-marcos" style="margin-top:12px">'+steps+'</div>'+
+    '<div class="cvd-rep" style="margin-top:12px;'+(ok?'background:#eef7f4;border-color:#bfe3d9':'background:#fdf2e1;border-color:#f0d9a8')+'"><b>'+(ok?'🔓 Comissionamento liberado.':'🔒 Comissionamento bloqueado.')+'</b> O marco <b>Comissionamento</b> do projeto só é liberado quando o <b>Pre Start up Review</b> estiver aprovado no MOC. '+(ok?'O Pre Start up Review está aprovado.':'O Pre Start up Review ainda não está aprovado no MOC.')+'</div>'+
+  '</div>';
+}
 function cvOrigChipsRender(ts){
   const el=document.getElementById('cvOrigChips');if(!el)return;
   const c={all:ts.length,Engenharia:0,'Ciclo de Vida':0,MOC:0};
@@ -3567,10 +3592,15 @@ function cvRender(){
     return `<div class="pm-marco ${m[2]}${p.simple?' perm-w':''}"${p.simple?` onclick="cvMarcoForm(${mi})" title="Clique para remanejar (justificativa obrigatória)"`:` title="Projeto do PSR: marcos definidos com a engenharia, somente leitura" style="cursor:default"`}><div class="dot"></div><div class="mm">${MESES[m[0]]}</div><div class="mt">${m[1]}</div><div class="ms">${lbl}</div>${mrep}</div>`;}).join('');
   document.getElementById('cvNmBtnWrap').style.display=p.simple?'':'none';
   document.getElementById('cvMarcoHint').textContent=p.simple?'· configuráveis pelo líder; clique em um marco para remanejar (justificativa obrigatória)':'· do PSR: definidos com a engenharia, somente leitura aqui';
+  cvMocRender(p);
   cvOrigChipsRender(ts);
   document.getElementById('cvpTasks').innerHTML=ts.map((t,i)=>({t,i})).filter(o=>cvOrigFilter==='all'||o.t.area===cvOrigFilter).map(({t,i})=>{
     const late=cvIsLate(t);
-    const stSel=`<select class="cvp-status" onclick="event.stopPropagation()" onchange="cvTaskStatus(${i},this.value)">
+    const _isMoc=t.area==='MOC';
+    const _stTxt={pend:'Planejada',now:'Em andamento',done:'Concluída'}[t.st];
+    const stSel=_isMoc
+      ? '<span class="cvp-chip" style="background:#d7efe9;color:#0f766e" title="Ação do MOC, editável apenas na plataforma do MOC">🔒 '+_stTxt+'</span>'+(late?' <span class="cvp-chip cvp-late">Atrasada</span>':'')
+      : `<select class="cvp-status" onclick="event.stopPropagation()" onchange="cvTaskStatus(${i},this.value)">
       <option value="pend" ${t.st==='pend'?'selected':''}>Planejada</option>
       <option value="now" ${t.st==='now'?'selected':''}>Em andamento</option>
       <option value="done" ${t.st==='done'?'selected':''}>Concluída</option></select>${late?' <span class="cvp-chip cvp-late">Atrasada</span>':''}`;
@@ -3585,7 +3615,19 @@ function cvRender(){
       <td style="text-align:right;color:var(--ink-faint)">${cvOpenTask===i?'▲':'▼'}</td></tr>`;
     if(cvOpenTask===i){
       const mtag=t.marco!=null&&pl.marcos[t.marco]?MESES[pl.marcos[t.marco][0]]+' · '+pl.marcos[t.marco][1]:'Sem marco';
-      row+=`<tr class="cvp-det"><td colspan="7">
+      if(_isMoc){
+        row+=`<tr class="cvp-det"><td colspan="7">
+        <div class="cvd-box">
+          <div class="bt">Ação do MOC (gestão de mudanças) · somente leitura</div>
+          <div class="muted" style="font-size:12.5px;margin-bottom:8px">${t.desc||'Ação gerada pela gestão de mudanças (MOC).'}</div>
+          <div class="cvd-meta"><span class="cvd-tag">🎯 ${mtag}</span><span class="cvd-tag ${late?'late':''}">📅 ${cvFmt(t.due)}${late?' · atrasada':''}</span></div>
+          <div class="cvd-rep" style="background:#eef7f4;border-color:#bfe3d9;margin-top:10px"><b>🔒 Esta ação vem do MOC.</b> O status, o prazo e as atualizações são editados na plataforma do MOC. Aqui a ação é apenas acompanhada pelo líder do projeto.</div>
+          <div class="bt" style="margin-top:14px">Atualizações do MOC <span class="cvd-count">${(t.notes||[]).length}</span></div>
+          <div class="cvd-tl">${(t.notes||[]).slice().reverse().map(n=>`<div class="cvd-note"><div class="nd">${n.d} · <b>${n.by}</b></div><div class="nx">${n.x}</div></div>`).join('')||'<div class="muted" style="font-size:12px;padding:2px 0 8px">Sem atualizações.</div>'}</div>
+        </div>
+      </td></tr>`;
+      } else {
+        row+=`<tr class="cvp-det"><td colspan="7">
         <div class="cvd-grid">
           <div class="cvd-box">
             <div class="bt">Descrição e prazo</div>
@@ -3605,7 +3647,9 @@ function cvRender(){
             <div class="cvd-row"><input type="text" id="cvNote${i}" placeholder="Registrar uma atualização (visível ao portfólio)" onclick="event.stopPropagation()" onkeydown="if(event.key==='Enter'){event.stopPropagation();cvAddNote(${i})}" style="flex:1;min-width:160px"><button class="btn sm" onclick="event.stopPropagation();cvAddNote(${i})">Registrar</button></div>
           </div>
         </div>
-      </td></tr>`;}
+      </td></tr>`;
+      }
+      }
     return row;}).join('')||'<tr><td colspan="7" class="muted" style="padding:18px">'+(cvOrigFilter==='all'?'Nenhuma atividade ainda.':'Nenhuma atividade desta origem.')+'</td></tr>';
 }
 function cvTaskToggle(i){cvOpenTask=cvOpenTask===i?-1:i;cvRender();}
@@ -3959,9 +4003,9 @@ function cvAddSave(){
     loc:document.getElementById('cv_site').value+' · '+document.getElementById('cv_cat').value+' · Sem CAPEX',
     cur:1,budP:0,budA:0,com:0,sav:(parseFloat(document.getElementById('cv_sav').value)||0)*1000,
     savType:stype,npp:npp||null,crg:(sdef&&sdef.npp)?crg:null,savStart:(document.getElementById('cv_savStart').value===''?null:parseInt(document.getElementById('cv_savStart').value)),desc:(document.getElementById('cv_desc').value||'').trim(),fase:document.getElementById('cv_fase').value,schP:0,lead,oi:'—',gs:gi,gsp:gf-gi+1};
-  const marcos=[[gi,'Início do projeto',gi<=Math.floor(EEM_TODAY)?'done':'pend']];
+  const _span=Math.max(1,gf-gi),_N=CV_MARCOS_OBRIG.length;
+  const marcos=CV_MARCOS_OBRIG.map((t,idx)=>{const mm=Math.round(gi+_span*idx/(_N-1));const mc=Math.max(gi,Math.min(gf,mm));return [mc,t,mc<=Math.floor(EEM_TODAY)?'done':'pend'];});
   cvNewMarcos.forEach(m=>{const mm=Math.max(gi,Math.min(gf,m.m));marcos.push([mm,m.t,mm<=Math.floor(EEM_TODAY)?'done':'pend']);});
-  marcos.push([gf,'Encerramento','pend']);
   marcos.sort((a,b)=>a[0]-b[0]);
   p._plan={rep:null,marcos,acts:[]};p._tasks=[];
   CV_PROJECTS.push(p);
