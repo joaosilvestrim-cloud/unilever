@@ -362,7 +362,7 @@
   #userMenu .mi:hover{background:var(--brand-soft)}
   #userMenu .mi.out{color:var(--danger);border-top:1px solid var(--line)}
   body.role-aud .perm-w{display:none!important}
-  .role-note{display:none;background:#fdf3e3;border:1px solid #f3ddb2;color:#8a5b00;font-size:12px;font-weight:600;padding:8px 14px;border-radius:10px;margin:0 32px 0}
+  .role-note{display:none;position:sticky;top:54px;z-index:25;background:#fdf3e3;border:1px solid #f3ddb2;color:#8a5b00;font-size:12.5px;font-weight:600;padding:9px 16px;border-radius:10px;margin:10px 24px 2px;box-shadow:0 8px 20px -10px rgba(138,91,0,.4)}
   body.role-aud .role-note{display:block}
 
   /* ===== Manual de Utilização (Ajuda) ===== */
@@ -865,7 +865,7 @@
         <div class="mi out" onclick="logout()">Sair da plataforma</div>
       </div>
     </div>
-    <div class="role-note" style="margin-top:14px">🛡 Modo Auditor, somente leitura: ações de criação e edição ficam ocultas. Troque o perfil no seletor acima para voltar.</div>
+    <div class="role-note">🔒 Modo somente leitura (perfil Visualizador ou Auditor). Os botões de adicionar e editar ficam ocultos de propósito. Troque o perfil no seletor do topo para Gerente ou Administrador para poder adicionar e editar.</div>
 
     <!-- DASHBOARD -->
     <section class="view" id="view-dashboard">
@@ -1604,7 +1604,7 @@
 
       <div class="card flowcard" style="border-left:4px solid var(--warn);padding:13px 16px"><div style="font-size:12.5px;color:var(--ink-soft)"><b>Fronteira dos módulos:</b> o Ciclo de Vida trata do <b>andamento gerencial</b> (fases, marcos, atividades, desvios e alertas). Os documentos e steps são do <b>Módulo 1 · PSR</b>; o dinheiro é do <b>Módulo 2 · DRA</b>. Esta página descreve apenas o Módulo 3.</div></div>
       <div class="card flowcard" style="border-left:4px solid var(--brand);padding:14px 17px">
-        <div class="section-title" style="font-size:13.5px">Revisão de escopo · calls de 03/08, 27/08 e 02/09/2026 (Maria Correa, Lucas Tex, Vânia Barbosa) e feedbacks seguintes</div>
+        <div class="section-title" style="font-size:13.5px">Revisão de escopo · calls de 03/08, 27/08, 02/09 e 10/09/2026 (Maria Correa, Lucas Tex, Vânia Barbosa, Mariana Silverio) e feedbacks seguintes</div>
         <div style="font-size:12.5px;color:var(--ink-soft);margin-top:6px;line-height:1.75">
           <b>1.</b> Nova tela inicial <b>Painel da Fábrica</b> (funde o consolidado gerencial com o Portfólio EEM): totais, concluídos e não iniciados, com CAPEX × sem CAPEX com valores, fases e áreas, entregas próximas, alertas com drill das atividades atrasadas e cronograma macro.<br>
           <b>2.</b> Projetos do PSR têm <b>marcos somente leitura</b> no módulo (definidos com a engenharia); a gestão da fábrica atua nos sem CAPEX.<br>
@@ -1616,7 +1616,10 @@
           <b>8.</b> Status de atividade permanece fixo (Planejada, Em andamento, Concluída) para preservar o padrão. Plataforma confirmada em <b>Power Apps</b>, no mesmo ambiente da engenharia.<br>
           <b>9.</b> Indicador <b>OTIF (On Time In Full)</b> pedido pela gestão: no Painel da Fábrica, o percentual de marcos entregues na data planejada e completos, com <b>meta de 90%</b>, quebra em no prazo × remanejado × atrasado e <b>ranking por projeto</b> (pior primeiro, clicável); e o <b>OTIF de cada projeto</b> na saúde do cockpit.<br>
           <b>10.</b> Dúvidas de 27/08: o <b>saving</b> passa a ser <b>anual</b> (base de um ano) com <b>mês de início</b>; os projetos <b>com CAPEX</b> também registram saving, por um botão no espaço do projeto, com <b>auditoria</b> de quem alterou e quando; o saving dos CAPEX aparece no <b>Painel da Fábrica</b>; <b>busca por OI</b> (com lista suspensa) na Gestão de Projetos; e a <b>visão macro de documentos</b> do PSR (steps feitos × pendentes) dentro do espaço do projeto.<br>
-          <b>11.</b> Integração com o <b>MOC</b> (gestão de mudanças, sistema web à parte, da Vânia): as ações geradas pelo questionário do MOC entram na <b>gestão de atividades</b> do projeto no Ciclo de Vida, com <b>tag de origem</b> (MOC × PSR/engenharia × Ciclo de Vida) e filtro por origem. O líder acompanha a execução dessas ações antes do projeto. O MOC é construído em separado e abastece o Ciclo de Vida por API; não bloqueia o desenvolvimento (call 02/09).
+          <b>11.</b> Integração com o <b>MOC</b> (gestão de mudanças, sistema web à parte, da Vânia): as ações geradas pelo questionário do MOC entram na <b>gestão de atividades</b> do projeto no Ciclo de Vida, com <b>tag de origem</b> (MOC × PSR/engenharia × Ciclo de Vida) e filtro por origem. O líder acompanha a execução dessas ações antes do projeto. O MOC é construído em separado e abastece o Ciclo de Vida por API; não bloqueia o desenvolvimento (call 02/09).<br>
+          <b>12.</b> Refinamentos de 10/09: as <b>ações do MOC são somente leitura</b> aqui (cadeado, sem editar nem excluir; a edição é só na plataforma do MOC); as <b>fases do MOC</b> (Início, Avaliação de impacto, Aprovações, Pre e Pós Start up Review, Close) aparecem acompanhadas no projeto; e um <b>gate liga as duas ferramentas</b>: o marco <b>Comissionamento</b> só é liberado quando o Pre Start up Review estiver aprovado no MOC.<br>
+          <b>13.</b> Nos <b>projetos sem CAPEX</b>, os <b>7 marcos obrigatórios</b> (Início, Validação de conceito, Gestão de mudança, Instalação, Comissionamento, Aceite, Encerramento) já aparecem no cadastro e o <b>usuário define a data de cada um</b>, montando o próprio cronograma; ainda pode adicionar marcos extras (10/09).<br>
+          <b>14.</b> <b>Perfis de acesso</b>: Administrador, Gerente de Projeto (líder, edita só o próprio projeto) e Visualizador, com <b>gestão de usuários</b> (convidar, trocar perfil, ativar e desativar); e no Painel um <b>filtro de saving</b> entre com CAPEX e sem CAPEX.
         </div>
       </div>
       <div class="esc-divider"><span class="lbl">Para o negócio</span><span class="tagx">cliente · como funciona</span><span class="ln"></span></div>
@@ -2077,8 +2080,9 @@
         <div><label class="dra-lbl">Início</label><select id="cv_ini" class="role-sel" style="width:100%"></select></div>
         <div><label class="dra-lbl">Fim</label><select id="cv_fim" class="role-sel" style="width:100%"></select></div>
       </div>
-      <div style="grid-column:span 2"><label class="dra-lbl">Marcos do projeto</label>
-        <div class="muted" style="font-size:11.5px;margin:2px 0 8px">Os <b>7 marcos obrigatórios</b> dos projetos sem CAPEX entram automaticamente, distribuídos no período: Início, Validação de conceito, Gestão de mudança, Instalação, Comissionamento, Aceite, Encerramento.</div>
+      <div style="grid-column:span 2"><label class="dra-lbl">Marcos do projeto (defina o cronograma)</label>
+        <div class="muted" style="font-size:11.5px;margin:2px 0 8px">Os <b>7 marcos obrigatórios</b> já aparecem abaixo. <b>Selecione a data (mês) de cada um</b> conforme o cronograma do seu projeto.</div>
+        <div id="cvObrigList" style="margin-bottom:12px"></div>
         <label class="dra-lbl" style="font-size:10px">Marcos extras (opcional)</label>
         <div class="reprow" style="margin-top:4px">
           <select id="cvm_m" class="role-sel" style="flex:0 0 110px"></select>
@@ -2141,6 +2145,28 @@
       <div><label class="dra-lbl">Primeira atualização (opcional)</label><input id="cvTk_note" class="role-sel" style="width:100%" placeholder="Ex.: fornecedor contatado, aguardando orçamento"><div class="muted" style="font-size:11px;margin-top:3px">Entra no histórico da atividade, visível ao portfólio.</div></div>
     </div>
     <div class="wz-foot"><button class="btn ghost sm" onclick="cvTkClose()">Cancelar</button><button class="btn sm" id="cvTkSave" onclick="cvTkSave()" disabled style="opacity:.45;cursor:not-allowed">Adicionar atividade</button></div>
+  </div>
+</div>
+
+<div id="psrActModal" class="hidden" style="position:fixed;inset:0;z-index:170;background:rgba(8,20,34,.55);backdrop-filter:blur(3px);display:grid;place-items:center;padding:24px" onclick="if(event.target===this)psrActModalClose()">
+  <div style="background:#fff;border-radius:16px;width:min(560px,95vw);max-height:92vh;overflow:auto;box-shadow:0 40px 90px -30px rgba(0,0,0,.6)">
+    <div style="padding:16px 20px;border-bottom:1px solid var(--line);display:flex;align-items:flex-start;gap:12px">
+      <div style="flex:1"><div style="font-family:Poppins;font-weight:700;font-size:15px">Nova atividade do projeto</div><div class="muted" style="font-size:12px"><span id="psrAkProj"></span> · cronograma de execução, separado da documentação</div></div>
+      <button class="btn ghost sm" onclick="psrActModalClose()" title="Fechar">✕</button>
+    </div>
+    <div style="padding:18px 20px;display:grid;gap:14px">
+      <div><label class="dra-lbl">Título da atividade *</label><input id="psrAk_t" class="role-sel" style="width:100%" placeholder="Ex.: Montagem mecânica da linha" onkeydown="if(event.key==='Enter')psrActModalSave()"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div><label class="dra-lbl">Prazo</label><input type="date" id="psrAk_due" class="role-sel" style="width:100%"></div>
+        <div><label class="dra-lbl">Marco vinculado</label><select id="psrAk_marco" class="role-sel" style="width:100%"></select></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div><label class="dra-lbl">Área / origem</label><select id="psrAk_area" class="role-sel" style="width:100%"><option>Engenharia</option><option>Ciclo de Vida</option><option value="MOC">MOC</option></select></div>
+        <div><label class="dra-lbl">Status inicial</label><select id="psrAk_st" class="role-sel" style="width:100%"><option value="pend">Planejada</option><option value="now">Em andamento</option><option value="done">Concluída</option></select></div>
+      </div>
+      <div class="muted" style="font-size:11px">A <b>área/origem</b> separa as atividades da engenharia das inseridas no Ciclo de Vida ou vindas do MOC.</div>
+    </div>
+    <div class="wz-foot"><button class="btn ghost sm" onclick="psrActModalClose()">Cancelar</button><button class="btn sm" onclick="psrActModalSave()">Adicionar atividade</button></div>
   </div>
 </div>
 
@@ -2416,16 +2442,26 @@ function psrActsRender(p){
       '<td style="text-align:right">'+(_isMoc?'<span class="muted" style="font-size:10px" title="Ação do MOC, gerida no MOC">MOC</span>':'<a class="perm-w" style="cursor:pointer;color:var(--danger);font-weight:800" title="Remover" onclick="psrActDel('+i+')">✕</a>')+'</td></tr>';
   }).join('')||'<tr><td colspan="6" class="muted" style="padding:14px">Nenhuma atividade ainda. Adicione a primeira acima.</td></tr>';
   host.innerHTML=
-    '<div class="docs-head" style="margin-bottom:2px"><div><div class="st">Gestão de atividades do projeto <span class="muted" style="font-weight:500;font-size:11px">· cronograma de execução, separado da documentação</span></div></div></div>'+
-    '<div class="cvd-row perm-w" style="gap:8px;margin:6px 0 12px;flex-wrap:wrap">'+
-      '<input type="text" id="psrA_t" placeholder="Nova atividade (ex.: Montagem mecânica da linha)" style="flex:2;min-width:200px">'+
-      '<input type="date" id="psrA_due" style="min-width:150px">'+
-      '<select id="psrA_marco" class="role-sel" style="min-width:150px">'+marcoOpts+'</select>'+
-      '<select id="psrA_area" class="role-sel" style="min-width:130px"><option>Engenharia</option><option>Ciclo de Vida</option><option value="MOC">MOC</option></select>'+
-      '<select id="psrA_st" class="role-sel" style="min-width:130px"><option value="pend">Planejada</option><option value="now">Em andamento</option><option value="done">Concluída</option></select>'+
-      '<button class="btn sm" onclick="psrActAdd()">+ Adicionar</button></div>'+
+    '<div class="docs-head" style="margin-bottom:10px"><div><div class="st">Gestão de atividades do projeto <span class="muted" style="font-weight:500;font-size:11px">· cronograma de execução, separado da documentação</span></div></div><button class="btn sm perm-w" onclick="psrActModalOpen()">+ Nova atividade</button></div>'+
     '<div class="tblwrap" style="border:0"><table class="tbl"><thead><tr><th>Atividade</th><th>Área/origem</th><th>Marco</th><th>Prazo</th><th>Status</th><th></th></tr></thead><tbody>'+rows+'</tbody></table></div>'+
     '<div class="muted" style="font-size:11px;margin-top:8px">A <b>área/origem</b> separa as atividades da engenharia (PSR) das inseridas no Ciclo de Vida. A Curva S acima usa o filtro selecionado. <b>Em validação com o cliente:</b> se a curva deve considerar todas as atividades do projeto ou só as da engenharia.</div>';
+}
+function psrActModalOpen(){
+  if(!curProj)return;const pl=planOf(curProj);
+  document.getElementById('psrAkProj').textContent=curProj.name;
+  document.getElementById('psrAk_t').value='';document.getElementById('psrAk_due').value='';
+  document.getElementById('psrAk_marco').innerHTML='<option value="">Sem marco</option>'+pl.marcos.map((m,i)=>'<option value="'+i+'">'+MESES[m[0]]+' · '+m[1]+'</option>').join('');
+  document.getElementById('psrAk_area').value='Engenharia';document.getElementById('psrAk_st').value='pend';
+  document.getElementById('psrActModal').classList.remove('hidden');
+  setTimeout(function(){document.getElementById('psrAk_t').focus();},80);
+}
+function psrActModalClose(){document.getElementById('psrActModal').classList.add('hidden');}
+function psrActModalSave(){
+  const p=curProj,t=(document.getElementById('psrAk_t').value||'').trim();
+  if(t.length<3){toast('Dê um título à atividade (mínimo 3 letras).');return;}
+  const mv=document.getElementById('psrAk_marco').value;
+  psrTasks(p).push({id:Date.now()%100000,t,due:document.getElementById('psrAk_due').value||null,st:document.getElementById('psrAk_st').value,marco:mv===''?null:+mv,area:document.getElementById('psrAk_area').value,desc:'',doc:null,notes:[],rep:null});
+  psrActModalClose();psrActsRender(p);renderCurvaS(p);toast('Atividade "'+t+'" adicionada.');
 }
 function psrActAdd(){
   const p=curProj,t=(document.getElementById('psrA_t').value||'').trim();
@@ -3941,6 +3977,7 @@ function cvAdd(){
   cvSavChange();
   const cm=document.getElementById('cvm_m');if(!cm.options.length)MESES.forEach((mn,i)=>{cm.innerHTML+='<option value="'+i+'">'+mn+' 26</option>';});cm.value='8';
   cvNewMarcos=[];cvNmRender();
+  const _ol=document.getElementById('cvObrigList');if(_ol){_ol.innerHTML=CV_MARCOS_OBRIG.map((nm,idx)=>{const dm=Math.round(6+4*idx/(CV_MARCOS_OBRIG.length-1));return '<div class="reprow" style="align-items:center;margin-bottom:5px"><span style="flex:1;font-size:12.5px"><b>'+(idx+1)+'.</b> '+nm+'</span><select id="cvob_'+idx+'" class="role-sel" style="flex:0 0 130px">'+MESES.map((m,i)=>'<option value="'+i+'"'+(i===dm?' selected':'')+'>'+m+' 26</option>').join('')+'</select></div>';}).join('');}
   document.getElementById('cvAddModal').classList.remove('hidden');
 }
 function cvSavChange(){
@@ -4003,10 +4040,10 @@ function cvAddSave(){
     loc:document.getElementById('cv_site').value+' · '+document.getElementById('cv_cat').value+' · Sem CAPEX',
     cur:1,budP:0,budA:0,com:0,sav:(parseFloat(document.getElementById('cv_sav').value)||0)*1000,
     savType:stype,npp:npp||null,crg:(sdef&&sdef.npp)?crg:null,savStart:(document.getElementById('cv_savStart').value===''?null:parseInt(document.getElementById('cv_savStart').value)),desc:(document.getElementById('cv_desc').value||'').trim(),fase:document.getElementById('cv_fase').value,schP:0,lead,oi:'—',gs:gi,gsp:gf-gi+1};
-  const _span=Math.max(1,gf-gi),_N=CV_MARCOS_OBRIG.length;
-  const marcos=CV_MARCOS_OBRIG.map((t,idx)=>{const mm=Math.round(gi+_span*idx/(_N-1));const mc=Math.max(gi,Math.min(gf,mm));return [mc,t,mc<=Math.floor(EEM_TODAY)?'done':'pend'];});
-  cvNewMarcos.forEach(m=>{const mm=Math.max(gi,Math.min(gf,m.m));marcos.push([mm,m.t,mm<=Math.floor(EEM_TODAY)?'done':'pend']);});
+  const marcos=CV_MARCOS_OBRIG.map((t,idx)=>{const el=document.getElementById('cvob_'+idx);const mm=el?parseInt(el.value):gi;return [mm,t,mm<=Math.floor(EEM_TODAY)?'done':'pend'];});
+  cvNewMarcos.forEach(m=>{marcos.push([m.m,m.t,m.m<=Math.floor(EEM_TODAY)?'done':'pend']);});
   marcos.sort((a,b)=>a[0]-b[0]);
+  const _mm=marcos.map(x=>x[0]);p.gs=Math.min.apply(null,_mm);p.gsp=Math.max.apply(null,_mm)-p.gs+1;
   p._plan={rep:null,marcos,acts:[]};p._tasks=[];
   CV_PROJECTS.push(p);
   cvAddClose();cvOpen(p.id);
