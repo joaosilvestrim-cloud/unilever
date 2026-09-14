@@ -364,6 +364,7 @@
   body.role-aud .perm-w{display:none!important}
   .role-note{display:none;position:sticky;top:54px;z-index:25;background:#fdf3e3;border:1px solid #f3ddb2;color:#8a5b00;font-size:12.5px;font-weight:600;padding:9px 16px;border-radius:10px;margin:10px 24px 2px;box-shadow:0 8px 20px -10px rgba(138,91,0,.4)}
   body.role-aud .role-note{display:block}
+  #catBody tr{transition:background .12s} #catBody tr:hover td{background:#eef4fb}
 
   /* ===== Manual de Utilização (Ajuda) ===== */
   #helpModal{position:fixed;inset:0;z-index:190;background:rgba(8,20,34,.55);backdrop-filter:blur(3px);display:grid;place-items:center;padding:22px}
@@ -2164,6 +2165,7 @@
         <div><label class="dra-lbl">Área / origem</label><select id="psrAk_area" class="role-sel" style="width:100%"><option>Engenharia</option><option>Ciclo de Vida</option><option value="MOC">MOC</option></select></div>
         <div><label class="dra-lbl">Status inicial</label><select id="psrAk_st" class="role-sel" style="width:100%"><option value="pend">Planejada</option><option value="now">Em andamento</option><option value="done">Concluída</option></select></div>
       </div>
+      <div><label class="dra-lbl">Descrição (opcional)</label><textarea id="psrAk_desc" class="role-sel" style="width:100%;min-height:64px;resize:vertical;font-family:inherit" placeholder="O que precisa acontecer para esta atividade estar pronta"></textarea></div>
       <div class="muted" style="font-size:11px">A <b>área/origem</b> separa as atividades da engenharia das inseridas no Ciclo de Vida ou vindas do MOC.</div>
     </div>
     <div class="wz-foot"><button class="btn ghost sm" onclick="psrActModalClose()">Cancelar</button><button class="btn sm" onclick="psrActModalSave()">Adicionar atividade</button></div>
@@ -2452,6 +2454,7 @@ function psrActModalOpen(){
   document.getElementById('psrAk_t').value='';document.getElementById('psrAk_due').value='';
   document.getElementById('psrAk_marco').innerHTML='<option value="">Sem marco</option>'+pl.marcos.map((m,i)=>'<option value="'+i+'">'+MESES[m[0]]+' · '+m[1]+'</option>').join('');
   document.getElementById('psrAk_area').value='Engenharia';document.getElementById('psrAk_st').value='pend';
+  document.getElementById('psrAk_desc').value='';
   document.getElementById('psrActModal').classList.remove('hidden');
   setTimeout(function(){document.getElementById('psrAk_t').focus();},80);
 }
@@ -2460,7 +2463,7 @@ function psrActModalSave(){
   const p=curProj,t=(document.getElementById('psrAk_t').value||'').trim();
   if(t.length<3){toast('Dê um título à atividade (mínimo 3 letras).');return;}
   const mv=document.getElementById('psrAk_marco').value;
-  psrTasks(p).push({id:Date.now()%100000,t,due:document.getElementById('psrAk_due').value||null,st:document.getElementById('psrAk_st').value,marco:mv===''?null:+mv,area:document.getElementById('psrAk_area').value,desc:'',doc:null,notes:[],rep:null});
+  psrTasks(p).push({id:Date.now()%100000,t,due:document.getElementById('psrAk_due').value||null,st:document.getElementById('psrAk_st').value,marco:mv===''?null:+mv,area:document.getElementById('psrAk_area').value,desc:(document.getElementById('psrAk_desc').value||'').trim(),doc:null,notes:[],rep:null});
   psrActModalClose();psrActsRender(p);renderCurvaS(p);toast('Atividade "'+t+'" adicionada.');
 }
 function psrActAdd(){
@@ -4680,13 +4683,13 @@ function renderCatalog(){
   const rows=CATALOG.filter(d=>catFilterVal==="all"||d.step==+catFilterVal).sort((a,b)=>a.step-b.step);
   document.getElementById('catBody').innerHTML=rows.map(d=>{
     const tcells=TYPE_ORDER.map(t=>`<td style="text-align:center" class="${requiredFor(d,t)?'reqd':'reqn'}">${requiredFor(d,t)?'✔':', '}</td>`).join('');
-    return `<tr>
+    return `<tr onclick="openCatForm(${d.id})" style="cursor:pointer" title="Clique para editar este documento">
       <td><span class="stp">${d.step+1}. ${STEPS[d.step].name}</span></td>
       <td style="font-weight:600">${d.name}</td>
       <td>${d.tool?`<span class="tg">${d.tool}</span>`:'<span class="muted" style="font-size:11px">, </span>'}</td>
       <td><span class="mt-badge" style="background:${TYPES[d.minType].color}">${d.minType}</span></td>
       ${tcells}
-      <td><div class="act"><button class="ib perm-w" title="Editar" onclick="openCatForm(${d.id})">✎</button><button class="ib del perm-w" title="Excluir" onclick="delCat(${d.id})">🗑</button></div></td>
+      <td><div class="act"><button class="ib perm-w" title="Editar" onclick="event.stopPropagation();openCatForm(${d.id})">✎</button><button class="ib del perm-w" title="Excluir" onclick="event.stopPropagation();delCat(${d.id})">🗑</button></div></td>
     </tr>`;}).join('');
 }
 function openCatForm(id){
