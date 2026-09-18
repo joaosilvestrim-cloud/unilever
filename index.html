@@ -947,7 +947,7 @@
         </div>
       </div>
       <div class="card" style="padding:16px 20px;margin-top:14px">
-        <div class="section-title" style="font-size:14px">Curva S do projeto <span class="muted" style="font-weight:500;font-size:11px">· avanço previsto × realizado das atividades ao longo do tempo</span></div>
+        <div class="section-title" style="font-size:14px">Curva S do projeto <span class="muted" style="font-weight:500;font-size:11px">· avanço previsto × realizado ao longo do tempo, das atividades ou da documentação</span></div>
         <div id="curvaScope" style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap"></div>
         <div id="curvaS" style="margin-top:10px"></div>
       </div>
@@ -2387,16 +2387,33 @@ function psrTasks(p){
 function psrDueM(t,p){return t.due?(parseInt(t.due.slice(5,7),10)-1):(p.gs+p.gsp-1);}
 function renderCurvaS(p){
   const el=document.getElementById('curvaS');if(!el)return;
-  const ts=psrTasks(p).filter(t=>psrCurvaScope==='eng'?t.area==='Engenharia':true);
   const today=EEM_TODAY;
   psrCurvaTabs(p);
+  let total,prev,real,done,doneLbl,mMin=p.gs,mMax=Math.min(11,p.gs+p.gsp-1);
+  if(psrCurvaScope==='docs'){
+    /* curva documental: exigidos x inseridos, steps distribuídos pela janela do projeto */
+    const reqs=STEPS.map((s,si)=>stepRequired(p,si));
+    const ins=STEPS.map((s,si)=>stepInserted(p,si));
+    total=reqs.reduce((a,b)=>a+b,0);
+    if(!total){el.innerHTML='<div class="muted" style="font-size:12.5px;padding:6px 0">Nenhum documento exigido para este tipo de projeto.</div>';return;}
+    if(mMax<=mMin)mMax=mMin+1;
+    const span=mMax-mMin;
+    const dueM=si=>Math.min(11,mMin+Math.max(1,Math.round((si+1)/7*span)));
+    prev=m=>reqs.reduce((a,r,si)=>a+(dueM(si)<=m?r:0),0)/total*100;
+    real=m=>ins.reduce((a,r,si)=>a+(dueM(si)<=m?r:0),0)/total*100;
+    done=ins.reduce((a,b)=>a+b,0);
+    doneLbl=' inseridos';
+  } else {
+  const ts=psrTasks(p).filter(t=>psrCurvaScope==='eng'?t.area==='Engenharia':true);
   if(!ts.length){el.innerHTML='<div class="muted" style="font-size:12.5px;padding:6px 0">Nenhuma atividade neste filtro. Adicione atividades abaixo para gerar a curva de avanço.</div>';return;}
-  const total=ts.length;
-  let mMin=p.gs,mMax=Math.min(11,p.gs+p.gsp-1);
+  total=ts.length;
   ts.forEach(t=>{const m=psrDueM(t,p);if(m<mMin)mMin=m;if(m>mMax)mMax=m;});
   if(mMax<=mMin)mMax=mMin+1;
-  const prev=m=>ts.filter(t=>psrDueM(t,p)<=m).length/total*100;
-  const real=m=>ts.filter(t=>t.st==='done'&&psrDueM(t,p)<=m).length/total*100;
+  prev=m=>ts.filter(t=>psrDueM(t,p)<=m).length/total*100;
+  real=m=>ts.filter(t=>t.st==='done'&&psrDueM(t,p)<=m).length/total*100;
+  done=ts.filter(t=>t.st==='done').length;
+  doneLbl=' concluídas';
+  }
   const W=640,H=220,padL=34,padB=26,padT=14,padR=12;
   const x=m=>padL+(m-mMin)/(mMax-mMin)*(W-padL-padR);
   const y=v=>H-padB-(Math.max(0,Math.min(100,v))/100)*(H-padB-padT);
@@ -2405,7 +2422,6 @@ function renderCurvaS(p){
   const tCap=Math.max(mMin,Math.min(mMax,Math.floor(today)));
   for(let m=mMin;m<=tCap;m++)realp.push(x(m)+','+y(real(m)));
   const prevToday=prev(tCap),realToday=real(tCap);
-  const done=ts.filter(t=>t.st==='done').length;
   const late=realToday<prevToday-0.5,rc=late?'#d6336c':'#1f9d57';
   let grid='';[0,25,50,75,100].forEach(g=>{grid+='<line x1="'+padL+'" y1="'+y(g)+'" x2="'+(W-padR)+'" y2="'+y(g)+'" stroke="#eef1f5"/><text x="'+(padL-4)+'" y="'+(y(g)+3)+'" text-anchor="end" font-size="8" fill="#86939f">'+g+'%</text>';});
   let ml='';for(let m=mMin;m<=mMax;m++)ml+='<text x="'+x(m)+'" y="'+(H-8)+'" text-anchor="middle" font-size="8" fill="#86939f">'+MESES[m]+'</text>';
@@ -2415,14 +2431,16 @@ function renderCurvaS(p){
     '<text x="'+tx+'" y="'+(padT-2)+'" text-anchor="middle" font-size="8" font-weight="700" fill="#d6336c">hoje</text>'+
     '<polyline points="'+plan.join(' ')+'" fill="none" stroke="#0060A8" stroke-width="2"/>'+
     '<polyline points="'+realp.join(' ')+'" fill="none" stroke="'+rc+'" stroke-width="2.4"/>'+ml+'</svg>'+
-    '<div class="legend" style="margin-top:6px;flex-wrap:wrap"><span><i style="background:#0060A8"></i>Previsto</span><span><i style="background:'+rc+'"></i>Realizado</span><span style="color:#d6336c">| hoje</span><span class="muted" style="margin-left:auto">'+done+'/'+total+' concluídas · '+Math.round(realToday)+'% realizado vs '+Math.round(prevToday)+'% previsto até hoje</span></div>';
+    '<div class="legend" style="margin-top:6px;flex-wrap:wrap"><span><i style="background:#0060A8"></i>Previsto</span><span><i style="background:'+rc+'"></i>Realizado</span><span style="color:#d6336c">| hoje</span><span class="muted" style="margin-left:auto">'+done+'/'+total+doneLbl+' · '+Math.round(realToday)+'% realizado vs '+Math.round(prevToday)+'% previsto até hoje</span></div>';
 }
 function psrCurvaTabs(p){
   const el=document.getElementById('curvaScope');if(!el)return;
   const engN=psrTasks(p).filter(t=>t.area==='Engenharia').length,allN=psrTasks(p).length;
+  const docReq=totalActs(p.type);let docIns=0;STEPS.forEach((s,si)=>{docIns+=stepInserted(p,si);});
   el.innerHTML=
     '<button type="button" class="cvtk-chip'+(psrCurvaScope==='all'?' on':'')+'" onclick="psrSetScope(\'all\')">Todas as atividades ('+allN+')</button>'+
-    '<button type="button" class="cvtk-chip'+(psrCurvaScope==='eng'?' on':'')+'" onclick="psrSetScope(\'eng\')">Só engenharia · PSR ('+engN+')</button>';
+    '<button type="button" class="cvtk-chip'+(psrCurvaScope==='eng'?' on':'')+'" onclick="psrSetScope(\'eng\')">Só engenharia · PSR ('+engN+')</button>'+
+    '<button type="button" class="cvtk-chip'+(psrCurvaScope==='docs'?' on':'')+'" onclick="psrSetScope(\'docs\')" title="Curva da documentação: exigidos x inseridos pelos steps">Documentação ('+docIns+'/'+docReq+')</button>';
 }
 function psrSetScope(s){psrCurvaScope=s;renderCurvaS(curProj);}
 function psrActsRender(p){
@@ -2448,7 +2466,7 @@ function psrActsRender(p){
   host.innerHTML=
     '<div class="docs-head" style="margin-bottom:10px"><div><div class="st">Gestão de atividades do projeto <span class="muted" style="font-weight:500;font-size:11px">· cronograma de execução, separado da documentação</span></div></div><button class="btn sm perm-w" onclick="psrActModalOpen()">+ Nova atividade</button></div>'+
     '<div class="tblwrap" style="border:0"><table class="tbl"><thead><tr><th>Atividade</th><th>Área/origem</th><th>Responsável</th><th>Marco</th><th>Prazo</th><th>Status</th><th></th></tr></thead><tbody>'+rows+'</tbody></table></div>'+
-    '<div class="muted" style="font-size:11px;margin-top:8px">A <b>área/origem</b> separa as atividades da engenharia (PSR) das inseridas no Ciclo de Vida. A Curva S acima usa o filtro selecionado. <b>Em validação com o cliente:</b> se a curva deve considerar todas as atividades do projeto ou só as da engenharia.</div>';
+    '<div class="muted" style="font-size:11px;margin-top:8px">A <b>área/origem</b> separa as atividades da engenharia (PSR) das inseridas no Ciclo de Vida. A Curva S acima usa o filtro selecionado, incluindo a visão de <b>documentação</b> (exigidos × inseridos pelos steps). <b>Em validação com o cliente:</b> qual visão da curva é a oficial.</div>';
 }
 function psrActModalOpen(){
   if(!curProj)return;const pl=planOf(curProj);
