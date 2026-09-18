@@ -304,9 +304,9 @@
   .gate-bar .gp{flex:1}.gate-bar .gp .gpb{height:6px;border-radius:4px;background:#fff;margin-top:5px;overflow:hidden}.gate-bar .gp .gpb i{display:block;height:100%;border-radius:4px}
   /* UPLOAD MODAL */
   #upModal{position:fixed;inset:0;z-index:165;background:rgba(8,20,34,.55);backdrop-filter:blur(3px);display:grid;place-items:center;padding:24px}
-  #upModal .um{background:#fff;border-radius:16px;width:min(440px,95vw);overflow:hidden;box-shadow:0 40px 90px -30px rgba(0,0,0,.6)}
-  #upModal .um-h{padding:16px 20px;border-bottom:1px solid var(--line);font-family:"Poppins";font-weight:700}
-  #upModal .um-b{padding:18px 20px}
+  #upModal .um,#catModal .um{background:#fff;border-radius:16px;width:min(440px,95vw);overflow:hidden;box-shadow:0 40px 90px -30px rgba(0,0,0,.6)}
+  #upModal .um-h,#catModal .um-h{padding:16px 20px;border-bottom:1px solid var(--line);font-family:"Poppins";font-weight:700}
+  #upModal .um-b,#catModal .um-b{padding:18px 20px}
   .upbox{border:2px dashed #bcd4ec;border-radius:12px;padding:22px;text-align:center;cursor:pointer;font-size:13px;color:var(--ink-faint)}
   .upbox:hover{border-color:var(--brand);background:var(--brand-soft)}
   .valrow{display:flex;align-items:center;gap:9px;font-size:12.5px;padding:7px 0}
@@ -2157,6 +2157,7 @@
     </div>
     <div style="padding:18px 20px;display:grid;gap:14px">
       <div><label class="dra-lbl">Título da atividade *</label><input id="psrAk_t" class="role-sel" style="width:100%" placeholder="Ex.: Montagem mecânica da linha" onkeydown="if(event.key==='Enter')psrActModalSave()"></div>
+      <div><label class="dra-lbl">Responsável pela atividade</label><input id="psrAk_resp" class="role-sel" style="width:100%" placeholder="Nome de quem deve cumprir esta atividade"></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
         <div><label class="dra-lbl">Prazo</label><input type="date" id="psrAk_due" class="role-sel" style="width:100%"></div>
         <div><label class="dra-lbl">Marco vinculado</label><select id="psrAk_marco" class="role-sel" style="width:100%"></select></div>
@@ -2369,16 +2370,16 @@ function psrTasks(p){
     const pl=planOf(p);
     p._tasks=(pl.acts||[]).map((a,ix)=>{
       let mi=null;pl.marcos.forEach((m,k)=>{if(m[0]<=a[0])mi=k;});
-      return {id:ix+1,t:a[1],due:'2026-'+mm(a[0])+'-20',st:a[3]==='done'?'done':(a[3]==='late'||a[3]==='now')?'now':'pend',marco:mi,desc:'',doc:a[4]||null,area:defArea,
+      return {id:ix+1,t:a[1],due:'2026-'+mm(a[0])+'-20',st:a[3]==='done'?'done':(a[3]==='late'||a[3]==='now')?'now':'pend',marco:mi,desc:'',doc:a[4]||null,area:defArea,resp:p.lead||'',
         notes:a[5]?[{d:'—',by:a[5].por||p.lead,x:'Prazo remanejado: '+(a[5].de||'')+' → '+(a[5].para||'')+' · '+a[5].just}]:[],
         rep:a[5]?{de:a[5].de||'',para:a[5].para||'',just:a[5].just}:null};});
   }
   p._tasks.forEach(t=>{if(!t.area)t.area=defArea;});
   if(p.id===PROJECTS[0].id && !p._mixSeed){p._mixSeed=1;
-    p._tasks.push({id:9101,t:'Ajuste de layout da área (inserida no Ciclo de Vida)',due:'2026-06-20',st:'done',marco:null,desc:'',doc:null,area:'Ciclo de Vida',notes:[],rep:null});
-    p._tasks.push({id:9102,t:'Validação de fluxo com processos (inserida no Ciclo de Vida)',due:'2026-08-20',st:'pend',marco:null,desc:'',doc:null,area:'Ciclo de Vida',notes:[],rep:null});
-    p._tasks.push({id:9201,t:'Revisar EPIs da nova linha',due:'2026-07-20',st:'now',marco:null,desc:'Ação gerada no MOC (gestão de mudanças), a partir do questionário de SHE.',doc:null,area:'MOC',notes:[{d:'—',by:'MOC',x:'Ação criada automaticamente pela gestão de mudanças (MOC).'}],rep:null});
-    p._tasks.push({id:9202,t:'Atualizar a análise de risco do processo',due:'2026-08-20',st:'pend',marco:null,desc:'Ação gerada no MOC (gestão de mudanças).',doc:null,area:'MOC',notes:[{d:'—',by:'MOC',x:'Ação criada automaticamente pela gestão de mudanças (MOC).'}],rep:null});
+    p._tasks.push({id:9101,t:'Ajuste de layout da área (inserida no Ciclo de Vida)',due:'2026-06-20',st:'done',marco:null,desc:'',doc:null,area:'Ciclo de Vida',resp:'R. Prado',notes:[],rep:null});
+    p._tasks.push({id:9102,t:'Validação de fluxo com processos (inserida no Ciclo de Vida)',due:'2026-08-20',st:'pend',marco:null,desc:'',doc:null,area:'Ciclo de Vida',resp:'R. Prado',notes:[],rep:null});
+    p._tasks.push({id:9201,t:'Revisar EPIs da nova linha',due:'2026-07-20',st:'now',marco:null,desc:'Ação gerada no MOC (gestão de mudanças), a partir do questionário de SHE.',doc:null,area:'MOC',resp:'Equipe SHE',notes:[{d:'—',by:'MOC',x:'Ação criada automaticamente pela gestão de mudanças (MOC).'}],rep:null});
+    p._tasks.push({id:9202,t:'Atualizar a análise de risco do processo',due:'2026-08-20',st:'pend',marco:null,desc:'Ação gerada no MOC (gestão de mudanças).',doc:null,area:'MOC',resp:'Equipe SHE',notes:[{d:'—',by:'MOC',x:'Ação criada automaticamente pela gestão de mudanças (MOC).'}],rep:null});
   }
   return p._tasks;
 }
@@ -2438,14 +2439,15 @@ function psrActsRender(p){
       '<option value="done"'+(t.st==='done'?' selected':'')+'>Concluída</option></select>';
     return '<tr><td style="font-weight:600">'+t.t+'</td>'+
       '<td><span class="pill" style="font-size:9.5px;'+areaCls+'">'+t.area+'</span></td>'+
+      '<td>'+(t.resp?'<span style="font-weight:600">'+t.resp+'</span>':'<span class="muted">—</span>')+'</td>'+
       '<td class="muted">'+(t.marco!=null&&pl.marcos[t.marco]?pl.marcos[t.marco][1]:'—')+'</td>'+
       '<td style="'+(late?'color:var(--danger);font-weight:700':'')+'">'+cvFmt(t.due)+(late?' <span class="cvp-chip cvp-late">Atrasada</span>':'')+'</td>'+
       '<td>'+stSel+'</td>'+
       '<td style="text-align:right">'+(_isMoc?'<span class="muted" style="font-size:10px" title="Ação do MOC, gerida no MOC">MOC</span>':'<a class="perm-w" style="cursor:pointer;color:var(--danger);font-weight:800" title="Remover" onclick="psrActDel('+i+')">✕</a>')+'</td></tr>';
-  }).join('')||'<tr><td colspan="6" class="muted" style="padding:14px">Nenhuma atividade ainda. Adicione a primeira acima.</td></tr>';
+  }).join('')||'<tr><td colspan="7" class="muted" style="padding:14px">Nenhuma atividade ainda. Adicione a primeira acima.</td></tr>';
   host.innerHTML=
     '<div class="docs-head" style="margin-bottom:10px"><div><div class="st">Gestão de atividades do projeto <span class="muted" style="font-weight:500;font-size:11px">· cronograma de execução, separado da documentação</span></div></div><button class="btn sm perm-w" onclick="psrActModalOpen()">+ Nova atividade</button></div>'+
-    '<div class="tblwrap" style="border:0"><table class="tbl"><thead><tr><th>Atividade</th><th>Área/origem</th><th>Marco</th><th>Prazo</th><th>Status</th><th></th></tr></thead><tbody>'+rows+'</tbody></table></div>'+
+    '<div class="tblwrap" style="border:0"><table class="tbl"><thead><tr><th>Atividade</th><th>Área/origem</th><th>Responsável</th><th>Marco</th><th>Prazo</th><th>Status</th><th></th></tr></thead><tbody>'+rows+'</tbody></table></div>'+
     '<div class="muted" style="font-size:11px;margin-top:8px">A <b>área/origem</b> separa as atividades da engenharia (PSR) das inseridas no Ciclo de Vida. A Curva S acima usa o filtro selecionado. <b>Em validação com o cliente:</b> se a curva deve considerar todas as atividades do projeto ou só as da engenharia.</div>';
 }
 function psrActModalOpen(){
@@ -2455,6 +2457,7 @@ function psrActModalOpen(){
   document.getElementById('psrAk_marco').innerHTML='<option value="">Sem marco</option>'+pl.marcos.map((m,i)=>'<option value="'+i+'">'+MESES[m[0]]+' · '+m[1]+'</option>').join('');
   document.getElementById('psrAk_area').value='Engenharia';document.getElementById('psrAk_st').value='pend';
   document.getElementById('psrAk_desc').value='';
+  document.getElementById('psrAk_resp').value='';
   document.getElementById('psrActModal').classList.remove('hidden');
   setTimeout(function(){document.getElementById('psrAk_t').focus();},80);
 }
@@ -2463,7 +2466,7 @@ function psrActModalSave(){
   const p=curProj,t=(document.getElementById('psrAk_t').value||'').trim();
   if(t.length<3){toast('Dê um título à atividade (mínimo 3 letras).');return;}
   const mv=document.getElementById('psrAk_marco').value;
-  psrTasks(p).push({id:Date.now()%100000,t,due:document.getElementById('psrAk_due').value||null,st:document.getElementById('psrAk_st').value,marco:mv===''?null:+mv,area:document.getElementById('psrAk_area').value,desc:(document.getElementById('psrAk_desc').value||'').trim(),doc:null,notes:[],rep:null});
+  psrTasks(p).push({id:Date.now()%100000,t,due:document.getElementById('psrAk_due').value||null,st:document.getElementById('psrAk_st').value,marco:mv===''?null:+mv,area:document.getElementById('psrAk_area').value,desc:(document.getElementById('psrAk_desc').value||'').trim(),resp:(document.getElementById('psrAk_resp').value||'').trim(),doc:null,notes:[],rep:null});
   psrActModalClose();psrActsRender(p);renderCurvaS(p);toast('Atividade "'+t+'" adicionada.');
 }
 function psrActAdd(){
