@@ -835,14 +835,11 @@
     <div class="nav-item nav-sub" data-tab="hist" onclick="draNav('hist')">History</div>
     <div class="nav-item" data-view="draescopo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h4"/></svg>Escopo do DRA</div>
     <div class="nav-label">Módulo 3 · Ciclo de Vida, Novo</div>
-    <div class="nav-item" data-view="cvhome"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>Painel da Fábrica<span class="badge">Novo</span></div>
-    <div class="nav-item" data-view="cvgest"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="4" rx="1.5"/><rect x="3" y="10" width="18" height="4" rx="1.5"/><rect x="3" y="16" width="12" height="4" rx="1.5"/></svg>Gestão de Projetos<span class="nav-cnt" id="cvgBadge" style="display:none"></span></div>
-    <div class="nav-item" data-view="lifecycle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v5h-5"/><circle cx="12" cy="12" r="2.4"/></svg>Ciclo de Vida<span class="badge">Novo</span></div>
-    <div class="nav-item" data-view="cvconfig"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 6h16M4 12h10M4 18h7"/><circle cx="18" cy="16" r="4"/><path d="M18 14.5v3M16.5 16h3"/></svg>Cadastros do Ciclo de Vida</div>
-    <div class="nav-item" data-view="lcescopo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h4"/></svg>Escopo do Ciclo de Vida</div>
-    <div class="nav-label">Administração</div>
-    <div class="nav-item" data-view="team"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5"/><circle cx="17" cy="9" r="2.3"/><path d="M16 14c3 0 5 2 5 5"/></svg>Equipe & Papéis</div>
-    <div class="nav-item" data-view="integrations"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 3v6M15 3v6M9 15v6M15 15v6M3 9h6M15 9h6M3 15h6M15 15h6"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg>Integrações</div>
+    <div class="nav-item nav-sub" data-view="cvhome">Painel da Fábrica<span class="badge">Novo</span></div>
+    <div class="nav-item nav-sub" data-view="cvgest">Gestão de Projetos<span class="nav-cnt" id="cvgBadge" style="display:none"></span></div>
+    <div class="nav-item nav-sub" data-view="lifecycle">Ciclo de Vida<span class="badge">Novo</span></div>
+    <div class="nav-item nav-sub" data-view="cvconfig">Cadastros do Ciclo de Vida</div>
+    <div class="nav-item nav-sub" data-view="lcescopo">Escopo do Ciclo de Vida</div>
     <div class="sidebar-foot"><div class="sap-mini"><span class="led"></span>SAP sincronizado · há 4 min</div>Desenvolvido por <b>Drive Data</b><br>Plataforma v1.0 · 2026</div>
   </aside>
   <div id="navOverlay" onclick="navToggle(false)"></div>
@@ -4551,7 +4548,7 @@ const HELP=[
 <tr><td><b>Project Status Report</b></td><td>O portfólio de projetos: <b>Dashboard do Portfólio</b> (visão geral e cadastro do projeto) → <b>Relatórios & KPIs</b> → Steps & Documentos → <b>Cronograma do Portfólio</b> → <b>Catálogo de Documentos</b> → Auditoria → <b>Escopo do PSR</b> (a documentação viva do módulo). A <b>Classificação (A–E)</b> acontece dentro do cadastro do projeto (etapa 2 do wizard). <b>Coberto pela proposta vigente.</b></td></tr>
 <tr><td><b>Módulo 2 · DRA</b></td><td>Financeiro por OI (Designação de Recursos e Autorização), com os subitens na ordem da jornada (Overview → Pipeline → Grid → Reconciliation → Orders → History), <b>consolidação LATAM</b> (Brasil, Argentina, México) e a página <b>Escopo do DRA</b>. <b>Coberto pela proposta vigente.</b></td></tr>
 <tr><td><b>Módulo 3 · Ciclo de Vida (novo)</b></td><td><b>Painel da Fábrica</b> (consolidado + EEM), <b>Gestão de Projetos</b> (origem PSR × manual), <b>Ciclo de Vida</b>, <b>Cadastros do Ciclo de Vida</b> e a página <b>Escopo do Ciclo de Vida</b>: a monitoria gerencial por marcos, com remanejamento justificado e status calculado (demanda de 03/07). <b>Em cotação complementar (Wave 2).</b></td></tr>
-<tr><td><b>Administração</b></td><td>Equipe & Papéis (RBAC) e <b>Integrações</b> (robô SAP, SharePoint, Power BI).</td></tr></table>
+</table>
 <div class="tip">💡 Use o <b>Tour guiado</b> (botão no topo) para uma apresentação passo a passo, ou navegue por este manual pelas seções ao lado.</div>`},
 {ic:"🔐",t:"Acesso e perfis",d:"Como entrar na plataforma e o que cada perfil pode fazer.",b:`
 <h5>Login</h5>
@@ -4800,12 +4797,7 @@ const TOUR=[
    x:"Define <b>quais documentos cada step exige</b> e a partir de qual tipo (A–E) são obrigatórios. Editável pelo admin: <b>mudou aqui, mudou no sistema inteiro</b>, sem tocar em código."},
   {view:"classify",sel:'#critList',c:"Módulo 1 · PSR",t:"Como nasce o tipo A–E",
    x:"Seis critérios (investimento, impacto, inovação, tecnologia…) pontuam o projeto de <b>0 a 100</b> e definem o tipo, e, com ele, <b>o rigor documental exigido</b>. Objetivo, sem subjetividade."},
-  {view:"integrations",sel:'#integGrid',c:"Administração",t:"Três conexões, zero digitação",
-   x:"<b>Robô SAP (RPA)</b> traz os dados financeiros, o <b>SharePoint</b> guarda os documentos e o <b>Power BI</b> exibe o painel DRA. Ninguém digita dado duas vezes."},
-  {view:"team",sel:'#permBody',c:"Administração",t:"Matriz de permissões (RBAC)",
-   x:"O que cada papel pode fazer, ação por ação: <b>Admin, Gerente de Projeto e Auditor</b>. Aqui você também <b>convida novos usuários</b> para a plataforma."},
-  {view:"team",sel:'#roleSel',c:"Administração",t:"Simule cada perfil",
-   x:"Use <b>este seletor</b> no topo para ver a plataforma como Gerente, Auditor ou Admin, a interface se adapta às permissões de cada papel. Fim do tour, explore à vontade!"}
+
 ];
 let ti=-1;
 function ensureTourEls(){if(document.getElementById('tourOverlay'))return;
