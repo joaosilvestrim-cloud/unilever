@@ -1146,26 +1146,97 @@
       </div>
       <div class="esc-divider"><span class="lbl">Para o negócio</span><span class="tagx">cliente · como funciona</span><span class="ln"></span></div>
       <div class="card flowcard" id="scopeFlowOp">
-        <div class="section-title" style="font-size:14.5px">Fluxo operacional, da origem do dado às telas <span class="muted" style="font-weight:500;font-size:11.5px">· como o robô alimenta o sistema e onde a analista atua</span></div>
-        <svg viewBox="0 0 940 304" xmlns="http://www.w3.org/2000/svg">
-<defs><marker id="awop" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#4d6175"/></marker></defs>
-<text x="6" y="16" font-size="10" font-weight="700" fill="#86939f" letter-spacing="1">COMO O DADO CHEGA · TRÊS CAMINHOS ATÉ A BASE</text>
-<circle cx="17" cy="62" r="10" fill="#0060A8"/><text x="17" y="66" text-anchor="middle" font-size="10" font-weight="800" fill="#fff">1</text>
-<rect x="34" y="26" width="88" height="72" rx="12" fill="#eef1f5" stroke="#5c6b7a" stroke-width="1.5"/><text x="78" y="48" text-anchor="middle" font-size="11.5" font-weight="700" fill="#3d4a57">SAP</text><text x="78" y="64" text-anchor="middle" font-size="8" fill="#4d6175">GRR3 · KOB1 · DM</text><text x="78" y="76" text-anchor="middle" font-size="8" fill="#86939f">fonte dos números</text><text x="78" y="88" text-anchor="middle" font-size="8" fill="#86939f">ninguém digita</text><line x1="122" y1="62" x2="132" y2="62" stroke="#4d6175" stroke-width="1.5" marker-end="url(#awop)"/>
-<rect x="134" y="26" width="118" height="72" rx="12" fill="#e4f0fa" stroke="#0060A8" stroke-width="1.5"/><text x="193" y="46" text-anchor="middle" font-size="11.5" font-weight="700" fill="#003E73">Robô (RPA)</text><text x="193" y="62" text-anchor="middle" font-size="8" fill="#4d6175">roda sozinho, 1x por mês</text><text x="193" y="74" text-anchor="middle" font-size="8" fill="#4d6175">ou pelo botão ↻</text><text x="193" y="86" text-anchor="middle" font-size="8" fill="#86939f">do perfil Admin</text><line x1="252" y1="62" x2="262" y2="62" stroke="#4d6175" stroke-width="1.5" marker-end="url(#awop)"/>
-<rect x="264" y="26" width="148" height="72" rx="12" fill="#e4f0fa" stroke="#0060A8" stroke-width="1.5"/><text x="338" y="46" text-anchor="middle" font-size="11.5" font-weight="700" fill="#003E73">Gera os arquivos</text><text x="338" y="62" text-anchor="middle" font-size="8" fill="#4d6175">GRR3.HTM, os valores</text><text x="338" y="74" text-anchor="middle" font-size="8" fill="#4d6175">GRR3_DM.HTM, dados mestres</text><text x="338" y="86" text-anchor="middle" font-size="8" fill="#86939f">KOB1, lançamentos do mês</text><line x1="412" y1="62" x2="422" y2="62" stroke="#4d6175" stroke-width="1.5" marker-end="url(#awop)"/>
-<rect x="424" y="26" width="156" height="72" rx="12" fill="#fdf3e3" stroke="#e8930c" stroke-width="1.5"/><text x="502" y="46" text-anchor="middle" font-size="11.5" font-weight="700" fill="#8a5b00">Pasta BOT_DRA_*</text><text x="502" y="62" text-anchor="middle" font-size="8" fill="#4d6175">cada documento tem a sua</text><text x="502" y="74" text-anchor="middle" font-size="8" fill="#4d6175">pasta no SharePoint</text><text x="502" y="86" text-anchor="middle" font-size="8" fill="#86939f">o DM vai em BOT_DRA_DM</text><line x1="580" y1="62" x2="590" y2="62" stroke="#e8930c" stroke-width="2" marker-end="url(#awop)"/>
-<rect x="592" y="26" width="150" height="72" rx="12" fill="#e4f0fa" stroke="#0060A8" stroke-width="1.5"/><text x="667" y="46" text-anchor="middle" font-size="11.5" font-weight="700" fill="#003E73">Power Automate</text><text x="667" y="62" text-anchor="middle" font-size="8" fill="#4d6175">vê o arquivo novo chegar</text><text x="667" y="74" text-anchor="middle" font-size="8" fill="#4d6175">lê o conteúdo e grava</text><text x="667" y="86" text-anchor="middle" font-size="8" fill="#86939f">na base do sistema</text><line x1="742" y1="62" x2="782" y2="62" stroke="#4d6175" stroke-width="1.8" marker-end="url(#awop)"/>
-<text x="470" y="114" text-anchor="middle" font-size="9" font-weight="700" fill="#8a5b00">O gatilho é o arquivo cair na pasta: tanto faz o robô gravar ou uma pessoa colocar à mão, a carga dispara igual</text>
-<circle cx="17" cy="152" r="10" fill="#e8930c"/><text x="17" y="156" text-anchor="middle" font-size="10" font-weight="800" fill="#fff">2</text>
-<rect x="34" y="124" width="300" height="56" rx="12" fill="#fdf3e3" stroke="#e8930c" stroke-width="1.5"/><text x="184" y="144" text-anchor="middle" font-size="11.5" font-weight="700" fill="#8a5b00">Analista, entrada manual</text><text x="184" y="159" text-anchor="middle" font-size="8" fill="#4d6175">o que o SAP não exporta, ela digita aqui:</text><text x="184" y="172" text-anchor="middle" font-size="8" fill="#86939f">Draft · CPX · troca do TBC pela OI · KO03</text><line x1="334" y1="152" x2="782" y2="152" stroke="#4d6175" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#awop)"/>
-<text x="558" y="145" text-anchor="middle" font-size="8" fill="#86939f">digita direto no sistema, cada edição fica registrada com autor e data</text>
-<circle cx="17" cy="222" r="10" fill="#1f9d57"/><text x="17" y="226" text-anchor="middle" font-size="10" font-weight="800" fill="#fff">3</text>
-<rect x="34" y="194" width="150" height="56" rx="12" fill="#e7f4ee" stroke="#1f9d57" stroke-width="1.5"/><text x="109" y="214" text-anchor="middle" font-size="11.5" font-weight="700" fill="#0c5c33">Planilha LATAM</text><text x="109" y="229" text-anchor="middle" font-size="8" fill="#4d6175">Argentina e México</text><text x="109" y="242" text-anchor="middle" font-size="8" fill="#86939f">não têm robô</text><line x1="184" y1="222" x2="196" y2="222" stroke="#4d6175" stroke-width="1.5" marker-end="url(#awop)"/>
-<rect x="198" y="194" width="212" height="56" rx="12" fill="#e7f4ee" stroke="#1f9d57" stroke-width="1.5"/><text x="304" y="214" text-anchor="middle" font-size="11.5" font-weight="700" fill="#0c5c33">Lista DRA_PLANILHAS</text><text x="304" y="229" text-anchor="middle" font-size="8" fill="#4d6175">o upload cria uma linha aqui</text><text x="304" y="242" text-anchor="middle" font-size="8" fill="#86939f">e a linha dispara o processamento</text><line x1="410" y1="222" x2="782" y2="222" stroke="#4d6175" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#awop)"/>
-<text x="596" y="215" text-anchor="middle" font-size="8" fill="#86939f">a planilha já chega validada e entra direto na consolidação</text>
-<rect x="784" y="26" width="150" height="224" rx="12" fill="#003E73"/><text x="859" y="122" text-anchor="middle" font-size="13.5" font-weight="700" fill="#fff">Sistema DRA</text><text x="859" y="142" text-anchor="middle" font-size="8.5" fill="#cfe0ef">recebe os três caminhos</text><text x="859" y="156" text-anchor="middle" font-size="8.5" fill="#cfe0ef">numa base oficial única</text><text x="859" y="170" text-anchor="middle" font-size="8.5" fill="#cfe0ef">no SharePoint</text><text x="859" y="188" text-anchor="middle" font-size="8.5" fill="#8fb0cd">tudo casado pela OI,</text><text x="859" y="202" text-anchor="middle" font-size="8.5" fill="#8fb0cd">nunca duplica linha</text><text x="470" y="278" text-anchor="middle" font-size="9.5" font-weight="700" fill="#4d6175">Regra de ouro: o robô só busca no SAP o que tem OI. O Draft (TBC) fica invisível para o robô até a analista informar a OI na linha.</text>
-<text x="470" y="294" text-anchor="middle" font-size="9.5" fill="#86939f">Se a extração falhar, nada se perde: o sistema mantém a última base válida e mostra o carimbo de sincronização desatualizado.</text>
+        <div class="section-title" style="font-size:14.5px">O super fluxo do DRA <span class="muted" style="font-weight:500;font-size:11.5px">· a jornada completa em 4 etapas, do nascimento do projeto à prestação de contas, com o papel do robô e da analista</span></div>
+        <svg viewBox="0 0 940 616" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="awsf" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#4d6175"/></marker></defs>
+<text x="6" y="16" font-size="10" font-weight="700" fill="#86939f" letter-spacing="1">1ª ETAPA · O PROJETO NASCE, PELA MÃO DA ANALISTA</text>
+<rect x="34" y="26" width="210" height="94" rx="14" fill="#eef1f5" stroke="#5c6b7a" stroke-width="1.5"/>
+<circle cx="52" cy="46" r="11" fill="#5c6b7a"/><text x="52" y="50.5" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">1</text>
+<text x="70" y="50" font-size="10" font-weight="700" fill="#3d4a57">Registre a ideia</text>
+<rect x="185" y="35" width="51" height="15" rx="7.5" fill="#fff" stroke="#5c6b7a" stroke-width="1"/><text x="210.5" y="45.5" text-anchor="middle" font-size="7" font-weight="700" fill="#3d4a57">PIPELINE</text>
+<text x="48" y="66" font-size="8" fill="#4d6175">Toda ideia nasce no funil, com fonte,</text>
+<text x="48" y="78" font-size="8" fill="#4d6175">prioridade e valor estimado. Ideia no</text>
+<text x="48" y="90" font-size="8" fill="#4d6175">funil não reserva verba e ainda não</text>
+<text x="48" y="102" font-size="8" fill="#4d6175">aparece no grid.</text>
+<line x1="246" y1="73" x2="258" y2="73" stroke="#4d6175" stroke-width="1.8" marker-end="url(#awsf)"/>
+<rect x="262" y="26" width="210" height="94" rx="14" fill="#e4f0fa" stroke="#0060A8" stroke-width="1.5"/>
+<circle cx="280" cy="46" r="11" fill="#0060A8"/><text x="280" y="50.5" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">2</text>
+<text x="298" y="50" font-size="10" font-weight="700" fill="#003E73">Vire projeto: o Draft</text>
+<rect x="413" y="35" width="51" height="15" rx="7.5" fill="#fff" stroke="#0060A8" stroke-width="1"/><text x="438.5" y="45.5" text-anchor="middle" font-size="7" font-weight="700" fill="#003E73">DRA GRID</text>
+<text x="276" y="66" font-size="8" fill="#4d6175">Clique em + Cadastrar projeto: nome,</text>
+<text x="276" y="78" font-size="8" fill="#4d6175">tipo, líder, valor e phasing mês a mês.</text>
+<text x="276" y="90" font-size="8" fill="#4d6175">Nasce com CPX e OI = TBC e já conta</text>
+<text x="276" y="102" font-size="8" fill="#4d6175">no forecast e na barra do teto.</text>
+<line x1="474" y1="73" x2="486" y2="73" stroke="#4d6175" stroke-width="1.8" marker-end="url(#awsf)"/>
+<rect x="490" y="26" width="210" height="94" rx="14" fill="#e4f0fa" stroke="#0060A8" stroke-width="1.5"/>
+<circle cx="508" cy="46" r="11" fill="#0060A8"/><text x="508" y="50.5" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">3</text>
+<text x="526" y="50" font-size="10" font-weight="700" fill="#003E73">Submeteu? Anote o CPX</text>
+<rect x="641" y="35" width="51" height="15" rx="7.5" fill="#fff" stroke="#0060A8" stroke-width="1"/><text x="666.5" y="45.5" text-anchor="middle" font-size="7" font-weight="700" fill="#003E73">DRA GRID</text>
+<text x="504" y="66" font-size="8" fill="#4d6175">O Marlin gera o CPX na submissão.</text>
+<text x="504" y="78" font-size="8" fill="#4d6175">Edite a linha (✎), mude o status para</text>
+<text x="504" y="90" font-size="8" fill="#4d6175">Submitted e registre o CPX. Reprovou,</text>
+<text x="504" y="102" font-size="8" fill="#4d6175">volta para Draft.</text>
+<line x1="702" y1="73" x2="714" y2="73" stroke="#4d6175" stroke-width="1.8" marker-end="url(#awsf)"/>
+<rect x="718" y="26" width="210" height="94" rx="14" fill="#e4f0fa" stroke="#0060A8" stroke-width="1.5"/>
+<circle cx="736" cy="46" r="11" fill="#0060A8"/><text x="736" y="50.5" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">4</text>
+<text x="754" y="50" font-size="10" font-weight="700" fill="#003E73">Autorizou? TBC vira OI</text>
+<rect x="869" y="35" width="51" height="15" rx="7.5" fill="#fff" stroke="#0060A8" stroke-width="1"/><text x="894.5" y="45.5" text-anchor="middle" font-size="7" font-weight="700" fill="#003E73">DRA GRID</text>
+<text x="732" y="66" font-size="8" fill="#4d6175">O AI chega por e-mail e a OI abre no</text>
+<text x="732" y="78" font-size="8" fill="#4d6175">SAP. Edite a linha: registre AI e OI e</text>
+<text x="732" y="90" font-size="8" fill="#4d6175">mude para Authorized. É a OI que</text>
+<text x="732" y="102" font-size="8" fill="#4d6175">liga a linha ao robô.</text>
+<line x1="823" y1="120" x2="823" y2="146" stroke="#4d6175" stroke-width="1.8" marker-end="url(#awsf)"/>
+<text x="812" y="140" text-anchor="end" font-size="8.5" font-weight="700" fill="#137a44">com a OI na linha, o robô assume ↓</text>
+<text x="6" y="162" font-size="10" font-weight="700" fill="#86939f" letter-spacing="1">2ª ETAPA · COM A OI NA LINHA, O DADO PASSA A CHEGAR SOZINHO</text>
+<circle cx="17" cy="208" r="10" fill="#0060A8"/><text x="17" y="212" text-anchor="middle" font-size="10" font-weight="800" fill="#fff">5</text>
+<rect x="34" y="172" width="88" height="72" rx="12" fill="#eef1f5" stroke="#5c6b7a" stroke-width="1.5"/><text x="78" y="194" text-anchor="middle" font-size="11.5" font-weight="700" fill="#3d4a57">SAP</text><text x="78" y="210" text-anchor="middle" font-size="8" fill="#4d6175">GRR3 · KOB1 · DM</text><text x="78" y="222" text-anchor="middle" font-size="8" fill="#86939f">fonte dos números</text><text x="78" y="234" text-anchor="middle" font-size="8" fill="#86939f">ninguém digita</text><line x1="122" y1="208" x2="132" y2="208" stroke="#4d6175" stroke-width="1.5" marker-end="url(#awsf)"/>
+<rect x="134" y="172" width="118" height="72" rx="12" fill="#e4f0fa" stroke="#0060A8" stroke-width="1.5"/><text x="193" y="192" text-anchor="middle" font-size="11.5" font-weight="700" fill="#003E73">Robô (RPA)</text><text x="193" y="208" text-anchor="middle" font-size="8" fill="#4d6175">roda sozinho, 1x por mês</text><text x="193" y="220" text-anchor="middle" font-size="8" fill="#4d6175">ou pelo botão ↻</text><text x="193" y="232" text-anchor="middle" font-size="8" fill="#86939f">do perfil Admin</text><line x1="252" y1="208" x2="262" y2="208" stroke="#4d6175" stroke-width="1.5" marker-end="url(#awsf)"/>
+<rect x="264" y="172" width="148" height="72" rx="12" fill="#e4f0fa" stroke="#0060A8" stroke-width="1.5"/><text x="338" y="192" text-anchor="middle" font-size="11.5" font-weight="700" fill="#003E73">Gera os arquivos</text><text x="338" y="208" text-anchor="middle" font-size="8" fill="#4d6175">GRR3.HTM, os valores</text><text x="338" y="220" text-anchor="middle" font-size="8" fill="#4d6175">GRR3_DM.HTM, dados mestres</text><text x="338" y="232" text-anchor="middle" font-size="8" fill="#86939f">KOB1, lançamentos do mês</text><line x1="412" y1="208" x2="422" y2="208" stroke="#4d6175" stroke-width="1.5" marker-end="url(#awsf)"/>
+<rect x="424" y="172" width="156" height="72" rx="12" fill="#fdf3e3" stroke="#e8930c" stroke-width="1.5"/><text x="502" y="192" text-anchor="middle" font-size="11.5" font-weight="700" fill="#8a5b00">Pasta BOT_DRA_*</text><text x="502" y="208" text-anchor="middle" font-size="8" fill="#4d6175">cada documento tem a sua</text><text x="502" y="220" text-anchor="middle" font-size="8" fill="#4d6175">pasta no SharePoint</text><text x="502" y="232" text-anchor="middle" font-size="8" fill="#86939f">o DM vai em BOT_DRA_DM</text><line x1="580" y1="208" x2="590" y2="208" stroke="#e8930c" stroke-width="2" marker-end="url(#awsf)"/>
+<rect x="592" y="172" width="150" height="72" rx="12" fill="#e4f0fa" stroke="#0060A8" stroke-width="1.5"/><text x="667" y="192" text-anchor="middle" font-size="11.5" font-weight="700" fill="#003E73">Power Automate</text><text x="667" y="208" text-anchor="middle" font-size="8" fill="#4d6175">vê o arquivo novo chegar</text><text x="667" y="220" text-anchor="middle" font-size="8" fill="#4d6175">lê o conteúdo e grava</text><text x="667" y="232" text-anchor="middle" font-size="8" fill="#86939f">na base do sistema</text><line x1="742" y1="208" x2="782" y2="208" stroke="#4d6175" stroke-width="1.8" marker-end="url(#awsf)"/>
+<text x="400" y="260" text-anchor="middle" font-size="9" font-weight="700" fill="#8a5b00">O gatilho é o arquivo cair na pasta: tanto faz o robô gravar ou uma pessoa colocar à mão, a carga dispara igual</text>
+<rect x="34" y="272" width="150" height="56" rx="12" fill="#e7f4ee" stroke="#1f9d57" stroke-width="1.5"/><text x="109" y="292" text-anchor="middle" font-size="11.5" font-weight="700" fill="#0c5c33">Planilha LATAM</text><text x="109" y="307" text-anchor="middle" font-size="8" fill="#4d6175">Argentina e México</text><text x="109" y="320" text-anchor="middle" font-size="8" fill="#86939f">não têm robô</text><line x1="184" y1="300" x2="196" y2="300" stroke="#4d6175" stroke-width="1.5" marker-end="url(#awsf)"/>
+<rect x="198" y="272" width="212" height="56" rx="12" fill="#e7f4ee" stroke="#1f9d57" stroke-width="1.5"/><text x="304" y="292" text-anchor="middle" font-size="11.5" font-weight="700" fill="#0c5c33">Lista DRA_PLANILHAS</text><text x="304" y="307" text-anchor="middle" font-size="8" fill="#4d6175">o upload cria uma linha aqui</text><text x="304" y="320" text-anchor="middle" font-size="8" fill="#86939f">e a linha dispara o processamento</text><line x1="414" y1="300" x2="782" y2="300" stroke="#4d6175" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#awsf)"/>
+<text x="598" y="293" text-anchor="middle" font-size="8" fill="#86939f">caminho paralelo dos sites sem robô: a planilha já chega validada</text>
+<rect x="784" y="172" width="150" height="156" rx="12" fill="#003E73"/><text x="859" y="198" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">Base do DRA</text><text x="859" y="220" text-anchor="middle" font-size="8.5" fill="#cfe0ef">a carga preenche a linha</text><text x="859" y="234" text-anchor="middle" font-size="8.5" fill="#cfe0ef">pela OI: gasto real e</text><text x="859" y="248" text-anchor="middle" font-size="8.5" fill="#cfe0ef">compromissado</text><text x="859" y="268" text-anchor="middle" font-size="8.5" fill="#8fb0cd">nunca duplica linha</text><text x="859" y="288" text-anchor="middle" font-size="8.5" fill="#8fb0cd">sem OI (TBC), o robô</text><text x="859" y="302" text-anchor="middle" font-size="8.5" fill="#8fb0cd">não enxerga a linha</text><line x1="859" y1="328" x2="859" y2="354" stroke="#4d6175" stroke-width="1.8" marker-end="url(#awsf)"/>
+<text x="6" y="352" font-size="10" font-weight="700" fill="#86939f" letter-spacing="1">3ª ETAPA · O FECHAMENTO DO MÊS, DE VOLTA COM A ANALISTA</text>
+<rect x="34" y="362" width="272" height="92" rx="14" fill="#fdf3e3" stroke="#e8930c" stroke-width="1.5"/>
+<circle cx="52" cy="382" r="11" fill="#e8930c"/><text x="52" y="386.5" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">6</text>
+<text x="70" y="386" font-size="10" font-weight="700" fill="#8a5b00">Feche o mês: decida</text>
+<rect x="220" y="371" width="78" height="15" rx="7.5" fill="#fff" stroke="#e8930c" stroke-width="1"/><text x="259" y="381.5" text-anchor="middle" font-size="7" font-weight="700" fill="#8a5b00">RECONCILIATION</text>
+<text x="48" y="402" font-size="8" fill="#4d6175">O sistema compara a extração com a sua última</text>
+<text x="48" y="414" font-size="8" fill="#4d6175">validação e lista cada diferença. Decida com o</text>
+<text x="48" y="426" font-size="8" fill="#4d6175">líder: Accept SAP (aceitar o número novo) ou</text>
+<text x="48" y="438" font-size="8" fill="#4d6175">Keep mine (manter o planejado).</text>
+<line x1="306" y1="408" x2="332" y2="408" stroke="#4d6175" stroke-width="1.8" marker-end="url(#awsf)"/>
+<rect x="336" y="362" width="272" height="92" rx="14" fill="#fdf3e3" stroke="#e8930c" stroke-width="1.5"/>
+<circle cx="354" cy="382" r="11" fill="#e8930c"/><text x="354" y="386.5" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">7</text>
+<text x="372" y="386" font-size="10" font-weight="700" fill="#8a5b00">Publique a versão do mês</text>
+<rect x="522" y="371" width="78" height="15" rx="7.5" fill="#fff" stroke="#e8930c" stroke-width="1"/><text x="561" y="381.5" text-anchor="middle" font-size="7" font-weight="700" fill="#8a5b00">RECONCILIATION</text>
+<text x="350" y="402" font-size="8" fill="#4d6175">A publicação consolida a base validada como a</text>
+<text x="350" y="414" font-size="8" fill="#4d6175">versão oficial do mês. Diferenças aceitas no mês</text>
+<text x="350" y="426" font-size="8" fill="#4d6175">corrente são compensadas no mês seguinte,</text>
+<text x="350" y="438" font-size="8" fill="#4d6175">preservando o total do quarter.</text>
+<line x1="608" y1="408" x2="634" y2="408" stroke="#4d6175" stroke-width="1.8" marker-end="url(#awsf)"/>
+<rect x="638" y="362" width="272" height="92" rx="14" fill="#e4f0fa" stroke="#0060A8" stroke-width="1.5"/>
+<circle cx="656" cy="382" r="11" fill="#0060A8"/><text x="656" y="386.5" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">8</text>
+<text x="674" y="386" font-size="10" font-weight="700" fill="#003E73">Cuide dos prazos</text>
+<rect x="860" y="371" width="42" height="15" rx="7.5" fill="#fff" stroke="#0060A8" stroke-width="1"/><text x="881" y="381.5" text-anchor="middle" font-size="7" font-weight="700" fill="#003E73">ORDERS</text>
+<text x="652" y="402" font-size="8" fill="#4d6175">Mantenha o KO03 atualizado à mão (o robô não</text>
+<text x="652" y="414" font-size="8" fill="#4d6175">traz esses dados) e aja nos alertas de</text>
+<text x="652" y="426" font-size="8" fill="#4d6175">vencimento: prorrogar a ordem ou avisar o</text>
+<text x="652" y="438" font-size="8" fill="#4d6175">líder para encerrar.</text>
+<path d="M 774 454 L 774 498 L 758 498" fill="none" stroke="#4d6175" stroke-width="1.8" marker-end="url(#awsf)"/>
+<text x="6" y="474" font-size="10" font-weight="700" fill="#86939f" letter-spacing="1">4ª ETAPA · A PRESTAÇÃO DE CONTAS É AUTOMÁTICA</text>
+<rect x="190" y="484" width="560" height="80" rx="14" fill="#003E73"/>
+<circle cx="208" cy="504" r="11" fill="#0DB4F2"/><text x="208" y="508.5" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">9</text>
+<text x="226" y="508" font-size="10" font-weight="700" fill="#fff">Prestação de contas automática</text>
+<rect x="645" y="493" width="97" height="15" rx="7.5" fill="rgba(255,255,255,.16)"/><text x="693.5" y="503.5" text-anchor="middle" font-size="7" font-weight="700" fill="#cfe0ef">HISTORY · OVERVIEW</text>
+<text x="204" y="524" font-size="8" fill="#cfe0ef">O History guarda sozinho a versão de cada mês e o Variation log de quem mudou o quê e o impacto.</text>
+<text x="204" y="536" font-size="8" fill="#cfe0ef">O Overview é a leitura pronta do portfólio para a gestão: planejado × gasto × saldo do mês.</text>
+<text x="204" y="548" font-size="8" fill="#cfe0ef">E no mês seguinte o ciclo recomeça sozinho na 2ª etapa, com o robô trazendo a foto nova do SAP.</text>
+<text x="470" y="592" text-anchor="middle" font-size="9.5" font-weight="700" fill="#4d6175">Regra de ouro: o robô só busca no SAP o que tem OI. O Draft (TBC) fica invisível para o robô até a analista informar a OI na linha.</text>
+<text x="470" y="608" text-anchor="middle" font-size="9.5" fill="#86939f">Se a extração falhar, nada se perde: fica valendo a última base válida, com o carimbo de sincronização desatualizado à vista.</text>
         </svg>
         <div class="section-title" style="font-size:13px;margin-top:14px">O papel do robô em detalhe</div>
         <ul style="font-size:12px;color:var(--ink-soft);margin:6px 0 0 18px;display:grid;gap:4px">
@@ -1176,87 +1247,7 @@
           <li><b>Planilha LATAM:</b> a importação começa criando uma linha na lista <b>DRA_PLANILHAS</b>, que dispara o processamento do arquivo.</li>
           <li><b>Chave:</b> o robô só busca no SAP o que tem OI. O Draft (TBC) fica fora do robô até a analista trocar o TBC pela OI real na linha, e o casamento é sempre pela OI, sem duplicar.</li>
         </ul>
-        <div class="section-title" style="font-size:13px;margin-top:16px">Como operar, passo a passo <span class="muted" style="font-weight:500;font-size:11px">· o fluxo de operação em 9 balões, para quem nunca usou o módulo</span></div>
-        <svg viewBox="0 0 940 362" xmlns="http://www.w3.org/2000/svg">
-<defs><marker id="awpp" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#4d6175"/></marker></defs>
-<rect x="34" y="26" width="272" height="92" rx="14" fill="#eef1f5" stroke="#5c6b7a" stroke-width="1.5"/>
-<circle cx="52" cy="46" r="11" fill="#5c6b7a"/><text x="52" y="50.5" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">1</text>
-<text x="70" y="50" font-size="10.5" font-weight="700" fill="#3d4a57">Registre a ideia</text>
-<rect x="245" y="60" width="51" height="15" rx="7.5" fill="#fff" stroke="#5c6b7a" stroke-width="1"/><text x="270.5" y="70.5" text-anchor="middle" font-size="7.5" font-weight="700" fill="#3d4a57">PIPELINE</text>
-<text x="48" y="68" font-size="8" fill="#4d6175">Toda ideia de investimento nasce no funil, com</text>
-<text x="48" y="80" font-size="8" fill="#4d6175">fonte, prioridade e valor estimado. Ideia no funil</text>
-<text x="48" y="92" font-size="8" fill="#4d6175">não reserva verba e não aparece no grid.</text>
-<rect x="336" y="26" width="272" height="92" rx="14" fill="#e4f0fa" stroke="#0060A8" stroke-width="1.5"/>
-<circle cx="354" cy="46" r="11" fill="#0060A8"/><text x="354" y="50.5" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">2</text>
-<text x="372" y="50" font-size="10.5" font-weight="700" fill="#003E73">Vire projeto: cadastre o Draft</text>
-<rect x="547" y="60" width="51" height="15" rx="7.5" fill="#fff" stroke="#0060A8" stroke-width="1"/><text x="572.5" y="70.5" text-anchor="middle" font-size="7.5" font-weight="700" fill="#003E73">DRA GRID</text>
-<text x="350" y="68" font-size="8" fill="#4d6175">Clique em + Cadastrar projeto e preencha nome,</text>
-<text x="350" y="80" font-size="8" fill="#4d6175">tipo, líder, valor e o phasing mês a mês. A linha</text>
-<text x="350" y="92" font-size="8" fill="#4d6175">nasce com CPX e OI = TBC e já entra no forecast</text>
-<text x="350" y="104" font-size="8" fill="#4d6175">do ano e na barra do teto.</text>
-<rect x="638" y="26" width="272" height="92" rx="14" fill="#e4f0fa" stroke="#0060A8" stroke-width="1.5"/>
-<circle cx="656" cy="46" r="11" fill="#0060A8"/><text x="656" y="50.5" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">3</text>
-<text x="674" y="50" font-size="10.5" font-weight="700" fill="#003E73">Submeteu? Anote o CPX</text>
-<rect x="849" y="60" width="51" height="15" rx="7.5" fill="#fff" stroke="#0060A8" stroke-width="1"/><text x="874.5" y="70.5" text-anchor="middle" font-size="7.5" font-weight="700" fill="#003E73">DRA GRID</text>
-<text x="652" y="68" font-size="8" fill="#4d6175">O portal Marlin gera o CPX na submissão. Clique</text>
-<text x="652" y="80" font-size="8" fill="#4d6175">no ✎ da linha, mude o status para Submitted e</text>
-<text x="652" y="92" font-size="8" fill="#4d6175">registre o CPX. Se finanças reprovar, o projeto</text>
-<text x="652" y="104" font-size="8" fill="#4d6175">volta para Draft.</text>
-<rect x="638" y="142" width="272" height="92" rx="14" fill="#e4f0fa" stroke="#0060A8" stroke-width="1.5"/>
-<circle cx="656" cy="162" r="11" fill="#0060A8"/><text x="656" y="166.5" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">4</text>
-<text x="674" y="166" font-size="10.5" font-weight="700" fill="#003E73">Autorizou? TBC vira OI</text>
-<rect x="849" y="176" width="51" height="15" rx="7.5" fill="#fff" stroke="#0060A8" stroke-width="1"/><text x="874.5" y="186.5" text-anchor="middle" font-size="7.5" font-weight="700" fill="#003E73">DRA GRID</text>
-<text x="652" y="184" font-size="8" fill="#4d6175">Com o AI recebido por e-mail e a OI aberta no</text>
-<text x="652" y="196" font-size="8" fill="#4d6175">SAP, edite a linha: registre AI e OI e mude para</text>
-<text x="652" y="208" font-size="8" fill="#4d6175">Authorized. É essa OI que liga a linha ao robô.</text>
-<rect x="336" y="142" width="272" height="92" rx="14" fill="#e7f4ee" stroke="#1f9d57" stroke-width="1.5"/>
-<circle cx="354" cy="162" r="11" fill="#1f9d57"/><text x="354" y="166.5" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">5</text>
-<text x="372" y="166" font-size="10.5" font-weight="700" fill="#0c5c33">Deixe o robô trabalhar</text>
-<rect x="538" y="176" width="60" height="15" rx="7.5" fill="#fff" stroke="#1f9d57" stroke-width="1"/><text x="568" y="186.5" text-anchor="middle" font-size="7.5" font-weight="700" fill="#0c5c33">AUTOMÁTICO</text>
-<text x="350" y="184" font-size="8" fill="#4d6175">Uma vez por mês (ou pelo ↻ do Admin) o robô traz</text>
-<text x="350" y="196" font-size="8" fill="#4d6175">do SAP o gasto real e o compromissado. A carga</text>
-<text x="350" y="208" font-size="8" fill="#4d6175">preenche a linha pela OI, sem duplicar. Confira</text>
-<text x="350" y="220" font-size="8" fill="#4d6175">o carimbo de sincronização.</text>
-<rect x="34" y="142" width="272" height="92" rx="14" fill="#fdf3e3" stroke="#e8930c" stroke-width="1.5"/>
-<circle cx="52" cy="162" r="11" fill="#e8930c"/><text x="52" y="166.5" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">6</text>
-<text x="70" y="166" font-size="10.5" font-weight="700" fill="#8a5b00">Feche o mês: decida</text>
-<rect x="218" y="176" width="78" height="15" rx="7.5" fill="#fff" stroke="#e8930c" stroke-width="1"/><text x="257" y="186.5" text-anchor="middle" font-size="7.5" font-weight="700" fill="#8a5b00">RECONCILIATION</text>
-<text x="48" y="184" font-size="8" fill="#4d6175">O sistema compara a extração com a sua última</text>
-<text x="48" y="196" font-size="8" fill="#4d6175">validação e lista cada diferença. Decida com o</text>
-<text x="48" y="208" font-size="8" fill="#4d6175">líder: Accept SAP (aceitar o número novo) ou</text>
-<text x="48" y="220" font-size="8" fill="#4d6175">Keep mine (manter o planejado).</text>
-<rect x="34" y="258" width="272" height="92" rx="14" fill="#fdf3e3" stroke="#e8930c" stroke-width="1.5"/>
-<circle cx="52" cy="278" r="11" fill="#e8930c"/><text x="52" y="282.5" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">7</text>
-<text x="70" y="282" font-size="10.5" font-weight="700" fill="#8a5b00">Publique a versão do mês</text>
-<rect x="218" y="292" width="78" height="15" rx="7.5" fill="#fff" stroke="#e8930c" stroke-width="1"/><text x="257" y="302.5" text-anchor="middle" font-size="7.5" font-weight="700" fill="#8a5b00">RECONCILIATION</text>
-<text x="48" y="300" font-size="8" fill="#4d6175">A publicação consolida a base validada como a</text>
-<text x="48" y="312" font-size="8" fill="#4d6175">versão oficial do mês. Diferenças aceitas no mês</text>
-<text x="48" y="324" font-size="8" fill="#4d6175">corrente são compensadas no mês seguinte,</text>
-<text x="48" y="336" font-size="8" fill="#4d6175">preservando o total do quarter.</text>
-<rect x="336" y="258" width="272" height="92" rx="14" fill="#e4f0fa" stroke="#0060A8" stroke-width="1.5"/>
-<circle cx="354" cy="278" r="11" fill="#0060A8"/><text x="354" y="282.5" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">8</text>
-<text x="372" y="282" font-size="10.5" font-weight="700" fill="#003E73">Cuide dos prazos</text>
-<rect x="556" y="292" width="42" height="15" rx="7.5" fill="#fff" stroke="#0060A8" stroke-width="1"/><text x="577" y="302.5" text-anchor="middle" font-size="7.5" font-weight="700" fill="#003E73">ORDERS</text>
-<text x="350" y="300" font-size="8" fill="#4d6175">Mantenha o KO03 atualizado à mão (o robô não</text>
-<text x="350" y="312" font-size="8" fill="#4d6175">traz esses dados) e aja nos alertas de</text>
-<text x="350" y="324" font-size="8" fill="#4d6175">vencimento: prorrogar a ordem ou avisar o</text>
-<text x="350" y="336" font-size="8" fill="#4d6175">líder para encerrar.</text>
-<rect x="638" y="258" width="272" height="92" rx="14" fill="#003E73"/>
-<circle cx="656" cy="278" r="11" fill="#0DB4F2"/><text x="656" y="282.5" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">9</text>
-<text x="674" y="282" font-size="10.5" font-weight="700" fill="#fff">Prestação de contas automática</text>
-<rect x="803" y="292" width="97" height="15" rx="7.5" fill="rgba(255,255,255,.16)"/><text x="851.5" y="302.5" text-anchor="middle" font-size="7.5" font-weight="700" fill="#cfe0ef">HISTORY · OVERVIEW</text>
-<text x="652" y="300" font-size="8" fill="#cfe0ef">O History guarda sozinho a versão de cada mês e</text>
-<text x="652" y="312" font-size="8" fill="#cfe0ef">o log de quem mudou o quê. O Overview é a</text>
-<text x="652" y="324" font-size="8" fill="#cfe0ef">leitura pronta do portfólio para a gestão.</text>
-<line x1="306" y1="72" x2="332" y2="72" stroke="#4d6175" stroke-width="1.8" marker-end="url(#awpp)"/>
-<line x1="608" y1="72" x2="634" y2="72" stroke="#4d6175" stroke-width="1.8" marker-end="url(#awpp)"/>
-<line x1="774" y1="118" x2="774" y2="138" stroke="#4d6175" stroke-width="1.8" marker-end="url(#awpp)"/>
-<line x1="634" y1="188" x2="608" y2="188" stroke="#4d6175" stroke-width="1.8" marker-end="url(#awpp)"/>
-<line x1="332" y1="188" x2="306" y2="188" stroke="#4d6175" stroke-width="1.8" marker-end="url(#awpp)"/>
-<line x1="170" y1="234" x2="170" y2="254" stroke="#4d6175" stroke-width="1.8" marker-end="url(#awpp)"/>
-<line x1="306" y1="304" x2="332" y2="304" stroke="#4d6175" stroke-width="1.8" marker-end="url(#awpp)"/>
-<line x1="608" y1="304" x2="634" y2="304" stroke="#4d6175" stroke-width="1.8" marker-end="url(#awpp)"/>
-</svg>
+        
       </div>
 
       <div class="card flowcard" id="scopeFlow1">
