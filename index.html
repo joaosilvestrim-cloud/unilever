@@ -921,6 +921,7 @@
         </div>
       </div>
 
+      <div id="projIdent"></div>
       <div class="lc-summary" id="lcSummary"></div>
       <div id="projNav" style="display:flex;gap:6px;flex-wrap:wrap;margin:12px 0 4px"></div>
 
@@ -2084,6 +2085,21 @@
   </div>
 </div>
 
+<div id="identModal" class="hidden" style="position:fixed;inset:0;z-index:170;background:rgba(8,20,34,.55);backdrop-filter:blur(3px);display:grid;place-items:center;padding:24px" onclick="if(event.target===this)identClose()">
+  <div style="background:#fff;border-radius:16px;width:min(500px,95vw);overflow:auto;box-shadow:0 40px 90px -30px rgba(0,0,0,.6)">
+    <div style="padding:16px 20px;border-bottom:1px solid var(--line);display:flex;align-items:flex-start;gap:12px">
+      <div style="flex:1"><div style="font-family:Poppins;font-weight:700;font-size:15px">Registrar CPX e OI</div><div class="muted" style="font-size:12px"><span id="identProj"></span> · hoje: <span id="identAtual"></span></div></div>
+      <button class="btn ghost sm" onclick="identClose()" title="Fechar">✕</button>
+    </div>
+    <div style="padding:18px 20px;display:grid;gap:14px">
+      <div><label class="dra-lbl">CPX (portal Marlin)</label><input id="ident_cpx" class="role-sel" style="width:100%" placeholder="Ex.: CPX148619"><div class="muted" style="font-size:11px;margin-top:3px">O Marlin gera o CPX quando o projeto é submetido, depois do CAR Approval.</div></div>
+      <div><label class="dra-lbl">Ordem Interna (OI) no SAP</label><input id="ident_oi" class="role-sel" style="width:100%" placeholder="Ex.: 8101016544"><div class="muted" style="font-size:11px;margin-top:3px">Substitui a OI provisória (FIC). A partir dela o financeiro do DRA passa a espelhar neste projeto.</div></div>
+      <div class="muted" style="font-size:11px;background:var(--surface-2);border-radius:8px;padding:9px 12px">A troca fica registrada na trilha de auditoria, com autor e data.</div>
+    </div>
+    <div class="wz-foot"><button class="btn ghost sm" onclick="identClose()">Cancelar</button><button class="btn sm" onclick="identSave()">Registrar</button></div>
+  </div>
+</div>
+
 <div id="cvTaskModal" class="hidden" style="position:fixed;inset:0;z-index:170;background:rgba(8,20,34,.55);backdrop-filter:blur(3px);display:grid;place-items:center;padding:24px" onclick="if(event.target===this)cvTkClose()">
   <div style="background:#fff;border-radius:16px;width:min(560px,95vw);max-height:92vh;overflow:auto;box-shadow:0 40px 90px -30px rgba(0,0,0,.6)">
     <div style="padding:16px 20px;border-bottom:1px solid var(--line);display:flex;align-items:flex-start;gap:12px">
@@ -2323,9 +2339,9 @@ function toolFor(stepNum,name){const n=name.toLowerCase();
   if(n.includes("comissionamento"))return TOOLS.commissioning;
   return null;}
 const PROJECTS=[
-  {id:"P1",type:"A",name:"Nova Linha de Sabão em Pó",loc:"Indaiatuba · Home Care · Greenfield",cur:4,budP:14200000,budA:9800000,com:2100000,sav:1800000,schP:62,lead:"M. Oliveira",oi:"810072",gs:0,gsp:9},
-  {id:"P2",type:"B",name:"Upgrade Envase Dove",loc:"Vinhedo · Personal Care",cur:5,budP:6800000,budA:5100000,com:900000,sav:740000,schP:74,lead:"C. Santos",oi:"810145",gs:1,gsp:8},
-  {id:"P3",type:"C",name:"Otimização CIP",loc:"Pouso Alegre · Foods",cur:7,budP:1400000,budA:1350000,com:30000,sav:260000,schP:98,lead:"R. Lima",oi:"810203",gs:0,gsp:6},
+  {id:"P1",type:"A",name:"Nova Linha de Sabão em Pó",loc:"Indaiatuba · Home Care · Greenfield",cur:4,budP:14200000,budA:9800000,com:2100000,sav:1800000,schP:62,lead:"M. Oliveira",oi:"810072",cpx:"CPX148619",gs:0,gsp:9},
+  {id:"P2",type:"B",name:"Upgrade Envase Dove",loc:"Vinhedo · Personal Care",cur:5,budP:6800000,budA:5100000,com:900000,sav:740000,schP:74,lead:"C. Santos",oi:"810145",cpx:"CPX166747",gs:1,gsp:8},
+  {id:"P3",type:"C",name:"Otimização CIP",loc:"Pouso Alegre · Foods",cur:7,budP:1400000,budA:1350000,com:30000,sav:260000,schP:98,lead:"R. Lima",oi:"810203",cpx:"CPX173253",gs:0,gsp:6},
   {id:"P4",type:"D",name:"Troca de Sensores Linha 3",loc:"Aparecida · Ice Cream",cur:2,budP:180000,budA:42000,com:28000,sav:35000,schP:28,lead:"A. Costa",oi:"810288",gs:4,gsp:4},
   {id:"P5",type:"E",name:"Compra de Bombas Sobressalentes",loc:"Garanhuns · Utilidades",cur:1,budP:60000,budA:0,com:12000,sav:8000,schP:10,lead:"J. Pereira",oi:"810310",gs:5,gsp:2},
   {id:"P6",type:"B",name:"Expansão Sorvetes, Túnel de Frio",loc:"Aparecida · Ice Cream",cur:3,budP:5200000,budA:1900000,com:1400000,sav:610000,schP:41,lead:"T. Almeida",oi:"810356",gs:3,gsp:7}
@@ -2635,6 +2651,63 @@ function projHead(p){
   document.getElementById('pdSched').textContent=(p.schP||0)+'%';
   document.getElementById('pdSchedBar').style.width=(p.schP||0)+'%';
 }
+/* Em que momento o CPX e a OI entram. O projeto nasce como ideia, sem nenhum dos
+   dois, e roda com uma OI provisoria FIC. Depois do CAR Approval (Step 3 nos tipos
+   A e B, Step 2 nos C, D e E) o projeto e submetido no Marlin, que gera o CPX, e a
+   ordem autorizada no SAP gera a OI real. */
+function aprovStepDe(p){return p.aprovStep||((p.type==='A'||p.type==='B')?3:2);}
+function identLiberado(p){
+  const a=aprovStepDe(p);
+  return (p.cur>a)||(p.cur===a&&typeof gateOpen==='function'&&gateOpen(p,a-1));
+}
+function projIdent(p){
+  const el=document.getElementById('projIdent');if(!el)return;
+  if(p.simple){el.innerHTML='';return;}
+  const a=aprovStepDe(p),lib=identLiberado(p);
+  const prov=!p.oi||/^FIC/i.test(p.oi);
+  const selo=(txt,val,pend)=>'<div style="flex:1;min-width:150px;padding:9px 12px;border-radius:10px;background:'+
+    (pend?'var(--surface-2)':'#e7f4ee')+';border:1px solid '+(pend?'var(--line)':'#bfe3d9')+'">'+
+    '<div class="muted" style="font-size:10px;text-transform:uppercase;letter-spacing:.6px">'+txt+'</div>'+
+    '<div style="font-weight:700;font-size:13.5px;color:'+(pend?'var(--ink-faint)':'#137a44')+'">'+val+'</div></div>';
+  el.innerHTML='<div class="card" style="padding:14px 20px;margin-bottom:14px">'+
+    '<div class="docs-head" style="margin-bottom:8px"><div><div class="st" style="font-size:14px">Identifica\u00e7\u00e3o do projeto '+
+      '<span class="muted" style="font-weight:500;font-size:11px">\u00b7 o que j\u00e1 existe e o que ainda vai chegar</span></div></div>'+
+      (lib?'<button class="btn sm perm-w" onclick="identOpen()">Registrar CPX e OI</button>'
+          :'<span class="pill" style="background:#fdf3e3;color:#8a5b00;font-size:10px;font-weight:700">aguardando o Step '+a+'</span>')+
+    '</div>'+
+    '<div style="display:flex;gap:10px;flex-wrap:wrap">'+
+      selo('Ordem interna',(prov?(p.oi||'\u2014')+' \u00b7 provis\u00f3ria':p.oi),prov)+
+      selo('CPX \u00b7 Marlin',(p.cpx||'a registrar'),!p.cpx)+
+      selo('Step da aprova\u00e7\u00e3o','Step '+a+' \u00b7 CAR Approval',false)+
+    '</div>'+
+    '<div class="muted" style="font-size:11px;margin-top:9px">O projeto nasce como <b>ideia</b>, sem CPX e sem OI, e roda com uma <b>OI provis\u00f3ria (FIC)</b>. '+
+    'A aprova\u00e7\u00e3o formal sai no <b>CAR Approval do Step '+a+'</b>, pelo tipo '+p.type+'. '+
+    'S\u00f3 depois dela o projeto \u00e9 submetido no <b>Marlin</b>, que gera o <b>CPX</b>, e a ordem autorizada no <b>SAP</b> gera a <b>OI real</b>. '+
+    (lib?'Este projeto j\u00e1 passou do Step '+a+', ent\u00e3o os n\u00fameros reais podem ser registrados.'
+        :'Este projeto ainda n\u00e3o concluiu o Step '+a+', ent\u00e3o os n\u00fameros reais ainda n\u00e3o existem.')+'</div></div>';
+}
+function identOpen(){
+  if(!curProj)return;
+  document.getElementById('identProj').textContent=curProj.name;
+  document.getElementById('ident_cpx').value=curProj.cpx||'';
+  document.getElementById('ident_oi').value=(/^FIC/i.test(curProj.oi||'')?'':(curProj.oi||''));
+  document.getElementById('identAtual').textContent=(curProj.oi||'\u2014')+(curProj.cpx?' \u00b7 '+curProj.cpx:'');
+  document.getElementById('identModal').classList.remove('hidden');
+  setTimeout(function(){document.getElementById('ident_cpx').focus();},80);
+}
+function identClose(){document.getElementById('identModal').classList.add('hidden');}
+function identSave(){
+  const p=curProj,cpx=(document.getElementById('ident_cpx').value||'').trim().toUpperCase();
+  const oi=(document.getElementById('ident_oi').value||'').trim();
+  if(!cpx&&!oi){toast('Informe o CPX, a OI, ou os dois.');return;}
+  const de=(p.oi||'\u2014')+(p.cpx?' \u00b7 '+p.cpx:'');
+  if(cpx)p.cpx=cpx;
+  if(oi)p.oi=oi;
+  EXTRA_ALERTS.push({ic:'\ud83d\udd35',t:'Identifica\u00e7\u00e3o de \u201c'+p.name+'\u201d atualizada',
+    d:'De '+de+' para '+(p.oi||'\u2014')+(p.cpx?' \u00b7 '+p.cpx:'')+' \u00b7 registrado por '+CURRENT_USER});
+  identClose();openProject(p.id);
+  toast('Identifica\u00e7\u00e3o registrada. A troca ficou na trilha de auditoria.');
+}
 function projMarcos(p){
   const pl=planOf(p),host=document.getElementById('cvpMarcos');if(!host)return;
   host.innerHTML=pl.marcos.map((m,mi)=>{const lbl={done:'Concluído',next:'Próximo',late:'Atrasado',pend:'Planejado'}[m[2]];
@@ -2661,7 +2734,7 @@ function openProject(id){
   buildLifecycle(p.id);
   document.getElementById('secSteps').style.display=p.simple?'none':'';
   if(!p.simple){renderPipeline();renderDocs();}
-  projSemCapex(p);projMarcos(p);cvMocRender(p);projAtalhos(p);
+  projIdent(p);projSemCapex(p);projMarcos(p);cvMocRender(p);projAtalhos(p);
   renderCurvaS(p);atvRender(p,'psr');
 }
 function renderPipeline(){const pl=document.getElementById('pipeline');pl.innerHTML='';
@@ -3360,6 +3433,7 @@ function wzToggle(){
   if(av)av.innerHTML=wzTemCapex()
     ?'<b>Com CAPEX:</b> o próximo passo é a classificação A–E, que define os documentos obrigatórios de cada step.'
     :'<b>Sem CAPEX:</b> o projeto pula a classificação e vai direto ao plano de trabalho, com os marcos obrigatórios e as atividades.';
+  const ow=document.getElementById('wzOiWrap');if(ow)ow.style.display=wzTemCapex()?'':'none';
   const wc=document.getElementById('wsClass');
   if(wc){wc.textContent=wzTemCapex()?'2 · Classificação':'2 · Classificação (não se aplica)';wc.style.opacity=wzTemCapex()?'1':'.45';}
 }
@@ -3391,7 +3465,7 @@ function renderWizard(){
         <div class="fld2"><label>Tipo de CRG</label><select id="w_crg">${CV_CRG.map(function(g){return '<optgroup label="'+g.g+'">'+g.items.map(function(it){return '<option '+(it===wzData.crg?'selected':'')+'>'+it+'</option>';}).join('')+'</optgroup>';}).join('')}</select></div>
       </div>
     </div>
-    <div class="fg">
+    <div class="fg" id="wzOiWrap">
       <div class="fld2"><label>Ordem Interna (OI)</label><input id="w_oi" value="${wzData.oi}" placeholder="deixe em branco até a aprovação" maxlength="12"><span class="hint">Na fase de ideia o projeto ainda <b>não tem OI</b>. Deixe em branco que o sistema gera uma provisória (FIC-000) e você troca pela real quando sair o <b>CAR Approval</b></span></div>
     </div>
     <div class="muted" id="wzCapexAviso" style="font-size:12px;background:var(--brand-soft);border-radius:8px;padding:9px 13px;margin-top:4px"></div>`;
@@ -3507,7 +3581,8 @@ function wzNav(dir){
 }
 function wzFmtDate(v){if(!v)return ', ';const[y,m,d]=v.split('-');return d+' '+MESES[+m-1];}
 function createProject(){
-  if(!wzData.oi){_ficSeq++;wzData.oi='FIC-'+('00'+_ficSeq).slice(-3);}
+  /* a OI e uma ordem de capex no SAP: projeto sem CAPEX nao tem OI, nem provisoria */
+  if(wzTemCapex()&&!wzData.oi){_ficSeq++;wzData.oi='FIC-'+('00'+_ficSeq).slice(-3);}
   if(!wzTemCapex()){
     const gi=wzData.ini?+wzData.ini.split('-')[1]-1:Math.floor(EEM_TODAY);
     const gf=wzData.fim?+wzData.fim.split('-')[1]-1:Math.min(11,gi+5);
@@ -3527,7 +3602,7 @@ function createProject(){
   const gs=mIni, gsp=mFim<mIni?12-mIni:Math.max(1,mFim-mIni+1); /* fim no ano seguinte → barra até Dez */
   const np={id,type:t,name:wzData.name,loc:`${wzData.site} · ${wzData.cat}`,cur:1,budP:capex,budA:0,com:0,sav:save,schP:5,lead:wzData.lead||", ",oi:wzData.oi,gs,gsp,
     fase:wzData.fase,mtype:wzData.mtype,savType:wzData.mtype==='Savings'?wzData.savType:null,npp:wzData.npp||null,
-    stepDt:wzData.stepDt,aprovStep:(t==='A'||t==='B')?3:2};
+    stepDt:wzData.stepDt,aprovStep:(t==='A'||t==='B')?3:2,cpx:null};
   // dados operacionais (EEM): equipe informada + cronograma início/meio/fim
   const team=(wzData.team||wzData.lead||'NA').split(',').map(s=>s.trim()).filter(Boolean).map(n=>n.split(/\s+/).map(w=>w[0]).join('').replace(/\W/g,'').slice(0,2).toUpperCase()||'NA');
   np._eem={plan:Math.max(2,Math.min(98,Math.round((EEM_TODAY-gs)/gsp*100))),
