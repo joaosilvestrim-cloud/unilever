@@ -1301,7 +1301,7 @@
           <rect x="342" y="26" width="170" height="60" rx="12" fill="#fdf3e3" stroke="#e8930c" stroke-width="1.5"/>
           <text x="427" y="47" text-anchor="middle" font-size="11.5" font-weight="700" fill="#8a5b00">Checklist gerado</text>
           <text x="427" y="62" text-anchor="middle" font-size="8.5" fill="#4d6175">do Catálogo, pelo tipo</text>
-          <text x="427" y="75" text-anchor="middle" font-size="8.5" fill="#86939f">A/B 57 · C 37 · D 36 · E 16</text>
+          <text x="427" y="75" text-anchor="middle" font-size="8.5" fill="#86939f">A/B 57 · C 37 · D 36 · E 17</text>
           <line x1="512" y1="56" x2="532" y2="56" stroke="#4d6175" stroke-width="1.5" marker-end="url(#awpo)"/>
           <rect x="534" y="26" width="160" height="60" rx="12" fill="#003E73"/>
           <text x="614" y="47" text-anchor="middle" font-size="11.5" font-weight="700" fill="#fff">Steps &amp; gates</text>
@@ -1505,7 +1505,7 @@
             <tr><td>lead · team</td><td>string</td><td>Cadastro</td></tr>
             <tr><td>oi</td><td>string</td><td>Ordem Interna, elo com o DRA (Módulo 2)</td></tr>
             <tr><td>cur (step atual)</td><td>int 1–7</td><td>Avança apenas via gate 100%</td></tr>
-            <tr><td>docs por step</td><td>checklist</td><td>Gerado pelo tipo (A/B=57 · C=37 · D=36 · E=16; E sem Step 3)</td></tr>
+            <tr><td>docs por step</td><td>checklist</td><td>Gerado pelo tipo (A/B=57 · C=37 · D=36 · E=17; E sem Step 3)</td></tr>
             <tr><td>evidências</td><td>arquivos</td><td>Upload por step, com autor e data</td></tr>
             <tr><td>datas plan × real</td><td>datas por fase</td><td>Base do cronograma (baseline) e do on/off track</td></tr>
             <tr><td>budP · budA · com · sav</td><td>decimal</td><td>Espelho financeiro (leitura; a gestão do dinheiro é no DRA)</td></tr>
@@ -3369,10 +3369,10 @@ function renderWizard(){
   const b=document.getElementById('wzBody');
   if(wzStep===0){const _st=CV_SAVTYPES.find(function(x){return x.n===wzData.savType;});
     b.innerHTML=`<h4>A ideia do projeto</h4>
-    <div class="muted" style="font-size:12.5px;margin-bottom:12px">Todo projeto da fábrica começa aqui, como <b>ideia</b>. O que define o caminho daqui para a frente é ter ou não CAPEX.</div>
+    <div class="muted" style="font-size:12.5px;margin-bottom:12px">Todo projeto da fábrica começa aqui, como <b>ideia</b>. O que define o caminho daqui para a frente é ter ou não CAPEX. Ter CAPEX não significa CAPEX aprovado: a aprovação formal sai no <b>CAR Approval</b>, no Step 3 dos tipos A e B e no Step 2 dos tipos C, D e E. Até lá o projeto roda com <b>OI provisória</b>.</div>
     <div class="fg">
       <div class="fld2"><label>Nome do Projeto</label><input id="w_name" value="${wzData.name}" placeholder="ex.: Nova Linha de Envase"></div>
-      <div class="fld2"><label>Fase do projeto</label><select id="w_fase">${CV_FASES.map(function(o){return '<option '+(o===wzData.fase?'selected':'')+'>'+o+'</option>';}).join('')}</select></div>
+      <div class="fld2"><label>Fase do projeto</label><input id="w_fase" value="Ideia" readonly style="background:var(--surface-2);cursor:not-allowed;color:var(--ink-soft)"><span class="hint">Todo projeto da fábrica nasce como <b>ideia</b>. A fase evolui depois, no acompanhamento (call 21/09)</span></div>
       <div class="fld2"><label>Categoria</label><select id="w_cat">${["Cooking and Aids","Other Food","Condiments"].map(function(o){return '<option '+(o===wzData.cat?'selected':'')+'>'+o+'</option>';}).join('')}</select></div>
       <div class="fld2"><label>Site / Fábrica</label><select id="w_site">${["Pouso Alegre","Garanhuns"].map(function(o){return '<option '+(o===wzData.site?'selected':'')+'>'+o+'</option>';}).join('')}</select></div>
       <div class="fld2"><label>Líder do Projeto</label><input id="w_lead" value="${wzData.lead}" placeholder="ex.: M. Oliveira"></div>
@@ -3392,7 +3392,7 @@ function renderWizard(){
       </div>
     </div>
     <div class="fg">
-      <div class="fld2"><label>Ordem Interna (OI)</label><input id="w_oi" value="${wzData.oi}" placeholder="deixe em branco até a aprovação" maxlength="12"><span class="hint">Sem OI o sistema gera uma provisória (FIC-000) e você troca pela real depois da aprovação</span></div>
+      <div class="fld2"><label>Ordem Interna (OI)</label><input id="w_oi" value="${wzData.oi}" placeholder="deixe em branco até a aprovação" maxlength="12"><span class="hint">Na fase de ideia o projeto ainda <b>não tem OI</b>. Deixe em branco que o sistema gera uma provisória (FIC-000) e você troca pela real quando sair o <b>CAR Approval</b></span></div>
     </div>
     <div class="muted" id="wzCapexAviso" style="font-size:12px;background:var(--brand-soft);border-radius:8px;padding:9px 13px;margin-top:4px"></div>`;
     wzToggle();}
@@ -3412,9 +3412,11 @@ function renderWizard(){
     const _cx=wzTemCapex();
     let _cron;
     if(_cx){
-      _cron='<div class="muted" style="font-size:12px;margin:10px 0 6px"><b>Planejamento por step:</b> informe quando pretende concluir cada etapa. É o cronograma do projeto, e é dele que sai o início e o fim.</div><div class="fg">'+
+      const _aprStep=(wzData.type==='A'||wzData.type==='B')?3:2;
+      _cron='<div class="muted" style="font-size:12px;margin:10px 0 6px"><b>Planejamento por step:</b> informe quando pretende concluir cada etapa. É o cronograma do projeto, e é dele que sai o início e o fim. O <b>Step '+_aprStep+'</b> é onde sai o <b>CAR Approval</b>, que libera o CAPEX e a OI real.</div><div class="fg">'+
         wzStepsDoTipo().map(function(x){
-          return '<div class="fld2"><label>Step '+x.st.step+' · '+x.st.name+'</label><input id="w_stepdt_'+x.i+'" type="date" value="'+(wzData.stepDt[x.i]||'')+'"></div>';
+          const _ap=x.st.step===_aprStep?' <b style="color:var(--brand)">· aprovação do CAPEX</b>':'';
+          return '<div class="fld2"><label>Step '+x.st.step+' · '+x.st.name+_ap+'</label><input id="w_stepdt_'+x.i+'" type="date" value="'+(wzData.stepDt[x.i]||'')+'"></div>';
         }).join('')+'</div>';
     } else {
       _cron='<div class="fg">'+
@@ -3466,8 +3468,11 @@ function wzRenderResult(){
     r.innerHTML=`<div class="gbadge" style="background:#9aa6b2">–</div><div class="gtxt"><b>Avalie todos os critérios</b><span>${ans}/${CRITERIA.length} preenchidos · pontuação parcial ${score}</span></div><div class="wz-progress">${ans}/${CRITERIA.length}</div>`;
     return;}
   const ty=scoreToType(score);wzData.type=ty;wzData.score=score;
+  /* o tipo define em que step sai o CAR Approval, que e onde o CAPEX e aprovado:
+     A e B no Step 3, C, D e E no Step 2 (call 21/09, confirmado no PDF oficial) */
+  const _aprS=(ty==='A'||ty==='B')?3:2;
   r.innerHTML=`<div class="gscore" style="color:${TYPES[ty].color}">${score}</div><div class="gbadge" style="background:${TYPES[ty].color}">${ty}</div>
-    <div class="gtxt"><b>Tipo ${ty} · ${TYPES[ty].name}</b><span>${totalActs(ty)} documentos no fluxo · faixa ${TYPES[ty].range} pts</span></div>`;
+    <div class="gtxt"><b>Tipo ${ty} · ${TYPES[ty].name}</b><span>${totalActs(ty)} documentos no fluxo · faixa ${TYPES[ty].range} pts · CAPEX aprovado no <b>Step ${_aprS}</b> (CAR Approval)</span></div>`;
 }
 function wzSave(){
   if(wzStep===0){['oi','name','cat','site','lead','team','fase','mtype','temCapex','savType','savAnual','savStart','npp','crg'].forEach(function(k){
