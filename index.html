@@ -350,6 +350,28 @@
   .wz-crit .cn{font-family:"IBM Plex Mono";font-weight:700;color:var(--brand);font-size:11px;background:var(--brand-soft);width:22px;height:22px;border-radius:7px;display:grid;place-items:center;flex:none}
   .wz-crit .ct{font-size:13px;font-weight:700}
   .wz-crit .cd{font-size:11px;color:var(--ink-faint);font-weight:400;margin-left:auto}
+  .wz-crit{cursor:pointer}
+  .wz-crit.foco{border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-soft)}
+  /* classificacao em duas colunas: a esquerda escolhe, a direita detalha */
+  .wz-class{display:grid;grid-template-columns:1fr 360px;gap:16px;align-items:start}
+  .wz-col-det{position:sticky;top:0;max-height:62vh;overflow:auto;border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:var(--surface-2)}
+  .wzd-head{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px}
+  .wzd-n{font-family:"IBM Plex Mono";font-weight:700;color:#fff;background:var(--brand);width:26px;height:26px;border-radius:8px;display:grid;place-items:center;font-size:12px;flex:none}
+  .wzd-t{font-size:13.5px;font-weight:700;line-height:1.25}
+  .wzd-p{font-size:10.5px;color:var(--brand);font-weight:700;margin-top:2px}
+  .wzd-desc{font-size:11.5px;color:var(--ink-soft);line-height:1.5;background:#fff;border-radius:9px;padding:10px 12px;margin-bottom:12px}
+  .wzd-lbl{font-size:9.5px;text-transform:uppercase;letter-spacing:.8px;color:var(--ink-faint);font-weight:700;margin-bottom:6px}
+  .wzd-lv{background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:9px 11px;margin-bottom:7px;cursor:pointer;transition:.13s}
+  .wzd-lv:hover{border-color:var(--brand)}
+  .wzd-lv.on{border-color:var(--brand);background:var(--brand-soft)}
+  .wzd-lvh{display:flex;align-items:center;gap:7px;margin-bottom:3px}
+  .wzd-lvn{font-size:9.5px;font-weight:700;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.6px}
+  .wzd-lvp{font-size:9.5px;font-weight:700;color:var(--brand);background:var(--brand-soft);border-radius:99px;padding:1px 7px}
+  .wzd-sel{font-size:9px;font-weight:700;color:#137a44;background:#e7f4ee;border-radius:99px;padding:1px 7px;margin-left:auto}
+  .wzd-lvt{font-size:12px;font-weight:700;line-height:1.25}
+  .wzd-lvd{font-size:11px;color:var(--ink-soft);line-height:1.45;margin-top:3px}
+  .wzd-lvg{font-size:10.5px;color:var(--ink-faint);line-height:1.45;margin-top:5px;border-top:1px dashed var(--line);padding-top:5px}
+  @media(max-width:1100px){.wz-class{grid-template-columns:1fr}.wz-col-det{position:static;max-height:none}}
 
   /* ===== Busca global / menu do usuário / RBAC ===== */
   .search{position:relative}
@@ -922,6 +944,7 @@
       </div>
 
       <div id="projIdent"></div>
+      <div id="projFase"></div>
       <div class="lc-summary" id="lcSummary"></div>
       <div id="projNav" style="display:flex;gap:6px;flex-wrap:wrap;margin:12px 0 4px"></div>
 
@@ -2088,13 +2111,15 @@
 <div id="identModal" class="hidden" style="position:fixed;inset:0;z-index:170;background:rgba(8,20,34,.55);backdrop-filter:blur(3px);display:grid;place-items:center;padding:24px" onclick="if(event.target===this)identClose()">
   <div style="background:#fff;border-radius:16px;width:min(500px,95vw);overflow:auto;box-shadow:0 40px 90px -30px rgba(0,0,0,.6)">
     <div style="padding:16px 20px;border-bottom:1px solid var(--line);display:flex;align-items:flex-start;gap:12px">
-      <div style="flex:1"><div style="font-family:Poppins;font-weight:700;font-size:15px">Registrar CPX e OI</div><div class="muted" style="font-size:12px"><span id="identProj"></span> · hoje: <span id="identAtual"></span></div></div>
+      <div style="flex:1"><div style="font-family:Poppins;font-weight:700;font-size:15px">Registrar OI, CPX e Capex aprovado</div><div class="muted" style="font-size:12px"><span id="identProj"></span> · hoje: <span id="identAtual"></span></div></div>
       <button class="btn ghost sm" onclick="identClose()" title="Fechar">✕</button>
     </div>
     <div style="padding:18px 20px;display:grid;gap:14px">
+      <div class="muted" id="identAuto" style="display:none;font-size:11.5px;background:#fdf3e3;border:1px solid #f0d9a8;border-radius:8px;padding:10px 13px;color:#8a5b00"></div>
       <div><label class="dra-lbl">CPX (portal Marlin)</label><input id="ident_cpx" class="role-sel" style="width:100%" placeholder="Ex.: CPX148619"><div class="muted" style="font-size:11px;margin-top:3px">O Marlin gera o CPX quando o projeto é submetido, depois do CAR Approval.</div></div>
       <div><label class="dra-lbl">Ordem Interna (OI) no SAP</label><input id="ident_oi" class="role-sel" style="width:100%" placeholder="Ex.: 8101016544"><div class="muted" style="font-size:11px;margin-top:3px">Substitui a OI provisória (FIC). A partir dela o financeiro do DRA passa a espelhar neste projeto.</div></div>
-      <div class="muted" style="font-size:11px;background:var(--surface-2);border-radius:8px;padding:9px 12px">A troca fica registrada na trilha de auditoria, com autor e data.</div>
+      <div><label class="dra-lbl">Capex aprovado (€)</label><input id="ident_capex" class="role-sel" style="width:100%" placeholder="Ex.: 2.000.000"><div class="muted" style="font-size:11px;margin-top:3px">É o valor que o CAR Approval liberou. Passa a ser a referência do orçamento do projeto.</div></div>
+      <div class="muted" style="font-size:11px;background:var(--surface-2);border-radius:8px;padding:9px 12px">Ao registrar, o projeto sai da fase <b>Ideia</b> e passa para <b>Em andamento</b>. A partir daí você controla a fase na tela do projeto. Tudo fica na trilha de auditoria, com autor e data.</div>
     </div>
     <div class="wz-foot"><button class="btn ghost sm" onclick="identClose()">Cancelar</button><button class="btn sm" onclick="identSave()">Registrar</button></div>
   </div>
@@ -2192,24 +2217,24 @@ const TYPES={
 /* Critérios oficiais de classificação EEM (planilha "Project Classification - MODELO").
    f = fator de pontuação (somam 1.00) · níveis pontuam 0, 15, 40, 70 e 100. */
 const CRITERIA=[
-  {n:1,t:"Impacto no Cliente e Consumidor",full:"Impacto no cliente e no consumidor",f:0.05,d:"Este critério avalia o impacto potencial no consumidor durante a implementação do projeto ou quando este está em operação. A orientação abaixo refere-se a cada um dos cinco níveis de impacto no cliente e no consumidor. Nível 0 – …",
-   lv:[{t:"Menos impacto",d:"Tamanho de mercado < € 500 milhões (tático) e tipo de site (crítico) > 40% do volume de mercado",p:0},{t:"Algum impacto",d:"Tamanho de mercado de 500 milhões de euros a 1 bilhão de euros (operacional) e tipo de local (não crítico) <40% do volume de mercado",p:15},{t:"Impacto significante",d:"Tamanho de mercado de 500 milhões de euros a 1 bilhão de euros (operacional) e tipo de local (crítico) >40% do volume de mercado",p:40},{t:"Grande Impacto",d:"Tamanho de mercado > € 1 bilhão (estratégico) e tipo de site (não crítico) <40% do volume de mercado",p:70},{t:"Impacto muito grande",d:"Tamanho de mercado > € 1 bilhão (estratégico) e tipo de site (crítico) > 40% do volume de mercado",p:100}]},
-  {n:2,t:"Maturidade Tecnológica",full:"Maturidade Tecnológica",f:0.14,d:"Este critério avalia o grau de mudança tecnológica a ser implementada como parte do projeto. A orientação abaixo refere-se às condições a serem consideradas para cada um dos cinco níveis de tecnologia e maturidade do fornecedor: …",
-   lv:[{t:"Replicação de tecnologia madura q…",d:"Tecnologia comprovada e madura já em uso no Site",p:0},{t:"Expansão de tecnologia madura já …",d:"tecnologia madura existente já está em uso no Site, mas em uma nova área.",p:15},{t:"Novo no site",d:"A tecnologia é nova no Local, mas já está madura em outros locais do cluster",p:40},{t:"Novo no cluster",d:"A tecnologia é nova no Cluster, mas está madura em outros Clusters",p:70},{t:"Tecnologia emergente",d:"A tecnologia é nova para a Unilever.",p:100}]},
-  {n:3,t:"Maturidade do Fornecedor",full:"Maturidade do fornecedor",f:0.13,d:"Este critério avalia a maturidade da tecnologia e do fornecedor que se pretende utilizar como parte do projeto. A orientação abaixo refere-se às condições a serem consideradas para cada um dos cinco níveis de tecnologia e maturid…",
-   lv:[{t:"Base de fornecedores estabelecida",d:"Base de fornecedores maduros que já foram usados no site antes.",p:0},{t:"Novo fornecedor para o local",d:"Nova base de Fornecedores para o Local – mas foram usados em outras partes do Cluster",p:15},{t:"Novo fornecedor para cluster",d:"Novo fornecedor para Cluster, mas tem sido usado em outros lugares da Unilever",p:40},{t:"Novo fornecedor global da Unilever",d:"Novo fornecedor da Unilever como organização - mas com histórico comprovado",p:70},{t:"Novo fornecedor inicial",d:"Novo Fornecedor Start-up que não possui histórico de entrega no mercado. ou seja, tecnologia emergente/de ponta",p:100}]},
-  {n:4,t:"Gestão e Recursos do Projeto",full:"Requisitos de gerenciamento e recursos de projetos",f:0.09,d:"Este critério avalia o nível de gestão de projetos ou esforço de recursos necessário para governar eficazmente o projeto, dada a sua escala, complexidade e nível de mudança, bem como a resistência potencial à mudança como resulta…",
-   lv:[{t:"Simples",d:"projeto requer muito pouco gerenciamento de projeto",p:0},{t:"Moderado",d:"O projeto requer algum gerenciamento de projeto",p:15},{t:"Significativo",d:"O projeto requer um nível moderado de gerenciamento de projeto, incluindo uma pequena equipe de projeto dedicada.",p:40},{t:"Alto",d:"O projeto requer um alto nível de experiência de gerente de projeto, juntamente com uma equipe de projeto multifuncional dedicada",p:70},{t:"Muito alto",d:"projeto requer um Gestor de Projeto muito experiente, com uma equipa de projeto dedicada composta por PME. Apoiado pelo PSG",p:100}]},
-  {n:5,t:"Despesas de Capital (Escala)",full:"Despesas de Capital (Escala)",f:0.14,d:"Este critério avalia a escala de gastos do projeto e, portanto, os pesos e contrapesos necessários para cumprir as políticas de governança da Unilevers. As despesas podem ser capex da Unilever ou capex de terceiros que são dedica…",
-   lv:[{t:"Capex baixo",d:"Menos de 0,25 milhões de euros",p:0},{t:"Capex Menor",d:"0,25 milhões de euros e 0,5 milhões de euros",p:15},{t:"Capex Médio",d:"0,5 milhões de euros e 2 milhões de euros",p:40},{t:"Grande Capex",d:"Entre 2 milhões de euros e 10 milhões de euros",p:70},{t:"Alto Capex",d:"Mais de 10 milhões de euros",p:100}]},
-  {n:6,t:"Cronograma (Criticidade)",full:"Cronograma do Projeto (Criticidade)",f:0.14,d:"Este critério avalia o quão crítico é o cronograma para o sucesso do projeto. Muitas vezes, um indicador de riscos orienta o nível de recursos e esforço necessários. A orientação abaixo refere-se às condições a serem consideradas…",
-   lv:[{t:"Baixo",d:"Oportunidade de negócio completa alinhada ao Cronograma (menos de 10% de diferença).",p:0},{t:"Moderado",d:"Necessidade de negócios alinhada ao cronograma de entrega, espaço para vantagens (10% - 20% de diferença)",p:15},{t:"Significativo",d:"Oportunidade de negócio de alto valor desejada antes do cronograma de entrega (20% - 30% de diferença)",p:40},{t:"Desafiador",d:"A necessidade do negócio é muito anterior ao prazo de entrega. (30% a 40% de diferença)",p:70},{t:"Muito alto",d:"A necessidade comercial é exigida significativamente antes do prazo de entrega. (> 40% de diferença)",p:100}]},
-  {n:7,t:"Dificuldade do Cronograma",full:"Nível de dificuldade do cronograma",f:0.05,d:"Este critério avalia as condições do ambiente do projeto para determinar o nível de dificuldade. Considera informações qualitativas e quantitativas e, como parte da sua gestão, pode exigir o apoio das unidades de negócios mais am…",
-   lv:[{t:"Confortável",d:"O cronograma é facilmente alcançável, esse tipo de projeto é muito comum e existe uma solução óbvia.",p:0},{t:"Razoável",d:"cronograma do projeto pode ser alcançado através de abordagens de entrega padrão com alguma folga disponível.",p:15},{t:"Apertado",d:"O cronograma do projeto é apertado e precisa ser gerenciado com cuidado",p:40},{t:"Desafiador",d:"Cronograma desafiador, que se acredita ser possivelmente através de uma série de opções.",p:70},{t:"Muito difícil",d:"Muito difícil de conseguir. Ainda não se sabe como atingir o cronograma do projeto desejado.",p:100}]},
-  {n:8,t:"Civil / Edifício",full:"Civil/Edifício (Escala e Complexidade)",f:0.13,d:"Este critério avalia a escala de obras civis ou de construção necessárias no escopo do projeto. Este tipo de trabalho pode ter um impacto significativo no custo, risco e cronograma do projeto. A orientação abaixo refere-se às con…",
-   lv:[{t:"Sem alteração",d:"Sem escopo civil/construtivo",p:0},{t:"Obras Menores",d:"Pequena modificação de edifício existente",p:15},{t:"Significativo",d:"Escopo de construção principal para edifícios existentes - ou seja, alterações estruturais e de piso",p:40},{t:"Greenfield",d:"Novo edifício em um novo site",p:70},{t:"Obras Complexas Brownfield",d:"Ampliação de novo edifício e integração com estruturas existentes",p:100}]},
-  {n:9,t:"Tecnologia da Informação",full:"Tecnologia da Informação (Escala e Complexidade)",f:0.13,d:"Este critério avalia a escala do trabalho de Tecnologia da Informação necessário no escopo do projeto. Este tipo de trabalho pode ter um impacto significativo no custo, risco e cronograma do projeto. A orientação abaixo refere-se…",
-   lv:[{t:"Sem alteração",d:"Nenhuma alteração nos sistemas de TI existentes",p:0},{t:"Pequena atualização",d:"Pequena atualização no sistema existente",p:15},{t:"Atualização importante",d:"Grande modificação no sistema existente",p:40},{t:"Novo Módulo",d:"Novo módulo para o sistema existente e/ou uma mudança significativa",p:70},{t:"Novo sistema",d:"Sistema completamente novo",p:100}]}
+  {n:1,t:"Impacto no Cliente e Consumidor",full:"Impacto no cliente e no consumidor",f:0.05,d:"Este critério avalia o impacto potencial no consumidor durante a implementação do projeto ou quando este está em operação. A orientação abaixo refere-se a cada um dos cinco níveis de impacto no cliente e no consumidor. Nível 0 – As atividades do projeto não impactarão os clientes. Isto reflete um nível muito baixo de mudança para apoiar o sucesso do projeto. Nível 1 – As atividades do projeto ou resultado da mudança são menores e podem ter algum impacto no cliente. Nível 2 – As atividades do projeto ou resultado da mudança são moderadas e terão impacto no serviço ao consumidor. Ocorrerá um nível moderado de mudança e serão necessários processos de apoio da Unilever para o sucesso do projeto. Nível 3 – As atividades do projeto ou resultado da mudança terão um grande impacto nos clientes. Um alto nível de mudança ocorrerá e os processos de suporte da Unilever serão necessários para o sucesso do projeto e para o gerenciamento da percepção do consumidor (positiva ou negativa). Nível 4 – As atividades do projeto ou resultado da mudança criarão uma mudança significativa no mercado; ocorrerá um nível muito elevado de mudança e serão necessários processos de suporte da Unilever para o sucesso do projeto e a gestão da percepção do cliente (positiva ou negativa).",
+   lv:[{t:"Menos impacto",d:"Tamanho de mercado < € 500 milhões (tático) e tipo de site (crítico) > 40% do volume de mercado",g:"As atividades do projeto terão pouco ou nenhum impacto na capacidade da Unilever de atender seus clientes",p:0},{t:"Algum impacto",d:"Tamanho de mercado de 500 milhões de euros a 1 bilhão de euros (operacional) e tipo de local (não crítico) <40% do volume de mercado",g:"As atividades do projeto terão um impacto moderado na capacidade da Unilever de atender seus clientes",p:15},{t:"Impacto significante",d:"Tamanho de mercado de 500 milhões de euros a 1 bilhão de euros (operacional) e tipo de local (crítico) >40% do volume de mercado",g:"As atividades do projeto terão um impacto considerável na capacidade da Unilever de atender seus clientes",p:40},{t:"Grande Impacto",d:"Tamanho de mercado > € 1 bilhão (estratégico) e tipo de site (não crítico) <40% do volume de mercado",g:"As atividades do projeto terão um grande impacto na capacidade da Unilever de atender seus clientes. A continuação do atendimento ao cliente precisa estar em mente.",p:70},{t:"Impacto muito grande",d:"Tamanho de mercado > € 1 bilhão (estratégico) e tipo de site (crítico) > 40% do volume de mercado",g:"As atividades do projeto terão um impacto muito grande na capacidade da Unilever de atender seus clientes. A entrega do projeto terá um impacto direto no serviço aos principais clientes.",p:100}]},
+  {n:2,t:"Maturidade Tecnológica",full:"Maturidade Tecnológica",f:0.14,d:"Este critério avalia o grau de mudança tecnológica a ser implementada como parte do projeto. A orientação abaixo refere-se às condições a serem consideradas para cada um dos cinco níveis de tecnologia e maturidade do fornecedor: Nível 0 - A tecnologia madura existente é replicada e já está em uso no local. Nível 1 - A tecnologia comprovada existente já está em uso no local. Nível 2 - A tecnologia é nova no Site, mas é usada em outros clusters. Nível 3 – A tecnologia é nova no cluster, mas é usada por outros clusters. Nível 4 – Tecnologia nova na Unilever.",
+   lv:[{t:"Replicação de tecnologia madura que já está em uso no Site",d:"Tecnologia comprovada e madura já em uso no Site",g:"Com uma tecnologia conhecida, as lições aprendidas e as formas de trabalhar podem ser traduzidas de projetos anteriores com as partes interessadas atuais",p:0},{t:"Expansão de tecnologia madura já em uso no Site",d:"tecnologia madura existente já está em uso no Site, mas em uma nova área.",g:"Com uma tecnologia conhecida, as lições aprendidas e as formas de trabalhar podem ser traduzidas de projetos anteriores para as novas áreas e stakeholders.",p:15},{t:"Novo no site",d:"A tecnologia é nova no Local, mas já está madura em outros locais do cluster",g:"A introdução de uma nova tecnologia no local cria tarefas de projeto adicionais para solidificar a mudança. As partes interessadas precisarão aprimorar suas habilidades na tecnologia durante a implementação e em andamento.",p:40},{t:"Novo no cluster",d:"A tecnologia é nova no Cluster, mas está madura em outros Clusters",g:"A introdução de novas tecnologias no cluster exige trazer para o projeto o conhecimento mais amplo da Unilever. Esta experiência pode ou não ser diretamente transferível.",p:70},{t:"Tecnologia emergente",d:"A tecnologia é nova para a Unilever.",g:"Implementar mudanças tecnológicas em qualquer negócio é complexo na primeira vez. Vários fatores do projeto precisam ser considerados em engenharia, compras, operações e manutenção.",p:100}]},
+  {n:3,t:"Maturidade do Fornecedor",full:"Maturidade do fornecedor",f:0.13,d:"Este critério avalia a maturidade da tecnologia e do fornecedor que se pretende utilizar como parte do projeto. A orientação abaixo refere-se às condições a serem consideradas para cada um dos cinco níveis de tecnologia e maturidade do fornecedor: Nível 0 - Base de fornecedores estabelecida e madura. Nível 1 - Nova base de fornecedores para o local. Nível 2 - Nova base de fornecedores para o cluster. Nível 3 - Novo fornecedor para Unilever globalmente. Nível 4 - Novo fornecedor start-up",
+   lv:[{t:"Base de fornecedores estabelecida",d:"Base de fornecedores maduros que já foram usados no site antes.",g:"Com uma base de fornecedores conhecida, as lições aprendidas e as formas de trabalhar podem ser traduzidas de projetos anteriores no local.",p:0},{t:"Novo fornecedor para o local",d:"Nova base de Fornecedores para o Local – mas foram usados em outras partes do Cluster",g:"A introdução de um novo fornecedor, mesmo com uma tecnologia madura, exige o estabelecimento de formas de trabalho e um entendimento comum das entregas do projeto. As lições aprendidas e as formas de trabalhar podem ser traduzidas de projetos anteriores no Cluster.",p:15},{t:"Novo fornecedor para cluster",d:"Novo fornecedor para Cluster, mas tem sido usado em outros lugares da Unilever",g:"A introdução de um novo fornecedor no cluster exige a utilização de aprendizagens anteriores estabelecidas no negócio mais amplo da Unilever, que podem ou não ser traduzidas diretamente.",p:40},{t:"Novo fornecedor global da Unilever",d:"Novo fornecedor da Unilever como organização - mas com histórico comprovado",g:"A introdução de um novo fornecedor, mesmo com uma tecnologia madura, exige o estabelecimento de formas de trabalho e um entendimento comum das entregas do projeto. Neste caso, a Unilever irá desenvolver esta relação pela primeira vez e não tem experiências anteriores em que se possa basear.",p:70},{t:"Novo fornecedor inicial",d:"Novo Fornecedor Start-up que não possui histórico de entrega no mercado. ou seja, tecnologia emergente/de ponta",g:"A implementação de tecnologia emergente traz consigo uma infinidade de incógnitas tanto para o Fornecedor quanto para a Unilever. Este risco elevado precisa ser considerado em vários fatores da abordagem de entrega e aquisição do projeto.",p:100}]},
+  {n:4,t:"Gestão e Recursos do Projeto",full:"Requisitos de gerenciamento e recursos de projetos",f:0.09,d:"Este critério avalia o nível de gestão de projetos ou esforço de recursos necessário para governar eficazmente o projeto, dada a sua escala, complexidade e nível de mudança, bem como a resistência potencial à mudança como resultado do projeto ou do nível de risco. O esforço de gestão também será impulsionado pelo nível de mudança exigido pela organização para concretizar os benefícios do projeto. Os exemplos podem variar desde um engenheiro de projeto entregando um projeto paralelamente ao seu trabalho diário, até um Grupo Diretor de Projeto dedicado. ​Diferentes níveis de esforço de gestão podem ser descritos da seguinte forma: Nível 0 - Um baixo nível de esforço (simples). Por exemplo, um projeto que poderia ser gerenciado por alguém com um nível modesto de experiência no desempenho de outras responsabilidades. Nível 1 - Algum nível de esforço (moderado). Por exemplo, um projeto pode exigir a maior parte do tempo de um engenheiro de projeto experiente. Nível 2 - Um nível significativo de esforço (desafiador). Por exemplo, um projeto pode exigir um engenheiro de projeto dedicado com um alto nível de envolvimento do diretor da fábrica. Nível 3 - Um alto nível de esforço (difícil). Por exemplo, um projeto pode exigir um gestor de projeto dedicado, vários engenheiros de projeto e um elevado nível de envolvimento do Diretor do Cluster de Engenharia. Nível 4 - Um nível de esforço muito alto (muito difícil). Por exemplo, um projeto pode exigir um Grupo Diretor do Projeto (PSG) dedicado a partir da fase de viabilidade, bem como uma representação dedicada de operações e manutenção a partir da fase de definição. Um PSG também ajuda a gerenciar projetos multidisciplinares e determinadas partes interessadas. Um projeto que exige mais esforço de gerenciamento exigirá significativamente mais funções de controle e monitoramento para entregar o projeto.​",
+   lv:[{t:"Simples",d:"projeto requer muito pouco gerenciamento de projeto",g:"A equipe de entrega do projeto terá “trabalhos diários” e o projeto será entregue além desses trabalhos diários.",p:0},{t:"Moderado",d:"O projeto requer algum gerenciamento de projeto",g:"A gestão necessária é principalmente para a coordenação de equipes internas e externas. A entrega do projeto pode ser gerenciada por uma única pessoa que também desempenha outras funções contínuas.",p:15},{t:"Significativo",d:"O projeto requer um nível moderado de gerenciamento de projeto, incluindo uma pequena equipe de projeto dedicada.",g:"Um engenheiro de projeto dedicado será necessário para gerenciar o projeto. Eles são responsáveis pelo projeto desde a viabilidade até a implementação.",p:40},{t:"Alto",d:"O projeto requer um alto nível de experiência de gerente de projeto, juntamente com uma equipe de projeto multifuncional dedicada",g:"O projeto exigirá um gerente de projeto dedicado e um patrocinador do projeto ou Diretor de Cluster engajado para gerenciar as diversas equipes de trabalho e interfaces do escopo.",p:70},{t:"Muito alto",d:"projeto requer um Gestor de Projeto muito experiente, com uma equipa de projeto dedicada composta por PME. Apoiado pelo PSG",g:"O projeto exigirá um Grupo Diretor do Projeto (PSG) dedicado a partir da fase de viabilidade. Um PSG também ajuda a gerenciar projetos multidisciplinares.",p:100}]},
+  {n:5,t:"Despesas de Capital (Escala)",full:"Despesas de Capital (Escala)",f:0.14,d:"Este critério avalia a escala de gastos do projeto e, portanto, os pesos e contrapesos necessários para cumprir as políticas de governança da Unilevers. As despesas podem ser capex da Unilever ou capex de terceiros que são dedicados à Unilever. A orientação abaixo refere-se às condições a considerar para cada um dos cinco níveis de gastos de Capex: Nível 0 - Menos de 0,25 milhões de euros. Nível 1 - 0,25 milhões de euros e 0,5 milhões de euros. Nível 2 - 0,5 milhões de euros e 2 milhões de euros. Nível 3 - € 2 milhões e 10 milhões de euros. Nível 4 - Mais de 10 milhões de euros",
+   lv:[{t:"Capex baixo",d:"Menos de 0,25 milhões de euros",g:"Projetos de baixo investimento podem muitas vezes ser executados com condições padrão de envolvimento alinhadas com o Cronograma de Autoridades.",p:0},{t:"Capex Menor",d:"0,25 milhões de euros e 0,5 milhões de euros",g:"Os projetos menores de investimento normalmente contêm uma série de pacotes de trabalho contratados de baixo valor e um número seleto.",p:15},{t:"Capex Médio",d:"0,5 milhões de euros e 2 milhões de euros",g:"Os projetos de Capex médio normalmente contêm uma variedade de pacotes de trabalho de baixo a médio valor. É necessária uma estratégia de aquisição definida para investir os fundos da Unilever de acordo com os Programas de Autoridade.",p:40},{t:"Grande Capex",d:"Entre 2 milhões de euros e 10 milhões de euros",g:"Projetos de alto investimento normalmente consistem em 1 ou 2 contratos de alto valor com condições complicadas. É necessária uma diligência cuidadosa para gastar o financiamento da Unilever de acordo com o Cronograma de Autoridades.",p:70},{t:"Alto Capex",d:"Mais de 10 milhões de euros",g:"Os projetos de alto investimento normalmente consistem em vários contratos de alto valor com condições complicadas. É necessária uma diligência cuidadosa para gastar o financiamento da Unilever de acordo com o Cronograma de Autoridades.",p:100}]},
+  {n:6,t:"Cronograma (Criticidade)",full:"Cronograma do Projeto (Criticidade)",f:0.14,d:"Este critério avalia o quão crítico é o cronograma para o sucesso do projeto. Muitas vezes, um indicador de riscos orienta o nível de recursos e esforço necessários. A orientação abaixo refere-se às condições a serem consideradas para cada um dos cinco níveis de criticidade do cronograma: Nível 0 - Baixo. Nível 1 - Moderado - oportunidade para benefícios adicionais. Nível 2 - Significativo - grande oportunidade para benefícios adicionais. Nível 3 – Alto – desalinhamento entre necessidade e entrega. É necessário mais trabalho. Nível 4 – Muito Alto – grande desalinhamento entre necessidade e entrega. É necessário mais trabalho.",
+   lv:[{t:"Baixo",d:"Oportunidade de negócio completa alinhada ao Cronograma (menos de 10% de diferença).",g:"A oportunidade de negócio completa será realizada se o projeto for entregue no prazo.",p:0},{t:"Moderado",d:"Necessidade de negócios alinhada ao cronograma de entrega, espaço para vantagens (10% - 20% de diferença)",g:"As necessidades do negócio estão alinhadas com o cronograma de entrega, porém benefícios adicionais podem ser obtidos se o projeto for entregue mais cedo.",p:15},{t:"Significativo",d:"Oportunidade de negócio de alto valor desejada antes do cronograma de entrega (20% - 30% de diferença)",g:"Uma entrega antecipada do projeto traria benefícios significativos para o negócio. É necessária uma investigação mais aprofundada sobre como isso pode ser realizado.",p:40},{t:"Desafiador",d:"A necessidade do negócio é muito anterior ao prazo de entrega. (30% a 40% de diferença)",g:"Há um desalinhamento entre o momento em que a empresa exige o projeto e o momento em que ele pode ser entregue. É necessária uma investigação mais aprofundada sobre como esta lacuna pode ser colmatada.",p:70},{t:"Muito alto",d:"A necessidade comercial é exigida significativamente antes do prazo de entrega. (> 40% de diferença)",g:"Há um desalinhamento significativo entre o momento em que a empresa exige o projeto e o momento em que ele pode ser entregue. É necessária uma investigação mais aprofundada sobre como esta lacuna pode ser colmatada.",p:100}]},
+  {n:7,t:"Dificuldade do Cronograma",full:"Nível de dificuldade do cronograma",f:0.05,d:"Este critério avalia as condições do ambiente do projeto para determinar o nível de dificuldade. Considera informações qualitativas e quantitativas e, como parte da sua gestão, pode exigir o apoio das unidades de negócios mais amplas da Unilever para que os objetivos do projeto sejam alcançados. A orientação abaixo refere-se às condições a serem consideradas para cada um dos cinco níveis de dificuldade: Nível 0 - Confortável para entregar no prazo. Nível 1 - Razoável para entregar no prazo. Nível 2 - Cronograma apertado para entregar. Nível 3 - Difícil de entregar no prazo, exige inúmeras atividades para correrem bem e serem aceleradas. Nível 4 - Muito Difícil - ainda não se sabe como atingir o objetivo.",
+   lv:[{t:"Confortável",d:"O cronograma é facilmente alcançável, esse tipo de projeto é muito comum e existe uma solução óbvia.",g:"Os objetivos do projeto estão bem definidos. Não foram identificados fatores externos que possam impactar a entrega. A capacidade e a experiência existentes residem na Unilever. Este tipo de projeto foi entregue com sucesso no passado.",p:0},{t:"Razoável",d:"cronograma do projeto pode ser alcançado através de abordagens de entrega padrão com alguma folga disponível.",g:"Os objetivos do projeto estão bem definidos. Pode haver um fator externo identificado que impacte a entrega. A capacidade e a experiência existentes residem na Unilever. Este tipo de projeto foi entregue com sucesso no passado.",p:15},{t:"Apertado",d:"O cronograma do projeto é apertado e precisa ser gerenciado com cuidado",g:"O objetivo está um tanto definido. Existem alguns fatores externos menores que podem afetar a entrega. Existe um nível razoável de experiência na Unilever na entrega deste tipo de projeto.",p:40},{t:"Desafiador",d:"Cronograma desafiador, que se acredita ser possivelmente através de uma série de opções.",g:"Os objetivos do projeto não estão bem definidos. Pode haver fatores externos que impactem a entrega do projeto. Existe um certo nível de experiência em gerenciamento de desenvolvimento e seleção de opções dentro da Unilever para esse tipo de projeto. É dada consideração ao nível de risco associado ao projeto.",p:70},{t:"Muito difícil",d:"Muito difícil de conseguir. Ainda não se sabe como atingir o cronograma do projeto desejado.",g:"Os objetivos do projeto não estão definidos. Pode haver fatores externos que impactem a entrega do projeto. Existe uma experiência limitada na gestão do desenvolvimento e seleção de opções dentro da Unilever para este tipo de projeto. É dada consideração ao nível de risco associado ao projeto.",p:100}]},
+  {n:8,t:"Civil / Edifício",full:"Civil/Edifício (Escala e Complexidade)",f:0.13,d:"Este critério avalia a escala de obras civis ou de construção necessárias no escopo do projeto. Este tipo de trabalho pode ter um impacto significativo no custo, risco e cronograma do projeto. A orientação abaixo refere-se às condições a serem consideradas para cada um dos cinco níveis para construção civil/edifícios: Nível 0 - Sem escopo civil/construção. Nível 1 - Pequena modificação de edifício existente. Nível 2 - Escopo de construção principal para construção existente. Nível 3 - Edifício significativo/Civil Escopo - nova extensão do edifício. Nível 4 - Novo edifício em um novo local",
+   lv:[{t:"Sem alteração",d:"Sem escopo civil/construtivo",g:"implementação do projeto dentro da área e das condições existentes do edifício elimina uma interface de projeto a menos.",p:0},{t:"Obras Menores",d:"Pequena modificação de edifício existente",g:"A alteração de um edifício existente deve ser realizada por indivíduos competentemente treinados que compreendam o impacto no desempenho do edifício a longo prazo.",p:15},{t:"Significativo",d:"Escopo de construção principal para edifícios existentes - ou seja, alterações estruturais e de piso",g:"A modificação significativa de um edifício existente requer um planeamento cuidadoso para trabalhos de preparação técnica, impactos operacionais e planeamento diretor.",p:40},{t:"Greenfield",d:"Novo edifício em um novo site",g:"Os projetos greenfield exigem inúmeras atividades para concluir a construção. Fatores-chave, como as condições civis, podem ter um grande impacto no sucesso do projeto. É necessária uma abordagem multidisciplinar aos edifícios.",p:70},{t:"Obras Complexas Brownfield",d:"Ampliação de novo edifício e integração com estruturas existentes",g:"Novas expansões de edifícios requerem um projeto multidisciplinar para gerenciar cuidadosamente o escopo, o custo e o cronograma. Normalmente, as condições básicas e os projetos existentes são conhecidos para integração. No entanto, muitas vezes limitado pelas condições existentes.",p:100}]},
+  {n:9,t:"Tecnologia da Informação",full:"Tecnologia da Informação (Escala e Complexidade)",f:0.13,d:"Este critério avalia a escala do trabalho de Tecnologia da Informação necessário no escopo do projeto. Este tipo de trabalho pode ter um impacto significativo no custo, risco e cronograma do projeto. A orientação abaixo refere-se às condições a serem consideradas para cada um dos cinco níveis de TI:. Nível 0 - Nenhuma alteração nos sistemas de TI existentes. Nível 1 - Pequena atualização no sistema existente. Nível 2 - Grande modificação no sistema existente. Nível 3 - Novo módulo no sistema existente &/ou uma mudança significativa. Nível 4 - Sistema completamente novo",
+   lv:[{t:"Sem alteração",d:"Nenhuma alteração nos sistemas de TI existentes",g:"A implementação do projeto nos sistemas de TI existentes elimina um pacote de trabalho do projeto a menos.",p:0},{t:"Pequena atualização",d:"Pequena atualização no sistema existente",g:"alteração de um sistema existente deve ser realizada por pessoas competentes e experientes que entendam a arquitetura atual e futura do sistema.",p:15},{t:"Atualização importante",d:"Grande modificação no sistema existente",g:"Grandes modificações em um sistema de TI existente devem ser realizadas cuidadosamente, considerando a arquitetura do sistema a longo prazo. ou seja, atualizações de versão do WMS, melhorias do WMS para eficiência operacional, modificação do WMS para requisitos de auditoria",p:40},{t:"Novo Módulo",d:"Novo módulo para o sistema existente e/ou uma mudança significativa",g:"A introdução de novas configurações de TI exige uma análise cuidadosa sobre como elas se integrarão às existentes e agregarão valor em novas áreas. ou seja, atualização do WMS ou migração para um novo WMS, scanners de integração, RFID, ATL, AGV, conformidade com requisitos de segurança cibernética",p:70},{t:"Novo sistema",d:"Sistema completamente novo",g:"Implementar mudanças tecnológicas em qualquer negócio é complexo na primeira vez. Vários fatores do projeto precisam ser considerados em engenharia, compras, operações e manutenção. Greenfield completo WH",p:100}]},
 ];
 /* score = Σ (pontuação do nível escolhido × fator do critério) */
 function critScore(m){let t=0;CRITERIA.forEach(function(c,i){const l=m[i];if(l!==undefined&&l!==null)t+=c.lv[l].p*c.f;});return Math.round(t);}
@@ -2339,12 +2364,12 @@ function toolFor(stepNum,name){const n=name.toLowerCase();
   if(n.includes("comissionamento"))return TOOLS.commissioning;
   return null;}
 const PROJECTS=[
-  {id:"P1",type:"A",name:"Nova Linha de Sabão em Pó",loc:"Indaiatuba · Home Care · Greenfield",cur:4,budP:14200000,budA:9800000,com:2100000,sav:1800000,schP:62,lead:"M. Oliveira",oi:"810072",cpx:"CPX148619",gs:0,gsp:9},
-  {id:"P2",type:"B",name:"Upgrade Envase Dove",loc:"Vinhedo · Personal Care",cur:5,budP:6800000,budA:5100000,com:900000,sav:740000,schP:74,lead:"C. Santos",oi:"810145",cpx:"CPX166747",gs:1,gsp:8},
-  {id:"P3",type:"C",name:"Otimização CIP",loc:"Pouso Alegre · Foods",cur:7,budP:1400000,budA:1350000,com:30000,sav:260000,schP:98,lead:"R. Lima",oi:"810203",cpx:"CPX173253",gs:0,gsp:6},
-  {id:"P4",type:"D",name:"Troca de Sensores Linha 3",loc:"Aparecida · Ice Cream",cur:2,budP:180000,budA:42000,com:28000,sav:35000,schP:28,lead:"A. Costa",oi:"810288",gs:4,gsp:4},
-  {id:"P5",type:"E",name:"Compra de Bombas Sobressalentes",loc:"Garanhuns · Utilidades",cur:1,budP:60000,budA:0,com:12000,sav:8000,schP:10,lead:"J. Pereira",oi:"810310",gs:5,gsp:2},
-  {id:"P6",type:"B",name:"Expansão Sorvetes, Túnel de Frio",loc:"Aparecida · Ice Cream",cur:3,budP:5200000,budA:1900000,com:1400000,sav:610000,schP:41,lead:"T. Almeida",oi:"810356",gs:3,gsp:7}
+  {id:"P1",type:"A",name:"Nova Linha de Sabão em Pó",loc:"Indaiatuba · Home Care · Greenfield",cur:4,budP:14200000,budA:9800000,com:2100000,sav:1800000,schP:62,lead:"M. Oliveira",oi:"810072",cpx:"CPX148619",fase:"Em andamento",gs:0,gsp:9},
+  {id:"P2",type:"B",name:"Upgrade Envase Dove",loc:"Vinhedo · Personal Care",cur:5,budP:6800000,budA:5100000,com:900000,sav:740000,schP:74,lead:"C. Santos",oi:"810145",cpx:"CPX166747",fase:"Em andamento",gs:1,gsp:8},
+  {id:"P3",type:"C",name:"Otimização CIP",loc:"Pouso Alegre · Foods",cur:7,budP:1400000,budA:1350000,com:30000,sav:260000,schP:98,lead:"R. Lima",oi:"810203",cpx:"CPX173253",fase:"Em andamento",gs:0,gsp:6},
+  {id:"P4",type:"D",name:"Troca de Sensores Linha 3",loc:"Aparecida · Ice Cream",cur:2,budP:180000,budA:42000,com:28000,sav:35000,schP:28,lead:"A. Costa",oi:"810288",fase:"Em andamento",gs:4,gsp:4},
+  {id:"P5",type:"E",name:"Compra de Bombas Sobressalentes",loc:"Garanhuns · Utilidades",cur:1,budP:60000,budA:0,com:12000,sav:8000,schP:10,lead:"J. Pereira",oi:"FIC-002",fase:"Ideia",gs:5,gsp:2},
+  {id:"P6",type:"B",name:"Expansão Sorvetes, Túnel de Frio",loc:"Aparecida · Ice Cream",cur:3,budP:5200000,budA:1900000,com:1400000,sav:610000,schP:41,lead:"T. Almeida",oi:"FIC-003",fase:"Ideia",gs:3,gsp:7}
 ];
 const MESES=["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
 /* Série financeira mês a mês derivada do projeto (base extraída do SAP via robô → SharePoint) */
@@ -2656,10 +2681,9 @@ function projHead(p){
    A e B, Step 2 nos C, D e E) o projeto e submetido no Marlin, que gera o CPX, e a
    ordem autorizada no SAP gera a OI real. */
 function aprovStepDe(p){return p.aprovStep||((p.type==='A'||p.type==='B')?3:2);}
-function identLiberado(p){
-  const a=aprovStepDe(p);
-  return (p.cur>a)||(p.cur===a&&typeof gateOpen==='function'&&gateOpen(p,a-1));
-}
+/* o momento de registrar e a CHEGADA no step da aprovacao, nao o fechamento dele:
+   e ali que o CAR Approval entra em pauta e que a OI e o Capex passam a existir */
+function identLiberado(p){return p.cur>=aprovStepDe(p);}
 function projIdent(p){
   const el=document.getElementById('projIdent');if(!el)return;
   if(p.simple){el.innerHTML='';return;}
@@ -2672,8 +2696,8 @@ function projIdent(p){
   el.innerHTML='<div class="card" style="padding:14px 20px;margin-bottom:14px">'+
     '<div class="docs-head" style="margin-bottom:8px"><div><div class="st" style="font-size:14px">Identifica\u00e7\u00e3o do projeto '+
       '<span class="muted" style="font-weight:500;font-size:11px">\u00b7 o que j\u00e1 existe e o que ainda vai chegar</span></div></div>'+
-      (lib?'<button class="btn sm perm-w" onclick="identOpen()">Registrar CPX e OI</button>'
-          :'<span class="pill" style="background:#fdf3e3;color:#8a5b00;font-size:10px;font-weight:700">aguardando o Step '+a+'</span>')+
+      (lib?'<button class="btn sm perm-w" onclick="identOpen()">Registrar OI, CPX e Capex</button>'
+          :'<span class="pill" style="background:#fdf3e3;color:#8a5b00;font-size:10px;font-weight:700">aguardando chegar no Step '+a+'</span>')+
     '</div>'+
     '<div style="display:flex;gap:10px;flex-wrap:wrap">'+
       selo('Ordem interna',(prov?(p.oi||'\u2014')+' \u00b7 provis\u00f3ria':p.oi),prov)+
@@ -2683,30 +2707,90 @@ function projIdent(p){
     '<div class="muted" style="font-size:11px;margin-top:9px">O projeto nasce como <b>ideia</b>, sem CPX e sem OI, e roda com uma <b>OI provis\u00f3ria (FIC)</b>. '+
     'A aprova\u00e7\u00e3o formal sai no <b>CAR Approval do Step '+a+'</b>, pelo tipo '+p.type+'. '+
     'S\u00f3 depois dela o projeto \u00e9 submetido no <b>Marlin</b>, que gera o <b>CPX</b>, e a ordem autorizada no <b>SAP</b> gera a <b>OI real</b>. '+
-    (lib?'Este projeto j\u00e1 passou do Step '+a+', ent\u00e3o os n\u00fameros reais podem ser registrados.'
-        :'Este projeto ainda n\u00e3o concluiu o Step '+a+', ent\u00e3o os n\u00fameros reais ainda n\u00e3o existem.')+'</div></div>';
+    (lib?'Este projeto j\u00e1 chegou ao Step '+a+', ent\u00e3o os n\u00fameros reais podem ser registrados.'
+        :'Este projeto ainda n\u00e3o chegou ao Step '+a+', ent\u00e3o os n\u00fameros reais ainda n\u00e3o existem.')+'</div></div>';
 }
-function identOpen(){
+/* A fase do projeto. Enquanto o projeto com CAPEX e ideia e nao tem OI nem Capex
+   registrados, a fase e consequencia e nao escolha. Depois do registro ela passa a
+   ser do lider, porque so ele sabe se o projeto pausou, foi cancelado ou retomou. */
+function faseEditavel(p){return p.simple||(p.fase||'Em andamento')!=='Ideia';}
+function projFase(p){
+  const el=document.getElementById('projFase');if(!el)return;
+  const atual=p.fase||'Em andamento',edit=faseEditavel(p);
+  const cor={'Ideia':'#5e35b1','Estudo de viabilidade':'#0060A8','Em andamento':'#137a44',
+             'Pausado':'#8a5b00','Cancelado':'#b02258'}[atual]||'#4d6175';
+  el.innerHTML='<div class="card" style="padding:12px 20px;margin-bottom:14px;display:flex;gap:14px;align-items:center;flex-wrap:wrap">'+
+    '<div style="flex:none"><div class="muted" style="font-size:10px;text-transform:uppercase;letter-spacing:.6px">Fase do projeto</div>'+
+    '<div style="font-weight:700;font-size:15px;color:'+cor+'">'+atual+'</div></div>'+
+    (edit
+      ? '<select class="role-sel perm-w" style="flex:none;min-width:200px" onchange="projFaseSet(this.value)">'+
+        CV_FASES.map(function(f){return '<option '+(f===atual?'selected':'')+'>'+f+'</option>';}).join('')+'</select>'+
+        '<span class="muted" style="font-size:11px;flex:1;min-width:200px">O l\u00edder controla a fase daqui em diante. A troca fica na trilha de auditoria.</span>'
+      : '<span class="pill" style="background:#ede7f6;color:#5e35b1;font-size:10px;font-weight:700">autom\u00e1tica</span>'+
+        '<span class="muted" style="font-size:11px;flex:1;min-width:220px">Todo projeto nasce como <b>ideia</b>. Ele passa para <b>Em andamento</b> sozinho quando voc\u00ea registrar a OI e o Capex aprovado, no Step '+aprovStepDe(p)+'. Depois disso a fase fica sob seu controle.</span>')+
+  '</div>';
+}
+function projFaseSet(v){
+  const p=curProj;if(!p)return;
+  const de=p.fase||'Em andamento';
+  if(v===de)return;
+  p.fase=v;
+  EXTRA_ALERTS.push({ic:'\ud83d\udfe3',t:'Fase de \u201c'+p.name+'\u201d alterada',
+    d:'De '+de+' para '+v+' \u00b7 por '+CURRENT_USER});
+  openProject(p.id);
+  toast('Fase alterada de '+de+' para '+v+'. Registrado na trilha de auditoria.');
+}
+/* Dispara uma vez por projeto, no instante em que ele CHEGA no step da aprovacao.
+   Quem fechar o modal sem preencher continua com o botao no bloco de identificacao. */
+function identCheck(p){
+  if(!p||p.simple||p.cpx||p._identPrompt)return;
+  if(!identLiberado(p))return;
+  p._identPrompt=1;
+  setTimeout(function(){identOpen(true);},350);
+}
+function identOpen(auto){
   if(!curProj)return;
+  const _av=document.getElementById('identAuto');
+  if(_av){
+    _av.style.display=auto?'':'none';
+    if(auto)_av.innerHTML='<b>O projeto acaba de chegar no Step '+aprovStepDe(curProj)+'.</b> '+
+      '\u00c9 neste step que sai o <b>CAR Approval</b>, a aprova\u00e7\u00e3o do capital. Com ela v\u00eam o <b>Capex aprovado</b>, '+
+      'a <b>ordem interna</b> no SAP e o <b>CPX</b> gerado pela submiss\u00e3o no Marlin. '+
+      'Ao registrar, o projeto sai da fase Ideia e passa para Em andamento. '+
+      'Se os n\u00fameros ainda n\u00e3o sa\u00edram, feche e registre depois pelo bot\u00e3o da tela do projeto.';
+  }
   document.getElementById('identProj').textContent=curProj.name;
   document.getElementById('ident_cpx').value=curProj.cpx||'';
   document.getElementById('ident_oi').value=(/^FIC/i.test(curProj.oi||'')?'':(curProj.oi||''));
+  document.getElementById('ident_capex').value=curProj.budP?String(curProj.budP):'';
   document.getElementById('identAtual').textContent=(curProj.oi||'\u2014')+(curProj.cpx?' \u00b7 '+curProj.cpx:'');
   document.getElementById('identModal').classList.remove('hidden');
   setTimeout(function(){document.getElementById('ident_cpx').focus();},80);
 }
-function identClose(){document.getElementById('identModal').classList.add('hidden');}
+function identClose(){
+  const auto=document.getElementById('identAuto');
+  const eraAuto=auto&&auto.style.display!=='none';
+  document.getElementById('identModal').classList.add('hidden');
+  if(eraAuto&&curProj&&!curProj.cpx)toast('Sem problema. O bot\u00e3o Registrar CPX e OI fica no topo da tela do projeto.');
+}
 function identSave(){
   const p=curProj,cpx=(document.getElementById('ident_cpx').value||'').trim().toUpperCase();
   const oi=(document.getElementById('ident_oi').value||'').trim();
-  if(!cpx&&!oi){toast('Informe o CPX, a OI, ou os dois.');return;}
-  const de=(p.oi||'\u2014')+(p.cpx?' \u00b7 '+p.cpx:'');
+  const cx=parseInt((document.getElementById('ident_capex').value||'').replace(/\D/g,''))||0;
+  if(!cpx&&!oi&&!cx){toast('Informe a OI, o CPX ou o Capex aprovado.');return;}
+  const de=(p.oi||'\u2014')+(p.cpx?' \u00b7 '+p.cpx:'')+(p.budP?' \u00b7 '+eur(p.budP):'');
   if(cpx)p.cpx=cpx;
   if(oi)p.oi=oi;
+  if(cx)p.budP=cx;
+  /* com a OI e o Capex registrados o projeto deixa de ser ideia e entra em execucao */
+  const saiuDaIdeia=(p.fase==='Ideia'||!p.fase);
+  if(saiuDaIdeia)p.fase='Em andamento';
   EXTRA_ALERTS.push({ic:'\ud83d\udd35',t:'Identifica\u00e7\u00e3o de \u201c'+p.name+'\u201d atualizada',
-    d:'De '+de+' para '+(p.oi||'\u2014')+(p.cpx?' \u00b7 '+p.cpx:'')+' \u00b7 registrado por '+CURRENT_USER});
+    d:'De '+de+' para '+(p.oi||'\u2014')+(p.cpx?' \u00b7 '+p.cpx:'')+(p.budP?' \u00b7 '+eur(p.budP):'')+
+      (saiuDaIdeia?' \u00b7 fase alterada de Ideia para Em andamento':'')+' \u00b7 registrado por '+CURRENT_USER});
   identClose();openProject(p.id);
-  toast('Identifica\u00e7\u00e3o registrada. A troca ficou na trilha de auditoria.');
+  toast(saiuDaIdeia?'Registrado. O projeto saiu de Ideia e est\u00e1 Em andamento. A fase agora \u00e9 edit\u00e1vel na tela do projeto.'
+                   :'Identifica\u00e7\u00e3o registrada. A troca ficou na trilha de auditoria.');
 }
 function projMarcos(p){
   const pl=planOf(p),host=document.getElementById('cvpMarcos');if(!host)return;
@@ -2734,7 +2818,7 @@ function openProject(id){
   buildLifecycle(p.id);
   document.getElementById('secSteps').style.display=p.simple?'none':'';
   if(!p.simple){renderPipeline();renderDocs();}
-  projIdent(p);projSemCapex(p);projMarcos(p);cvMocRender(p);projAtalhos(p);
+  projIdent(p);projFase(p);projSemCapex(p);projMarcos(p);cvMocRender(p);projAtalhos(p);
   renderCurvaS(p);atvRender(p,'psr');
 }
 function renderPipeline(){const pl=document.getElementById('pipeline');pl.innerHTML='';
@@ -2744,6 +2828,8 @@ function renderPipeline(){const pl=document.getElementById('pipeline');pl.innerH
     el.onclick=()=>{curStep=i;renderPipeline();renderDocs();renderCurvaS(curProj);};pl.appendChild(el);});}
 function renderGateBar(){
   const host=document.getElementById('gateBar');if(!host)return;
+  identCheck(curProj); /* fechou o gate do step da aprovacao? entao e hora do CPX */
+  if(typeof projIdent==='function')projIdent(curProj); /* o bloco acompanha o gate sem reabrir o projeto */
   const si=curProj.cur-1;
   if(curStep!==si){host.style.display='none';return;}
   host.style.display='flex';
@@ -3420,7 +3506,7 @@ const WZ_DEF={oi:"",name:"",cat:"Cooking and Aids",site:"Pouso Alegre",lead:"",t
   mtype:"Savings",savType:"Cost Avoidance",savAnual:"",savStart:"",npp:"",crg:"",temCapex:"sim",
   type:null,score:0,capex:"",save:"",ini:"",meio:"",fim:"",stepDt:{}};
 let wzStep=0, wzSel={}, wzData=JSON.parse(JSON.stringify(WZ_DEF));
-function openWizard(){wzStep=0;wzSel={};wzData=JSON.parse(JSON.stringify(WZ_DEF));document.getElementById('wizard').classList.remove('hidden');renderWizard();}
+function openWizard(){wzStep=0;wzSel={};wzFoco=0;wzData=JSON.parse(JSON.stringify(WZ_DEF));document.getElementById('wizard').classList.remove('hidden');renderWizard();}
 function wzTemCapex(){return (wzData.temCapex||'sim')==='sim';}
 /* steps que valem para o tipo classificado (o tipo E não tem o Step 3) */
 function wzStepsDoTipo(){const t=wzData.type||'C';return STEPS.map(function(st,i){return {i,st};}).filter(function(x){return countFor(t,x.i)>0;});}
@@ -3472,15 +3558,12 @@ function renderWizard(){
     wzToggle();}
   else if(wzStep===1){
     b.innerHTML=`<h4>Classificação por critérios (define o tipo e os documentos)</h4>
-    <div class="muted" style="font-size:12px;margin-bottom:12px">Selecione o nível em cada um dos 9 critérios do modelo EEM. Cada nível vale 0, 15, 40, 70 ou 100 pontos e cada critério tem o seu peso. A pontuação total define o tipo (A–E) e quantos documentos cada step exige. Passe o mouse em um nível para ver a orientação oficial.</div>
-    <div id="wzCrits"></div>
-    <div class="wz-result" id="wzResult"></div>`;
-    document.getElementById('wzCrits').innerHTML=CRITERIA.map((cr,ci)=>`
-      <div class="wz-crit">
-        <div class="ch"><div class="cn">${cr.n}</div><div class="ct">${cr.t} <span style="font-weight:600;color:var(--ink-faint);font-size:10.5px">· peso ${Math.round(cr.f*100)}%</span></div><div class="cd">${cr.d}</div></div>
-        <div class="wz-lvls">${cr.lv.map((lt,li)=>`<div class="wz-lv ${wzSel[ci]===li?'sel':''}" onclick="wzSetLevel(${ci},${li})" title="${lt.d.replace(/"/g,'&quot;')}"><div class="wn">NÍVEL ${li} · ${lt.p}</div><div class="wt">${lt.t}</div></div>`).join('')}</div>
-      </div>`).join('');
-    wzRenderResult();
+    <div class="muted" style="font-size:12px;margin-bottom:12px">Selecione o nível em cada um dos 9 critérios do modelo EEM. Cada nível vale 0, 15, 40, 70 ou 100 pontos e cada critério tem o seu peso. A pontuação total define o tipo (A–E) e quantos documentos cada step exige. <b>Clique em um critério para ver ao lado o detalhamento oficial completo</b>, com a descrição do critério e o texto de cada um dos cinco níveis.</div>
+    <div class="wz-class">
+      <div><div id="wzCrits"></div><div class="wz-result" id="wzResult"></div></div>
+      <aside class="wz-col-det" id="wzDetalhe"></aside>
+    </div>`;
+    wzCritsRender();wzDetalhe();wzRenderResult();
   }
   else if(wzStep===2){
     const _cx=wzTemCapex();
@@ -3530,9 +3613,41 @@ function renderWizard(){
   document.getElementById('wzBack').style.visibility=wzStep===0?'hidden':'visible';
   document.getElementById('wzNext').textContent=wzStep===3?'✓ Criar projeto':'Próximo →';
 }
-function wzSetLevel(ci,li){wzSel[ci]=li;
-  document.querySelectorAll('#wzCrits .wz-crit')[ci].querySelectorAll('.wz-lv').forEach((e,i)=>e.classList.toggle('sel',i===li));
-  wzRenderResult();}
+/* a classificacao mostra o criterio escolhido em detalhe ao lado, com o texto
+   oficial da planilha: a descricao inteira e os cinco niveis com a orientacao */
+let wzFoco=0;
+function wzCritsRender(){
+  const el=document.getElementById('wzCrits');if(!el)return;
+  el.innerHTML=CRITERIA.map(function(cr,ci){
+    return '<div class="wz-crit'+(wzFoco===ci?' foco':'')+'" onclick="wzFocar('+ci+')">'+
+      '<div class="ch"><div class="cn">'+cr.n+'</div>'+
+      '<div class="ct">'+cr.t+' <span style="font-weight:600;color:var(--ink-faint);font-size:10.5px">\u00b7 peso '+Math.round(cr.f*100)+'%</span></div>'+
+      '<div class="cd">'+(wzSel[ci]!==undefined?'n\u00edvel '+wzSel[ci]+' \u00b7 '+cr.lv[wzSel[ci]].p+' pts':'a avaliar')+'</div></div>'+
+      '<div class="wz-lvls">'+cr.lv.map(function(lt,li){
+        return '<div class="wz-lv '+(wzSel[ci]===li?'sel':'')+'" onclick="event.stopPropagation();wzSetLevel('+ci+','+li+')">'+
+          '<div class="wn">N\u00cdVEL '+li+' \u00b7 '+lt.p+'</div><div class="wt">'+lt.t+'</div></div>';}).join('')+
+      '</div></div>';}).join('');
+}
+function wzFocar(ci){wzFoco=ci;wzCritsRender();wzDetalhe();}
+function wzDetalhe(){
+  const el=document.getElementById('wzDetalhe');if(!el)return;
+  const cr=CRITERIA[wzFoco],sel=wzSel[wzFoco];
+  el.innerHTML=
+    '<div class="wzd-head"><div class="wzd-n">'+cr.n+'</div><div>'+
+      '<div class="wzd-t">'+(cr.full||cr.t)+'</div>'+
+      '<div class="wzd-p">peso '+Math.round(cr.f*100)+'% na nota final</div></div></div>'+
+    '<div class="wzd-desc">'+cr.d+'</div>'+
+    '<div class="wzd-lbl">Os cinco n\u00edveis, conforme a planilha oficial</div>'+
+    cr.lv.map(function(l,i){
+      return '<div class="wzd-lv'+(sel===i?' on':'')+'" onclick="wzSetLevel('+wzFoco+','+i+')">'+
+        '<div class="wzd-lvh"><span class="wzd-lvn">N\u00edvel '+i+'</span>'+
+        '<span class="wzd-lvp">'+l.p+' pts</span>'+(sel===i?'<span class="wzd-sel">selecionado</span>':'')+'</div>'+
+        '<div class="wzd-lvt">'+l.t+'</div>'+
+        (l.d?'<div class="wzd-lvd">'+l.d+'</div>':'')+
+        (l.g?'<div class="wzd-lvg"><b>Orienta\u00e7\u00e3o oficial:</b> '+l.g+'</div>':'')+
+      '</div>';}).join('');
+}
+function wzSetLevel(ci,li){wzSel[ci]=li;wzFoco=ci;wzCritsRender();wzDetalhe();wzRenderResult();}
 function wzRenderResult(){
   const keys=Object.keys(wzSel),ans=keys.length;
   const score=critScore(wzSel);
